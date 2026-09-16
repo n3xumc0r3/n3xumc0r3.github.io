@@ -1,0 +1,86 @@
+name: Sync from py-underhood
+
+on:
+  schedule:
+    # Каждые 30 минут — подхватывает изменения из py-underhood
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch/tag/SHA in py-underhood to sync from'
+        required: false
+        default: 'main'
+  repository_dispatch:
+    types: [sync-from-py-underhood]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo (user-pages)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: user-pages
+
+      - name: Configure git
+        run: |
+          cd user-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout source repo (py-underhood)
+        uses: actions/checkout@v4
+        with:
+          repository: n3xumc0r3/py-underhood
+          ref: ${{ github.event.client_payload.ref || github.event.inputs.ref || 'main' }}
+          path: py-underhood
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: py-underhood/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r py-underhood/requirements.txt
+
+      - name: Build site
+        run: |
+          cd py-underhood
+          mkdocs build --strict
+
+      - name: Sync site into user-pages repo
+        run: |
+          cd user-pages
+          # Remove all existing files (except .git AND .github — keep workflows!)
+          find . -mindepth 1 -maxdepth 1 -not -name '.git' -not -name '.github' -exec rm -rf {} +
+          # Copy new site content
+          cp -a ../py-underhood/site/. ./
+          # Verify key files exist
+          ls -la | head -10
+          echo "---"
+          test -f index.html && echo "OK: index.html present"
+          test -f sitemap.xml && echo "OK: sitemap.xml present"
+          test -f robots.txt && echo "OK: robots.txt present"
+
+      - name: Commit and push
+        run: |
+          cd user-pages
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+          else
+            git commit -m "Auto-sync from n3xumc0r3/py-underhood@${{ github.event.client_payload.ref || github.event.inputs.ref || 'main' }}
+
+            Triggered by: ${{ github.event_name }}
+            Source: https://github.com/n3xumc0r3/py-underhood"
+            git push origin main
+          fi
