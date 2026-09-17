@@ -72,15 +72,100 @@ jobs:
           test -f robots.txt && echo "OK: robots.txt present"
 
       - name: Commit and push
+        id: commit
         run: |
           cd user-pages
           git add -A
           if git diff --cached --quiet; then
             echo "No changes to deploy."
+            echo "pushed=false" >> $GITHUB_OUTPUT
           else
             git commit -m "Auto-sync from n3xumc0r3/py-underhood@${{ github.event.client_payload.ref || github.event.inputs.ref || 'main' }}
 
             Triggered by: ${{ github.event_name }}
             Source: https://github.com/n3xumc0r3/py-underhood"
             git push origin main
+            echo "pushed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify IndexNow (Bing + Yandex)
+        # Отправляем уведомление только если сайт реально обновился
+        if: steps.commit.outputs.pushed == 'true'
+        run: |
+          # IndexNow key (должен совпадать с файлом {key}.txt в корне сайта)
+          INDEXNOW_KEY="bd0f5b3ecea6f236b356633825d556c1"
+          HOST="n3xumc0r3.github.io"
+          KEY_LOCATION="https://${HOST}/${INDEXNOW_KEY}.txt"
+
+          # Ждём 30 сек — Pages build запускается асинхронно после push
+          echo "Waiting 30s for GitHub Pages build to start..."
+          sleep 30
+
+          # Собираем все URL из sitemap (нового, уже запушенного)
+          echo "Fetching sitemap from https://${HOST}/sitemap.xml ..."
+          SITEMAP_XML=$(curl -sS "https://${HOST}/sitemap.xml")
+
+          # Извлекаем URL, фильтруем 404.html
+          URL_LIST=$(echo "$SITEMAP_XML" | \
+            grep -oE "<loc>https://[^<]+</loc>" | \
+            sed -E 's|</?loc>||g' | \
+            grep -v "404.html" | \
+            jq -R . | jq -s .)
+
+          URL_COUNT=$(echo "$URL_LIST" | jq length)
+          echo "URLs to notify: $URL_COUNT"
+          echo "$URL_LIST" | jq -r '.[]' | head -5 | sed 's/^/  - /'
+
+          if [ "$URL_COUNT" -eq 0 ]; then
+            echo "WARN: No URLs found in sitemap — skipping IndexNow notification"
+            exit 0
+          fi
+
+          # Проверяем, что key file доступен
+          echo "Verifying key file at $KEY_LOCATION ..."
+          KEY_RESPONSE=$(curl -sS -w "%{http_code}" -o /tmp/key_response.txt "$KEY_LOCATION")
+          echo "Key file HTTP: $KEY_RESPONSE"
+          if [ "$KEY_RESPONSE" != "200" ]; then
+            echo "WARN: Key file not accessible — IndexNow will reject notification"
+            exit 0
+          fi
+          KEY_CONTENT=$(cat /tmp/key_response.txt | tr -d '[:space:]')
+          if [ "$KEY_CONTENT" != "$INDEXNOW_KEY" ]; then
+            echo "WARN: Key file content mismatch — expected $INDEXNOW_KEY, got $KEY_CONTENT"
+            exit 0
+          fi
+          echo "OK: Key file verified"
+
+          # Отправляем POST на IndexNow
+          # IndexNow принимает запросы на api.indexnow.org (общий эндпоинт)
+          # — он ретранслирует во все поддерживающие поисковики автоматически
+          # (Bing, Yandex, Seznam).
+          echo "Sending IndexNow notification..."
+          PAYLOAD=$(jq -n \
+            --arg host "$HOST" \
+            --arg key "$INDEXNOW_KEY" \
+            --arg keyLocation "$KEY_LOCATION" \
+            --argjson urlList "$URL_LIST" \
+            '{host: $host, key: $key, keyLocation: $keyLocation, urlList: $urlList}')
+
+          echo "Payload (first 10 lines):"
+          echo "$PAYLOAD" | jq . | head -10
+          echo "..."
+
+          HTTP_CODE=$(curl -sS -o /tmp/indexnow_response.txt -w "%{http_code}" \
+            -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          echo "IndexNow response HTTP: $HTTP_CODE"
+          echo "Response body:"
+          cat /tmp/indexnow_response.txt
+          echo ""
+
+          # 200 = OK, 202 = Accepted — оба означают успех
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "202" ]; then
+            echo "OK: IndexNow notified successfully"
+          else
+            echo "WARN: IndexNow returned $HTTP_CODE — notification may have failed"
+            echo "  (это не критично — поисковики всё равно придут по sitemap)"
           fi
