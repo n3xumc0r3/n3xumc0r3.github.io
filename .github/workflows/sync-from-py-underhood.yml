@@ -97,9 +97,10 @@ jobs:
           HOST="n3xumc0r3.github.io"
           KEY_LOCATION="https://${HOST}/${INDEXNOW_KEY}.txt"
 
-          # Ждём 30 сек — Pages build запускается асинхронно после push
-          echo "Waiting 30s for GitHub Pages build to start..."
-          sleep 30
+          # Ждём 90 сек — Pages build запускается асинхронно после push,
+          # и нам нужно, чтобы новый sitemap + key file стали доступны.
+          echo "Waiting 90s for GitHub Pages build to complete..."
+          sleep 90
 
           # Собираем все URL из sitemap (нового, уже запушенного)
           echo "Fetching sitemap from https://${HOST}/sitemap.xml ..."
@@ -121,20 +122,29 @@ jobs:
             exit 0
           fi
 
-          # Проверяем, что key file доступен
+          # Проверяем, что key file доступен (с 3 ретраями)
           echo "Verifying key file at $KEY_LOCATION ..."
-          KEY_RESPONSE=$(curl -sS -w "%{http_code}" -o /tmp/key_response.txt "$KEY_LOCATION")
-          echo "Key file HTTP: $KEY_RESPONSE"
-          if [ "$KEY_RESPONSE" != "200" ]; then
-            echo "WARN: Key file not accessible — IndexNow will reject notification"
-            exit 0
+          KEY_OK=false
+          for attempt in 1 2 3; do
+            KEY_RESPONSE=$(curl -sS -w "%{http_code}" -o /tmp/key_response.txt "$KEY_LOCATION")
+            echo "Attempt $attempt: Key file HTTP: $KEY_RESPONSE"
+            if [ "$KEY_RESPONSE" = "200" ]; then
+              KEY_CONTENT=$(cat /tmp/key_response.txt | tr -d '[:space:]')
+              if [ "$KEY_CONTENT" = "$INDEXNOW_KEY" ]; then
+                echo "OK: Key file verified"
+                KEY_OK=true
+                break
+              fi
+            fi
+            echo "Key file not ready, waiting 30s..."
+            sleep 30
+          done
+
+          if [ "$KEY_OK" != "true" ]; then
+            echo "WARN: Key file not accessible after 3 attempts"
+            echo "  IndexNow may still work — search engines will verify keyLocation async"
+            echo "  Proceeding with notification anyway..."
           fi
-          KEY_CONTENT=$(cat /tmp/key_response.txt | tr -d '[:space:]')
-          if [ "$KEY_CONTENT" != "$INDEXNOW_KEY" ]; then
-            echo "WARN: Key file content mismatch — expected $INDEXNOW_KEY, got $KEY_CONTENT"
-            exit 0
-          fi
-          echo "OK: Key file verified"
 
           # Отправляем POST на IndexNow
           # IndexNow принимает запросы на api.indexnow.org (общий эндпоинт)
