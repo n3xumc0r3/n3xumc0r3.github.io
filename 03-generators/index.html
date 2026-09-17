@@ -597,6 +597,21 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.10. Мост в асинхронность: async-генераторы глазами Части III
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.10. Мост в асинхронность: async-генераторы глазами Части III">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#3.9-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1163,6 +1178,21 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.10. Мост в асинхронность: async-генераторы глазами Части III
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.10. Мост в асинхронность: async-генераторы глазами Части III">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#3.9-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1714,61 +1744,164 @@
 </span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">Person</span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>   <span class="c1"># Person(name=&#39;Alice&#39;, age=30, email=&#39;&#39;)</span>
 </span></code></pre></div>
 <p>⚠️ <code>namedtuple</code> неизменяемый и хешируемый — можно использовать как ключ в словаре. Если нужна мутабельность — берите <code>typing.NamedTuple</code> (с аннотациями типов) или <code>dataclass</code>.</p>
+<h2 id="3.10">3.10. Мост в асинхронность: async-генераторы глазами Части III<a class="headerlink" href="#3.10" title="Permanent link">#</a></h2>
+<p>Механика из 3.1–3.4 (протокол, <code>send</code>/<code>throw</code>/<code>close</code>, <code>GeneratorExit</code>) не делится на «синхронную» и «асинхронную» — она одна. Async-генератор (PEP 525) — это тот же генератор, у которого каждый шаг итерации может содержать <code>await</code>. Здесь — взгляд со стороны Части III; интеграция с event loop (producer/consumer, план очистки при отмене) — в 4.8.</p>
+<p><code>async def</code> с <code>yield</code> создаёт <strong>async generator function</strong> — вызов возвращает объект, у которого нет <code>__next__</code>, зато есть <code>__anext__</code>, <code>asend</code>, <code>athrow</code>, <code>aclose</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">import</span> <span class="nn">asyncio</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>    <span class="c1"># между yield можно await — весь смысл PEP 525</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>        <span class="k">yield</span> <span class="n">i</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>    <span class="n">gen</span> <span class="o">=</span> <span class="n">counter</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>                 <span class="c1"># &lt;class &#39;async_generator&#39;&gt; — не generator из 3.1!</span>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a>    <span class="c1"># next(gen)                      # TypeError: &#39;async_generator&#39; object is not an iterator</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">gen</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">())</span>     <span class="c1"># 0 — «next» через await</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">gen</span><span class="o">.</span><span class="n">asend</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>     <span class="c1"># 1 — тройка send/throw/close из 3.4 в async-мире</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a>    <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>              <span class="c1"># хвост доедает async for</span>
+</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                     <span class="c1"># 2</span>
+</span><span id="__span-34-17"><a id="__codelineno-34-17" name="__codelineno-34-17" href="#__codelineno-34-17"></a>
+</span><span id="__span-34-18"><a id="__codelineno-34-18" name="__codelineno-34-18" href="#__codelineno-34-18"></a>    <span class="c1"># await gen.__anext__()          # StopAsyncIteration — асинхронный аналог StopIteration</span>
+</span><span id="__span-34-19"><a id="__codelineno-34-19" name="__codelineno-34-19" href="#__codelineno-34-19"></a>
+</span><span id="__span-34-20"><a id="__codelineno-34-20" name="__codelineno-34-20" href="#__codelineno-34-20"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</span></code></pre></div>
+<p><code>async for</code> — сахар ровно по той же схеме, что <code>for</code> в 3.1: вызвать <code>__aiter__()</code>, затем <code>await obj.__anext__()</code> до <code>StopAsyncIteration</code>. Полная таблица соответствия:</p>
+<table>
+<thead>
+<tr>
+<th>Синхронный (Часть III)</th>
+<th>Асинхронный (здесь и 4.8)</th>
+<th>Что общего</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next(g)</code></td>
+<td><code>await g.__anext__()</code></td>
+<td>шаг итерации</td>
+</tr>
+<tr>
+<td><code>g.send(v)</code></td>
+<td><code>await g.asend(v)</code></td>
+<td>передача значения внутрь</td>
+</tr>
+<tr>
+<td><code>g.throw(E)</code></td>
+<td><code>await g.athrow(E)</code></td>
+<td>вброс исключения</td>
+</tr>
+<tr>
+<td><code>g.close()</code></td>
+<td><code>await g.aclose()</code></td>
+<td><code>GeneratorExit</code> → <code>finally</code></td>
+</tr>
+<tr>
+<td><code>StopIteration</code></td>
+<td><code>StopAsyncIteration</code></td>
+<td>сигнал конца</td>
+</tr>
+<tr>
+<td><code>for x in g</code></td>
+<td><code>async for x in g</code></td>
+<td>сахар над протоколом</td>
+</tr>
+</tbody>
+</table>
+<p>Тройка <code>asend</code>/<code>athrow</code>/<code>aclose</code> работает как зеркальный близнец из 3.4 — включая глотание исключения, вброшенного внутрь <code>try</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">stubborn</span><span class="p">():</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>            <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>                <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>                <span class="k">yield</span> <span class="s2">&quot;тик&quot;</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>                <span class="k">yield</span> <span class="s2">&quot;проглотил ValueError&quot;</span>   <span class="c1"># как в 3.4: athrow ловится генератором</span>
+</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>    <span class="k">finally</span><span class="p">:</span>
+</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cleanup&quot;</span><span class="p">)</span>
+</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>
+</span><span id="__span-35-12"><a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-35-13"><a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>    <span class="n">g</span> <span class="o">=</span> <span class="n">stubborn</span><span class="p">()</span>
+</span><span id="__span-35-14"><a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">g</span><span class="o">.</span><span class="n">asend</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>          <span class="c1"># тик</span>
+</span><span id="__span-35-15"><a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">g</span><span class="o">.</span><span class="n">athrow</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">))</span>   <span class="c1"># проглотил ValueError</span>
+</span><span id="__span-35-16"><a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a>    <span class="k">await</span> <span class="n">g</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>                    <span class="c1"># cleanup — аналог close() из 3.4</span>
+</span><span id="__span-35-17"><a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a>
+</span><span id="__span-35-18"><a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</span></code></pre></div>
+<p><strong>⚠️ StopIteration в async-коде запрещён жёстче, чем в синхронном.</strong> Из 3.1: <code>StopIteration</code>, вылетевшая из генератора, превращается в <code>RuntimeError</code> (PEP 479). Для корутин и async-генераторов то же правило действует с первого дня (PEP 525) — но ошибка выглядит неочевиднее, потому что <code>StopAsyncIteration</code> можно перепутать с <code>StopIteration</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">bad</span><span class="p">():</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>    <span class="k">raise</span> <span class="ne">StopIteration</span>            <span class="c1"># внутри async-функции</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="c1"># await bad() → RuntimeError: coroutine raised StopIteration</span>
+</span></code></pre></div>
+<p>Классическая ловушка: <code>next()</code> на <strong>обычном</strong> итераторе внутри async-функции. <code>next(d)</code> на исчерпанном dict-итераторе бросает <code>StopIteration</code> — и он, всплывая через <code>await</code>, станет <code>RuntimeError</code> без исходного стека. В async-коде исчерпание проверяют через <code>for</code>/защитные конструкции, а не ловят <code>StopIteration</code>.</p>
+<p><strong>Async comprehensions</strong> — генераторные выражения из 3.2 с одним отличием в синтаксисе (<code>async for</code>, опционально <code>await</code> внутри):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>        <span class="c1"># async-комprehension</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>    <span class="n">mapped</span> <span class="o">=</span> <span class="p">[</span><span class="k">await</span> <span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>   <span class="c1"># await на каждом элементе</span>
+</span></code></pre></div>
+<p>Проверки «это корутина или футура?» (<code>asyncio.iscoroutine</code>/<code>isfuture</code>) — в 4.16; отдельного предиката для async-генераторов в asyncio нет — используют <code>inspect.isasyncgen</code>.</p>
+<p>Почему генераторы и async-генераторы живут в разных частях: здесь — протокол (он полностью выводится из 3.1–3.4), в Части IV — поведение под event loop: кто и когда дергает <code>__anext__</code>, что происходит с async-генератором при отмене задачи и закрытии loop, <code>aclosing</code> для гарантированной очистки.</p>
+<p>→ <strong>см. также:</strong> 3.1 — протокол итерации; 3.4 — <code>send</code>/<code>throw</code>/<code>close</code>; 4.8 — async-генераторы под event loop; 4.16 — <code>iscoroutine</code>/<code>isfuture</code>; 5.17 — <code>__aiter__</code>/<code>__anext__</code> среди dunder-методов.</p>
+<hr />
 <h3 id="3.9-benchmarki">Бенчмарки к Части III<a class="headerlink" href="#3.9-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. List comprehension vs generator expression — память.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">import</span> <span class="nn">sys</span>
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">1_000_000</span>
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>   <span class="c1"># ~8 000 056 байт (≈8 MB)</span>
-</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>   <span class="c1"># ~200 байт (только состояние генератора)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>   <span class="c1"># ~8 000 056 байт (≈8 MB)</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>   <span class="c1"># ~200 байт (только состояние генератора)</span>
 </span></code></pre></div>
 Разница в <strong>40 000×</strong> по памяти. Но <code>sum(lst)</code> и <code>sum(gen)</code> дают <strong>одинаковый</strong>
 результат за <strong>сравнимое время</strong> — генератор не быстрее, он просто не требует
 одновременного существования всех элементов.</p>
 <p><strong>2. <code>sum(genexpr)</code> vs <code>sum(listcomp)</code> — скорость.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum(x**2 for x in range(1_000_000))&quot;</span><span class="p">,</span>     <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.68 с — генератор</span>
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum([x**2 for x in range(1_000_000)])&quot;</span><span class="p">,</span>   <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.80 с — listcomp</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum(x**2 for x in range(1_000_000))&quot;</span><span class="p">,</span>     <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.68 с — генератор</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum([x**2 for x in range(1_000_000)])&quot;</span><span class="p">,</span>   <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.80 с — listcomp</span>
 </span></code></pre></div>
 На CPython 3.12+ генератор <strong>на ~15% быстрее</strong> listcomp в <code>sum()</code> — это переворачивает старую рекомендацию (раньше listcomp был быстрее). Причина: в 3.11+ оптимизировали вызовы генераторов (PEP 657, specialized adaptive interpreter), и накладные расходы генератора упали. Генератор также <strong>экономит память</strong> — не аллоцирует список.</p>
 <p><strong>3. <code>itertools.batched</code> (3.12+) vs ручной <code>iter</code>+<code>tuple</code>.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">batched</span><span class="p">,</span> <span class="n">islice</span>
-</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">))</span>
-</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="k">def</span> <span class="nf">via_batched</span><span class="p">():</span>
-</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">batched</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
-</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="k">def</span> <span class="nf">via_manual</span><span class="p">():</span>
-</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">64</span>
-</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_batched</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.55 с</span>
-</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_manual</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.65 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">batched</span><span class="p">,</span> <span class="n">islice</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">))</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="k">def</span> <span class="nf">via_batched</span><span class="p">():</span>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">batched</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="k">def</span> <span class="nf">via_manual</span><span class="p">():</span>
+</span><span id="__span-40-7"><a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">64</span>
+</span><span id="__span-40-8"><a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</span><span id="__span-40-9"><a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_batched</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.55 с</span>
+</span><span id="__span-40-10"><a id="__codelineno-40-10" name="__codelineno-40-10" href="#__codelineno-40-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_manual</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.65 с</span>
 </span></code></pre></div>
 <code>batched</code> быстрее на ~15% и не теряет «хвост» длиной ≠ N (в отличие от трюка с <code>zip</code>).</p>
 <p><strong>4. <code>itertools.pairwise</code> vs ручной сдвиг.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">pairwise</span>
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">))</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="k">def</span> <span class="nf">via_pairwise</span><span class="p">():</span>
-</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="k">def</span> <span class="nf">via_index</span><span class="p">():</span>
-</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
-</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_pairwise</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.42 с</span>
-</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_index</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.55 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">pairwise</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">))</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="k">def</span> <span class="nf">via_pairwise</span><span class="p">():</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="k">def</span> <span class="nf">via_index</span><span class="p">():</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_pairwise</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.42 с</span>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_index</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.55 с</span>
 </span></code></pre></div>
 <code>pairwise</code> на ~25% быстрее — нет индексных проверок на каждой итерации.</p>
 <p><strong>5. Ленивые вычисления — реальная экономия на раннем выходе.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Найти первое число &gt; 100 в последовательности из 10M элементов</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">10_000_000</span>
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="c1"># List comp: построит весь список, потом найдёт</span>
-</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="k">def</span> <span class="nf">eager</span><span class="p">():</span>
-</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>    <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="c1"># Generator: остановится на первом совпадении</span>
-</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="k">def</span> <span class="nf">lazy</span><span class="p">():</span>
-</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>    <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="__span-38-9"><a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-38-10"><a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">eager</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># ≈ 1.8 с</span>
-</span><span id="__span-38-11"><a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># ≈ 0.00002 с (90 000× быстрее)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Найти первое число &gt; 100 в последовательности из 10M элементов</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">10_000_000</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="c1"># List comp: построит весь список, потом найдёт</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="k">def</span> <span class="nf">eager</span><span class="p">():</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>    <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="c1"># Generator: остановится на первом совпадении</span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="k">def</span> <span class="nf">lazy</span><span class="p">():</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a>    <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-42-10"><a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">eager</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># ≈ 1.8 с</span>
+</span><span id="__span-42-11"><a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># ≈ 0.00002 с (90 000× быстрее)</span>
 </span></code></pre></div>
 Это <strong>самый сильный</strong> аргумент за генераторы: при раннем выходе
 (<code>any</code>, <code>all</code>, <code>next</code>, <code>break</code>) они экономят не память, а время.</p>

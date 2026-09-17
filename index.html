@@ -1139,7 +1139,7 @@
 <h2 id="_1">Для кого<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
 <p>Для разработчиков, которые уже пишут на Python и хотят понимать, что происходит под капотом. Не учебник для новичков — предполагается, что вы знаете базовый синтаксис, разбираетесь в классах и хотя бы раз запускали <code>asyncio</code>. Книга будет полезна тем, кто готовится к сложным собеседованиям, пишет библиотеки и фреймворки, занимается оптимизацией или просто хочет выйти за рамки «написал код — заработало». Часть VIII (internals CPython) и приложения A–B полезны преподавателям, ревьюерам и авторам проверяющих систем.</p>
 <h2 id="_2">Объём<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>~18 000 строк, ~870 КБ исходника. 12 глав и 4 приложения, 161 раздел с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
+<p>~19 200 строк, ~1.0 МБ исходника. 12 глав и 4 приложения, 171 раздел с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
 <h2 id="_3">Лицензия<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>Текст — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, код в примерах — <a href="https://github.com/n3xumc0r3/py-underhood/blob/main/CODE_LICENSE">MIT</a>. Бесплатно для чтения и некоммерческого использования. Внести правку можно через PR — <a href="https://github.com/n3xumc0r3/py-underhood/pulls">создайте его прямо на GitHub</a>, открыв любой файл в <code>book/</code> и нажав «Edit».</p>
 <h2 id="_4">Структура по сложности<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
@@ -1214,6 +1214,7 @@
 <li><a href="03-generators/#3.7">3.7. Экономия памяти через ленивые вычисления</a></li>
 <li><a href="03-generators/#3.8">3.8. <code>pairwise</code>, <code>batched</code> (Python 3.10+/3.12+)</a></li>
 <li><a href="03-generators/#3.9">3.9. <code>collections</code> — Counter, defaultdict, deque, ChainMap, OrderedDict, namedtuple</a></li>
+<li><a href="03-generators/#3.10">3.10. Мост в асинхронность: async-генераторы глазами Части III</a></li>
 </ul>
 <h3 id="iv">Часть IV. Асинхронность<a class="headerlink" href="#iv" title="Permanent link">#</a></h3>
 <p><a href="04-async/">Открыть часть →</a></p>
@@ -1264,6 +1265,11 @@
 <li><a href="06-descriptors/#6.3">6.3. <code>__set_name__</code></a></li>
 <li><a href="06-descriptors/#6.4">6.4. <code>@property</code> — что под капотом</a></li>
 <li><a href="06-descriptors/#6.5">6.5. <code>__getattr__</code> vs <code>__getattribute__</code> vs <code>__setattr__</code></a></li>
+<li><a href="06-descriptors/#6.6">6.6. <code>functools.cached_property</code> vs <code>@property</code> + кэш в <code>__dict__</code></a></li>
+<li><a href="06-descriptors/#6.7">6.7. <code>__set_name__</code> на практике: поле ORM</a></li>
+<li><a href="06-descriptors/#6.8">6.8. <code>__init_subclass__</code> + дескрипторы: декларативная регистрация</a></li>
+<li><a href="06-descriptors/#6.9">6.9. Функции — тоже дескрипторы</a></li>
+<li><a href="06-descriptors/#6.10">6.10. Дескрипторы и <code>__slots__</code></a></li>
 </ul>
 <h3 id="vii">Часть VII. Метапрограммирование<a class="headerlink" href="#vii" title="Permanent link">#</a></h3>
 <p><a href="07-metaprogramming/">Открыть часть →</a></p>
@@ -1369,6 +1375,10 @@
 <li><a href="12-linters/#12.4">12.4. <code># doctest: +ELLIPSIS</code></a></li>
 <li><a href="12-linters/#12.5">12.5. Коды flake8/pylint</a></li>
 <li><a href="12-linters/#12.6">12.6. <code>pyproject.toml</code></a></li>
+<li><a href="12-linters/#12.7">12.7. <code>ruff</code> — замена стека flake8 + isort + pyupgrade</a></li>
+<li><a href="12-linters/#12.8">12.8. Гранулярные подавления: <code># noqa: E501</code> vs <code># noqa</code> vs <code># ruff: noqa: E501</code></a></li>
+<li><a href="12-linters/#12.9">12.9. Типовые игноры: <code># type: ignore</code> vs <code># type: ignore[code]</code> vs <code># pyright: ignore</code></a></li>
+<li><a href="12-linters/#12.10">12.10. pre-commit: ruff + mypy в одном конвейере</a></li>
 </ul>
 <h3 id="_6">Приложения<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <ul>

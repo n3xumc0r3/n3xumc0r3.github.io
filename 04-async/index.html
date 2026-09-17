@@ -605,6 +605,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4.13. asyncio.TaskGroup (Python 3.11+) — структурированная конкурентность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4.13-nurseries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Откуда TaskGroup: nurseries, trio, anyio
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1256,6 +1271,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4.13. asyncio.TaskGroup (Python 3.11+) — структурированная конкурентность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4.13-nurseries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Откуда TaskGroup: nurseries, trio, anyio
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1893,6 +1923,80 @@
 </span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>⚠️ <code>except*</code> — новый синтаксис Python 3.11 для обработки <code>ExceptionGroup</code>. Используйте <code>except*</code> (со звёздочкой), а не <code>except</code>.</p>
+<h3 id="4.13-nurseries">Откуда TaskGroup: nurseries, trio, anyio<a class="headerlink" href="#4.13-nurseries" title="Permanent link">#</a></h3>
+<p>«Структурированная конкурентность» — не изобретение asyncio 3.11, а заимствование с точным адресом. Идея: <strong>время жизни задач повторяет структуру кода</strong> — задачи рождаются внутри блока, доживают до его конца и не утекают в фон. Концепцию сформулировал <strong>Nathaniel Smith</strong> в статье <em>«Notes on structured concurrency, or: go statement considered harmful»</em> (2018): <code>go</code>-стейтмент (и <code>create_task</code> до 3.11) — главная ошибка дизайна конкурентности, потому что задача уходит «в никуда» — без родителя, который дождался бы её ошибок.</p>
+<p>Хронология идеи:</p>
+<table>
+<thead>
+<tr>
+<th>Год</th>
+<th>Что</th>
+<th>Кто</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2015</td>
+<td><strong>curio</strong> — первый фреймворк со строгими правилами отмены и «kernel»-подходом</td>
+<td>Dave Beazley</td>
+</tr>
+<tr>
+<td>2017</td>
+<td><strong>trio</strong> — nursery, «зонтик» отмены, <code>MultiError</code> (предок <code>ExceptionGroup</code>)</td>
+<td>Nathaniel Smith</td>
+</tr>
+<tr>
+<td>2019+</td>
+<td><strong>anyio</strong> — API структурированной конкурентности поверх asyncio <strong>и</strong> trio одним кодом</td>
+<td>Alex Grönholm</td>
+</tr>
+<tr>
+<td>2022</td>
+<td><strong>asyncio.TaskGroup</strong> (3.11) — прямой порт nursery в стандартную библиотеку; <code>ExceptionGroup</code>/<code>except*</code> — порт <code>MultiError</code></td>
+<td>CPython</td>
+</tr>
+</tbody>
+</table>
+<p>Соответствие понятий один в один:</p>
+<table>
+<thead>
+<tr>
+<th>Концепция</th>
+<th>trio</th>
+<th>asyncio 3.11+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Блок, владеющий задачами</td>
+<td><code>async with trio.open_nursery() as nursery:</code></td>
+<td><code>async with asyncio.TaskGroup() as tg:</code></td>
+</tr>
+<tr>
+<td>Рождение задачи</td>
+<td><code>nursery.start_soon(fn)</code></td>
+<td><code>tg.create_task(fn)</code></td>
+</tr>
+<tr>
+<td>Ошибка одной → отмена всех</td>
+<td>поведение nursery</td>
+<td>поведение TaskGroup (см. выше)</td>
+</tr>
+<tr>
+<td>Сбор исключений</td>
+<td><code>trio.MultiError</code></td>
+<td><code>ExceptionGroup</code> + <code>except*</code> (5.16)</td>
+</tr>
+<tr>
+<td>Задачи-«владельцы» результата</td>
+<td><code>nursery.start()</code></td>
+<td><code>tg.create_task()</code> + явный <code>await</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>anyio</strong> стоит упомянуть отдельно: до выхода 3.11 он был единственным способом писать структурированный код, работающий и на asyncio, и на trio. На anyio построены Starlette и FastAPI — их <code>anyio.create_task_group()</code> выглядит как TaskGroup, но живёт в обоих мирах. Если код должен портировать между рантаймами — писать на anyio с самого начала.</p>
+<p>Что изменилось в мышлении с 3.11: раньше <code>create_task</code> — это «пускай крутится в фоне, соберём потом», и «потом» означало ручной <code>gather</code> с ручной отменой при ошибке (см. сравнение выше). Теперь вложенность задач в рантайме повторяет вложенность блоков кода — профилировщик, трейс и стек задач читаются как исходник. Одиночные <code>asyncio.create_task()</code> без владельца остаются легальным способом запустить фоновую работу (4.5) — но теперь это осознанное исключение, а не дефолт.</p>
+<p>→ <strong>см. также:</strong> 5.16 — <code>ExceptionGroup</code> и <code>except*</code>; 4.15 — механика отмены, которую TaskGroup запускает автоматически; 4.5 — когда одиночный <code>create_task</code> уместен. Ссылки на curio/trio/anyio и статью-первоисточник — в Приложении D.</p>
 <h2 id="4.14">4.14. <code>asyncio.timeout</code> (Python 3.11+) и <code>asyncio.shield</code><a class="headerlink" href="#4.14" title="Permanent link">#</a></h2>
 <h3 id="4.14-asynciotimeout"><code>asyncio.timeout</code> — современный способ задать таймаут<a class="headerlink" href="#4.14-asynciotimeout" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">import</span> <span class="nn">asyncio</span>

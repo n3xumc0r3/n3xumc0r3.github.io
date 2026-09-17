@@ -660,7 +660,43 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="12.6. pyproject.toml">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.7. ruff — замена стека flake8 + isort + pyupgrade
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.8. Гранулярные подавления: # noqa: E501 vs # noqa vs # ruff: noqa: E501
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.9. Типовые игноры: # type: ignore vs # type: ignore[code] vs # pyright: ignore
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.10. pre-commit: ruff + mypy в одном конвейере
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.10. pre-commit: ruff + mypy в одном конвейере">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -932,7 +968,43 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="12.6. pyproject.toml">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.7. ruff — замена стека flake8 + isort + pyupgrade
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.8. Гранулярные подавления: # noqa: E501 vs # noqa vs # ruff: noqa: E501
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.9. Типовые игноры: # type: ignore vs # type: ignore[code] vs # pyright: ignore
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      12.10. pre-commit: ruff + mypy в одном конвейере
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.10. pre-commit: ruff + mypy в одном конвейере">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1085,54 +1157,363 @@
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="na">tests/*</span><span class="o">:</span><span class="s">S101</span>
 </span></code></pre></div>
 <p>В больших системах — основной способ. <code># noqa</code> оставляют только для точечных исключений.</p>
+<h2 id="12.7">12.7. <code>ruff</code> — замена стека flake8 + isort + pyupgrade<a class="headerlink" href="#12.7" title="Permanent link">#</a></h2>
+<p><code>ruff</code> — линтер на Rust, который к 2025 фактически вытеснил классическую связку flake8 + isort + pyupgrade: одна утилита, один конфиг, один кеш, на 1–2 порядка быстрее (на репозитории в 100K строк — единицы секунд вместо минут у pylint). Бонусом <code>ruff format</code> — drop-in замена black с тем же стилем вывода.</p>
+<p>Принцип ruff: <strong>проверки сторонних плагинов переизобретены внутри</strong>, как правила с собственными префиксами. Старый стек из 4–5 инструментов сворачивается в одну таблицу:</p>
+<table>
+<thead>
+<tr>
+<th>Правила ruff</th>
+<th>Аналог из старого стека</th>
+<th>Что покрывает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E</code>, <code>W</code></td>
+<td>pycodestyle</td>
+<td>стиль PEP 8: E501, W291, E711</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Pyflakes</td>
+<td>логические аномалии: F401, F841, F811</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>isort</td>
+<td>сортировка импортов</td>
+</tr>
+<tr>
+<td><code>UP</code></td>
+<td>pyupgrade</td>
+<td>синтаксис под целевую версию: UP007 → <code>X \| Y</code></td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>flake8-bugbear</td>
+<td>реальные грабли: B006 mutable default</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>pep8-naming</td>
+<td>соглашения об именах</td>
+</tr>
+<tr>
+<td><code>C4</code></td>
+<td>flake8-comprehensions</td>
+<td>избыточные comprehensions</td>
+</tr>
+<tr>
+<td><code>SIM</code></td>
+<td>flake8-simplify</td>
+<td>упрощаемые конструкции</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>flake8-bandit</td>
+<td>security: S101 <code>assert</code>, S301 <code>pickle</code></td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>pydocstyle</td>
+<td>docstring</td>
+</tr>
+<tr>
+<td><code>PL</code></td>
+<td>pylint</td>
+<td>часть архитектурных правил (PLR, PLC, PLW)</td>
+</tr>
+<tr>
+<td><code>RUF</code></td>
+<td>—</td>
+<td>собственные правила, в т.ч. RUF100 — мёртвый <code># noqa</code></td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>ruff
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>ruff<span class="w"> </span>check<span class="w"> </span>.<span class="w">                  </span><span class="c1"># линт (аналог flake8)</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>.<span class="w">            </span><span class="c1"># линт + автопочинка безопасных нарушений</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>--unsafe-fixes<span class="w"> </span>.<span class="w">   </span><span class="c1"># + агрессивные фиксы (перечитать diff!)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>ruff<span class="w"> </span>check<span class="w"> </span>--statistics<span class="w"> </span>.<span class="w">     </span><span class="c1"># сводка нарушений по кодам</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>ruff<span class="w"> </span>format<span class="w"> </span>.<span class="w">                 </span><span class="c1"># форматирование (аналог black)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>.<span class="w">         </span><span class="c1"># CI-режим: только проверить</span>
+</span></code></pre></div>
+<p>Конфигурация — в <code>pyproject.toml</code> (полный пример в 12.6). С версии 0.2.0 правила живут под <code>[tool.ruff.lint]</code> — плоские ключи <code>[tool.ruff]</code> устарели, но ruff молча их принимает, что регулярно путает в старых репозиториях:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">[tool.ruff]</span><span class="w">                       </span><span class="c1"># общие настройки</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">line-length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">120</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">target-version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;py312&quot;</span><span class="w">          </span><span class="c1"># какие UP-правила включать</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">[tool.ruff.lint]</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;UP&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;SIM&quot;</span><span class="p">]</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">extend-select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;C4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;RUF&quot;</span><span class="p">]</span><span class="w">     </span><span class="c1"># добавить к select, не перечисляя заново</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;E501&quot;</span><span class="p">]</span><span class="w">                 </span><span class="c1"># длину строк контролирует форматтер</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">[tool.ruff.lint.per-file-ignores]</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="s2">&quot;tests/*&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S101&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<p><code>target-version = "py312"</code> — ключевой параметр для группы <code>UP</code>: при <code>py39</code> ruff предложит <code>from __future__ import annotations</code>, при <code>py312</code> — <code>type</code>-алиасы и другие новинки. Без этой настройки <code>UP</code> работает по консервативному минимуму.</p>
+<p><strong>Что мигрирует болезненно:</strong></p>
+<ul>
+<li><strong>Кастомные flake8-плагины</strong> — если в проекте свой плагин, ruff его не запустит (расширение через плагины ruff на Rust не появилось). Кастомные проверки выносят в отдельный скрипт или в pylint.</li>
+<li><strong><code># noqa</code> без кодов</strong> — под ruff голый <code># noqa</code> глушит все проверки строки; при включённом RUF100 он же станет источником предупреждений. См. 12.8.</li>
+<li><strong>Правила «в превью»</strong> — свежие правила ruff лежат за флагом <code>[tool.ruff.lint] preview = true</code> и меняются между минорными версиями; в проде лучше не включать.</li>
+</ul>
+<p>→ <strong>см. также:</strong> 12.6 — <code>pyproject.toml</code> для flake8 и ruff рядом; 12.8 — гранулярные подавления под ruff; 12.10 — ruff в pre-commit.</p>
+<h2 id="12.8">12.8. Гранулярные подавления: <code># noqa: E501</code> vs <code># noqa</code> vs <code># ruff: noqa: E501</code><a class="headerlink" href="#12.8" title="Permanent link">#</a></h2>
+<p>В 12.3 показан базовый <code># noqa</code>. На практике у директивы три уровня действия и три разных синтаксиса под flake8/ruff/pylint — и разница между ними регулярно роняет CI.</p>
+<p><strong>Уровень строки</strong> — всё, что без префикса инструмента, действует на строку, где стоит:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">sys</span>  <span class="c1"># noqa: F401         — только F401, остальное на строке проверяется</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">import</span> <span class="nn">os</span>  <span class="c1"># noqa                — глушит ВСЁ на строке (и ruff, и flake8)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># type: ignore           — это для mypy, линтеры её не читают</span>
+</span></code></pre></div>
+<p><strong>Уровень файла</strong> — требует явного префикса инструмента. Голый <code># noqa</code> в начале файла файловое отключение <strong>не</strong> даёт (для flake8/ruff это просто комментарий на первой строке):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># ruff: noqa                    — отключить ruff во всём файле</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># ruff: noqa: E501              — отключить только E501 во всём файле</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># flake8: noqa                  — отключить flake8 во всём файле</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># flake8: noqa: E501            — только E501 для всего файла (flake8 &gt;= 4.0)</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># pylint: skip-file             — отключить pylint во всём файле</span>
+</span></code></pre></div>
+<p><code># ruff: noqa: E501</code> — синтаксис именно ruff: он действует <strong>только</strong> на ruff и не глушит flake8/pylint/mypy. Если файл проверяется двумя линтерами, для ruff-исключений используют его, чтобы не отключать правило и у остальных инструментов.</p>
+<p>Сводная таблица:</p>
+<table>
+<thead>
+<tr>
+<th>Директива</th>
+<th>Уровень</th>
+<th>flake8</th>
+<th>ruff</th>
+<th>pylint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code># noqa</code></td>
+<td>строка</td>
+<td>глушит всё</td>
+<td>глушит всё</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># noqa: E501</code></td>
+<td>строка</td>
+<td>глушит E501</td>
+<td>глушит E501</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># ruff: noqa</code></td>
+<td>файл</td>
+<td>—</td>
+<td>глушит всё</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># ruff: noqa: E501</code></td>
+<td>файл</td>
+<td>—</td>
+<td>глушит E501</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># flake8: noqa</code></td>
+<td>файл</td>
+<td>глушит всё</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># flake8: noqa: E501</code></td>
+<td>файл (≥ 4.0)</td>
+<td>глушит E501</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code># pylint: disable=X</code></td>
+<td>строка/блок</td>
+<td>—</td>
+<td>—</td>
+<td>глушит X</td>
+</tr>
+<tr>
+<td><code># pylint: skip-file</code></td>
+<td>файл</td>
+<td>—</td>
+<td>—</td>
+<td>глушит всё</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RUF100 — линтер самих <code># noqa</code>.</strong> Мёртвые директивы — главный мусор старых репозиториев: правило починили, а <code># noqa</code> остался, и под ним уже спокойно живёт новое нарушение. RUF100 помечает <code># noqa</code>, который ничего не глушит:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span> <span class="nn">json</span>  <span class="c1"># noqa: F401   ← RUF100: F401 не срабатывает, импорт используется</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1"># ruff check --extend-select RUF100 --fix .</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># — за один проход удалит все мёртвые # noqa</span>
+</span></code></pre></div>
+<p>⚠️ Два нюанса RUF100. Во-первых, он считает мёртвым и <code># noqa: CODE</code>, где <code>CODE</code> неизвестен ruff (коды сторонних плагинов, которых нет в ruff) — такие коды надо перечислить в <code>external</code>:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">[tool.ruff.lint]</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">external</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;V101&quot;</span><span class="p">]</span><span class="w">   </span><span class="c1"># коды внешнего плагина, RUF100 их не трогает</span>
+</span></code></pre></div>
+<p>Во-вторых, RUF100 не видит, что <code># noqa</code> глушит pylint-правило — ruff о pylint-директивах ничего не знает.</p>
+<p>Практическое правило: в файле — <code># ruff: noqa: CODE</code> с точным кодом, на строке — <code># noqa: CODE</code> с точным кодом, голый <code># noqa</code> — только как временная мера с комментарием, почему.</p>
+<p>→ <strong>см. также:</strong> 12.3 — базовый <code># noqa</code>; 12.6 — per-file-ignores; 12.9 — подавления для тайпчекеров (там своя система кодов).</p>
+<h2 id="12.9">12.9. Типовые игноры: <code># type: ignore</code> vs <code># type: ignore[code]</code> vs <code># pyright: ignore</code><a class="headerlink" href="#12.9" title="Permanent link">#</a></h2>
+<p>У тайпчекеров — собственная система подавлений, не связанная с <code># noqa</code>. И у каждого чекера свой синтаксис со своими ловушками.</p>
+<p><strong>mypy: голый vs точный игнор.</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">may_return_none</span><span class="p">()</span>  <span class="c1"># type: ignore          — глушит ВСЕ ошибки mypy на строке</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">may_return_none</span><span class="p">()</span>  <span class="c1"># type: ignore[union-attr]  — только ошибку с этим кодом</span>
+</span></code></pre></div>
+<p>Код ошибки виден в выводе mypy в квадратных скобках (<code>--show-error-codes</code>; с версии 0.990 включён по умолчанию):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>error:<span class="w"> </span>Item<span class="w"> </span><span class="s2">&quot;None&quot;</span><span class="w"> </span>of<span class="w"> </span><span class="s2">&quot;str | None&quot;</span><span class="w"> </span>has<span class="w"> </span>no<span class="w"> </span>attribute<span class="w"> </span><span class="s2">&quot;upper&quot;</span><span class="w">  </span><span class="o">[</span>union-attr<span class="o">]</span>
+</span></code></pre></div>
+<p>Список часто встречающихся кодов: <code>attr-defined</code> (атрибут неизвестен), <code>arg-type</code> / <code>assignment</code> (несовпадение типов), <code>union-attr</code> (доступ по Optional), <code>no-untyped-def</code> (нет аннотаций), <code>import-untyped</code> (пакет без типов).</p>
+<p>⚠️ Голый <code># type: ignore</code> — самый опасный вид подавления: он глушит не только ту ошибку, что вы видели, но и <strong>будущие</strong> — после рефакторинга строка может сломаться, а mypy промолчит. Лечение — <code>warn_unused_ignores</code>: точные <code># type: ignore[code]</code> при изменении кода перестают срабатывать и подсвечиваются как неиспользуемые, голые — никогда:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">[tool.mypy]</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">warn_unused_ignores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># точечно, без комментариев в коде:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">disable_error_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;no-untyped-def&quot;</span><span class="p">]</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">[[tool.mypy.overrides]]</span><span class="w">        </span><span class="c1"># для модулей без аннотаций целиком</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;legacy.*&quot;</span><span class="p">]</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">ignore_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span></code></pre></div>
+<p><strong>pyright — своя система кодов.</strong> Директива pyright: <code># pyright: ignore[код]</code>, коды длинные и говорящие: <code>reportAttributeAccessIssue</code>, <code>reportArgumentType</code>, <code>reportGeneralTypeIssues</code>, <code>reportOptionalMemberAccess</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">may_return_none</span><span class="p">()</span>  <span class="c1"># pyright: ignore[reportOptionalMemberAccess]</span>
+</span></code></pre></div>
+<p>Тонкое место — совместимость двух чекеров в одном проекте:</p>
+<ul>
+<li>mypy <strong>не понимает</strong> <code># pyright: ignore</code> — для него это просто хвост комментария, ошибка mypy останется.</li>
+<li>pyright <strong>понимает</strong> <code># type: ignore</code>, но <strong>список кодов в квадратных скобках игнорирует</strong>: <code># type: ignore[union-attr]</code> для pyright эквивалентен голому игнору — подавятся все ошибки строки, не только <code>union-attr</code>.</li>
+<li>Если код проверяется обоими, на одной строке собирается зоопарк: <code>x  # type: ignore[union-attr]  # pyright: ignore[reportOptionalMemberAccess]</code>. Это некрасиво, но это честная цена двойного статического анализа — или аргумент выбрать один чекер.</li>
+<li>Опцию pyright <code>enableTypeIgnoreComments</code> (почтение <code># type: ignore</code>) пометили устаревшей — для pyright предпочтителен собственный <code># pyright: ignore</code>.</li>
+</ul>
+<p><strong>ty (Astral, 2025).</strong> Молодой тайпчекер от авторов ruff идёт тем же путём: <code># ty: ignore[unresolved-attribute]</code> — подавление по имени правила; для совместимости понимает и <code># type: ignore</code>. Экосистема кодов ещё нестабильна — в прод включать с осторожностью.</p>
+<p>Сводная таблица:</p>
+<table>
+<thead>
+<tr>
+<th>Директива</th>
+<th>mypy</th>
+<th>pyright</th>
+<th>ty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code># type: ignore</code></td>
+<td>глушит всё</td>
+<td>глушит всё</td>
+<td>глушит всё</td>
+</tr>
+<tr>
+<td><code># type: ignore[code]</code></td>
+<td>глушит только код</td>
+<td>код игнорирует, глушит всё</td>
+<td>частичная поддержка</td>
+</tr>
+<tr>
+<td><code># pyright: ignore[код]</code></td>
+<td>не понимает</td>
+<td>глушит только код</td>
+<td>не понимает</td>
+</tr>
+<tr>
+<td><code># ty: ignore[rule]</code></td>
+<td>не понимает</td>
+<td>не понимает</td>
+<td>глушит только правило</td>
+</tr>
+</tbody>
+</table>
+<p>Практическое правило: всегда игнорить <strong>с кодом</strong> — это самодокументация и страховка от молчаливой порчи при рефакторинге; голый игнор — последний ресурс, для строк, где ошибка чекера заведомо ложная и код будет переписан.</p>
+<p>→ <strong>см. также:</strong> 12.2 — <code># type: int</code> и история комментариев-типов; Часть VII (7.10) — аннотации как данные; «Бенчмарки» п. 3 — cast() vs type: ignore.</p>
+<h2 id="12.10">12.10. pre-commit: ruff + mypy в одном конвейере<a class="headerlink" href="#12.10" title="Permanent link">#</a></h2>
+<p><a href="https://pre-commit.com">pre-commit</a> — менеджер git-хуков: один файл <code>.pre-commit-config.yaml</code> описывает, что гонять перед каждым коммитом, у каждого хука — изолированное окружение и зафиксированная версия. Стандартный набор питон-проекта: ruff (линт + формат) и mypy.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># .pre-commit-config.yaml</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nt">repos</span><span class="p">:</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/astral-sh/ruff-pre-commit</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.8.4</span><span class="w">                </span><span class="c1"># фиксируйте версию — хук живёт в своём окружении</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff</span><span class="w">               </span><span class="c1"># линт + автопочинка</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">--fix</span><span class="p p-Indicator">]</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff-format</span><span class="w">        </span><span class="c1"># форматирование (после линта)</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span><span class="w">                </span><span class="c1"># mypy — локальным хуком, см. ниже</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypy</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypy</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">        </span><span class="nt">entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.venv/bin/mypy</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">        </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">        </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">python</span><span class="p p-Indicator">]</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">        </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^(src|tests)/</span>
+</span></code></pre></div>
+<p>Три правила, которые экономят часы отладки хуков:</p>
+<p><strong>1. Порядок: линт → формат → типы.</strong> Сначала <code>ruff --fix</code> правит содержимое, потом <code>ruff-format</code> выравнивает, и только затем mypy смотрит на финальный текст. В обратном порядке mypy будет ловить ошибки в строках, которые форматтер через секунду переставит.</p>
+<p><strong>2. mypy — локальным хуком (<code>language: system</code>).</strong> Официальный <code>mirrors-mypy</code> ставит mypy в изолированное окружение, где <strong>нет</strong> зависимостей вашего проекта — и mypy сыплет <code>import-untyped</code> на всё подряд. Локальный хук с <code>entry: .venv/bin/mypy</code> использует реальное окружение проекта со всеми stub-пакетами.</p>
+<p><strong>3. Хуки ruff читают тот же <code>pyproject.toml</code>.</strong> Отдельного конфига для pre-commit не нужно: <code>ruff-pre-commit</code> запускает ruff из корня репозитория, и <code>select</code>/<code>per-file-ignores</code> из 12.6–12.7 работают как обычно.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pre-commit
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>pre-commit<span class="w"> </span>install<span class="w">            </span><span class="c1"># повесить хуки на git commit</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w">    </span><span class="c1"># прогнать всё вручную (первый прогон долгий — качает окружения)</span>
+</span></code></pre></div>
+<p>⚠️ <code>pre-commit</code> гоняет хуки <strong>только на изменённых файлах</strong> (в стадии <code>commit</code>). Разовый прогон по всему репо — <code>pre-commit run --all-files</code>; чтобы хуки не «протухали», его же ставят в CI:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># .github/workflows/lint.yml — фрагмент</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install pre-commit &amp;&amp; pre-commit run --all-files</span>
+</span></code></pre></div>
+<p>Альтернатива без своего CI-шага — <a href="https://pre-commit.ci">pre-commit.ci</a>: сервис сам гоняет хуки на PR и сам обновляет <code>rev</code> хуков автопокерами.</p>
+<p>Что остаётся за кадром: pre-commit защищает <strong>коммиты</strong>, но не историю — хук можно обойти <code>git commit --no-verify</code>. Для гарантий CI-прогон обязателен: хуки ускоряют обратную связь, CI — единственный источник истины.</p>
+<p>→ <strong>см. также:</strong> 12.7 — конфиг ruff; 12.9 — коды mypy; 12.6 — общий <code>pyproject.toml</code>.</p>
 <hr />
 <h3 id="12.6-benchmarki">Бенчмарки к Части XII<a class="headerlink" href="#12.6-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. <code>ruff</code> vs <code>flake8</code> vs <code>pylint</code> — скорость проверки.</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># На репозитории ~500 .py файлов, ~100K строк:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># flake8:    ≈ 8.5 с</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># pylint:    ≈ 45.0 с</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># ruff:      ≈ 0.06 с  (140× быстрее flake8, 750× быстрее pylint)</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># ruff --fix:≈ 0.12 с (с применением автофиксов)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># На репозитории ~500 .py файлов, ~100K строк:</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># flake8:    ≈ 8.5 с</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># pylint:    ≈ 45.0 с</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># ruff:      ≈ 0.06 с  (140× быстрее flake8, 750× быстрее pylint)</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># ruff --fix:≈ 0.12 с (с применением автофиксов)</span>
 </span></code></pre></div>
 <code>ruff</code> написан на Rust, парсит через <code>rustpython-parser</code>, без Python-импортов.
 На CI для проекта среднего размера экономит <strong>минуты на каждом пуше</strong>.
 Pylint медленнее, но ловит больше семантических проблем (напр. неиспользуемые
 импорты в условных ветках, недостижимый код).</p>
 <p><strong>2. <code>mypy --strict</code> vs <code>mypy</code> (по умолчанию) — цена строгости.</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># На ~500 файлов:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># mypy:                  ≈ 12 с</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># mypy --strict:         ≈ 14 с   (+17%)</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># mypy --strict --fast:  ≈ 13 с</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># На ~500 файлов:</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># mypy:                  ≈ 12 с</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="c1"># mypy --strict:         ≈ 14 с   (+17%)</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># mypy --strict --fast:  ≈ 13 с</span>
 </span></code></pre></div>
 <code>--strict</code> добавляет ~15–20% к времени проверки, но ловит на ~30% больше
 проблем на этапе разработки (а не в рантайме). На CI — обязательно.</p>
 <p><strong>3. <code># type: ignore</code> vs <code># pyright: ignore</code> vs <code>cast()</code>.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># 1. type: ignore — подавляет все ошибки на строке (нечётко)</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">x</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 2. cast() — явно сообщаем тип, mypy проверяет остальное</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># 3. pyright: ignore — специфично для pyright, с причиной</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">x</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># 1. type: ignore — подавляет все ошибки на строке (нечётко)</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">x</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># 2. cast() — явно сообщаем тип, mypy проверяет остальное</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># 3. pyright: ignore — специфично для pyright, с причиной</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">x</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># pyright: ignore[reportUnknownArgumentType]</span>
 </span></code></pre></div>
 Производительности не касается — это про <strong>точность статического анализа</strong>.
 Правило: <code>cast()</code> для явных сужений типа, <code># type: ignore[code]</code> для
 подавления конкретной ошибки, голый <code># type: ignore</code> — последний ресурс.</p>
 <p><strong>4. doctest — стоимость запуска.</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># На модуле со 100 doctest-тестами:</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>python<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>-v<span class="w"> </span>module.py<span class="w">                    </span><span class="c1"># ≈ 0.3 с</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>--doctest-modules<span class="w"> </span>module.py<span class="w">      </span><span class="c1"># ≈ 0.5 с (накладные pytest)</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Сравнение с обычным unit-тестом:</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w">   </span><span class="c1"># 100 тестов            # ≈ 1.2 с</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># На модуле со 100 doctest-тестами:</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>python<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>-v<span class="w"> </span>module.py<span class="w">                    </span><span class="c1"># ≈ 0.3 с</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>--doctest-modules<span class="w"> </span>module.py<span class="w">      </span><span class="c1"># ≈ 0.5 с (накладные pytest)</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># Сравнение с обычным unit-тестом:</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w">   </span><span class="c1"># 100 тестов            # ≈ 1.2 с</span>
 </span></code></pre></div>
 doctest <strong>быстрее</strong> unit-тестов (~3× на тест) — нет фикстур, setup/teardown.
 Но он <strong>не заменяет</strong> полноценные тесты: нет параметризации, нет <code>setUp</code>/<code>tearDown</code>,
 сложно тестировать исключения и побочные эффекты. Идеален для проверки
 <strong>примеров в docstring</strong> — и только.</p>
 <p><strong>5. <code># noqa</code> vs <code># pylint: disable</code> vs <code>per-file-ignores</code> — что выбирать.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># noqa — самый дешёвый: flake8/ruff читают комментарии построчно, O(1)</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># pylint: disable — дороже: pylint строит AST и привязывает директивы к узлам</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1"># per-file-ignores в pyproject.toml — самый быстрый: конфиг читается один раз</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># noqa — самый дешёвый: flake8/ruff читают комментарии построчно, O(1)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># pylint: disable — дороже: pylint строит AST и привязывает директивы к узлам</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># per-file-ignores в pyproject.toml — самый быстрый: конфиг читается один раз</span>
 </span></code></pre></div>
 Производительность — не главное. Главное — <strong>поддерживаемость</strong>:</p>
 <ul>

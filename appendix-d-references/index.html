@@ -742,16 +742,52 @@
         <li class="md-nav__item">
   <a href="#d5" class="md-nav__link">
     <span class="md-ellipsis">
-      D.5. Что закрывает каждую тему
+      D.5. По асинхронности и структурированной конкурентности
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#d6" class="md-nav__link">
+  <a href="#d6-code-golf" class="md-nav__link">
     <span class="md-ellipsis">
-      D.6. Если выбирать одну книгу
+      D.6. Code golf: платформы и диалекты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d7-pyjails" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.7. Pyjails и демо песочниц
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d8" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.8. Блоги для регулярного чтения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d9" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.9. Что закрывает каждую тему
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d10" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.10. Если выбирать одну книгу
     </span>
   </a>
   
@@ -838,16 +874,52 @@
         <li class="md-nav__item">
   <a href="#d5" class="md-nav__link">
     <span class="md-ellipsis">
-      D.5. Что закрывает каждую тему
+      D.5. По асинхронности и структурированной конкурентности
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#d6" class="md-nav__link">
+  <a href="#d6-code-golf" class="md-nav__link">
     <span class="md-ellipsis">
-      D.6. Если выбирать одну книгу
+      D.6. Code golf: платформы и диалекты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d7-pyjails" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.7. Pyjails и демо песочниц
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d8" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.8. Блоги для регулярного чтения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d9" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.9. Что закрывает каждую тему
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d10" class="md-nav__link">
+    <span class="md-ellipsis">
+      D.10. Если выбирать одну книгу
     </span>
   </a>
   
@@ -904,6 +976,9 @@
 <li><code>Python/ceval.c</code> — главный цикл интерпретатора</li>
 <li><code>Objects/unicodeobject.c</code> — интернация строк</li>
 <li><code>Objects/longobject.c</code> — кэш малых чисел</li>
+<li><code>Objects/object.c</code> — реализация <code>__eq__</code>/<code>__hash__</code>/<code>__repr__</code> для <code>object</code> — база для понимания дескрипторов и <code>__class__</code> lookup (Часть VI)</li>
+<li><code>Objects/descrobject.c</code> — реализация дескрипторов (<code>property</code>, <code>classmethod</code>, <code>staticmethod</code>)</li>
+<li><code>Objects/funcobject.c</code> — <code>function.__get__</code>: почему методы привязываются (6.9)</li>
 <li><code>Python/bltinmodule.c</code> — <code>globals</code>, <code>locals</code>, <code>__import__</code></li>
 <li><code>Python/frame.c</code> — реализация <code>PyFrame_LocalsToFast</code></li>
 </ul>
@@ -961,8 +1036,35 @@
 <li><strong>Документация Pylint</strong>: https://pylint.readthedocs.io/</li>
 <li><strong>Документация mypy</strong>: https://mypy.readthedocs.io/</li>
 <li><strong>OWASP — Command Injection</strong> (про <code>shell=True</code> в subprocess): https://owasp.org/www-community/attacks/Command_Injection</li>
+<li><strong>Документация pre-commit</strong>: https://pre-commit.com/ — конфиг и хуки из 12.10.</li>
 </ol>
-<h2 id="d5">D.5. Что закрывает каждую тему<a class="headerlink" href="#d5" title="Permanent link">#</a></h2>
+<h2 id="d5">D.5. По асинхронности и структурированной конкурентности<a class="headerlink" href="#d5" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>Nathaniel Smith.</strong> <em>Notes on structured concurrency, or: go statement considered harmful</em> (2018) — статья-первоисточник концепции nursery: https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/</li>
+<li><strong>trio</strong> — фреймворк, где nursery придуман и доведён до предела: https://github.com/python-trio/trio</li>
+<li><strong>curio</strong> — предшественник trio, первый фреймворк со строгими правилами отмены: https://github.com/dabeaz/curio</li>
+<li><strong>anyio</strong> — единый API поверх asyncio и trio; на нём стоят Starlette и FastAPI: https://github.com/agronholm/anyio</li>
+</ol>
+<h2 id="d6-code-golf">D.6. Code golf: платформы и диалекты<a class="headerlink" href="#d6-code-golf" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>code.golf</strong> — активный сайт с таблицей лидеров и разборами решений на Python 3: https://code.golf/</li>
+<li><strong>Tips for golfing in Python</strong> — коллективный тред-шпаргалка на codegolf.SE (аналог C.19, но живой и с обсуждением): https://codegolf.stackexchange.com/questions/54/tips-for-golfing-in-python</li>
+<li><strong>Pyth</strong> — отдельный язык, компилируемый в Python, специально для гольфа: https://github.com/isaacg1/pyth</li>
+</ol>
+<h2 id="d7-pyjails">D.7. Pyjails и демо песочниц<a class="headerlink" href="#d7-pyjails" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>Ned Batchelder.</strong> <em>Tarpit</em> (PyCon 2012) — каноническая демонстрация того, что «песочница» на CPython невозможна в принципе; 10 минут, делающие Приложение B этически осмысленным: http://nedbatchelder.com/blog/201211/tarpit_at_pycon_2012.html</li>
+<li><strong>Сборник pyjails</strong> — репозитории с разборами побегов из python-песочниц (активное CTF-направление; по запросу «pyjail» на GitHub — десятки таких): https://github.com/saladandonionfries/pyjails</li>
+</ol>
+<h2 id="d8">D.8. Блоги для регулярного чтения<a class="headerlink" href="#d8" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>realpython.com</strong> — крупные туториалы с реальной глубиной, часто с бенчмарками.</li>
+<li><strong>snarky.ca</strong> — Brett Cannon, бывший core-dev CPython: разборы PEP и internals по первоисточникам.</li>
+<li><strong>treyhunner.com</strong> — Trey Hunner: итераторы, генераторы, comprehensions — идеальный фон к Части III.</li>
+<li><strong>hynek.me</strong> — Hynek Schlawack: async, attrs, структурная обработка данных, production-практики.</li>
+<li><strong>bitecode.dev</strong> — серия «Python tricks you didn't know about» — ближе всего по формату к Части I этого конспекта.</li>
+</ol>
+<h2 id="d9">D.9. Что закрывает каждую тему<a class="headerlink" href="#d9" title="Permanent link">#</a></h2>
 <table>
 <thead>
 <tr>
@@ -1245,7 +1347,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="d6">D.6. Если выбирать одну книгу<a class="headerlink" href="#d6" title="Permanent link">#</a></h2>
+<h2 id="d10">D.10. Если выбирать одну книгу<a class="headerlink" href="#d10" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>Anthony Shaw, <em>CPython Internals</em></strong> (№9) — лучшее по internals: интернация, кэш чисел, фреймы, байт-код, <code>compile</code>, AST, объектная модель. Обфускацию и системы плагиата не покрывает.</li>
 <li><strong>Effective Python</strong> Бретта Слаткина (№21) — практический взгляд «грабли + антипаттерны». Многие «грабли», которые превращены в оружие, у него разобраны как «что не надо делать».</li>
