@@ -1098,7 +1098,7 @@
 <li><code>+NUMBER</code> — численные сравнения с допуском.</li>
 </ul>
 <h2 id="12.5">12.5. Коды flake8/pylint<a class="headerlink" href="#12.5" title="Permanent link">#</a></h2>
-<p>В больших проектах линтеры настраиваются в <code>pyproject.toml</code> или <code>.flake8</code> через <code>ignore = ["E501", "F401"]</code>. Если в учебной системе такого файла нет — точечное <code># noqa: [код]</code> в строке.</p>
+<p>В больших проектах линтеры настраиваются в <code>pyproject.toml</code> или <code>.flake8</code> через <code>ignore = ["E501", "F401"]</code>. Если конфига нет — точечное <code># noqa: [код]</code> в строке.</p>
 <h3 id="12.5-gruppa">Группа F (Pyflakes) — логические аномалии<a class="headerlink" href="#12.5-gruppa" title="Permanent link">#</a></h3>
 <ul>
 <li><strong>F401 — Module imported but unused</strong>: <code>python import os, math, sys, json  # noqa: F401</code></li>
@@ -1128,6 +1128,13 @@
 <li><strong><code>pylint: disable=eval-used</code> (W0122)</strong> — использование <code>eval</code>.</li>
 <li><strong><code>pylint: disable=too-few-public-methods</code> (R0903)</strong> — слишком мало публичных методов.</li>
 <li><strong><code>pylint: disable=import-outside-toplevel</code> (C0415)</strong> — импорт вне верхнего уровня.</li>
+</ul>
+<p>Выше — только ходовые коды, а не реестры. Полные списки: у flake8 — сводные таблицы кодов Pyflakes и pycodestyle, у pylint — сотни сообщений с поиском по группам, у ruff (см. 12.7) — все коды плагинов плюс собственные. Где искать:</p>
+<ul>
+<li><a href="https://flake8.pycqa.org/en/latest/user/error-codes.html">коды flake8/Pyflakes/pycodestyle</a></li>
+<li><a href="https://pycodestyle.readthedocs.io/en/latest/intro.html">коды pycodestyle (E/W)</a></li>
+<li><a href="https://pylint.readthedocs.io/en/stable/user_guide/messages/messages_overview.html">все сообщения pylint</a></li>
+<li><a href="https://docs.astral.sh/ruff/rules/">все правила ruff</a></li>
 </ul>
 <h2 id="12.6">12.6. <code>pyproject.toml</code><a class="headerlink" href="#12.6" title="Permanent link">#</a></h2>
 <p>Современный способ настроить линтер — через <code>pyproject.toml</code> (PEP 518):</p>
