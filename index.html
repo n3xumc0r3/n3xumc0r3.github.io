@@ -488,6 +488,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xiii-py-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xiv-cpython-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XIV. Не только CPython: кто ещё исполняет Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -773,6 +791,46 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="13-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="14-implementations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -791,10 +849,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
         
           
-          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -805,8 +863,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_14">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1084,6 +1142,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xiii-py-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xiv-cpython-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XIV. Не только CPython: кто ещё исполняет Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -1155,6 +1231,8 @@
 <p><a href="10-introspection/">Часть X</a> — интроспекция окружения</p>
 <p><a href="11-stdlib/">Часть XI</a> — полезные модули stdlib</p>
 <p><a href="12-linters/">Часть XII</a> — линтеры, директивы</p>
+<p><a href="13-bytecode-vm/">Часть XIII</a> — от .py к байт-коду: компиляция и виртуальная машина</p>
+<p><a href="14-implementations/">Часть XIV</a> — не только CPython: реализации и REPL-ы</p>
 <p><a href="appendix-a-plagiarism/">Приложение A</a> — системы обнаружения плагиата</p>
 <p><a href="appendix-b-code-checkers/">Приложение B</a> — взаимодействие с системами проверки кода</p>
 <p><a href="appendix-c-code-golf/">Приложение C</a> — code golf</p>
@@ -1379,6 +1457,23 @@
 <li><a href="12-linters/#12.8">12.8. Гранулярные подавления: <code># noqa: E501</code> vs <code># noqa</code> vs <code># ruff: noqa: E501</code></a></li>
 <li><a href="12-linters/#12.9">12.9. Типовые игноры: <code># type: ignore</code> vs <code># type: ignore[code]</code> vs <code># pyright: ignore</code></a></li>
 <li><a href="12-linters/#12.10">12.10. pre-commit: ruff + mypy в одном конвейере</a></li>
+</ul>
+<h3 id="xiii-py-">Часть XIII. От .py к байт-коду: компиляция и виртуальная машина<a class="headerlink" href="#xiii-py-" title="Permanent link">#</a></h3>
+<p><a href="13-bytecode-vm/">Открыть часть →</a></p>
+<ul>
+<li><a href="13-bytecode-vm/#13.1">13.1. Почему Python и компилируется, и интерпретируется</a></li>
+<li><a href="13-bytecode-vm/#13.2">13.2. Импорт и .pyc: формат, кэширование, инвалидация</a></li>
+<li><a href="13-bytecode-vm/#13.3">13.3. Пайплайн компилятора: токены → PEG → AST → байт-код</a></li>
+<li><a href="13-bytecode-vm/#13.4">13.4. Стековая машина: как читается байт-код</a></li>
+<li><a href="13-bytecode-vm/#13.5">13.5. Виртуальная машина: eval loop, специализация, GIL, JIT</a></li>
+</ul>
+<h3 id="xiv-cpython-python">Часть XIV. Не только CPython: кто ещё исполняет Python<a class="headerlink" href="#xiv-cpython-python" title="Permanent link">#</a></h3>
+<p><a href="14-implementations/">Открыть часть →</a></p>
+<ul>
+<li><a href="14-implementations/#14.1">14.1. Язык против реализации: контракт Python</a></li>
+<li><a href="14-implementations/#14.2">14.2. Альтернативные реализации: кто, на чём, зачем</a></li>
+<li><a href="14-implementations/#14.3">14.3. Не реализации: Numba, Cython и граница «тот же язык»</a></li>
+<li><a href="14-implementations/#14.4">14.4. REPL поверх REPL: IPython, Jupyter и соседи</a></li>
 </ul>
 <h3 id="_6">Приложения<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <ul>
