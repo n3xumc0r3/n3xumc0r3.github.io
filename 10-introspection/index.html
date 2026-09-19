@@ -1049,6 +1049,21 @@
 <td>Подробный лог импорта каждого модуля в stderr.</td>
 </tr>
 <tr>
+<td><code>debug</code></td>
+<td><code>-d</code></td>
+<td>Отладочный вывод парсера. С PEG-парсером (3.9+) практически ничего не печатает — legacy-поле.</td>
+</tr>
+<tr>
+<td><code>inspect</code> / <code>interactive</code></td>
+<td><code>-i</code></td>
+<td>Оба поля взводятся флагом <code>-i</code>: интерактивная сессия после выполнения скрипта/stdin (проверено: даже когда stdin — пайп).</td>
+</tr>
+<tr>
+<td><code>quiet</code></td>
+<td><code>-q</code></td>
+<td>REPL без баннера (версия/копирайт).</td>
+</tr>
+<tr>
 <td><code>bytes_warning</code></td>
 <td><code>-b</code>, <code>-bb</code></td>
 <td>Предупреждение/ошибка при сравнении <code>bytes</code> и <code>str</code>.</td>
@@ -1108,6 +1123,19 @@
 <li><code>-X int_max_str_digits=N</code> — лимит на длину int-строки</li>
 <li><code>-X utf8</code> / <code>-X utf8=1</code> — UTF-8 Mode</li>
 <li><code>-X frozen_modules=on/off</code> — использовать ли замороженные модули</li>
+<li><code>-X pycache_prefix=PATH</code> — альтернативный корень <code>__pycache__</code> (эквивалент <code>PYTHONPYCACHEPREFIX</code>)</li>
+<li><code>-X no_debug_ranges</code> — вырезать точные позиции (колонки/концы) из traceback — короче сообщения (эквивалент <code>PYTHONNODEBUGRANGES</code>)</li>
+<li><code>-X warn_default_encoding</code> — <code>EncodingWarning</code> на каждый <code>open()</code> без явного <code>encoding</code> (PEP 597, эквивалент <code>PYTHONWARNDEFAULTENCODING</code>)</li>
+<li><code>-X perf</code> — поддержка Linux perf-профайлера (3.12+, <code>PYTHONPERFSUPPORT</code>)</li>
+<li><code>-X perf_jit</code> — то же + DWARF-аннотации, чтобы perf показывал Python-вызовы через JIT (3.13+, <code>PYTHON_PERF_JIT_SUPPORT</code>)</li>
+<li><code>-X importtime=2</code> — дополнительно помечать уже загруженные модули словом <code>cached</code> в логе импортов (3.13+)</li>
+<li><code>-X cpu_count=N</code> — подменить <code>os.cpu_count()</code> / <code>os.process_cpu_count()</code> / <code>multiprocessing.cpu_count()</code> (3.13+, эквивалент <code>PYTHON_CPU_COUNT</code>)</li>
+<li><code>-X gil=0/1</code> — принудительно включить/выключить GIL в free-threaded сборках (3.13+; env <code>PYTHON_GIL</code>)</li>
+<li><code>-X presite=package.module</code> — импортировать модуль до <code>site</code> и до появления <code>__main__</code> (3.13+, env <code>PYTHON_PRESITE</code>)</li>
+<li><code>-X showrefcount</code> — печатать суммарный refcount и число блоков памяти при выходе; только debug-сборки (<code>--with-pydebug</code>)</li>
+<li><code>-X disable_remote_debug</code> — выключить remote-отладку PEP 768 (подключение кода к работающему процессу) (3.14+, env <code>PYTHON_DISABLE_REMOTE_DEBUG</code>)</li>
+<li>3.14+: <code>-X thread_inherit_context=0/1</code>, <code>-X context_aware_warnings=0/1</code>, <code>-X tlbc=0/1</code> — наследование contextvars в потоках, предупреждения с учётом контекста, счётчики tier-2 байт-кода (экспериментальные)</li>
+<li>историческое: <code>-X showalloccount</code> удалена в 3.9, <code>-X oldparser</code> — в 3.10 (сейчас просто игнорируются)</li>
 <li>неизвестные <code>-X</code> игнорируются молча (<code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code>)</li>
 </ul>
 <h2 id="10.3">10.3. <code>os.environ</code> и <code>PYTHON*</code> переменные<a class="headerlink" href="#10.3" title="Permanent link">#</a></h2>
@@ -1160,6 +1188,30 @@
 <li><code>PYTHONINTMAXSTRDIGITS</code> — лимит int↔str (эквивалент <code>-X int_max_str_digits</code>).</li>
 <li><code>PYTHON_GIL</code> — 0/1 для free-threaded сборок (3.13+).</li>
 <li><code>PYTHONPLATLIBDIR</code> — имя каталога платформенных библиотек.</li>
+<li><code>PYTHONPROFILEIMPORTTIME</code> — эквивалент <code>-X importtime</code>.</li>
+<li><code>PYTHONDEVMODE</code> — эквивалент <code>-X dev</code> (Development Mode).</li>
+<li><code>PYTHON_FROZEN_MODULES</code> — эквивалент <code>-X frozen_modules=on/off</code>.</li>
+<li><code>PYTHONMALLOCSTATS</code> — печатать статистику pymalloc в stderr при выходе (работает в паре с <code>PYTHONMALLOC</code>).</li>
+<li><code>PYTHONWARNDEFAULTENCODING</code> — эквивалент <code>-X warn_default_encoding</code>: <code>EncodingWarning</code> на <code>open()</code> без явного <code>encoding</code> (PEP 597; см. 9.1).</li>
+<li><code>PYTHONUSERBASE</code> — база user-site вместо <code>~/.local</code> (см. 11.10).</li>
+<li><code>PYTHONPERFSUPPORT</code> / <code>PYTHON_PERF_JIT_SUPPORT</code> — эквиваленты <code>-X perf</code> / <code>-X perf_jit</code> (профилирование Linux perf).</li>
+<li><code>PYTHONCASEOK</code> — только Windows: импортировать модули без учёта регистра имени файла (на POSIX регистр всегда значим).</li>
+<li><code>PYTHONEXECUTABLE</code> — только macOS/framework-сборки: подменить значение <code>sys.executable</code> при старте.</li>
+<li><code>PYTHONLEGACYWINDOWSFSENCODING</code> / <code>PYTHONLEGACYWINDOWSSTDIO</code> — вернуть legacy-кодировки Windows: mbcs для ФС и старый консольный I/O вместо UTF-8 (до 3.6 было так).</li>
+<li><code>PYTHONDUMPREFS</code> / <code>PYTHONDUMPREFSFILE</code> — при выходе выгрузить все живые объекты с refcount (в stderr или файл); только debug-сборки (<code>--with-pydebug</code>).</li>
+</ul>
+<p><strong>Только 3.13+/3.14+</strong> (проверяйте <code>whatsnew</code> своего релиза):</p>
+<ul>
+<li><code>PYTHON_CPU_COUNT</code> — эквивалент <code>-X cpu_count=N</code>: подмена <code>os.cpu_count()</code>.</li>
+<li><code>PYTHON_HISTORY</code> — путь к файлу истории REPL (по умолчанию <code>~/.python_history</code>).</li>
+<li><code>PYTHON_COLORS</code> — управление цветами сообщений/трейсбеков (авто/always/never).</li>
+<li><code>PYTHON_BASIC_REPL</code> — <code>1</code> возвращает до-3.13 REPL без <code>_pyrepl</code> (см. 14.4).</li>
+<li><code>PYTHON_PRESITE</code> — эквивалент <code>-X presite=package.module</code>.</li>
+<li><code>PYTHON_JIT</code> — 0/1 для экспериментального JIT (работает только если интерпретатор собран с <code>--enable-experimental-jit</code>).</li>
+<li><code>PYTHON_TLBC</code> — счётчики tier-2 байт-кода (микро-телеметрия специализированных инструкций, 3.14+).</li>
+<li><code>PYTHON_THREAD_INHERIT_CONTEXT</code> — наследование <code>contextvars</code> в потоках (3.14+).</li>
+<li><code>PYTHON_CONTEXT_AWARE_WARNINGS</code> — предупреждения с учётом contextvar-контекста (3.14+).</li>
+<li><code>PYTHON_DISABLE_REMOTE_DEBUG</code> — эквивалент <code>-X disable_remote_debug</code> (PEP 768, 3.14+).</li>
 </ul>
 <p>⚠️ <strong>Все <code>PYTHON*</code> переменные игнорируются</strong> при флаге <code>-E</code> или <code>-I</code>.</p>
 <h2 id="10.4">10.4. <code>sys.implementation</code>, <code>platform.*</code><a class="headerlink" href="#10.4" title="Permanent link">#</a></h2>
