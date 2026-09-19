@@ -515,6 +515,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xvi-import-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XVI. Механика импорта: от import x до исполняемого модуля
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -860,6 +869,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="16-import/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVI. Механика импорта: от import x до исполняемого модуля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -878,10 +907,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
         
           
-          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -892,8 +921,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_17">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1198,6 +1227,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xvi-import-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XVI. Механика импорта: от import x до исполняемого модуля
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -1253,7 +1291,7 @@
 <h2 id="_1">Для кого<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
 <p>Для разработчиков, которые уже пишут на Python и хотят понимать, что происходит под капотом. Не учебник для новичков — предполагается, что вы знаете базовый синтаксис, разбираетесь в классах и хотя бы раз запускали <code>asyncio</code>. Книга будет полезна тем, кто готовится к сложным собеседованиям, пишет библиотеки и фреймворки, занимается оптимизацией или просто хочет выйти за рамки «написал код — заработало». Часть VIII (internals CPython) и приложения A–B полезны преподавателям, ревьюерам и авторам проверяющих систем.</p>
 <h2 id="_2">Объём<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>~20 800 строк, ~1.1 МБ исходника. 15 частей и 4 приложения, 191 раздел с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
+<p>~21 500 строк, ~1.2 МБ исходника. 16 частей и 4 приложения, 202 раздела с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
 <h2 id="_3">Лицензия<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>Текст — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, код в примерах — <a href="https://github.com/n3xumc0r3/py-underhood/blob/main/CODE_LICENSE">MIT</a>. Бесплатно для чтения и некоммерческого использования. Внести правку можно через PR — <a href="https://github.com/n3xumc0r3/py-underhood/pulls">создайте его прямо на GitHub</a>, открыв любой файл в <code>book/</code> и нажав «Edit».</p>
 <h2 id="_4">Структура по сложности<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
@@ -1272,6 +1310,7 @@
 <p><a href="13-bytecode-vm/">Часть XIII</a> — от .py к байт-коду: компиляция и виртуальная машина</p>
 <p><a href="14-implementations/">Часть XIV</a> — не только CPython: реализации и REPL-ы</p>
 <p><a href="15-testing/">Часть XV</a> — тестирование: assert, unittest, mock, doctest, pytest, coverage, sys.monitoring</p>
+<p><a href="16-import/">Часть XVI</a> — механика импорта: finders, spec, namespace-пакеты, хуки</p>
 <p><a href="appendix-a-plagiarism/">Приложение A</a> — системы обнаружения плагиата</p>
 <p><a href="appendix-b-code-checkers/">Приложение B</a> — взаимодействие с системами проверки кода</p>
 <p><a href="appendix-c-code-golf/">Приложение C</a> — code golf</p>
@@ -1528,6 +1567,21 @@
 <li><a href="15-testing/#15.9">15.9. <code>sys.monitoring</code> (PEP 669, 3.12+): один API для инструментов</a></li>
 <li><a href="15-testing/#15.10">15.10. Тесты самого CPython: <code>python -m test</code></a></li>
 <li><a href="15-testing/#15.11">15.11. Тестовые режимы интерпретатора: шпаргалка</a></li>
+</ul>
+<h3 id="xvi-import-x">Часть XVI. Механика импорта: от <code>import x</code> до исполняемого модуля<a class="headerlink" href="#xvi-import-x" title="Permanent link">#</a></h3>
+<p><a href="16-import/">Открыть часть →</a></p>
+<ul>
+<li><a href="16-import/#16.1">16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules</a></li>
+<li><a href="16-import/#16.2">16.2. <code>sys.path</code>: кто, что и в каком порядке кладёт</a></li>
+<li><a href="16-import/#16.3">16.3. Finders и path hooks: как интерпретатор ищет модуль</a></li>
+<li><a href="16-import/#16.4">16.4. ModuleSpec и Loader: контракт импорта</a></li>
+<li><a href="16-import/#16.5">16.5. Namespace-пакеты (PEP 420): пакет без <code>__init__.py</code></a></li>
+<li><a href="16-import/#16.6">16.6. Круговые импорты: анатомия и лечение</a></li>
+<li><a href="16-import/#16.7">16.7. Ленивый импорт: PEP 562 и LazyLoader</a></li>
+<li><a href="16-import/#16.8">16.8. <code>reload</code>: механика перезагрузки и её границы</a></li>
+<li><a href="16-import/#16.9">16.9. Особые виды модулей: builtin, frozen, extension, zipimport</a></li>
+<li><a href="16-import/#16.10">16.10. Кастомные импорт-хуки: от логгера до блокировщика</a></li>
+<li><a href="16-import/#16.11">16.11. Диагностика старта: <code>-X importtime</code></a></li>
 </ul>
 <h3 id="_6">Приложения<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <ul>

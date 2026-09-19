@@ -1,0 +1,2058 @@
+<!--
+  Material for MkDocs — main.html override
+  Adds Open Graph / Twitter Card meta + JSON-LD structured data on every page.
+  Inherited from the base material theme; only the `htmltitle` and `extrahead`
+  blocks are customized.
+-->
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+      
+      
+        <meta name="author" content="@n3xumc0r3">
+      
+      
+        <link rel="canonical" href="https://n3xumc0r3.github.io/16-import/">
+      
+      
+        <link rel="prev" href="../15-testing/">
+      
+      
+        <link rel="next" href="../appendix-a-plagiarism/">
+      
+      
+      <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Часть XVI. Механика импорта: от import x до исполняемого модуля - Python под капотом</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Python под капотом">
+  <meta property="og:title" content="Часть XVI. Механика импорта: от import x до исполняемого модуля — Python под капотом">
+  <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/16-import/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Часть XVI. Механика импорта: от import x до исполняемого модуля — Python под капотом">
+  <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Python под капотом",
+    "alternateName": "Python Under the Hood",
+    "description": "От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python и интерпретатора CPython.",
+    "inLanguage": "ru",
+    "url": "https://n3xumc0r3.github.io/",
+    "author": {
+      "@type": "Person",
+      "name": "n3xumc0r3",
+      "url": "https://github.com/n3xumc0r3"
+    },
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "py-underhood",
+      "url": "https://github.com/n3xumc0r3/py-underhood"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Python (programming language)"},
+      {"@type": "Thing", "name": "CPython internals"},
+      {"@type": "Thing", "name": "Metaprogramming"},
+      {"@type": "Thing", "name": "Asynchronous programming"}
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xvi-import-x" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Python под капотом" class="md-header__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python под капотом
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Часть XVI. Механика импорта: от import x до исполняемого модуля
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-green"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Python под капотом" class="md-nav__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python под капотом
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Главная
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть I. Базовые скрытые особенности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-context-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть II. Контекстные менеджеры
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-generators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть III. Генераторы и итераторы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-async/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IV. Асинхронность
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть V. Классы и интерфейсы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-descriptors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VI. Дескрипторы и property
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-metaprogramming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VII. Метапрограммирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-cpython-internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VIII. Внутренности CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-encodings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IX. Кодировки и кодеки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть X. Интроспекция окружения
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-stdlib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XI. Полезные модули stdlib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-linters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XII. Линтеры и директивы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-implementations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Часть XVI. Механика импорта: от import x до исполняемого модуля
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVI. Механика импорта: от import x до исполняемого модуля
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#16.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.1-dunders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что появляется у модуля при первом импорте
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.1-sysmodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys.modules — обычный dict, и это фича
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.2. sys.path: кто, что и в каком порядке кладёт
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2. sys.path: кто, что и в каком порядке кладёт">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.2-safepath" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подмена stdlib из текущего каталога и защита -P
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.2-pth" class="md-nav__link">
+    <span class="md-ellipsis">
+      .pth-файлы: самый недооценённый механизм site.py
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.3. Finders и path hooks: как интерпретатор ищет модуль
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.3. Finders и path hooks: как интерпретатор ищет модуль">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.3-suffixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Суффиксы: расширение &gt; исходник &gt; байт-код
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.4. ModuleSpec и Loader: контракт импорта
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.5. Namespace-пакеты (PEP 420): пакет без __init__.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.6. Круговые импорты: анатомия и лечение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.7. Ленивый импорт: PEP 562 и LazyLoader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.7. Ленивый импорт: PEP 562 и LazyLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.7-pep562" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getattr__ на уровне модуля (PEP 562, 3.7+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.7-lazyloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      importlib.util.LazyLoader: отложенный весь модуль
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.8. reload: механика перезагрузки и её границы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.9. Особые виды модулей: builtin, frozen, extension, zipimport
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.10. Кастомные импорт-хуки: от логгера до блокировщика
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.11. Диагностика старта: -X importtime
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.11. Диагностика старта: -X importtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XVI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Приложения
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            Приложения
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Системы обнаружения плагиата
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-c-code-golf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. Code golf
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-d-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#16.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.1-dunders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что появляется у модуля при первом импорте
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.1-sysmodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys.modules — обычный dict, и это фича
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.2. sys.path: кто, что и в каком порядке кладёт
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.2. sys.path: кто, что и в каком порядке кладёт">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.2-safepath" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подмена stdlib из текущего каталога и защита -P
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.2-pth" class="md-nav__link">
+    <span class="md-ellipsis">
+      .pth-файлы: самый недооценённый механизм site.py
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.3. Finders и path hooks: как интерпретатор ищет модуль
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.3. Finders и path hooks: как интерпретатор ищет модуль">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.3-suffixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Суффиксы: расширение &gt; исходник &gt; байт-код
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.4. ModuleSpec и Loader: контракт импорта
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.5. Namespace-пакеты (PEP 420): пакет без __init__.py
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.6. Круговые импорты: анатомия и лечение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.7. Ленивый импорт: PEP 562 и LazyLoader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.7. Ленивый импорт: PEP 562 и LazyLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.7-pep562" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getattr__ на уровне модуля (PEP 562, 3.7+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16.7-lazyloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      importlib.util.LazyLoader: отложенный весь модуль
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.8. reload: механика перезагрузки и её границы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.9. Особые виды модулей: builtin, frozen, extension, zipimport
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.10. Кастомные импорт-хуки: от логгера до блокировщика
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      16.11. Диагностика старта: -X importtime
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16.11. Диагностика старта: -X importtime">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#16.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XVI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="xvi-import-x">Часть XVI. Механика импорта: от <code>import x</code> до исполняемого модуля<a class="headerlink" href="#xvi-import-x" title="Permanent link">#</a></h1>
+<p>Уровень API уже разобран: <code>sys.modules</code> и <code>__import__</code> (7.9), программный <code>importlib</code> (7.12), формат <code>.pyc</code> (13.2), импорт-режимы pytest (15.6). Здесь — сам конвейер: как стейтмент превращается в байт-код, где живёт кэш модулей, кто и в каком порядке собирает <code>sys.path</code>, как устроены finders, specs и loaders, чем namespace-пакет отличается от обычного, почему возникают круговые импорты, как работает ленивая загрузка и <code>reload</code>, какие бывают виды модулей, как писать свои импорт-хуки и как диагностировать медленный старт процесса. Разделы идут по ходу движения модуля: от стейтмента — через поиск и загрузку — к кухне диагностики. Все примеры проверены на CPython 3.12; версионные оговорки — по месту.</p>
+<h2 id="16.1">16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules<a class="headerlink" href="#16.1" title="Permanent link">#</a></h2>
+<p><code>import</code> — обычная инструкция языка, и у неё есть байт-код. Компилятор переводит стейтмент в <code>IMPORT_NAME</code>, который вызывает встроенную <code>__import__</code> (7.9):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">dis</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;import a.b.c&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">))</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">#   1           2 LOAD_CONST               0 (0)      # level = 0</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">#               4 LOAD_CONST               1 (None)   # fromlist = None</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">#               6 IMPORT_NAME              0 (a.b.c)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">#               8 STORE_NAME               1 (a)      # ← связывается только корень!</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">#</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;from a.b import c&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">))</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">#   1           2 LOAD_CONST               0 (0)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1">#               4 LOAD_CONST               1 ((&#39;c&#39;,)) # fromlist = (&#39;c&#39;,)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">#               6 IMPORT_NAME              0 (a.b)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">#               8 IMPORT_FROM              1 (c)      # берём атрибут модуля</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">#              10 STORE_NAME               1 (c)</span>
+</span></code></pre></div>
+<p>Два следствия прямо из листинга. Первое: <code>import a.b.c</code> исполняет <code>a</code>, <code>a.b</code>, <code>a.b.c</code> — но связывает в пространстве имён <strong>только</strong> <code>a</code>; добраться до <code>c</code> без <code>from a.b import c</code> можно как <code>a.b.c</code>. Второе: <code>from a.b import c</code> — это тот же <code>IMPORT_NAME</code> для пакета плюс <code>IMPORT_FROM</code>, то есть <strong>чтение атрибута уже импортированного модуля</strong>. Никакой «экономии на импорте» у <code>from</code> нет — исполняется всё то же самое.</p>
+<p>Дальше <code>IMPORT_NAME</code> вызывает <code>__import__('a.b.c', globals(), locals(), fromlist, level)</code>, а внутри — конвейер из четырёх шагов:</p>
+<ol>
+<li><strong>кэш</strong>: если имя уже лежит в <code>sys.modules</code> — модуль возвращается немедленно, без диска и без исполнения;</li>
+<li><strong>поиск</strong>: иначе имя передаётся цепочке finder'ов из <code>sys.meta_path</code> (16.3) — результат поиска это <em>spec</em> (16.4);</li>
+<li><strong>загрузка</strong>: loader из spec создаёт объект модуля и исполняет его код;</li>
+<li><strong>кэширование</strong>: готовый модуль кладётся в <code>sys.modules</code> и возвращается.</li>
+</ol>
+<p>Шаг 1 — не оптимизация, а часть семантики: <strong>тело модуля исполняется ровно один раз за процесс</strong>, сколько бы раз и из скольких мест его ни импортировали:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># mod_once.py</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MOD_ONCE: тело модуля исполнено&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">VALUE</span> <span class="o">=</span> <span class="mi">42</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">mod_once</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span> <span class="nn">mod_once</span>            <span class="c1"># второй import — тело НЕ исполняется</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># MOD_ONCE: тело модуля исполнено        ← напечатано один раз</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">mod_once</span> <span class="ow">is</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;mod_once&quot;</span><span class="p">]</span>      <span class="c1"># True — это тот же объект</span>
+</span></code></pre></div>
+<p>Отсюда два классических эффекта. Положительный: модули с побочными эффектами (регистрация плагинов, патчинг, открытие ресурсов) срабатывают один раз, даже если десять подсистем сделали <code>import</code>. Отрицательный: тот же механизм означает, что <strong>повторный импорт не «обновит» модуль</strong> после изменения файла на диске — это работа для <code>reload</code> (16.8), и именно поэтому тесты с подменой окружения часто требуют перезагрузки конфиг-модулей (15.2).</p>
+<h3 id="16.1-dunders">Что появляется у модуля при первом импорте<a class="headerlink" href="#16.1-dunders" title="Permanent link">#</a></h3>
+<p>До исполнения тела интерпретатор создаёт объект модуля и заселяет его служебными атрибутами — полная анатомия свежесозданного модуля на 3.12:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">sorted</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mod_once</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># [&#39;__builtins__&#39;, &#39;__cached__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__loader__&#39;,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">#  &#39;__name__&#39;, &#39;__package__&#39;, &#39;__spec__&#39;]</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Атрибут</th>
+<th>Откуда берётся</th>
+<th>На что смотреть</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__name__</code></td>
+<td>имя, по которому искали</td>
+<td>для <code>__main__</code> — это имя запущенного скрипта, не модуля (13.2)</td>
+</tr>
+<tr>
+<td><code>__spec__</code></td>
+<td>результат поиска (16.4)</td>
+<td>начиная с 3.4 (PEP 451) — «паспорт» модуля; <code>None</code> у <code>__main__</code> в некоторых сценариях</td>
+</tr>
+<tr>
+<td><code>__loader__</code></td>
+<td>из spec</td>
+<td>кто загрузил; удобно в логах и плагинах</td>
+</tr>
+<tr>
+<td><code>__file__</code></td>
+<td>из spec.origin</td>
+<td>путь к исходнику; у builtin-модулей отсутствует (16.9)</td>
+</tr>
+<tr>
+<td><code>__cached__</code></td>
+<td>из spec.cached</td>
+<td>путь к <code>.pyc</code>; <code>None</code>, если кэша нет</td>
+</tr>
+<tr>
+<td><code>__package__</code></td>
+<td><code>spec.parent</code></td>
+<td><code>'json'</code> у <code>json.decoder</code>; <code>'json'</code> у самого пакета</td>
+</tr>
+<tr>
+<td><code>__builtins__</code></td>
+<td>словарь/модуль builtins</td>
+<td>технический канал, через который живут <code>len</code>, <code>print</code> и др. (7.10)</td>
+</tr>
+<tr>
+<td><code>__path__</code></td>
+<td>только у пакетов</td>
+<td>список каталогов для поиска подмодулей; у обычного модуля этого атрибута нет — это и есть формальный критерий «пакетности»</td>
+</tr>
+</tbody>
+</table>
+<p>У regular-пакета <code>json.__path__</code> — обычный <code>list</code>; у namespace-пакета — специальный <code>_NamespacePath</code> (16.5). <code>__spec__.parent</code> и <code>__package__</code> всегда совпадают.</p>
+<h3 id="16.1-sysmodules">sys.modules — обычный dict, и это фича<a class="headerlink" href="#16.1-sysmodules" title="Permanent link">#</a></h3>
+<p><code>sys.modules</code> — не магическая структура, а словарь «имя → модуль», и с ним можно делать всё, что делают со словарями. Две канонические техники. Первая — «тихий импорт» и проверка «уже импортировано?» (7.9): <code>if 'json' in sys.modules</code> стоит наносекунды и не тянет за собой загрузку. Вторая — <strong>заглушки</strong>: положить в <code>sys.modules</code> подменыш <em>до</em> импорта зависимого кода — стандартный приём тестов (15.3 подменяет модули через <code>patch.dict(os.environ)</code> и <code>sys.modules</code>-манипуляции), и того же механика работает у фреймворков для опциональных зависимостей:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">types</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;pysqlite2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">SimpleNamespace</span><span class="p">(</span><span class="n">connect</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># теперь любой код, делающий `import pysqlite2`, получит заглушку</span>
+</span></code></pre></div>
+<p>⚠️ Обратная сторона той же свободы: запись в <code>sys.modules</code> — глобальный эффект на весь процесс, читаемый любым кодом. Удалить оттуда системный модуль (<code>del sys.modules['json']</code>) — значит гарантировать себе повторное исполнение его тела при следующем импорте; иногда это нужно (перезагрузка в тестах), чаще — источник трудноуловимых двойных регистраций.</p>
+<h2 id="16.2">16.2. <code>sys.path</code>: кто, что и в каком порядке кладёт<a class="headerlink" href="#16.2" title="Permanent link">#</a></h2>
+<p>Поиск по диску ведёт PathFinder (16.3), но ходит он по <code>sys.path</code> — простому списку строк, который собирается из четырёх источников в момент старта. Порядок — это и есть приоритет поиска: побеждает первое совпадение.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Источник</th>
+<th>Что кладёт</th>
+<th>Как управлять</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>«текущее место»</td>
+<td>каталог скрипта — при <code>python script.py</code>; <code>''</code> (текущий каталог) — при <code>-c</code> и REPL; cwd — при <code>-m</code></td>
+<td>флаг <code>-P</code> / <code>PYTHONSAFEPATH</code> (3.11+) убирает этот элемент</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>PYTHONPATH</code></td>
+<td>все перечисленные каталоги, по порядку</td>
+<td>env (10.3); работает и в venv</td>
+</tr>
+<tr>
+<td>3</td>
+<td>стандартная библиотека</td>
+<td>каталог stdlib интерпретатора + zip-архивы stdlib, если есть</td>
+<td>определяется при сборке; <code>sys.prefix</code> (11.31)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>site.py</code></td>
+<td><code>site-packages</code> самого интерпретатора, user site-packages, всё из <code>.pth</code>-файлов</td>
+<td><code>PYTHONNOUSERSITE</code>, <code>-s</code>, <code>-I</code> (11.31)</td>
+</tr>
+</tbody>
+</table>
+<p>Первый источник — самый коварный, потому что зависит от способа запуска. Один и тот же вопрос «что стоит в <code>sys.path[0]</code>?» даёт три разных ответа:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ python -c &#39;import sys; print(repr(sys.path[0]))&#39;
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>&#39;&#39;                                   # текущий каталог (пустая строка!)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>$ python sdir/s.py                   # внутри s.py: print(repr(sys.path[0]))
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&#39;/…/sdir&#39;                            # каталог скрипта, не cwd!
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>$ python -m pshow                    # внутри pshow.py: print(repr(sys.path[0]))
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>&#39;/…/cwd&#39;                             # cwd, откуда запустили -m
+</span></code></pre></div>
+<p>Каталог скрипта вместо cwd — источник вечного сюрприза «почему мой модуль лежит рядом со скриптом и не импортируется, хотя я запускаю из корня проекта». При <code>python sdir/s.py</code> ищут в <code>sdir/</code>, а не в каталоге, откуда запустили. <code>-m</code> в этом смысле честнее: он кладёт в <code>sys.path[0]</code> текущий каталог — потому и говорят, что «для своего пакета запускайте <code>-m</code>, а не путь к файлу».</p>
+<h3 id="16.2-safepath">Подмена stdlib из текущего каталога и защита <code>-P</code><a class="headerlink" href="#16.2-safepath" title="Permanent link">#</a></h3>
+<p>Тот факт, что «текущее место» стоит <strong>первым</strong>, означает: файл <code>random.py</code> в текущем каталоге перекроет stdlib-ный <code>random</code>. Это фича (быстрые локальные оверрайды), но и вектор: скачанный архив с <code>setup.py</code>, запущенный в каталоге с вредоносным <code>random.py</code>, исполнит его вместо модуля stdlib. С 3.11 есть выключатель:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ cat random.py
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>print(&quot;SHADOW: это мой random.py из текущего каталога&quot;)
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>x = 42
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>$ python -c &#39;import random; print(hasattr(random, &quot;x&quot;))&#39;
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>SHADOW: это мой random.py из текущего каталога
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>True                                  # ← перекрыли stdlib
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>$ python -P -c &#39;import random; print(hasattr(random, &quot;x&quot;))&#39;
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>False                                 # -P: sys.path[0] не добавлен
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>$ PYTHONSAFEPATH=1 python -c &#39;import random; print(hasattr(random, &quot;x&quot;))&#39;
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>False                                 # то же через окружение (10.3)
+</span></code></pre></div>
+<p><code>-I</code> (isolated) включает <code>-P</code> в комплекте с <code>-s</code> и <code>-E</code> — игнорировать user site и <code>PYTHON*</code>-переменные; в 15.11 он фигурирует как режим для воспроизводимых прогонов.</p>
+<h3 id="16.2-pth"><code>.pth</code>-файлы: самый недооценённый механизм site.py<a class="headerlink" href="#16.2-pth" title="Permanent link">#</a></h3>
+<p><code>site.py</code> сканирует <code>site-packages</code> на файлы <code>*.pth</code>. Каждая строка файла — либо путь, который добавляется в <code>sys.path</code>, либо строка, начинающаяся с <code>import</code> — <strong>исполняемый код</strong>, который запускается при каждом старте интерпретатора. Второе и есть механика нескольких «волшебств»: editable-установки pip кладут <code>__editable__*.pth</code>, а хуки инструментария — <code>sitecustomize</code>/<code>usercustomize</code> (16.10). В <code>-X importtime</code>-трассе старта видно, сколько стоит этот слой: в нашем прогоне весь <code>site</code> — около 1.4 мс из ~6.3 мс общего импорта <code>json</code> вместе со стартом (16.11).</p>
+<p>Проверить, кто именно собрал текущий <code>sys.path</code>, можно на месте: пути до «текущего места» и <code>PYTHONPATH</code> уже стоят к моменту, когда исполняется ваш код, а всё после stdlib — работа <code>site</code>. Сравните <code>python -c 'import sys; print(len(sys.path))'</code> и <code>python -S -c ...</code> — разница покажет вклад <code>site.py</code>.</p>
+<h2 id="16.3">16.3. Finders и path hooks: как интерпретатор ищет модуль<a class="headerlink" href="#16.3" title="Permanent link">#</a></h2>
+<p>Если имени нет в <code>sys.modules</code>, оно уходит цепочке <strong>meta path finders</strong> — объектов с методом <code>find_spec(name, path, target=None)</code>, лежащих в <code>sys.meta_path</code>. Первый, кто вернёт spec (16.4), выигрывает; никто — <code>ModuleNotFoundError</code>. Список по умолчанию на 3.12 короткий:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">name</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># BuiltinImporter      ← модули, скомпилированные в бинарник (sys, builtins, _imp…)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># FrozenImporter       ← модули, замороженные в бинарник на этапе сборки (16.9)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># PathFinder           ← всё, что ищется по sys.path на диске и в zip</span>
+</span></code></pre></div>
+<p>Первые два — «бесплатные» (поиск — это проверка факта в таблице интерпретатора, диска нет), поэтому они и стоят перед PathFinder. Практическое следствие: <strong>модуль с именем <code>sys</code> из текущего каталога не перекроется</strong> вашим файлом <code>sys.py</code> — BuiltinImporter ответит раньше. Перекрыть builtin нельзя, а вот обычный модуль stdlib — можно (16.2).</p>
+<p>Вся нагрузка на PathFinder. Его алгоритм для каждого элемента <code>sys.path</code>:</p>
+<ol>
+<li>спросить у <code>sys.path_importer_cache</code> — есть ли уже finder для этого каталога;</li>
+<li>если нет — пройтись по <code>sys.path_hooks</code>, фабрикам finder'ов: хук вызывается с путём и либо возвращает path entry finder, либо бросает <code>ImportError</code> («это не мой формат»);</li>
+<li>найденный finder спросить про <code>find_spec(name)</code>.</li>
+</ol>
+<p>Устройство хуков видно напрямую:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">name</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path_hooks</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># zipimporter              ← элементы пути «.zip» обслуживает zipimport (16.9)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># path_hook_for_FileFinder ← обычные каталоги</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path_importer_cache</span><span class="p">))</span>   <span class="c1"># 7 — по записи на уже встречавшийся путь</span>
+</span></code></pre></div>
+<p>Заметьте порядок: zip-хук стоит <strong>раньше</strong> файлового, поэтому каталог и архив с одинаковым именем разрешаются в пользу архива. <code>path_importer_cache</code> — кэш «путь → finder»: листинг каталога сканируется один раз, а не на каждый импорт; именно поэтому свежесозданные файлы в путях иногда «не видны» до <code>importlib.invalidate_caches()</code> (16.8).</p>
+<h3 id="16.3-suffixes">Суффиксы: расширение &gt; исходник &gt; байт-код<a class="headerlink" href="#16.3-suffixes" title="Permanent link">#</a></h3>
+<p><code>FileFinder</code> создаётся с тремя наборами суффиксов — и перебирает их в фиксированном порядке приоритета:</p>
+<table>
+<thead>
+<tr>
+<th>Приоритет</th>
+<th>Суффиксы (3.12, Linux)</th>
+<th>Loader</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>.cpython-312-x86_64-linux-gnu.so</code>, <code>.abi3.so</code>, <code>.so</code></td>
+<td><code>ExtensionFileLoader</code> — бинарные C-расширения (16.9)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>.py</code></td>
+<td><code>SourceFileLoader</code> — исходники</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>.pyc</code></td>
+<td><code>SourcelessFileLoader</code> — байт-код без исходника</td>
+</tr>
+</tbody>
+</table>
+<p>Список живёт в <code>importlib.machinery.EXTENSION_SUFFIXES / SOURCE_SUFFIXES / BYTECODE_SUFFIXES</code>. Приоритет означает: если рядом лежат <code>m.py</code> и <code>m.pyc</code>, импортируется <code>.py</code> (а <code>.pyc</code> используется как кэш, 13.2); «голый» <code>.pyc</code> без исходника тоже импортируется — <code>SourcelessFileLoader</code> именно это и делает, и это законный способ поставлять код без исходников.</p>
+<p>Узнать, «как бы импортировался модуль», не исполняя его, можно публичным API:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">importlib.util</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># json | /…/python3.12/json/__init__.py | SourceFileLoader</span>
+</span></code></pre></div>
+<p>⚠️ <code>find_spec</code> не исполняет сам модуль, но <strong>исполняет родительские пакеты</strong>: <code>find_spec("json.decoder")</code> сначала импортирует <code>json</code> целиком, включая тело <code>__init__.py</code>. Для тяжёлых пакетов «просто проверить наличие» через <code>find_spec</code> — не бесплатная операция. Для проверки «есть ли такой модуль вообще» без побочных эффектов у топ-уровня есть дешёвый трюк: <code>name in sys.stdlib_module_names</code> (3.10+) — статическое множество имён stdlib — плюс ваши собственные знания о зависимостях; а дальше <code>find_spec</code>, если риск побочек оправдан.</p>
+<h2 id="16.4">16.4. ModuleSpec и Loader: контракт импорта<a class="headerlink" href="#16.4" title="Permanent link">#</a></h2>
+<p>Finder возвращает не модуль, а <strong>spec</strong> — «чертёж»: где модуль лежит и кто его загрузит. Всё, что решает импорт-система, решается на основании spec:</p>
+<table>
+<thead>
+<tr>
+<th>Поле spec</th>
+<th>Что содержит</th>
+<th>Куда попадает у модуля</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>полное имя (<code>json.decoder</code>)</td>
+<td><code>__name__</code></td>
+</tr>
+<tr>
+<td><code>loader</code></td>
+<td>объект-загрузчик</td>
+<td><code>__loader__</code></td>
+</tr>
+<tr>
+<td><code>origin</code></td>
+<td>«место»: путь, <code>'built-in'</code>, <code>'frozen'</code>, <code>None</code></td>
+<td><code>__file__</code> (если <code>has_location</code>)</td>
+</tr>
+<tr>
+<td><code>cached</code></td>
+<td>путь к pyc-кэшу</td>
+<td><code>__cached__</code></td>
+</tr>
+<tr>
+<td><code>parent</code></td>
+<td>имя пакета-родителя</td>
+<td><code>__package__</code></td>
+</tr>
+<tr>
+<td><code>submodule_search_locations</code></td>
+<td>пути для подмодулей</td>
+<td><code>__path__</code> (пакеты)</td>
+</tr>
+</tbody>
+</table>
+<p>Loader — исполнитель чертежа. Контракт из двух методов (PEP 451):</p>
+<ul>
+<li><code>create_module(spec)</code> — создать объект модуля (по умолчанию <code>None</code> — «создай стандартный <code>ModuleType</code>»; возвращать свой объект — продвинутый случай, так делают C-расширения и <code>LazyLoader</code>, 16.7);</li>
+<li><code>exec_module(module)</code> — исполнить код модуля в его пространстве имён.</li>
+</ul>
+<p>Внутри <code>SourceFileLoader.exec_module</code> живёт вся pyc-кухня из 13.2: <code>get_code()</code> проверяет <code>__pycache__</code>, валидирует magic number и mtime, при промахе компилирует и пишет кэш. Разница между «импортом» и «ручной загрузкой» в том, кто вызывает эти методы: обычно — bootstrap-механизм, но ничто не мешает вам сделать то же самое руками. Классический сценарий — модуль с нестандартным расширением (файл <code>plugin.txt</code> с питоновским кодом):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">spec_from_file_location</span><span class="p">,</span> <span class="n">module_from_spec</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">importlib.machinery</span> <span class="kn">import</span> <span class="n">SourceFileLoader</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># наивная попытка: расширение не входит в наборы суффиксов loader&#39;ов (16.3)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">spec</span> <span class="o">=</span> <span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;plugin&quot;</span><span class="p">,</span> <span class="s2">&quot;/…/plugin.txt&quot;</span><span class="p">)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># None  ← не исключение, просто None: «не знаю, чем такое грузить»</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># правильная попытка: loader передаётся явно</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">spec</span> <span class="o">=</span> <span class="n">spec_from_file_location</span><span class="p">(</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="s2">&quot;plugin&quot;</span><span class="p">,</span> <span class="s2">&quot;/…/plugin.txt&quot;</span><span class="p">,</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    <span class="n">loader</span><span class="o">=</span><span class="n">SourceFileLoader</span><span class="p">(</span><span class="s2">&quot;plugin&quot;</span><span class="p">,</span> <span class="s2">&quot;/…/plugin.txt&quot;</span><span class="p">))</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">mod</span> <span class="o">=</span> <span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;plugin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mod</span>          <span class="c1"># ← регистрация ДО исполнения</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">RESULT</span><span class="p">)</span>                    <span class="c1"># 42</span>
+</span></code></pre></div>
+<p>Три детали, без которых ручная загрузка ломается. Первая: <code>module_from_spec</code> только создаёт пустой модуль с заполненными <code>__spec__</code>/<code>__loader__</code>/<code>__name__</code> — <strong>исполнение делает <code>exec_module</code></strong>, забытый чаще всего. Вторая: регистрация в <code>sys.modules</code> до <code>exec_module</code> — не перестраховка: тело модуля может ссылаться на самого себя (<code>plugin.some_func</code> после <code>import plugin</code> внутри собственного кода, pickle, dataclasses с self-references) — оно увидит себя в кэше только если его туда положили заранее. Третья: <code>spec_from_file_location</code> для неизвестного суффикса молча возвращает <code>None</code> — проверяйте результат, прежде чем писать <code>spec.loader</code>.</p>
+<p>Ручная загрузка — базовый строительный блок плагинных систем: «пройтись по каталогу, каждый <code>*.py</code> загрузить с уникальным именем, собрать классы-плагины» — это ровно четыре строки поверх кода выше. Но если плагины лежат в обычных пакетах на <code>sys.path</code>, нагрузите систему штатно: finder'ами (16.10), а не ручным перебором.</p>
+<h2 id="16.5">16.5. Namespace-пакеты (PEP 420): пакет без <code>__init__.py</code><a class="headerlink" href="#16.5" title="Permanent link">#</a></h2>
+<p>Каталог с <code>__init__.py</code> — <strong>regular package</strong>: исполняется <code>__init__.py</code>, <code>__path__</code> — один каталог. Каталог без <code>__init__.py</code>, обнаруженный при поиске, — не ошибка: PathFinder запоминает его как <strong>portion</strong> («долю» пакета) и <strong>продолжает</strong> идти по <code>sys.path</code>. Если к концу пути нашлись только portions — собирается namespace package: модуль без исполняемого кода, чей <code>__path__</code> — объединение всех долей.</p>
+<p>Эксперимент, в котором видна вся механика. Два корня, в каждом свой каталог <code>pkg</code> без <code>__init__.py</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>r1/pkg/sub1.py          # print(&quot;sub1 из r1&quot;)
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>r2/pkg/sub2.py          # print(&quot;sub2 из r2&quot;)
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">import</span> <span class="nn">pkg</span><span class="o">,</span> <span class="nn">pkg.sub1</span><span class="o">,</span> <span class="nn">pkg.sub2</span>          <span class="c1"># PYTHONPATH=r1:r2</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># sub1 из r1</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># sub2 из r2</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nb">type</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">__path__</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>             <span class="c1"># &#39;_NamespacePath&#39; — не list!</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nb">list</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">__path__</span><span class="p">)</span>                      <span class="c1"># [&#39;…/r1/pkg&#39;, &#39;…/r2/pkg&#39;] — обе доли</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="n">pkg</span><span class="o">.</span><span class="n">__spec__</span><span class="o">.</span><span class="n">origin</span>                     <span class="c1"># None — исполняемого кода не было</span>
+</span></code></pre></div>
+<p>Оба подмодуля импортировались, хотя ни один каталог <code>pkg</code> не содержит <code>__init__.py</code>: поиск подмодулей идёт по обоим элементам <code>__path__</code>. В отличие от regular-пакета, у namespace-пакета нет ни исполняемого <code>__init__</code>, ни <code>__file__</code> (поэтому «путь к пакету» через <code>pkg.__file__</code> — источник <code>AttributeError</code>).</p>
+<p>Теперь ловушка, на которой спотыкаются даже опытные проекты. Добавим третий корень с <strong>регулярным</strong> пакетом — с <code>__init__.py</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>r3/pkg/__init__.py      # print(&quot;REGULAR: __init__ из r3&quot;)
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>r3/pkg/sub3.py
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span> <span class="nn">pkg</span>                              <span class="c1"># PYTHONPATH=r1:r2:r3</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># REGULAR: __init__ из r3               ← __init__ исполнился</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kn">import</span> <span class="nn">pkg.sub1</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># ModuleNotFoundError: No module named &#39;pkg.sub1&#39;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="nb">list</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">__path__</span><span class="p">)</span>                      <span class="c1"># [&#39;…/r3/pkg&#39;] — одна доля вместо трёх</span>
+</span></code></pre></div>
+<p>Регулярный пакет, найденный <strong>в любом</strong> месте пути, немедленно останавливает поиск и затирает собранные к этому моменту namespace-доли. Порядок в <code>sys.path</code> решает всё: portions из <code>r1</code> и <code>r2</code> не «дополняют» regular-пакет из <code>r3</code>, а выбрасываются. Это самая частая практическая ошибка с namespace-пакетами: «мы добавили наш каталог в PYTHONPATH, почему-то половина модулей пропала» — значит, где-то раньше по пути нашёлся одноимённый каталог с <code>__init__.py</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Regular package</th>
+<th>Namespace package</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__.py</code></td>
+<td>обязателен, исполняется</td>
+<td>отсутствует</td>
+</tr>
+<tr>
+<td><code>__path__</code></td>
+<td><code>list</code> из одного каталога</td>
+<td><code>_NamespacePath</code> из всех долей</td>
+</tr>
+<tr>
+<td><code>__file__</code></td>
+<td>путь к <code>__init__.py</code></td>
+<td>отсутствует</td>
+</tr>
+<tr>
+<td><code>__spec__.origin</code></td>
+<td>путь к <code>__init__.py</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td>Подмодули</td>
+<td>только из своего каталога</td>
+<td>из всех долей по всему пути</td>
+</tr>
+<tr>
+<td>Перекрытие</td>
+<td>побеждает namespace всегда</td>
+<td>проигрывает regular при любом порядке</td>
+</tr>
+</tbody>
+</table>
+<p>Зачем это нужно в реальности: namespace-пакет — способ нескольким <strong>независимым дистрибутивам</strong> поставлять код под общим корнем. Классические примеры — <code>google.*</code> (пакеты protobuf, google-auth и десятки других кладут свои <code>google/</code>-каталоги без <code>__init__.py</code>, и все они сливаются в один namespace) и <code>zope.*</code> из эпохи Zope. Механика существует с 3.3 (PEP 420), и с тех пор это не экзотика, а штатный способ: если вы делаете монорепо с несколькими устанавливаемыми пакетами под общим именем — namespace-пакет избавляет от конфликтов <code>__init__.py</code> при установке (подробнее о том, как это выглядит в пакетах — перспективно в Части XVIII про упаковку).</p>
+<h2 id="16.6">16.6. Круговые импорты: анатомия и лечение<a class="headerlink" href="#16.6" title="Permanent link">#</a></h2>
+<p>Круговой импорт — это когда <code>a</code> импортирует <code>b</code>, а <code>b</code> — <code>a</code>. У фреймворков с ленивой загрузкой моделей такая связка возникает сама (модель ссылается на пользователя, пользователь — на модель). Чтобы понять, почему одни круги падают, а другие нет, достаточно одной фразы: <strong>модуль попадает в <code>sys.modules</code> до начала исполнения своего тела</strong> (16.1, шаг 4 — точнее, регистрация происходит на входе в загрузку). С одной стороны, именно это гарантирует одноразовость и останавливает бесконечную рекурсию: встретив круг, система видит модуль в кэше и возвращает «как есть». С другой — «как есть» на этот момент означает <strong>полуисполненный</strong> модуль: в нём есть только то, что успело исполниться до точки круга.</p>
+<p>Разберём оба варианта. Падающий круг — <code>from</code>-импорт на верхнем уровне:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># ca.py</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">import</span> <span class="nn">cb</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">X</span> <span class="o">=</span> <span class="s2">&quot;значение X из a&quot;</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># cb.py</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="kn">from</span> <span class="nn">ca</span> <span class="kn">import</span> <span class="n">X</span>      <span class="c1"># ca ещё исполняется: X не существует</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">Y</span> <span class="o">=</span> <span class="mi">1</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$ python -c &quot;import ca&quot;
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>ImportError: cannot import name &#39;X&#39; from partially initialized module &#39;ca&#39;
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>(most likely due to a circular import) (/…/ca.py)
+</span></code></pre></div>
+<p>Сообщение прямо называет механику: «partially initialized module». Порядок событий: <code>import ca</code> → тело <code>ca</code> началось, в <code>sys.modules</code> уже лежит <code>ca</code> (полупустой) → <code>import cb</code> → тело <code>cb</code> → <code>from ca import X</code> → <code>X</code> читается как <strong>атрибут</strong> полуисполненного модуля (16.1: <code>IMPORT_FROM</code>) → атрибута нет, потому что строка <code>X = ...</code> ещё не исполнялась.</p>
+<p>Работающий вариант — тот же круг, но <code>import</code> вместо <code>from</code> и обращение к атрибуту <strong>после</strong> завершения круга:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># cb.py</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">import</span> <span class="nn">ca</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="k">def</span> <span class="nf">get_x</span><span class="p">():</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="k">return</span> <span class="n">ca</span><span class="o">.</span><span class="n">X</span>        <span class="c1"># исполнится позже, когда ca будет дописан</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ca&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">)</span>   <span class="c1"># True — уже на момент исполнения тела cb</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">import</span> <span class="nn">ca</span><span class="o">,</span> <span class="nn">cb</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">cb</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span>            <span class="c1"># &#39;значение X из a&#39; — работает</span>
+</span></code></pre></div>
+<p>Здесь <code>import ca</code> внутри <code>cb</code> не читает атрибутов — он просто получает полупустой объект из кэша; а <code>get_x</code> дотягивается до <code>ca.X</code> в момент вызова, когда оба модуля давно дописаны. Отсюда общее правило: <code>from x import y</code> требует готовности <code>y</code> <strong>в момент импорта</strong>, <code>import x</code> — только в момент использования.</p>
+<p>Каждый симптом — к своему лекарству:</p>
+<table>
+<thead>
+<tr>
+<th>Симптом</th>
+<th>Причина</th>
+<th>Лечение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ImportError: cannot import name … (partially initialized)</code></td>
+<td><code>from</code>-импорт атрибута, которого ещё нет</td>
+<td>заменить на <code>import</code> + доступ через модуль; либо перенести импорт ниже определяемого имени</td>
+</tr>
+<tr>
+<td>Круг «конфиг ↔ всё остальное»</td>
+<td>общие константы затянуты в большой модуль</td>
+<td>вынести общее в третий листовый модуль без зависимостей</td>
+</tr>
+<tr>
+<td>Круг только для аннотаций типов</td>
+<td>аннотации исполняются в момент определения</td>
+<td><code>if TYPE_CHECKING:</code> (5.15) — аннотации не исполняются в рантайме</td>
+</tr>
+<tr>
+<td>Круг «модуль ↔ его плагины»</td>
+<td>плагины регистрируются в базовом модуле</td>
+<td>регистрация через хук: базовый модуль объявляет <code>__getattr__</code> (PEP 562, 16.7) и не импортирует плагины сам</td>
+</tr>
+<tr>
+<td>Круг из-за side-эффектов в <code>__init__.py</code></td>
+<td><code>__init__</code> тянет тяжёлые подмодули</td>
+<td>урезать <code>__init__.py</code> до лёгких реэкспортов; тяжёлое — лениво</td>
+</tr>
+</tbody>
+</table>
+<p>Круговые импорты в чистом виде — не баг языка, а симптом архитектуры: модуль, который «и константы, и типы, и регистрация», почти всегда просится на разбиение. Но знать механику нужно, чтобы отличать честный круг (чинится перестановкой импорта) от цикла в графе зависимостей (чинится только архитектурой).</p>
+<h2 id="16.7">16.7. Ленивый импорт: PEP 562 и LazyLoader<a class="headerlink" href="#16.7" title="Permanent link">#</a></h2>
+<p>Идея ленивого импорта: модуль или атрибут не загружается в момент <code>import</code>, а откладывается до первого обращения. В stdlib для этого есть два механизма разного масштаба.</p>
+<h3 id="16.7-pep562"><code>__getattr__</code> на уровне модуля (PEP 562, 3.7+)<a class="headerlink" href="#16.7-pep562" title="Permanent link">#</a></h3>
+<p>У модуля, как у класса, можно определить <code>__getattr__</code> — его вызывают, когда обычный поиск атрибута не сработал:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># lazy_mod.py</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">_heavy</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;heavy&quot;</span><span class="p">:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        <span class="k">global</span> <span class="n">_heavy</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        <span class="k">if</span> <span class="n">_heavy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LAZY: тяжёлый ресурс загружен при первом обращении&quot;</span><span class="p">)</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>            <span class="n">_heavy</span> <span class="o">=</span> <span class="s2">&quot;тяжёлый&quot;</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        <span class="k">return</span> <span class="n">_heavy</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="k">def</span> <span class="fm">__dir__</span><span class="p">():</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;heavy&quot;</span><span class="p">})</span>    <span class="c1"># чтобы dir() не врал</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span> <span class="nn">lazy_mod</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># (тишина — ничего не загружено)</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nb">dir</span><span class="p">(</span><span class="n">lazy_mod</span><span class="p">)</span>         <span class="c1"># [..., &#39;heavy&#39;] — атрибут анонсирован</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">lazy_mod</span><span class="o">.</span><span class="n">heavy</span>        <span class="c1"># LAZY: тяжёлый ресурс загружен при первом обращении</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">lazy_mod</span><span class="o">.</span><span class="n">heavy</span>        <span class="c1"># второй раз — уже тихо: значение закэшировано в globals</span>
+</span></code></pre></div>
+<p>Это самый гибкий инструмент: так делают реэкспорты с отложенной загрузкой («<code>from mypkg import BigThing</code> должно работать, но <code>BigThing</code> грузится только когда нужен»), устаревшие шимы («атрибут ещё отдаётся, но warning»), и типовое разрешение круговых импортов из 16.6. Класс-паттерн библиотеки <code>lazy_loader</code>: модуль-обёртка объявляет в <code>__getattr__</code> список «настоящих» подмодулей и грузит их по требованию.</p>
+<h3 id="16.7-lazyloader"><code>importlib.util.LazyLoader</code>: отложенный весь модуль<a class="headerlink" href="#16.7-lazyloader" title="Permanent link">#</a></h3>
+<p>Более радикальный механизм: модуль создаётся, но его <strong>класс подменяется</strong> на <code>_LazyModule</code>, и тело не исполняется до первого обращения к любому атрибуту:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">spec_from_file_location</span><span class="p">,</span> <span class="n">module_from_spec</span><span class="p">,</span> <span class="n">LazyLoader</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="n">spec</span> <span class="o">=</span> <span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;lz&quot;</span><span class="p">,</span> <span class="s2">&quot;/…/plain_mod.py&quot;</span><span class="p">)</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">spec</span><span class="o">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="p">)</span>     <span class="c1"># оборачиваем настоящий loader</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">mod</span> <span class="o">=</span> <span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;lz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mod</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="c1"># (тишина — тело НЕ исполнено)</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="nb">type</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>     <span class="c1"># &#39;_LazyModule&#39; — класс-приманка</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="n">_</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">VAL</span>            <span class="c1"># первый доступ к атрибуту…</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="nb">type</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>     <span class="c1"># &#39;module&#39; — класс вернули обычному, тело исполнено</span>
+</span></code></pre></div>
+<p><code>LazyLoader</code> — это тот самый «продвинутый случай» <code>create_module</code> из 16.4: loader создаёт модуль с классом <code>_LazyModule</code>, чей <code>__getattribute__</code> при первом обращении исполняет тело через настоящий loader и восстанавливает обычный класс. Лень прозрачна: после первого касания модуль неотличим от нормально импортированного.</p>
+<p>❌ Ловушка обоих механизмов: <strong><code>from mod import name</code> пробуждает ленивую загрузку</strong>. <code>IMPORT_FROM</code> читает атрибут модуля (16.1) — это уже «первое обращение». Лень работает только пока с модулем обращаются как с модулем (<code>mod.name</code>), и не работает, когда имя достают сразу.</p>
+<p>Цена вопроса — секунды старта CLI-приложений и тысячи минут CI. Прагматика: ленивыми делают то, что нужно не каждому запуску — тяжёлые бэкенды опциональных зависимостей, подкоманды CLI, драйверы. Полную автоматизацию предлагал PEP 690 (ленивый импорт по умолчанию) — PEP отклонён: неявная лень ломает модули с осмысленными сайд-эффектами и monkeypatch-паттерны; лень в Python остаётся <strong>явной</strong> обязанностью автора API. Замер реальной экономии — в 16.11 и бенчмарках (B2, B5): четыре «просто импортируем сверху» модуля стоят ~15 мс на каждый запуск процесса.</p>
+<h2 id="16.8">16.8. <code>reload</code>: механика перезагрузки и её границы<a class="headerlink" href="#16.8" title="Permanent link">#</a></h2>
+<p><code>importlib.reload(module)</code> — попытка «перечитать» модуль без перезапуска процесса. Механика: берётся существующий <code>module.__spec__</code>, loader заново читает код (исходник с диска — pyc-инвалидация работает как обычно, 13.2) и <strong>исполняет его в том же самом объекте модуля</strong>. Namespace не пересоздаётся, а переиспользуется: <code>reload</code> не «очищает» модуль, а дописывает поверх.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># cfg.py: VAL = 1</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">importlib</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="kn">import</span> <span class="nn">cfg</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="kn">from</span> <span class="nn">cfg</span> <span class="kn">import</span> <span class="n">VAL</span>                 <span class="c1"># отложенная ссылка на значение</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># …файл cfg.py переписан: VAL = 2 …</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">importlib</span><span class="o">.</span><span class="n">invalidate_caches</span><span class="p">()</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="n">cfg</span><span class="o">.</span><span class="n">VAL</span>                             <span class="c1"># 2    ← модуль видит новое</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="n">VAL</span>                                 <span class="c1"># 1    ← from-import сделан ДО reload: устарел</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="n">cfg</span> <span class="ow">is</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;cfg&quot;</span><span class="p">]</span>           <span class="c1"># True — identity сохранена</span>
+</span></code></pre></div>
+<p>Из вывода видны оба ключевых факта: объект модуля тот же (все, кто держал ссылку, автоматически «на новом»), но <strong>ссылки, вытащенные через <code>from</code> до reload, остаются старыми</strong> — они указывали на конкретное значение, а <code>VAL = 2</code> лишь записало новое значение в атрибут модуля (7.2: переприсваивание не обновляет чужие ссылки). То же с классами: экземпляры, созданные старым классом, остаются экземплярами старого класса — <code>isinstance</code> после reload начнёт подводить.</p>
+<p>Что reload обновляет и что нет:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>После reload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Атрибуты модуля, заданные в коде</td>
+<td>✅ перезаписаны новыми</td>
+</tr>
+<tr>
+<td>Атрибуты, удалённые из новой версии</td>
+<td>❌ <strong>остаются</strong> — namespace не очищается; забытые «мусорные» имена живут</td>
+</tr>
+<tr>
+<td><code>from mod import x</code> чужих модулей</td>
+<td>❌ старые значения</td>
+</tr>
+<tr>
+<td>Экземпляры старых классов</td>
+<td>❌ старый класс в <code>__class__</code></td>
+</tr>
+<tr>
+<td>Кэши (<code>functools.cache</code> на функции модуля)</td>
+<td>⚠️ функция пересоздана — кэш пуст, но это сюрприз для полупрогретых процессов</td>
+</tr>
+<tr>
+<td>Реестры через <code>__init_subclass__</code> (6.8)</td>
+<td>⚠️ классы <strong>зарегистрируются повторно</strong> — в реестре появятся дубли</td>
+</tr>
+</tbody>
+</table>
+<p>Двойная регистрация — самый болезненный пункт: reload декорированного/регистрирующегося кода исполняет декораторы и <code>__init_subclass__</code> заново. Если реестр — обычный список, вы получите два элемента; если <code>dict</code> по имени — новое затрёт старое, и это часто желаемое поведение. Именно поэтому «горячая перезагрузка» плагинов через reload требует либо реестров-словарей, либо явного hook'а «before/after reload».</p>
+<p>Когда это вообще нужно. Рабочая тройка: интерактивная разработка (REPL/Jupyter — «поменял модуль, не хочу перезапускать ядро с GPU-контекстом»), плагинные системы с перезагрузкой, тесты, которые правят конфиг-модули и перезагружают их (15.2). В проде reload — анти-паттерн: семантика «дописывания поверх» гарантирует, что долго живущий процесс после сотен reload'ов несёт в себе слоёный пирог старых объектов.</p>
+<p>И последняя деталь конвейера: <code>importlib.invalidate_caches()</code>. FileFinder (16.3) кэширует листинг каталога и проверяет его по mtime каталога; на локальной ФС с наносекундным mtime новые файлы видны почти сразу, но на сетевых ФС, в контейнерах с огрубленным mtime и в тестах, которые создают файлы с подделанными временами, свежий модуль не находится — лечится ровно этим вызовом. Он же нужен после того, как вы вручную испортили <code>sys.path_importer_cache</code>.</p>
+<h2 id="16.9">16.9. Особые виды модулей: builtin, frozen, extension, zipimport<a class="headerlink" href="#16.9" title="Permanent link">#</a></h2>
+<p>Не всё, что импортируется, живёт в <code>.py</code>-файлах. Полная карта:</p>
+<table>
+<thead>
+<tr>
+<th>Вид</th>
+<th>Loader</th>
+<th><code>__spec__.origin</code></th>
+<th><code>__file__</code></th>
+<th>Примеры</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>builtin</td>
+<td><code>BuiltinImporter</code></td>
+<td><code>'built-in'</code></td>
+<td>❌ нет</td>
+<td><code>sys</code>, <code>builtins</code>, <code>_imp</code>, <code>_io</code></td>
+</tr>
+<tr>
+<td>frozen</td>
+<td><code>FrozenImporter</code></td>
+<td><code>'frozen'</code></td>
+<td>❌ нет</td>
+<td><code>zipimport</code>, <code>_frozen_importlib</code></td>
+</tr>
+<tr>
+<td>extension</td>
+<td><code>ExtensionFileLoader</code></td>
+<td>путь к <code>.so</code>/<code>.pyd</code></td>
+<td>✅</td>
+<td><code>zlib</code>, <code>_json</code>, <code>numpy._core</code></td>
+</tr>
+<tr>
+<td>source</td>
+<td><code>SourceFileLoader</code></td>
+<td>путь к <code>.py</code></td>
+<td>✅</td>
+<td>почти всё</td>
+</tr>
+<tr>
+<td>sourceless</td>
+<td><code>SourcelessFileLoader</code></td>
+<td>путь к <code>.pyc</code></td>
+<td>✅</td>
+<td>поставка без исходников</td>
+</tr>
+<tr>
+<td>namespace</td>
+<td><code>NamespaceLoader</code></td>
+<td><code>None</code></td>
+<td>❌ нет</td>
+<td><code>google.*</code> (16.5)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Builtin</strong> — модули, скомпилированные в бинарник интерпретатора (<code>sys.builtin_module_names</code>; в начале списка — служебные <code>_abc</code>, <code>_ast</code>, <code>_asyncio</code>, <code>_bisect</code>…). Их нельзя перекрыть файлом (16.3: BuiltinImporter стоит первым) и у них нет файла — потому <code>inspect.getsource(sys)</code> падает, а <code>sys.__file__</code> — <code>AttributeError</code>. Достоинство builtin — нулевая стоимость импорта: нет поиска на диске вообще.</p>
+<p><strong>Frozen</strong> — модули, чей байт-код вшит в бинарник при сборке. История с курицей и яйцом: сам импорт-механизм (<code>_frozen_importlib</code>, <code>_frozen_importlib_external</code>) должен существовать <strong>до</strong> того, как заработает импорт, — поэтому он заморожен в бинарник и разгоняет всё остальное. С 3.11 фризится и «стартовый критичный» набор stdlib (<code>zipimport</code> и др.), управляется флагом <code>-X frozen_modules=on|off</code> (по умолчанию <code>on</code> в release-сборках; <code>off</code> — в debug-сборках, чтобы править stdlib без пересборки):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">zipimport</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">zipimport</span><span class="o">.</span><span class="n">__spec__</span><span class="o">.</span><span class="n">origin</span>          <span class="c1"># &#39;frozen&#39;</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">sys</span><span class="o">.</span><span class="n">_xoptions</span>                      <span class="c1"># {&#39;frozen_modules&#39;: &#39;off&#39;} — при -X frozen_modules=off</span>
+</span></code></pre></div>
+<p>Флаг влияет на frozen-модули stdlib; заморозить <strong>свой</strong> код (получить самодостаточный бинарник) — задача внешних инструментов (PyInstaller и компания), но механика та же: байт-код кладётся в таблицу FrozenImporter.</p>
+<p><strong>Extension</strong> — C-расширения: <code>ExtensionFileLoader</code> загружает динамическую библиотеку и ищет в ней точку входа <code>PyInit_&lt;имя модуля&gt;</code>; дальше весь импорт сводится к одному вызову в C. Суффиксы (<code>.cpython-312-x86_64-linux-gnu.so</code>, <code>.abi3.so</code>) кодируют ABI — отсюда привязка колёс к версии интерпретатора (14.1). Подробный разбор C-стороны — тема отдельной части (XVII); здесь важно, что для импорт-механики extension ничем не отличается от source: тот же PathFinder, тот же FileFinder, просто другой суффикс с высшим приоритетом (16.3).</p>
+<p><strong>zipimport</strong> — импорт прямо из zip-архива, без распаковки. Работает через path hook (16.3): элемент <code>sys.path</code>, указывающий на <code>.zip</code>, обслуживает <code>zipimporter</code>, который читает каталог архива и грузит модули оттуда:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">zmod</span>                  <span class="c1"># bundle.zip добавлен в sys.path</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">zmod</span><span class="o">.</span><span class="vm">__file__</span>                     <span class="c1"># &#39;…/bundle.zip/zmod.py&#39;  ← путь внутрь архива</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="nb">type</span><span class="p">(</span><span class="n">zmod</span><span class="o">.</span><span class="n">__loader__</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>    <span class="c1"># &#39;zipimporter&#39;</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">zmod</span><span class="o">.</span><span class="n">ZIPVAL</span>                       <span class="c1"># 7 — обычный модуль во всём, кроме файловой системы</span>
+</span></code></pre></div>
+<p>Пакеты в zip работают как обычно (архив — «каталог» для PathFinder). Тонкость — <code>.pyc</code>: если в zip лежит исходник, zipimport компилирует его <strong>при каждом импорте</strong> (писать <code>__pycache__</code> внутрь архива некуда); положите в архив заранее скомпилированный <code>m.pyc</code> — и zip-импорт сравнивается по скорости с обычным каталогом (бенчмарк B4: 58 мкс против 396 мкс на исходнике). Практические применения: однофайловая дистрибуция приложений, embeddable-дистрибутивы, инструменты вроде PyInstaller (штатно таскают приложение в zipapp), и stdlib-зипы при сборке интерпретатора.</p>
+<p>Различать виды изнутри процесса удобно по <code>sys.stdlib_module_names</code> (3.10+) — статическому множеству имён stdlib — в паре с <code>spec.origin</code>: это и есть «проверка, что <code>foo</code> — не чья-то локальная подделка» (10.4).</p>
+<h2 id="16.10">16.10. Кастомные импорт-хуки: от логгера до блокировщика<a class="headerlink" href="#16.10" title="Permanent link">#</a></h2>
+<p><code>sys.meta_path</code> — обычный список (16.3), и каждый, кто в него добавится, получит голос в решении «где взять модуль». Два канонических применения — наблюдение и запрет.</p>
+<p><strong>Логгер импортов.</strong> Finder, который всё записывает и возвращает <code>None</code> (то есть не мешает остальным):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="n">log</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">class</span> <span class="nc">ImportLogger</span><span class="p">:</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="k">def</span> <span class="nf">find_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>        <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>        <span class="k">return</span> <span class="kc">None</span>                     <span class="c1"># «не знаю такого» — ищите дальше</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ImportLogger</span><span class="p">())</span> <span class="c1"># первым — видеть все запросы</span>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="kn">import</span> <span class="nn">json</span>
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>                         <span class="c1"># 23 — столько имён затронул один import json</span>
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">log</span><span class="p">[:</span><span class="mi">6</span><span class="p">])</span>
+</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a><span class="c1"># [&#39;json&#39;, &#39;json.decoder&#39;, &#39;re&#39;, &#39;enum&#39;, &#39;types&#39;, &#39;operator&#39;]</span>
+</span></code></pre></div>
+<p>Двадцать три имени на «безобидный» <code>import json</code> — наглядная цена транзитивных зависимостей: тело <code>json/__init__.py</code> тянет <code>json.decoder</code>, тот — <code>re</code>, а <code>re</code> тянет <code>enum</code>, <code>functools</code>, <code>operator</code> и дальше по графу. Тот же приём в развитии (тайминг + вложенность) и есть <code>-X importtime</code> (16.11).</p>
+<p><strong>Блокировщик.</strong> Finder, который бросает исключение на запрещённых именах:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="k">class</span> <span class="nc">ImportBlocker</span><span class="p">:</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="n">BLOCKED</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;socket&quot;</span><span class="p">}</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="k">def</span> <span class="nf">find_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCKED</span><span class="p">:</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[policy] импорт </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> запрещён политикой проекта&quot;</span><span class="p">)</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="n">sys</span><span class="o">.</span><span class="n">meta_path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ImportBlocker</span><span class="p">())</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>    <span class="kn">import</span> <span class="nn">socket</span>
+</span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>      <span class="c1"># [policy] импорт &#39;socket&#39; запрещён политикой проекта</span>
+</span></code></pre></div>
+<p>Так работают «импорт-политики»: тестовые гарды («никто не должен тянуть сеть в юнит-тестах»), песочницы, license-контроль. ⚠️ Исключение из <code>find_spec</code> <strong>не глушится</strong> — оно убивает импорт целиком, поэтому блокировщик и работает; но это же значит: хук с багом роняет импорт чего угодно. Держите хуки маленькими и без зависимостей. Родственный механизм с более формальным контрактом — audit hooks: событие <code>import</code> поднимается на уровне C API для каждого импорта (10.7), и его нельзя перехитрить сменой <code>sys.meta_path</code>.</p>
+<p>Почему логгер «видит» 23 имени, а не 23+1: хук добавлен <strong>после</strong> старта, и всё уже импортированное интерпретатором (<code>sys</code>, <code>os</code>, сам <code>sys.meta_path</code>…) идёт мимо кэша — для них <code>find_spec</code> не вызывается вовсе. Хук, вставленный до всего (из <code>sitecustomize</code>), увидит и стартовый слой.</p>
+<p><strong><code>sitecustomize</code> и <code>usercustomize</code>.</strong> Это <code>import</code>-строки <code>.pth</code>-механики из 16.2, доведённые до стандарта: модуль <code>sitecustomize</code> (обычно кладут в site-packages) и <code>usercustomize</code> (в user site) импортируются <code>site.py</code> при каждом старте — если найдены. Здесь включают <code>faulthandler</code> глобально (10.8), ставят audit hooks, добавляют корпоративные пути. Порядок: <code>sitecustomize</code> раньше <code>usercustomize</code>; отключить слой целиком можно <code>-S</code>/<code>-E</code>. Именно поэтому в <code>importtime</code>-трассе они висят под <code>site</code> (16.11) — и почему «у меня на машине работает» иногда означает «у меня в sitecustomize лежит магия».</p>
+<p>Реальная жизнь хуков, с которыми вы уже встречались в книге: pytest переписывает <code>assert</code> ваших тестов через импорт-хук (assertion rewriting, 15.6) — перехватывая загрузку тестового модуля и подсовывая переписанный байт-код; coverage.py ставит плагины на тот же механизм; виртуальные окружения работают через <code>sys.path</code>, собранный <code>site.py</code> (11.31). Импорт-система — самая легальная точка расширения Python: всё, что делают pytest и coverage, доступно и вам без единого форка интерпретатора.</p>
+<h2 id="16.11">16.11. Диагностика старта: <code>-X importtime</code><a class="headerlink" href="#16.11" title="Permanent link">#</a></h2>
+<p>Флаг <code>-X importtime</code> (3.7+) печатает в <strong>stderr</strong> дерево всех импортов с таймингами:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>$ python -X importtime -c &#39;import json&#39;          # PYTHONNOUSERSITE=1
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>import time: self [us] | cumulative | imported package
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>…
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>import time:       197 |       1420 | site
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>import time:      1110 |       3367 |       enum
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>import time:       385 |       4819 |     re
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>import time:       462 |       5696 |   json.decoder
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>import time:       338 |        338 |   json.encoder
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>import time:       224 |       6256 | json
+</span></code></pre></div>
+<p>Читается так: <strong>отступ — глубина вложенности</strong> (кто кого импортировал: <code>json</code> → <code>json.decoder</code> → <code>re</code> → <code>enum</code>); <code>self</code> — собственное время модуля (исполнение тела без детей); <code>cumulative</code> — модуль вместе со всеми его зависимостями. На фрагменте выше видно всё: сам <code>json/__init__.py</code> стоит 224 мкс, но весь импорт — 6256 мкс, и почти всё время сидит в детях: <code>re</code> (4819 мкс) с его <code>enum</code> (3367 мкс) — классическая тройка «импортировал json — заплатил за re». Порядок строк — порядок завершения загрузки, снизу вверх по дереву.</p>
+<p>Глобальная картина старта процесса: <code>site</code> (1420 мкс) исполняется до вашего кода, и его стоимость платится даже за <code>python -c 'pass'</code>. Эквивалент через окружение — <code>PYTHONPROFILEIMPORTTIME=1</code> (10.3) — удобно, когда флаг не пробросить (запуск через обёртку, tox, IDE).</p>
+<p>Методика работы с медленным стартом:</p>
+<ol>
+<li><strong>Снять трассу</strong> реального запуска (<code>python -X importtime your_app.py 2&gt; imports.log</code>) — не угадывать, а посмотреть топ по cumulative.</li>
+<li><strong>Найти «слишком ранние» импорты</strong>: модули, которые импортируются при старте, но нужны одной команде/подкоманде → перенести в функцию или сделать ленивыми (16.7).</li>
+<li><strong>Проверить тяжеловесов по self</strong>: большой self у <code>__init__.py</code> — исполняемый код на верхнем уровне пакета; кандидаты на разбиение.</li>
+<li><strong>Зафиксировать бюджет</strong> в CI: сравнение <code>importtime</code> между коммитами ловит регрессии старта до пользователей.</li>
+</ol>
+<h3 id="16.11-benchmarki">Бенчмарки к Части XVI<a class="headerlink" href="#16.11-benchmarki" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># B1. Тёплый кэш sys.modules против переисполнения модуля (CPython 3.12):</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;import json&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20_000</span><span class="p">)</span>               <span class="c1"># ≈  137 нс за импорт (кэш)</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;from json import loads&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20_000</span><span class="p">)</span>    <span class="c1"># ≈  340 нс (кэш + атрибут)</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="c1"># 100 полных переисполнений json (вычищен из sys.modules):</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="c1"># ≈ 493 мкс за импорт — в тысячи раз дороже тёплого кэша</span>
+</span></code></pre></div>
+<p>Повторный <code>import</code> — это dict-lookup (16.1); реальная цена импорта — только первый раз, и почти вся она — исполнение тела и его зависимостей.</p>
+<p><strong>B2. Старт процесса (среднее по 20 запускам):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Время</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python -c 'pass'</code></td>
+<td>≈ 9.3 мс</td>
+</tr>
+<tr>
+<td><code>python -S -c 'pass'</code> (без site)</td>
+<td>≈ 7.7 мс</td>
+</tr>
+<tr>
+<td><code>python -c 'import json'</code></td>
+<td>≈ 16.7 мс</td>
+</tr>
+<tr>
+<td><code>python -c 'import json, urllib.request, argparse, xml.etree.ElementTree'</code></td>
+<td>≈ 59.3 мс</td>
+</tr>
+</tbody>
+</table>
+<p>База старта — 9 мс, из них ~1.6 мс — <code>site.py</code>; «просто импортируем четыре модуля сверху» — плюс 50 мс к каждому запуску. Для CLI, который зовут в цикле (или в CI на тысячи джобов), это готовый аргумент за ленивую загрузку.</p>
+<p><strong>B3. <code>find_spec</code> и кэш путей:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># 500 вызовов importlib.util.find_spec(&#39;json&#39;) по горячему кэшу: ≈ 0.3 мкс/вызов</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="c1"># первый вызов после importlib.invalidate_caches(): ≈ 2 мкс</span>
+</span></code></pre></div>
+Поиск по кэшированному пути почти бесплатен; дорог <code>find_spec</code> только на холодных путях и родителях-пакетах (16.3 ⚠️).</p>
+<p><strong>B4. Импорт модуля: каталог против zip (60 свежих импортов, медиана):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Вариант</th>
+<th>Время</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>каталог + готовый <code>.pyc</code></td>
+<td>≈ 58 мкс</td>
+</tr>
+<tr>
+<td>zip + исходник</td>
+<td>≈ 396 мкс</td>
+</tr>
+<tr>
+<td>zip + заранее скомпилированный <code>.pyc</code></td>
+<td>≈ 58 мкс</td>
+</tr>
+</tbody>
+</table>
+<p>Zip-импорт <strong>не медленнее</strong> обычного — если в архиве байт-код. Исходник в zip компилируется на каждый импорт (16.9), и это ×7. Укладывайте в архивы pyc — вопрос лишь соблюдения версий (magic number, 13.2).</p>
+<p><strong>B5. Цена «импортируй сверху»:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># импорт urllib.request + xml.etree.ElementTree + argparse + json «сверху»:</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="c1"># ≈ 15 мс на каждый запуск процесса (то же, что и в B2 минус база)</span>
+</span></code></pre></div>
+Четыре модуля — уже 15 мс; реальные приложения тянут десятки. Перенос импорта из шапки в точку использования — самый дешёвый способ вернуть это время, и <code>-X importtime</code> до и после — доказательство, а не вера.</p>
+<p>Числа ориентировочные: абсолютные значения зависят от машины, ФС и окружения; отношения — стабильны.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood" target="_blank" rel="noopener" title="GitHub репозиторий" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.prev_next", "navigation.top", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
