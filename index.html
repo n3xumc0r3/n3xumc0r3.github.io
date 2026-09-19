@@ -506,6 +506,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xv-assert-cpython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XV. Тестирование: от assert до тестов самого CPython
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -831,6 +840,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="15-testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -849,10 +878,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
         
           
-          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -863,8 +892,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_16">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1160,6 +1189,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xv-assert-cpython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XV. Тестирование: от assert до тестов самого CPython
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -1215,7 +1253,7 @@
 <h2 id="_1">Для кого<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
 <p>Для разработчиков, которые уже пишут на Python и хотят понимать, что происходит под капотом. Не учебник для новичков — предполагается, что вы знаете базовый синтаксис, разбираетесь в классах и хотя бы раз запускали <code>asyncio</code>. Книга будет полезна тем, кто готовится к сложным собеседованиям, пишет библиотеки и фреймворки, занимается оптимизацией или просто хочет выйти за рамки «написал код — заработало». Часть VIII (internals CPython) и приложения A–B полезны преподавателям, ревьюерам и авторам проверяющих систем.</p>
 <h2 id="_2">Объём<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>~19 200 строк, ~1.0 МБ исходника. 12 глав и 4 приложения, 171 раздел с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
+<p>~20 800 строк, ~1.1 МБ исходника. 15 частей и 4 приложения, 191 раздел с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
 <h2 id="_3">Лицензия<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>Текст — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, код в примерах — <a href="https://github.com/n3xumc0r3/py-underhood/blob/main/CODE_LICENSE">MIT</a>. Бесплатно для чтения и некоммерческого использования. Внести правку можно через PR — <a href="https://github.com/n3xumc0r3/py-underhood/pulls">создайте его прямо на GitHub</a>, открыв любой файл в <code>book/</code> и нажав «Edit».</p>
 <h2 id="_4">Структура по сложности<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
@@ -1233,6 +1271,7 @@
 <p><a href="12-linters/">Часть XII</a> — линтеры, директивы</p>
 <p><a href="13-bytecode-vm/">Часть XIII</a> — от .py к байт-коду: компиляция и виртуальная машина</p>
 <p><a href="14-implementations/">Часть XIV</a> — не только CPython: реализации и REPL-ы</p>
+<p><a href="15-testing/">Часть XV</a> — тестирование: assert, unittest, mock, doctest, pytest, coverage, sys.monitoring</p>
 <p><a href="appendix-a-plagiarism/">Приложение A</a> — системы обнаружения плагиата</p>
 <p><a href="appendix-b-code-checkers/">Приложение B</a> — взаимодействие с системами проверки кода</p>
 <p><a href="appendix-c-code-golf/">Приложение C</a> — code golf</p>
@@ -1474,6 +1513,21 @@
 <li><a href="14-implementations/#14.2">14.2. Альтернативные реализации: кто, на чём, зачем</a></li>
 <li><a href="14-implementations/#14.3">14.3. Не реализации: Numba, Cython и граница «тот же язык»</a></li>
 <li><a href="14-implementations/#14.4">14.4. REPL поверх REPL: IPython, Jupyter и соседи</a></li>
+</ul>
+<h3 id="xv-assert-cpython">Часть XV. Тестирование: от assert до тестов самого CPython<a class="headerlink" href="#xv-assert-cpython" title="Permanent link">#</a></h3>
+<p><a href="15-testing/">Открыть часть →</a></p>
+<ul>
+<li><a href="15-testing/#15.1">15.1. <code>assert</code> под капотом: байт-код, <code>-O</code> и тонкие локации ошибок</a></li>
+<li><a href="15-testing/#15.2">15.2. <code>unittest</code> изнутри: loader → suite → runner → result</a></li>
+<li><a href="15-testing/#15.3">15.3. <code>unittest.mock</code> изнутри: анатомия подмены</a></li>
+<li><a href="15-testing/#15.4">15.4. Подмена времени и окружения в тестах</a></li>
+<li><a href="15-testing/#15.5">15.5. <code>doctest</code> изнутри</a></li>
+<li><a href="15-testing/#15.6">15.6. <code>pytest</code> изнутри</a></li>
+<li><a href="15-testing/#15.7">15.7. <code>coverage.py</code>: измерение покрытия</a></li>
+<li><a href="15-testing/#15.8">15.8. <code>sys.settrace</code>/<code>sys.setprofile</code>: крючки отладчика и профайлера</a></li>
+<li><a href="15-testing/#15.9">15.9. <code>sys.monitoring</code> (PEP 669, 3.12+): один API для инструментов</a></li>
+<li><a href="15-testing/#15.10">15.10. Тесты самого CPython: <code>python -m test</code></a></li>
+<li><a href="15-testing/#15.11">15.11. Тестовые режимы интерпретатора: шпаргалка</a></li>
 </ul>
 <h3 id="_6">Приложения<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <ul>

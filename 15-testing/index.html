@@ -1,0 +1,2336 @@
+<!--
+  Material for MkDocs — main.html override
+  Adds Open Graph / Twitter Card meta + JSON-LD structured data on every page.
+  Inherited from the base material theme; only the `htmltitle` and `extrahead`
+  blocks are customized.
+-->
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+      
+      
+        <meta name="author" content="@n3xumc0r3">
+      
+      
+        <link rel="canonical" href="https://n3xumc0r3.github.io/15-testing/">
+      
+      
+        <link rel="prev" href="../14-implementations/">
+      
+      
+        <link rel="next" href="../appendix-a-plagiarism/">
+      
+      
+      <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Часть XV. Тестирование: от assert до тестов самого CPython - Python под капотом</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Python под капотом">
+  <meta property="og:title" content="Часть XV. Тестирование: от assert до тестов самого CPython — Python под капотом">
+  <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/15-testing/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Часть XV. Тестирование: от assert до тестов самого CPython — Python под капотом">
+  <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Python под капотом",
+    "alternateName": "Python Under the Hood",
+    "description": "От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python и интерпретатора CPython.",
+    "inLanguage": "ru",
+    "url": "https://n3xumc0r3.github.io/",
+    "author": {
+      "@type": "Person",
+      "name": "n3xumc0r3",
+      "url": "https://github.com/n3xumc0r3"
+    },
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "py-underhood",
+      "url": "https://github.com/n3xumc0r3/py-underhood"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Python (programming language)"},
+      {"@type": "Thing", "name": "CPython internals"},
+      {"@type": "Thing", "name": "Metaprogramming"},
+      {"@type": "Thing", "name": "Asynchronous programming"}
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xv-assert-cpython" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Python под капотом" class="md-header__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python под капотом
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Часть XV. Тестирование: от assert до тестов самого CPython
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-green"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Python под капотом" class="md-nav__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python под капотом
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Главная
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть I. Базовые скрытые особенности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-context-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть II. Контекстные менеджеры
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-generators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть III. Генераторы и итераторы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-async/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IV. Асинхронность
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть V. Классы и интерфейсы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-descriptors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VI. Дескрипторы и property
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-metaprogramming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VII. Метапрограммирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-cpython-internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VIII. Внутренности CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-encodings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IX. Кодировки и кодеки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть X. Интроспекция окружения
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-stdlib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XI. Полезные модули stdlib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-linters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XII. Линтеры и директивы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-implementations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Часть XV. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#15.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.1. assert под капотом: байт-код, -O и тонкие локации ошибок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.1-pep-657" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEP 657: тонкие локации ошибок в трейсбеках (3.11+)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.2. unittest изнутри: loader → suite → runner → result
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.2. unittest изнутри: loader → suite → runner → result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.2-poryadok" class="md-nav__link">
+    <span class="md-ellipsis">
+      Порядок тестов и discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.2-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      TestResult: куда деваются skip, xfail и subTest
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.3. unittest.mock изнутри: анатомия подмены
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.3. unittest.mock изнутри: анатомия подмены">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.3-zapis-vyzovov" class="md-nav__link">
+    <span class="md-ellipsis">
+      Авто-атрибуты и запись вызовов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.3-spec-i-autospec" class="md-nav__link">
+    <span class="md-ellipsis">
+      spec и autospec: мок, который не врёт
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.3-lovushka-from-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      patch: setattr с откатом — и классическая ловушка
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.4. Подмена времени и окружения в тестах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.5. doctest изнутри
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.6. pytest изнутри
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.6. pytest изнутри">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.6-sbor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сбор: голые функции, TestCase, parametrize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-assertion-rewriting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assertion rewriting: почему assert pytest'а такой умный
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-fikstury" class="md-nav__link">
+    <span class="md-ellipsis">
+      Фикстуры: dependency injection по имени
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-plaginy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Плагины и кэш
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.7. coverage.py: измерение покрытия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.7. coverage.py: измерение покрытия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.7-vetvnoe-pokrytie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ветвное покрытие
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.7-dvizhki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внутри: SQLite и движки трассировки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.8-izmeneniya-3-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что изменилось в 3.12: settrace теперь эмуляция
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.9-lokalnye-sobytiya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальные события: подписка на один код-объект
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.10. Тесты самого CPython: python -m test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.10. Тесты самого CPython: python -m test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.10-refleaki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Охота на рефлаки: debug-сборка
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.11. Тестовые режимы интерпретатора: шпаргалка
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.11. Тестовые режимы интерпретатора: шпаргалка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Приложения
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            Приложения
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Системы обнаружения плагиата
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-c-code-golf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. Code golf
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-d-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#15.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.1. assert под капотом: байт-код, -O и тонкие локации ошибок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.1-pep-657" class="md-nav__link">
+    <span class="md-ellipsis">
+      PEP 657: тонкие локации ошибок в трейсбеках (3.11+)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.2. unittest изнутри: loader → suite → runner → result
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.2. unittest изнутри: loader → suite → runner → result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.2-poryadok" class="md-nav__link">
+    <span class="md-ellipsis">
+      Порядок тестов и discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.2-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      TestResult: куда деваются skip, xfail и subTest
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.3. unittest.mock изнутри: анатомия подмены
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.3. unittest.mock изнутри: анатомия подмены">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.3-zapis-vyzovov" class="md-nav__link">
+    <span class="md-ellipsis">
+      Авто-атрибуты и запись вызовов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.3-spec-i-autospec" class="md-nav__link">
+    <span class="md-ellipsis">
+      spec и autospec: мок, который не врёт
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.3-lovushka-from-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      patch: setattr с откатом — и классическая ловушка
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.4. Подмена времени и окружения в тестах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.5. doctest изнутри
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.6. pytest изнутри
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.6. pytest изнутри">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.6-sbor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сбор: голые функции, TestCase, parametrize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-assertion-rewriting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assertion rewriting: почему assert pytest'а такой умный
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-fikstury" class="md-nav__link">
+    <span class="md-ellipsis">
+      Фикстуры: dependency injection по имени
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.6-plaginy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Плагины и кэш
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.7. coverage.py: измерение покрытия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.7. coverage.py: измерение покрытия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.7-vetvnoe-pokrytie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ветвное покрытие
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15.7-dvizhki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внутри: SQLite и движки трассировки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.8-izmeneniya-3-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что изменилось в 3.12: settrace теперь эмуляция
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.9-lokalnye-sobytiya" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальные события: подписка на один код-объект
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.10. Тесты самого CPython: python -m test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.10. Тесты самого CPython: python -m test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.10-refleaki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Охота на рефлаки: debug-сборка
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      15.11. Тестовые режимы интерпретатора: шпаргалка
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15.11. Тестовые режимы интерпретатора: шпаргалка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#15.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="xv-assert-cpython">Часть XV. Тестирование: от assert до тестов самого CPython<a class="headerlink" href="#xv-assert-cpython" title="Permanent link">#</a></h1>
+<p>До сих пор тесты в этой книге мелькали только мимоходом — как источник примеров или сосед по CLI. Эта часть смотрит на тестирование так, как смотрит вся книга: что происходит под капотом. Каждый тестовый инструмент сидит на конкретном крючке интерпретатора: <code>assert</code> — это скомпилированный байт-код с отдельным <code>LOAD_ASSERTION_ERROR</code>; <code>unittest.mock</code> — дисциплина над <code>setattr</code>/<code>__getattribute__</code>; <code>coverage.py</code> — счётчики на line-событиях трейсера; отладчики и профайлеры в 3.12+ — уже не <code>sys.settrace</code>, а новый API <code>sys.monitoring</code> (PEP 669). А «тесты самого CPython» — это вообще исполняемая спецификация языка (14.1). Разделы идут от простого к сложному: сначала то, что есть в любом тесте (<code>assert</code>, <code>unittest</code>, mock), затем фреймворки (<code>doctest</code>, <code>pytest</code>, coverage), затем интерпретаторная кухня (трассировка, monitoring, regrtest, диагностические режимы).</p>
+<h2 id="15.1">15.1. <code>assert</code> под капотом: байт-код, <code>-O</code> и тонкие локации ошибок<a class="headerlink" href="#15.1" title="Permanent link">#</a></h2>
+<p>Базовая единица любого теста — <code>assert</code>. В 1.15 разобраны ловушки синтаксиса и флаг <code>-O</code>; здесь — как assert живёт в байт-коде и почему трейсбеки в 3.11+ стали такими точными.</p>
+<p>Компиляция <code>assert x &gt; 0, "bad"</code> на 3.12 (8.9):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">dis</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;bad&quot;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">#   2           LOAD_FAST                0 (x)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">#               LOAD_CONST               1 (0)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">#               COMPARE_OP              40 (&gt;)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">#               POP_JUMP_IF_TRUE         7 (to 26)   # если условие ИСТИННО —</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1">#                                                         прыгаем мимо raise-блока</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">#               LOAD_ASSERTION_ERROR                 # иначе готовим исключение</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">#               LOAD_CONST               2 (&#39;bad&#39;)   # и его сообщение</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">#               RAISE_VARARGS            1</span>
+</span></code></pre></div>
+<p>Три детали, которые видно прямо в выводе. Первая — компилятор переворачивает условие: вместо «если ложно — падай» он генерирует «если истинно — прыгай дальше», потому что happy-path (тест прошёл) должен быть прямым путём без прыжка. Вторая — у исключения есть собственный опкод загрузки <code>LOAD_ASSERTION_ERROR</code>: так интерпретатор не ищет <code>AssertionError</code> в ваших глобалах — подмена <code>builtins.AssertionError</code> не изменит поведение <code>assert</code>. Третья — сообщение <code>"bad"</code> — это обычная константа или выражение: f-string в сообщении вычисляется <strong>только при падении</strong> assert, в счастливом пути её нет.</p>
+<p>С <code>-O</code> и <code>-OO</code> всё исчезает ещё на этапе компиляции (1.15): можно убедиться без перезапуска интерпретатора:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">src</span> <span class="o">=</span> <span class="s2">&quot;def f(x):</span><span class="se">\n</span><span class="s2">    assert x &gt; 0, &#39;bad&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">plain</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">&quot;&lt;t&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">optimized</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">&quot;&lt;t&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kn">import</span> <span class="nn">dis</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">ops</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">opname</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dis</span><span class="o">.</span><span class="n">get_instructions</span><span class="p">(</span><span class="n">optimized</span><span class="p">)}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RAISE_VARARGS в -O-версии:&quot;</span><span class="p">,</span> <span class="s2">&quot;RAISE_VARARGS&quot;</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># RAISE_VARARGS в -O-версии: False</span>
+</span></code></pre></div>
+<p>Отсюда правило из 1.15 на языке байт-кода: <code>-O</code> не «выключает» assert'ы — она <strong>не компилирует их вовсе</strong>, вместе с сообщением и любыми побочными эффектами в нём.</p>
+<h3 id="15.1-pep-657">PEP 657: тонкие локации ошибок в трейсбеках (3.11+)<a class="headerlink" href="#15.1-pep-657" title="Permanent link">#</a></h3>
+<p>До 3.11 traceback показывал только строку, где что-то пошло не так. PEP 657 добавил в кодовые объекты точные колонки начала и конца каждого выражения (<code>co_positions()</code>), и теперь каретки <code>^</code> в трейсбеке указывают на конкретный фрагмент выражения:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># t.py</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">][</span><span class="s2">&quot;c&quot;</span><span class="p">][</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Traceback (most recent call last):
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  File &quot;t.py&quot;, line 2, in &lt;module&gt;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    print(d[&quot;a&quot;][&quot;c&quot;][&quot;d&quot;])
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>          ~~~~~~^^^^^
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>KeyError: &#39;c&#39;
+</span></code></pre></div>
+<p>Каретка указывает ровно на <code>["c"]</code> — ключ, которого нет, а не на весь <code>print</code> и не на всю цепочку индексации. Тильды показывают успешно вычисленную часть (<code>d["a"]</code>), каретки — сбойную. Для assert'ов это работает так:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># t2.py</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">assert</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;fail&quot;</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Traceback (most recent call last):
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  File &quot;t2.py&quot;, line 2, in &lt;module&gt;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    assert x == 1 and x &gt; 3, &quot;fail&quot;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>           ^^^^^^^^^^^^^^^^
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>AssertionError: fail
+</span></code></pre></div>
+<p>⚠️ Предел точности задаёт байт-код: у <code>and</code>-цепочки нет отдельной инструкции на каждый операнд, поэтому каретки накрывают всё условие. Чем «плоско» выражение, тем точнее прицел. Именно это улучшение сделало сообщения тестов читаемыми без отладчика: видно <strong>что именно</strong> в строке упало. А pytest идёт дальше и переписывает сами assert'ы (15.6) — уже не локация, а интерпретация.</p>
+<h2 id="15.2">15.2. <code>unittest</code> изнутри: loader → suite → runner → result<a class="headerlink" href="#15.2" title="Permanent link">#</a></h2>
+<p><code>unittest</code> — xUnit-порт из Java (за авторством Steve'а Purcell'а, в stdlib с 2.1), и его архитектура — конвейер из четырёх ролей:</p>
+<table>
+<thead>
+<tr>
+<th>Роль</th>
+<th>Класс</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Хранение</td>
+<td><code>unittest.TestCase</code></td>
+<td>один тест-класс; методы <code>test_*</code> — тесты</td>
+</tr>
+<tr>
+<td>Поиск</td>
+<td><code>unittest.TestLoader</code></td>
+<td>находит тесты → собирает <code>TestSuite</code></td>
+</tr>
+<tr>
+<td>Контейнер</td>
+<td><code>unittest.TestSuite</code></td>
+<td>просто список тестов и итерация по нему</td>
+</tr>
+<tr>
+<td>Исполнение</td>
+<td><code>unittest.TextTestRunner</code></td>
+<td>гоняет suite, копит события в <code>TestResult</code></td>
+</tr>
+<tr>
+<td>Протокол</td>
+<td><code>unittest.TestResult</code></td>
+<td>счётчики: <code>testsRun</code>, <code>failures</code>, <code>errors</code>, <code>skipped</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ключ к пониманию — что <code>TestCase</code> — это <strong>не</strong> «тест». Это класс-фабрика: <code>TestLoader.loadTestsFromTestCase(T)</code> создаёт по одному экземпляру <code>T</code> на каждый метод <code>test_*</code>. Каждый экземпляр — самостоятельный тест со своим <code>setUp</code>/<code>tearDown</code>: изоляция достигается тем, что каждый тест живёт в свежем объекте, а не тем, что состояние «чистится» после.</p>
+<p>Запуск через <code>python -m unittest</code> — это тот же runpy-механизм, что у <code>python -m json.tool</code> (11.31): интерпретатор импортирует пакет <code>unittest</code> как <code>__main__</code>, тот подхватывает <code>unittest.main()</code> и дальше — loader/runner. Живой вывод:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ python -m unittest -v
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>test_add (test_demo.TD.test_add) ... ok
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>----------------------------------------------------------------------
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Ran 1 test in 0.000s
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>OK
+</span></code></pre></div>
+<h3 id="15.2-poryadok">Порядок тестов и discovery<a class="headerlink" href="#15.2-poryadok" title="Permanent link">#</a></h3>
+<p>Первое, что удивляет тех, кто ждёт «порядок объявления»: тесты исполняются <strong>в алфавитном порядке</strong> имён. Это свойство лоадера — <code>TestLoader.sortTestMethodsUsing</code> (по умолчанию <code>three_way_cmp</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">unittest</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">class</span> <span class="nc">T</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="k">def</span> <span class="nf">test_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="k">def</span> <span class="nf">test_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="k">def</span> <span class="nf">test_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestLoader</span><span class="p">()</span><span class="o">.</span><span class="n">loadTestsFromTestCase</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">print</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">_testMethodName</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">suite</span><span class="p">])</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># [&#39;test_a&#39;, &#39;test_b&#39;, &#39;test_c&#39;]  — не порядок объявления!</span>
+</span></code></pre></div>
+<p>Следствие для практики: <code>test_1</code>…<code>test_10</code> упорядочатся как <code>test_1, test_10, test_2, …</code> — если порядок важен, тесты делают <strong>зависимыми от данных, а не от имён</strong>, либо используют <code>subTest</code>. Присвоить <code>sortTestMethodsUsing = None</code> можно (порядок станет порядком обнаружения), но полагаться на это — значит строить тесты на хрупком крючке.</p>
+<p><code>discover</code> ищет файлы по шаблону <code>test*.py</code> (настраивается) и — важный момент — собирает <strong>только <code>TestCase</code>-подклассы</strong> и модули с <code>load_tests</code>. Голая функция <code>def test_ok(): ...</code> для unittest не существует:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># pkg/test_x.py</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span> <span class="nn">unittest</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">class</span> <span class="nc">TX</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="k">def</span> <span class="nf">test_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># pkg/test_y.py</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">def</span> <span class="nf">test_bare</span><span class="p">():</span> <span class="k">pass</span>          <span class="c1"># unittest это НЕ увидит</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">unittest</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">tests</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">defaultTestLoader</span><span class="o">.</span><span class="n">discover</span><span class="p">(</span><span class="s2">&quot;pkg&quot;</span><span class="p">)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">tests</span><span class="o">.</span><span class="n">countTestCases</span><span class="p">())</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 1   — test_y.py просканирован, но голой функции там нет</span>
+</span></code></pre></div>
+<p>Это самое заметное отличие от pytest, который собирает голые функции <code>test_*</code> как полноценные тесты (15.6).</p>
+<h3 id="15.2-result">TestResult: куда деваются skip, xfail и subTest<a class="headerlink" href="#15.2-result" title="Permanent link">#</a></h3>
+<p>Runner ничего не решает — он передаёт события в <code>TestResult</code>. Отсюда механика всех «статусов»:</p>
+<ul>
+<li><code>skipTest()</code> / <code>@unittest.skip(...)</code>: тест бросает <code>unittest.SkipTest</code>, лоадер/раннер ловит его отдельно → <code>result.skipped</code> — список пар <code>(тест, причина)</code>;</li>
+<li><code>@unittest.expectedFailure</code>: если тест упал — фиксируется в <code>result.expectedFailures</code>; если <strong>внезапно прошёл</strong> — в <code>result.unexpectedSuccesses</code> (это тоже не успех: сюрприз требует разбирательства);</li>
+<li><code>subTest</code>: провал одного подтеста <strong>не останавливает</strong> остальные подтесты этого метода, а в отчёт пишется конкретный случай.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">unittest</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">r</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestResult</span><span class="p">()</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">class</span> <span class="nc">T2</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="k">def</span> <span class="nf">test_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="k">def</span> <span class="nf">test_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipTest</span><span class="p">(</span><span class="s2">&quot;потом&quot;</span><span class="p">)</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">expectedFailure</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="k">def</span> <span class="nf">test_xfail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="k">def</span> <span class="nf">test_fail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="n">unittest</span><span class="o">.</span><span class="n">TestLoader</span><span class="p">()</span><span class="o">.</span><span class="n">loadTestsFromTestCase</span><span class="p">(</span><span class="n">T2</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">testsRun</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">failures</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">skipped</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">expectedFailures</span><span class="p">))</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1"># 4 1 [(&lt;T2 testMethod=test_skip&gt;, &#39;потом&#39;)] 1</span>
+</span></code></pre></div>
+<p><code>subTest</code> при этом честно считается одним тестом, но провал конкретного подтеста попадает в отчёт с его параметрами:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">class</span> <span class="nc">T3</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="k">def</span> <span class="nf">test_many</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">subTest</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">):</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># testsRun = 1, но в result.failures — падение именно подтеста i=3</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1"># AssertionError: 3 == 3</span>
+</span></code></pre></div>
+<p>⚠️ <code>assertNotEqual(i, 3)</code> падает с сообщением <code>3 == 3</code>, а не <code>3 != 3</code>: сообщение assert-методов показывает <strong>аргументы</strong>, из которых видно равенство. Не пугайтесь формулировки.</p>
+<p>Ещё одна деталь механики, о которой мало кто знает: у <code>TestCase</code> с 3.11+ есть <code>enterContext(cm)</code> — программный эквивалент <code>with</code> внутри теста, удобный для общих setup-ов; у <code>IsolatedAsyncioTestCase</code> — парный <code>enterAsyncContext</code> (4.9):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span> <span class="nc">WithTempdir</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">enterContext</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">())</span>  <span class="c1"># 3.11+</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span>
+</span></code></pre></div>
+<p>Выход менеджера при этом будет выполнен <strong>после</strong> <code>tearDown</code> — контекстные менеджеры, зарегистрированные через <code>enterContext</code>, стекуются в <code>ExitStack</code> теста (2.4).</p>
+<h2 id="15.3">15.3. <code>unittest.mock</code> изнутри: анатомия подмены<a class="headerlink" href="#15.3" title="Permanent link">#</a></h2>
+<p><code>unittest.mock</code> кажется магией: объект, который «умеет всё» и помнит все вызовы. Под капотом — только три механизма: <code>__getattr__</code> создаёт дочерние моки на лету, <code>__call__</code> записывает вызовы, а <code>patch</code> — это <code>setattr</code> с откатом.</p>
+<h3 id="15.3-zapis-vyzovov">Авто-атрибуты и запись вызовов<a class="headerlink" href="#15.3-zapis-vyzovov" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">m</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">m</span><span class="o">.</span><span class="n">anything</span><span class="o">.</span><span class="n">deeper</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>          <span class="c1"># ← ни один из атрибутов не существовал</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">anything</span><span class="o">.</span><span class="n">deeper</span><span class="o">.</span><span class="n">call_args</span><span class="p">)</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># call(42)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="n">ca</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">call_args</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">ca</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">ca</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>      <span class="c1"># (1,) {&#39;x&#39;: 2}   — кортежи с 3.8+</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">call_args</span> <span class="o">==</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>   <span class="c1"># True</span>
+</span></code></pre></div>
+<p>Обращение к любому атрибуту мока возвращает (и запоминает) новый <code>Mock</code> — поэтому цепочки <code>m.anything.deeper</code> работают без подготовки. Запись вызовов — список <code>_mock_call_args_list</code>; методы <code>assert_called_with</code>/<code>assert_called_once_with</code> — просто сравнения с этим списком, поэтому их «умение» не выходит за рамки <code>==</code> на <code>call(...)</code>.</p>
+<p><code>side_effect</code> даёт три поведения сразу (проверяются в порядке: исключение → iterable → значение):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">m_err</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;бум&quot;</span><span class="p">))</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">m_err</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                       <span class="c1"># ValueError: бум — исключение бросается</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">m_seq</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">m_seq</span><span class="p">();</span> <span class="n">m_seq</span><span class="p">();</span> <span class="n">m_seq</span><span class="p">()</span>      <span class="c1"># 1, 2, 3 — по значению на вызов, потом StopIteration</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="n">m_mix</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">m_mix</span><span class="p">())</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># 9  — side_effect (как iterable) имеет приоритет над return_value</span>
+</span></code></pre></div>
+<p><code>MagicMock</code> — то же самое, но с <strong>заранее настроенными dunder-методами</strong> (5.17): <code>len(MagicMock()) == 0</code>, <code>iter()</code> отдаёт пустой итератор, сравнения работают. Голый <code>Mock</code> dunder-ы не настраивает — <code>len(Mock())</code> упадёт <code>TypeError</code>. Правило: почти всегда берите <code>MagicMock</code> (он и есть значение по умолчанию у <code>patch</code>).</p>
+<h3 id="15.3-spec-i-autospec">spec и autospec: мок, который не врёт<a class="headerlink" href="#15.3-spec-i-autospec" title="Permanent link">#</a></h3>
+<p>Авто-атрибуты — и главная дыра моков: опечатка в имени метода делает тест, который проверяет <strong>несуществующий</strong> API. Лечится <code>spec</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">mi</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">mi</span><span class="o">.</span><span class="n">no_such</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># AttributeError: Mock object has no attribute &#39;no_such&#39;</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># True — мок подменяет __class__ под spec</span>
+</span></code></pre></div>
+<p><code>spec</code> ограничивает набор атрибутов реальным объектом (и <code>isinstance</code> начинает работать — мок выдаёт себя за указанный класс). <code>create_autospec</code> идёт дальше — переносит <strong>сигнатуру</strong> функции:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span> <span class="nn">inspect</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">as_py</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">as_py</span><span class="p">))</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># (a, b=0)  — сигнатура сохранена</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="n">as_py</span><span class="p">()</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># TypeError: missing a required argument: &#39;a&#39;  — вызов проверяется как настоящий</span>
+</span></code></pre></div>
+<p>⚠️ <code>autospec</code> полагается на интроспекцию, а она у C-функций ограничена: <code>create_autospec(len)</code> даёт мок с сигнатурой <code>(*args, **kwargs)</code> — проверка аргументов <strong>не включается</strong>, и <code>len(1, 2)</code> на моке не падает. Для C-API мок с autospec — не гарантия совместимости, а просто замещающий объект.</p>
+<h3 id="15.3-lovushka-from-import"><code>patch</code>: setattr с откатом — и классическая ловушка<a class="headerlink" href="#15.3-lovushka-from-import" title="Permanent link">#</a></h3>
+<p><code>mock.patch("os.getcwd", return_value="/stub")</code> механически делает вот что: разрезает строку-цель по точкам, импортирует корневой модуль, спускается по цепочке <code>getattr</code> до родителя, запоминает старое значение атрибута и делает <code>setattr(parent, "getcwd", Mock(return_value="/stub"))</code>. На выходе из блока — <code>setattr</code> обратно. Всё. Никакой интерпретаторной магии — потому и работает одинаково с чем угодно, к чему применим <code>setattr</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;os.getcwd&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s2">&quot;/stub&quot;</span><span class="p">):</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># /stub</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># /home/user/proj — после выхода атрибут восстановлен</span>
+</span></code></pre></div>
+<p>Отсюда — самая знаменитая ловушка mock: <strong><code>patch</code> подменяет атрибут модуля, а не объект</strong>. Имя, связанное через <code>from math import sqrt</code> до патча, продолжает указывать на старую функцию:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">import</span> <span class="nn">math</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span> <span class="k">as</span> <span class="n">direct_sqrt</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;math.sqrt&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span>     <span class="c1"># -1.0   — подменён атрибут модуля math</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">direct_sqrt</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span>   <span class="c1"># 3.0    — локальное имя связано СТАРОЙ функцией</span>
+</span></code></pre></div>
+<p>❌ Патчить «то, как импортировал сосед». ✅ Патчить то место, <strong>где имя используется</strong>: если тестируемый модуль сделал <code>from mymod import sqrt</code>, патчить <code>mymodule.sqrt</code>, а не <code>mymod.sqrt</code>.</p>
+<p>Пара ручек, которые дополняют картину:</p>
+<ul>
+<li><code>patch("os.definitely_not_here", create=True)</code> — патчит даже несуществующий атрибут (иначе <code>patch</code> честно падает <code>AttributeError</code> — это защита от опечаток в цели, отключать осознанно);</li>
+<li><code>mock.sentinel.obj</code> — уникальный объект-маркер: <code>sentinel.a is sentinel.a</code>, но <code>sentinel.a != sentinel.b</code> — вместо строковых «магических значений» в проверках;</li>
+<li><code>mock.seal(m)</code> — «замораживает» дерево моков: существующие атрибуты работают, новые создать нельзя (<code>AttributeError: Cannot set mock.new_attr</code>) — страховка от случайных обращений к несуществующему API, аналог <code>spec</code> для моков, собранных руками.</li>
+</ul>
+<p>Производительность моков — отдельная тема: вызов <code>Mock</code> в десятки раз дороже обычного вызова функции (54× у <code>Mock</code>, 81× у autospec — бенчмарк в конце части). В горячих путях тестов это складывается в минуты.</p>
+<h2 id="15.4">15.4. Подмена времени и окружения в тестах<a class="headerlink" href="#15.4" title="Permanent link">#</a></h2>
+<p>«Сейчас» — самый неприятный фактор недетерминизма в тестах: код смотрит на <code>datetime.now()</code>, <code>time.time()</code>, <code>time.monotonic()</code>. Инструменты заморозки времени различаются глубиной, на которой живут.</p>
+<p>Уровень один — тот же <code>patch</code> из 15.3:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">import</span> <span class="nn">time</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;time.time&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="mi">1_577_880_000</span><span class="p">):</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># 1577880000</span>
+</span></code></pre></div>
+<p>Работает только для имён, которые вызываются <strong>через атрибут модуля</strong> (<code>time.time()</code>), и только для питоновского уровня: C-расширения, вызывающие <code>time()</code> напрямую из C, мок не увидят.</p>
+<p>Уровень два — <code>freezegun</code> (чистый Python): обходит десятки модулей (<code>datetime</code>, <code>time</code>, <code>calendar</code>…) и патчит их атрибуты. Замораживается всё, включая <code>time.monotonic</code>, а <code>time.sleep</code> становится <strong>no-op</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">from</span> <span class="nn">freezegun</span> <span class="kn">import</span> <span class="n">freeze_time</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">with</span> <span class="n">freeze_time</span><span class="p">(</span><span class="s2">&quot;2020-01-01 12:00:00&quot;</span><span class="p">):</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>        <span class="c1"># 2020-01-01 12:00:00</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>               <span class="c1"># 1577880000</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">();</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="c1"># 0.0 2020-01-01 12:00:00 — sleep ничего не ждал и время не сдвинул</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>            <span class="c1"># настоящее время</span>
+</span></code></pre></div>
+<p>Уровень три — <code>time-machine</code> (C-расширение): патчит C-уровень функций времени, поэтому и вход/выход дешевле на три порядка, и поведение тоньше настраивается. <code>tick=False</code> — стоп-кадр: настенные часы стоят, но <code>sleep</code> реально спит и <code>monotonic</code> идёт; <code>tick=True</code> — часы идут от заданной точки:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">time_machine</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">with</span> <span class="n">time_machine</span><span class="o">.</span><span class="n">travel</span><span class="p">(</span><span class="s2">&quot;2020-01-01 12:00:00&quot;</span><span class="p">,</span> <span class="n">tick</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>        <span class="c1"># 2020-01-01 12:00:00</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">();</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">);</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="c1"># 0.2 2020-01-01 12:00:00 — спал по-настоящему, часы стоят</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="k">with</span> <span class="n">time_machine</span><span class="o">.</span><span class="n">travel</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tick</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">();</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">);</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>    <span class="c1"># 0.2 — время течёт от заданной точки</span>
+</span></code></pre></div>
+<p>Выбор: точечные проверки — <code>patch</code>; «остановить всё время» для интеграционных тестов — <code>freezegun</code> (дороже на входе/выходе, но тащит за собой <code>datetime</code> и сдвигает время при <code>sleep</code>-ах сторонних библиотек через свои настройки); частая заморозка в перфоманс-чувствительных тестах — <code>time-machine</code> (≈1500× быстрее freezegun на входе/выходе — бенчмарк в конце части).</p>
+<p>Часовые пояса подменяются окружением: <code>os.environ["TZ"] = "UTC"; time.tzset()</code> — POSIX-only (на Windows <code>tzset</code> нет), поэтому в кросс-платформенных тестах это делают через <code>monkeypatch</code>/<code>patch.dict</code> (2.4, 15.3) и пропускают тест на Windows (<code>@unittest.skipIf(sys.platform == "win32", ...)</code>).</p>
+<h2 id="15.5">15.5. <code>doctest</code> изнутри<a class="headerlink" href="#15.5" title="Permanent link">#</a></h2>
+<p>Директивы doctest разобраны в 12.4; здесь — как модуль устроен. <code>doctest</code> — конвейер из двух компонентов: <code>DocTestParser</code> вырезает из текста примеры (<code>&gt;&gt;&gt; ...</code> в начале строки + ожидаемый вывод до пустой строки или следующего <code>&gt;&gt;&gt;</code>), а <code>DocTestRunner</code> исполняет их и сравнивает вывод.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span> <span class="nn">doctest</span><span class="o">,</span> <span class="nn">types</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">mod_src</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="s1">def double(x):</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="s1">    &quot;&quot;&quot;Удваивает.</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="s1">    &gt;&gt;&gt; double(4)</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="s1">    8</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="s1">    &gt;&gt;&gt; double(&#39;ab&#39;)</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="s1">    &#39;abab&#39;</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="s1">    &quot;&quot;&quot;</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="s1">    return x * 2</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="s1">&#39;&#39;&#39;</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="n">fm</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">(</span><span class="s2">&quot;fake&quot;</span><span class="p">)</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="n">exec</span><span class="p">(</span><span class="n">mod_src</span><span class="p">,</span> <span class="n">fm</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">fm</span><span class="p">))</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="c1"># TestResults(failed=0, attempted=2)</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">doctest</span><span class="o">.</span><span class="n">DocTestParser</span><span class="p">()</span><span class="o">.</span><span class="n">get_examples</span><span class="p">(</span><span class="n">mod_src</span><span class="p">)))</span>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="c1"># 2</span>
+</span></code></pre></div>
+<p>Три детали механики, которые объясняют почти все «почему» doctest'а.</p>
+<p><strong>Сравнение — посимвольное сравнение строк stdout с ожидаемым текстом.</strong> Никакого repr-протокола: если функция печатает <code>'abab'</code> с кавычками, ожидание должно быть <code>'abab'</code>, а если бы вывод шёл через <code>print</code> — без кавычек. Отсюда же требование «пустая строка в ожидаемом выводе = конец примера»: парсер просто не знает, где вывод заканчивается.</p>
+<p><strong>Пространство имён примера — globals модуля (копия).</strong> Примеры из docstring'а функции исполняются в её модуле, поэтому <code>double</code> в примере выше видна без импортов. Нюанс уровня исходников: <code>DocTestFinder</code> привязывает docstring к модулю проверкой <code>module.__dict__ is func.__globals__</code> — функция, созданная в одном пространстве имён и вставленная в другой (как в паттерне <code>exec</code> выше, где важно исполнить код именно в <code>fm.__dict__</code>), examples теряет.</p>
+<p><strong>Код возврата и CLI.</strong> <code>doctest.testmod()</code> возвращает именованный кортеж <code>TestResults(failed, attempted)</code>, а <code>python -m doctest file.py</code> выходит с кодом 1 при провале — удобно для CI:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$ python -m doctest dt_fail2.py ; echo $?
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>**********************************************************************
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>File &quot;dt_fail2.py&quot;, line 2, in dt_fail2
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>Failed example:
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    1 + 1
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>Expected:
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    3
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>Got:
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    2
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>**********************************************************************
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>1 items had failures:
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>   1 of   1 in dt_fail2
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>***Test Failed*** 1 failures.
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>1
+</span></code></pre></div>
+<p>Traceback-примеры матчатся по типу исключения и сообщению, а <code># doctest: +IGNORE_EXCEPTION_DETAIL</code> (12.4) ослабляет проверку до одного типа. Там же — таблица директив (<code>+ELLIPSIS</code>, <code>+SKIP</code>, <code>+NORMALIZE_WHITESPACE</code>), здесь повторять её не будем.</p>
+<p>⚠️ Границы применимости: doctest — это <strong>документация с гарантией свежести</strong>, а не набор тестов. Он идеален там, где пример и есть спецификация (README, docstring чистых функций), и плох там, где нужны фикстуры, изоляция состояния и проверка побочных эффектов — это уже территория 15.2/15.6.</p>
+<h2 id="15.6">15.6. <code>pytest</code> изнутри<a class="headerlink" href="#15.6" title="Permanent link">#</a></h2>
+<p><code>pytest</code> — не stdlib (<code>pip install pytest</code>), но де-факто стандарт индустрии, и его «магия» — собирать голые функции, показывать умные diff'ы, раздавать фикстуры по имени аргумента — стоит на трёх конкретных механизмах: свой протокол сбора, переписывание assert'ов через импорт-хук и ленивая dependency-injection фикстур.</p>
+<h3 id="15.6-sbor">Сбор: голые функции, TestCase, parametrize<a class="headerlink" href="#15.6-sbor" title="Permanent link">#</a></h3>
+<p>Коллектор pytest обходит дерево от rootdir, импортирует файлы <code>test_*.py</code>/<code>*_test.py</code> и собирает всё, что похоже на тест: голые функции <code>test_*</code>, методы <code>test_*</code> в классах <code>Test*</code> (без <code>__init__</code>) — и заодно полноценные <code>unittest.TestCase</code> (15.2) в режиме совместимости:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># test_flat.py</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">import</span> <span class="nn">unittest</span><span class="o">,</span> <span class="nn">pytest</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="k">def</span> <span class="nf">test_bare</span><span class="p">():</span>                     <span class="c1"># голая функция — pytest соберёт,</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>                <span class="c1"># unittest.discover — нет (15.2)</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="k">class</span> <span class="nc">TC</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>         <span class="c1"># unittest-стиль — тоже соберёт</span>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;n,expected&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">)])</span>
+</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="k">def</span> <span class="nf">test_square</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>    <span class="k">assert</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">==</span> <span class="n">expected</span>
+</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>
+</span><span id="__span-24-15"><a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;не готово&quot;</span><span class="p">)</span>
+</span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="k">def</span> <span class="nf">test_skip</span><span class="p">():</span> <span class="k">pass</span>
+</span><span id="__span-24-17"><a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>
+</span><span id="__span-24-18"><a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span>
+</span><span id="__span-24-19"><a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a><span class="k">def</span> <span class="nf">test_xfail</span><span class="p">():</span> <span class="k">assert</span> <span class="kc">False</span>
+</span><span id="__span-24-20"><a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a>
+</span><span id="__span-24-21"><a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a><span class="k">def</span> <span class="nf">test_rich_fail</span><span class="p">():</span>
+</span><span id="__span-24-22"><a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</span><span id="__span-24-23"><a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>    <span class="k">assert</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>$ pytest -v
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>...
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>test_flat.py::test_bare PASSED                     [ 12%]
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>test_flat.py::TC::test_case PASSED                 [ 25%]
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>test_flat.py::test_square[2-4] PASSED              [ 37%]
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>test_flat.py::test_square[3-9] PASSED              [ 50%]
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>test_flat.py::test_square[4-16] PASSED             [ 62%]
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>test_flat.py::test_skip SKIPPED (не готово)        [ 75%]
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>test_flat.py::test_xfail XFAIL                     [ 87%]
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>test_flat.py::test_rich_fail FAILED                [100%]
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>...
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>============== 1 failed, 5 passed, 1 skipped, 1 xfailed ==============
+</span></code></pre></div>
+<p><code>parametrize</code> — это генерация тестов <strong>на этапе сбора</strong>: из одного определения делается три теста с идентификаторами <code>[2-4]</code>, <code>[3-9]</code>, <code>[4-16]</code> (значения параметров в имени). Статусы совпадают с unittest-овскими по смыслу, но есть важная разница в сборе: pytest собирает голые функции, unittest — нет (15.2).</p>
+<h3 id="15.6-assertion-rewriting">Assertion rewriting: почему assert pytest'а такой умный<a class="headerlink" href="#15.6-assertion-rewriting" title="Permanent link">#</a></h3>
+<p>Обычный <code>assert a == b</code> в падении говорит только «assert failed» — выражение уже вычислено и потеряно (15.1). pytest перед импортом каждого тестового модуля <strong>переписывает его AST</strong>: каждый <code>assert</code> заменяется на код, который вычисляет подвыражения, сохраняет их в служебные переменные <code>@py_assert*</code> и в случае падения собирает из них человекочитаемое сообщение. Механику видно напрямую — тот же трансформер, что крутится в импорт-хуке:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">import</span> <span class="nn">ast</span><span class="o">,</span> <span class="nn">dis</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="kn">from</span> <span class="nn">_pytest.assertion</span> <span class="kn">import</span> <span class="n">rewrite</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="n">src</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;def f(a, b):</span><span class="se">\n</span><span class="s2">    assert a == b</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="n">rewrite</span><span class="o">.</span><span class="n">rewrite_asserts</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="s2">&quot;t.py&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>   <span class="c1"># тот же шаг, что делает pytest</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="s2">&quot;t.py&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="n">body</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">code</span><span class="o">.</span><span class="n">co_consts</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;co_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="nb">print</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">body</span><span class="o">.</span><span class="n">co_names</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)])</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="c1"># [&#39;@py_builtins&#39;, &#39;@pytest_ar&#39;]  — служебные модули rewriting&#39;а</span>
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>
+</span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+</span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="c1">#   2           LOAD_FAST                0 (a)</span>
+</span><span id="__span-26-15"><a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="c1">#               LOAD_FAST                1 (b)</span>
+</span><span id="__span-26-16"><a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a><span class="c1">#               COMPARE_OP              40 (==)</span>
+</span><span id="__span-26-17"><a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a><span class="c1">#               STORE_FAST               2 (@py_assert1)   # ← результат сохранён</span>
+</span><span id="__span-26-18"><a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a><span class="c1">#               LOAD_FAST                2 (@py_assert1)</span>
+</span><span id="__span-26-19"><a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a><span class="c1">#               POP_JUMP_IF_TRUE ...                        # упали? собираем repr</span>
+</span><span id="__span-26-20"><a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a><span class="c1">#               LOAD_GLOBAL              (@pytest_ar)</span>
+</span><span id="__span-26-21"><a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a><span class="c1">#               LOAD_ATTR                (_call_reprcompare)</span>
+</span><span id="__span-26-22"><a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a><span class="c1">#               ...</span>
+</span></code></pre></div>
+<p>Служебные имена <code>@py_builtins</code> (защищённые встроенные функции) и <code>@pytest_ar</code> (<code>_pytest.assertion.util</code>) с <code>@</code>-префиксом не конфликтуют с вашими именами. Побочный эффект: переписанный assert вычисляет подвыражения <strong>заранее</strong> — в сообщении видно не только «равно или нет», но и что с чем сравнивали:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>E   AssertionError: assert [1, 2, 3] == [1, 2, 4]
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>E     At index 2 diff: 3 != 4
+</span></code></pre></div>
+<p>Проверки строятся из того же сравнения <code>==</code>, что и обычный assert, но с сохранёнными operand'ами. Переписывание можно выключить (<code>--assert=plain</code>) — и вы сразу вернётесь к сухим сообщениям из 15.1.</p>
+<h3 id="15.6-fikstury">Фикстуры: dependency injection по имени<a class="headerlink" href="#15.6-fikstury" title="Permanent link">#</a></h3>
+<p>Фикстура — функция под <code>@pytest.fixture</code>, которую pytest вызывает сам, когда тест объявляет её имя параметром. Это DI-контейнер: тест запрашивает зависимости по имени, pytest резолвит их рекурсивно (фикстура может зависеть от фикстуры), кэширует результат в рамках scope и гарантированно выполняет teardown после.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">import</span> <span class="nn">pytest</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="k">def</span> <span class="nf">one</span><span class="p">():</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;setup:one&quot;</span><span class="p">);</span> <span class="k">yield</span> <span class="mi">1</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;teardown:one&quot;</span><span class="p">)</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="k">def</span> <span class="nf">two</span><span class="p">(</span><span class="n">one</span><span class="p">):</span>                       <span class="c1"># зависит от one</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;setup:two&quot;</span><span class="p">);</span> <span class="k">yield</span> <span class="mi">2</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;teardown:two&quot;</span><span class="p">)</span>
+</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>
+</span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="k">def</span> <span class="nf">test_both</span><span class="p">(</span><span class="n">two</span><span class="p">,</span> <span class="n">one</span><span class="p">):</span>
+</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EVENTS :&quot;</span><span class="p">,</span> <span class="n">events</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>EVENTS : [&#39;setup:one&#39;, &#39;setup:two&#39;]        # setup по зависимостям
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a># после теста: [&#39;setup:one&#39;, &#39;setup:two&#39;, &#39;teardown:two&#39;, &#39;teardown:one&#39;]
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>#                                            ← teardown в ОБРАТНОМ порядке (LIFO)
+</span></code></pre></div>
+<p>Три факта механики. <strong>Setup идёт по цепочке зависимостей</strong> (<code>one</code> прежде <code>two</code>), независимо от порядка параметров теста. <strong>Teardown — стек в обратном порядке</strong> (<code>two</code> прежде <code>one</code>): код после <code>yield</code> исполняется как финализаторы в <code>ExitStack</code> (2.4). <strong>Scope по умолчанию — <code>"function"</code></strong>: на следующий тест фикстура пересоздаётся целиком; <code>"module"</code>/<code>"session"</code> кэшируют результат между тестами — и тогда порядок teardown'ов между тестами становится важным наблюдаемым поведением.</p>
+<p><code>yield</code>-фикстура — это <code>@contextmanager</code> (2.3) в миниатюре: код до <code>yield</code> — setup, после — teardown. Если setup упал, teardown не вызывается; если упал teardown — pytest сообщит об ошибке фикстуры отдельно от результата теста.</p>
+<h3 id="15.6-plaginy">Плагины и кэш<a class="headerlink" href="#15.6-plaginy" title="Permanent link">#</a></h3>
+<p>Вся внешняя логика pytest — хуки. Заголовок сессии показывает, что реально подгружено (в нашем прогоне выше: <code>plugins: time-machine-3.5.1</code> — плагин time-machine объявил себя через entry points и загрузился <strong>автоматически</strong>, без конфига). Система хуков — <code>pluggy</code>, та же библиотека, что питает хуки в setuptools; точка расширения — entry points группы <code>pytest.plugins</code> (7.9) или <code>conftest.py</code>. Кэш сессии — каталог <code>.pytest_cache</code> (последние провалы для <code>--lf</code>, nodeids); его можно отключить флагом <code>-p no:cacheprovider</code> — <code>-p</code> загружает/блокирует плагины по имени, и кэш — тоже плагин.</p>
+<p>⚠️ Порядок импорта при сборе не случайность, а контракты: <code>conftest.py</code>-файлы импортируются до тестовых модулей, а сам pytest предлагает три import-режима (<code>--import-mode=prepend|append|importlib</code>, дефолт <code>prepend</code>). В <code>prepend</code> каталог теста вставляется в <code>sys.path[0]</code> — отсюда классические «два файла с одинаковым именем не собираются вместе»: pytest видит один и тот же модуль. Лечится <code>__init__.py</code>-пакетами или <code>--import-mode=importlib</code>.</p>
+<h2 id="15.7">15.7. <code>coverage.py</code>: измерение покрытия<a class="headerlink" href="#15.7" title="Permanent link">#</a></h2>
+<p>Coverage отвечает на вопрос «какие строки исполнились», и это тоже интерпретаторный крючок: чтобы узнать, на каких строках побежал код, нужно получать line-события трейсера (15.8). <code>coverage.py</code> — эталонная реализация, под капотом которой два переключаемых движка (ниже).</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># mod.py</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>        <span class="k">return</span> <span class="s2">&quot;even&quot;</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    <span class="k">return</span> <span class="s2">&quot;odd&quot;</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="k">def</span> <span class="nf">dead</span><span class="p">():</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>    <span class="k">return</span> <span class="s2">&quot;никогда&quot;</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="k">def</span> <span class="nf">skip_me</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>    <span class="k">return</span> <span class="s2">&quot;исключено&quot;</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>$ coverage run use.py          # use.py: from mod import classify; print(classify(4))
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>even
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>$ coverage report -m
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>Name     Stmts   Miss  Cover   Missing
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>--------------------------------------
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>mod.py       6      2    67%   4, 7
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>use.py       2      0   100%
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>--------------------------------------
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>TOTAL        8      2    75%
+</span></code></pre></div>
+<p>Читается мгновенно: не исполнены строка 4 (<code>return "even"</code> — условие было ложным) и строка 7 (<code>dead()</code>), а <code>skip_me</code> целиком исключён директивой <code># pragma: no cover</code> — потому у него нет строки в отчёте. <code>Stmts</code> считает исполняемые statements, а не все строки файла.</p>
+<h3 id="15.7-vetvnoe-pokrytie">Ветвное покрытие<a class="headerlink" href="#15.7-vetvnoe-pokrytie" title="Permanent link">#</a></h3>
+<p>Строчное покрытие обманчиво: строка <code>if n % 2 == 0:</code> исполнилась — но <strong>оба ли</strong> исхода условия проверены? Флаг <code>--branch</code> переводит coverage на arc-модель: единица измерения — не строка, а <strong>переход</strong> (дуга) между строками, как в graph-представлении кода:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>$ coverage run --branch use.py &amp;&amp; coverage report -m
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Name     Stmts   Miss Branch BrPart  Cover   Missing
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>----------------------------------------------------
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>mod.py       6      2      2      1    62%   4, 7
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>use.py       2      0      0      0   100%
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>----------------------------------------------------
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>TOTAL        8      2      2      1    70%
+</span></code></pre></div>
+<p>Появились колонки <code>Branch</code> (всего дуг) и <code>BrPart</code> (частично покрытые ветвления) — покрытие стало ниже (62% против 67%) при том же коде, потому что теперь честно учитывается непроверенный исход <code>if</code>. Для тестов, ориентированных на «100%», имеет смысл именно ветвное — строчное достигается почти случайно.</p>
+<h3 id="15.7-dvizhki">Внутри: SQLite и движки трассировки<a class="headerlink" href="#15.7-dvizhki" title="Permanent link">#</a></h3>
+<p>Результат <code>coverage run</code> — файл <code>.coverage</code>, и это обычная SQLite-база:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;.coverage&quot;</span><span class="p">)</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    <span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39;&quot;</span><span class="p">)))</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="c1"># [&#39;arc&#39;, &#39;context&#39;, &#39;coverage_schema&#39;, &#39;file&#39;, &#39;line_bits&#39;, &#39;meta&#39;, &#39;tracer&#39;]</span>
+</span></code></pre></div>
+<p>Ключевая таблица — <code>line_bits</code>: номера исполненных строк, упакованные в блобы схемой RLE (пары «сколько строк пропустить — сколько закрасить»); при <code>--branch</code> рядом лежит <code>arc</code> — пары переходов. <code>context</code> хранит контексты (<code>coverage run --context=название</code> — размечать замеры, например по тест-группам), <code>meta</code> — версию формата. <code>coverage combine</code> сливает параллельные <code>.coverage.&lt;хост&gt;.&lt;pid&gt;</code>-файлы в один — потому CI-джобы пишут в отдельные файлы, а не в общий.</p>
+<p>Движки трассировки переключаются переменной окружения <code>COVERAGE_CORE</code>:</p>
+<ul>
+<li><code>ctrace</code> (по умолчанию на 3.12) — C-трассировщик <code>CTracer</code>, собственной механикой повторяющий <code>sys.settrace</code> (15.8), но целиком в C: события line/call/return снимаются с минимальной питоновской обвязки;</li>
+<li><code>sysmon</code> — <code>sys.monitoring</code> (PEP 669, 15.9): <code>COVERAGE_CORE=sysmon coverage run …</code>; неверное значение бракуется сразу: <code>Unknown core value: 'bogus'</code>.</li>
+</ul>
+<p>⚠️ Движки дают одинаковые данные, но не идентичную скорость: на нашем workload'е ctrace замедлил запуск в 4.3 раза, sysmon — в 3.4 (бенчмарк в конце части). Порог перехода на sysmon — 3.12+ и тип нагрузки: чем больше line-событий, тем заметнее преимущество monitoring-механики.</p>
+<h2 id="15.8">15.8. <code>sys.settrace</code>/<code>sys.setprofile</code>: крючки отладчика и профайлера<a class="headerlink" href="#15.8" title="Permanent link">#</a></h2>
+<p><code>pdb</code> (1.16), <code>bdb</code> (11.30), <code>profile</code> (11.30) и line-события coverage (15.7) сидят на одном и том же крючке — <code>sys.settrace</code>. Это функция-трейсер, которую интерпретатор вызывает при трёх классах событий:</p>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Когда</th>
+<th>Кого вызывают</th>
+<th>arg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>call</code></td>
+<td>начался новый кадр</td>
+<td><strong>глобальный</strong> трейсер</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td>следующая строка кода</td>
+<td><strong>локальный</strong> трейсер кадра</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>return</code></td>
+<td>кадр завершается</td>
+<td>локальный трейсер</td>
+<td>возвращаемое значение</td>
+</tr>
+<tr>
+<td><code>exception</code></td>
+<td>исключение в кадре</td>
+<td>локальный трейсер</td>
+<td><code>(exc, value, tb)</code></td>
+</tr>
+<tr>
+<td><code>opcode</code></td>
+<td>следующая инструкция</td>
+<td>локальный трейсер</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ключевая слово — <strong>двухуровневость</strong>: глобальный трейсер получает только <code>call</code> и своим <strong>возвращаемым значением</strong> назначает локальный трейсер для кадра:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="k">def</span> <span class="nf">tracer</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>    <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">==</span> <span class="s2">&quot;work&quot;</span><span class="p">:</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>        <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>        <span class="k">return</span> <span class="n">tracer</span>          <span class="c1"># ← возвращаем локальный трейсер</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>    <span class="k">return</span> <span class="n">tracer</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="k">def</span> <span class="nf">work</span><span class="p">():</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a>    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a>    <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a>
+</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="n">sys</span><span class="o">.</span><span class="n">settrace</span><span class="p">(</span><span class="n">tracer</span><span class="p">)</span>
+</span><span id="__span-34-17"><a id="__codelineno-34-17" name="__codelineno-34-17" href="#__codelineno-34-17"></a><span class="n">work</span><span class="p">()</span>
+</span><span id="__span-34-18"><a id="__codelineno-34-18" name="__codelineno-34-18" href="#__codelineno-34-18"></a><span class="n">sys</span><span class="o">.</span><span class="n">settrace</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-34-19"><a id="__codelineno-34-19" name="__codelineno-34-19" href="#__codelineno-34-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+</span><span id="__span-34-20"><a id="__codelineno-34-20" name="__codelineno-34-20" href="#__codelineno-34-20"></a><span class="c1"># [&#39;call&#39;, &#39;line&#39;, &#39;line&#39;, &#39;line&#39;, &#39;return&#39;]</span>
+</span></code></pre></div>
+<p>Три <code>line</code>-события — по одному на присваивание и на <code>return</code>. Именно на этом уровне живёт отладчик: на <code>line</code> — проверять breakpoints и отдавать управление пользователю; на <code>call</code>/<code>return</code> — строить стек-визуализацию. Цена — тоже здесь: событие на каждую строку питоновского кода, поэтому трассировка «всего подряд» замедляет программу на порядок (бенчмарк в конце части) — 1.16 недаром предупреждает, что <code>settrace</code> медленный.</p>
+<p><code>sys.setprofile</code> — парный, но иной крючок: событие на <strong>границах</strong> функций (<code>call</code>/<code>return</code>) и на границах с C (<code>c_call</code>/<code>c_return</code>/<code>c_raise</code>), без line-событий:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">profevents</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">def</span> <span class="nf">prof</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>    <span class="k">if</span> <span class="n">event</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;c_call&quot;</span><span class="p">,</span> <span class="s2">&quot;c_return&quot;</span><span class="p">):</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>        <span class="n">profevents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="n">sys</span><span class="o">.</span><span class="n">setprofile</span><span class="p">(</span><span class="n">prof</span><span class="p">)</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="nb">sum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="n">sys</span><span class="o">.</span><span class="n">setprofile</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">profevents</span><span class="p">)</span>
+</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># [&#39;c_call&#39;, &#39;c_return&#39;]</span>
+</span></code></pre></div>
+<p>Экономнее на порядки — потому профайлеры (<code>cProfile</code>, 11.30) используют именно <code>setprofile</code>, а отладчики — <code>settrace</code>.</p>
+<h3 id="15.8-izmeneniya-3-12">Что изменилось в 3.12: settrace теперь эмуляция<a class="headerlink" href="#15.8-izmeneniya-3-12" title="Permanent link">#</a></h3>
+<p>В 3.12 <code>settrace</code>/<code>setprofile</code> внутренне <strong>переписаны поверх <code>sys.monitoring</code></strong> (15.9): это уже не прямой механизм eval loop, а адаптер (в исходниках CPython — <code>Python/legacy_tracing.c</code>). Появились поведенческие отличия, каждое из которых проверено на 3.12.14 и 3.13.5:</p>
+<ul>
+<li><strong><code>return None</code> из локального трейсера больше не гасит трассировку кадра.</strong> В документации до 3.11 было: «локальный трейсер должен вернуть себя… или <code>None</code>, чтобы отключить трассировку в этой области». В 3.12 формулировка заменена на «возвращаемое значение задаёт новый локальный трейсер» — и на практике <code>None</code> просто сохраняет текущий:</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">def</span> <span class="nf">local</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>    <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s2">&quot;line&quot;</span><span class="p">:</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>        <span class="k">return</span> <span class="kc">None</span>            <span class="c1"># раньше: отключить line-события</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>    <span class="k">return</span> <span class="n">local</span>
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="n">sys</span><span class="o">.</span><span class="n">settrace</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">local</span><span class="p">)</span>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="n">work</span><span class="p">()</span>                          <span class="c1"># всё равно [&#39;line&#39;, &#39;line&#39;, &#39;line&#39;, &#39;return&#39;]</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Отключить line-события теперь нужно через <code>frame.f_trace_lines = False</code></strong> — и это работает как заявлено: line-события кадра гаснут, <code>return</code> приходит:</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">def</span> <span class="nf">local2</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>    <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>    <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_lineno</span> <span class="o">==</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_firstlineno</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>        <span class="n">frame</span><span class="o">.</span><span class="n">f_trace_lines</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>    <span class="k">return</span> <span class="n">local2</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="c1"># [&#39;line&#39;, &#39;return&#39;]</span>
+</span></code></pre></div>
+<ul>
+<li>
+<p><strong>Исключение в трейсере прокидывается в трассируемый код.</strong> Документация по-прежнему обещает «ошибка в трейсере снимает его, как <code>settrace(None)</code>» — трейсер действительно снимается, но исключение в 3.12+ больше не глотается: <code>RuntimeError("boom")</code> из трейсера доезжает до исполняемого кода и обрывает его. Отладчику теперь обязательно оборачивать собственные колбэки в <code>try/except</code>.</p>
+</li>
+<li>
+<p><strong><code>opcode</code>-события через <code>frame.f_trace_opcodes = True</code>: на 3.12 не приходят</strong> (эмуляция не раздаёт opcode-события из <code>settrace</code>-адаптера), на 3.13.5 — приходят. Если нужны инструкции — надёжнее <code>sys.monitoring</code> с <code>INSTRUCTION</code> (15.9).</p>
+</li>
+</ul>
+<p>⚠️ Код, который трассирует другие процессы/потоки через <code>settrace</code> и опирается на старые тонкости (гашение через <code>None</code>, тихие исключения), после миграции на 3.12+ меняет поведение молча — проверяйте трейсеры тестами (благо для этого теперь есть <code>sys.monitoring</code>-детект: <code>sys.gettrace()</code> возвращает трейсер, но события могут не совпадать со старой семантикой).</p>
+<p>Параноидальное дополнение из 11.30 остаётся в силе: если ваш код исполняет чужой Python и разрешает <code>breakpoint()</code>/<code>sys.settrace</code> — вы дали чужому коду полный контроль над выполнением. Песочницы перезаписывают <code>sys.settrace</code> первым делом.</p>
+<h2 id="15.9">15.9. <code>sys.monitoring</code> (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage<a class="headerlink" href="#15.9" title="Permanent link">#</a></h2>
+<p>PEP 669 — главный интерпретаторный подарок тестово-отладочной экосистеме в 3.12. Идея: вместо двух старых крючков (<code>settrace</code> для отладчиков, <code>setprofile</code> для профайлеров) с их ценой на каждое событие — единый API <code>sys.monitoring</code>, где инструмент <strong>регистрируется</strong> под фиксированным ID и подписывается только на нужные события. Цена неподписанных событий — ноль: компилятор генерирует соответствующие проверки только при активных инструментах.</p>
+<p>Инструментальные ID фиксированы стандартом — одновременно могут работать несколько инструментов (у <code>settrace</code> был один глобальный трейсер):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="n">mon</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">monitoring</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">DEBUGGER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">OPTIMIZER_ID</span><span class="p">)</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="c1"># 0 1 2 5</span>
+</span></code></pre></div>
+<p>(<code>OPTIMIZER_ID=5</code> зарезервирован — в 3.13 на него встал экспериментальный tier-2 оптимизатор из 13.5.)</p>
+<p>Набор событий (17 на 3.12):</p>
+<table>
+<thead>
+<tr>
+<th>Событие</th>
+<th>Что это</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PY_START</code> / <code>PY_RETURN</code></td>
+<td>начало и обычный конец вызова python-функции</td>
+</tr>
+<tr>
+<td><code>PY_RESUME</code> / <code>PY_YIELD</code> / <code>PY_UNWIND</code> / <code>PY_THROW</code></td>
+<td>возобновление корутины, выдача из генератора, выход по исключению, бросок в корутину (4.8)</td>
+</tr>
+<tr>
+<td><code>RAISE</code> / <code>RERAISE</code> / <code>EXCEPTION_HANDLED</code> / <code>STOP_ITERATION</code></td>
+<td>механика исключений</td>
+</tr>
+<tr>
+<td><code>CALL</code> / <code>C_RETURN</code> / <code>C_RAISE</code></td>
+<td>вызовы встроенных/C-функций</td>
+</tr>
+<tr>
+<td><code>LINE</code> / <code>INSTRUCTION</code> / <code>JUMP</code> / <code>BRANCH</code></td>
+<td>строка, инструкция, безусловный и условный переход</td>
+</tr>
+</tbody>
+</table>
+<p>Минимальный рабочий инструмент — считаем вызовы функции:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="n">mon</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">monitoring</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">instruction_offset</span><span class="p">):</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>    <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">==</span> <span class="s2">&quot;hot&quot;</span><span class="p">:</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>        <span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>
+</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="n">mon</span><span class="o">.</span><span class="n">use_tool_id</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="s2">&quot;book-demo&quot;</span><span class="p">)</span>     <span class="c1"># занять ID 2</span>
+</span><span id="__span-39-11"><a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="n">mon</span><span class="o">.</span><span class="n">set_events</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">PY_START</span><span class="p">)</span>   <span class="c1"># подписка</span>
+</span><span id="__span-39-12"><a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="n">mon</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">PY_START</span><span class="p">,</span> <span class="n">cb</span><span class="p">)</span>
+</span><span id="__span-39-13"><a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a>
+</span><span id="__span-39-14"><a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="k">def</span> <span class="nf">hot</span><span class="p">():</span> <span class="k">return</span> <span class="mi">42</span>
+</span><span id="__span-39-15"><a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span><span id="__span-39-16"><a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a>    <span class="n">hot</span><span class="p">()</span>
+</span><span id="__span-39-17"><a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a>
+</span><span id="__span-39-18"><a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="n">mon</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">PY_START</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># снять колбэк</span>
+</span><span id="__span-39-19"><a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="n">mon</span><span class="o">.</span><span class="n">set_events</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                <span class="c1"># снять подписку</span>
+</span><span id="__span-39-20"><a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a><span class="n">mon</span><span class="o">.</span><span class="n">free_tool_id</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">)</span>                 <span class="c1"># освободить ID</span>
+</span><span id="__span-39-21"><a id="__codelineno-39-21" name="__codelineno-39-21" href="#__codelineno-39-21"></a><span class="nb">print</span><span class="p">(</span><span class="n">calls</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;hot&quot;</span><span class="p">),</span> <span class="n">mon</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">))</span>
+</span><span id="__span-39-22"><a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a><span class="c1"># 3 None</span>
+</span></code></pre></div>
+<p>Протокол — пары «подписка → колбэк» на каждый тип события; <code>get_tool(id)</code> подтверждает, что после <code>free_tool_id</code> слот свободен. В реальных инструментах в колбэках сразу фильтруют по <code>code.co_filename</code> — событие приходит на <strong>каждый</strong> вызов любой функции, и тривиальный счётчик без фильтра сам станет просадкой.</p>
+<h3 id="15.9-lokalnye-sobytiya">Локальные события: подписка на один код-объект<a class="headerlink" href="#15.9-lokalnye-sobytiya" title="Permanent link">#</a></h3>
+<p><code>set_events</code> действует глобально, а <code>set_local_events</code> — на <strong>один</strong> код-объект (8.7). Это API для точечного инструментария: «трассируй только эту функцию» без цены на весь процесс:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">mon</span><span class="o">.</span><span class="n">use_tool_id</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="s2">&quot;local-demo&quot;</span><span class="p">)</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="n">code_obj</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;def h(x):</span><span class="se">\n</span><span class="s2">    return x * 2</span><span class="se">\n\n</span><span class="s2">result = h(21)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;t&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="n">mon</span><span class="o">.</span><span class="n">set_local_events</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="n">code_obj</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">CALL</span><span class="p">)</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="k">def</span> <span class="nf">cb_call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>                    <span class="c1"># CALL передаёт 4 аргумента</span>
+</span><span id="__span-40-7"><a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>    <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span id="__span-40-8"><a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a>
+</span><span id="__span-40-9"><a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a><span class="n">mon</span><span class="o">.</span><span class="n">register_callback</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">CALL</span><span class="p">,</span> <span class="n">cb_call</span><span class="p">)</span>
+</span><span id="__span-40-10"><a id="__codelineno-40-10" name="__codelineno-40-10" href="#__codelineno-40-10"></a><span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-40-11"><a id="__codelineno-40-11" name="__codelineno-40-11" href="#__codelineno-40-11"></a><span class="n">exec</span><span class="p">(</span><span class="n">code_obj</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+</span><span id="__span-40-12"><a id="__codelineno-40-12" name="__codelineno-40-12" href="#__codelineno-40-12"></a><span class="n">mon</span><span class="o">.</span><span class="n">set_local_events</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="n">code_obj</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-40-13"><a id="__codelineno-40-13" name="__codelineno-40-13" href="#__codelineno-40-13"></a><span class="n">mon</span><span class="o">.</span><span class="n">free_tool_id</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">)</span>
+</span><span id="__span-40-14"><a id="__codelineno-40-14" name="__codelineno-40-14" href="#__codelineno-40-14"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">),</span> <span class="n">g</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+</span><span id="__span-40-15"><a id="__codelineno-40-15" name="__codelineno-40-15" href="#__codelineno-40-15"></a><span class="c1"># 1 42      — один CALL (вызов h), глобальные события не взводились</span>
+</span><span id="__span-40-16"><a id="__codelineno-40-16" name="__codelineno-40-16" href="#__codelineno-40-16"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</span><span id="__span-40-17"><a id="__codelineno-40-17" name="__codelineno-40-17" href="#__codelineno-40-17"></a><span class="c1"># 4         — (code, instruction_offset, callable, arg0)</span>
+</span></code></pre></div>
+<p>Обратите внимание на арность: у большинства событий колбэк — <code>(code, instruction_offset)</code>, но <code>CALL</code> дополнительно передаёт callable и первый аргумент (4 аргумента), <code>RAISE</code> — исключение. Главное — <strong>локальные события работают автономно</strong>: глобальная подписка для них не нужна (в прогоне выше <code>get_events</code> вернул 0).</p>
+<p>Кто уже сидит на PEP 669: coverage.py — опционально через <code>COVERAGE_CORE=sysmon</code> (15.7), фреймворки отладчиков (<code>debugpy</code> и наследники pdb) мигрируют постепенно, а в 3.14 на этот же API легла remote-отладка (PEP 768 — подключение отладчика к работающему процессу; его CLI-ручка <code>-X disable_remote_debug</code> разобрана в 10.3). Старый <code>settrace</code> (15.8) теперь — обёртка над этим же механизмом, так что у интерпретатора остался один системный крючок вместо трёх.</p>
+<h2 id="15.10">15.10. Тесты самого CPython: <code>python -m test</code><a class="headerlink" href="#15.10" title="Permanent link">#</a></h2>
+<p>Внутри каждого CPython лежит <code>test</code> — пакет с ~сотнями тестовых модулей, и это не «какие-то тесты»: для альтернативных реализаций они играют роль исполняемой спецификации языка (14.1) — «прошёл test suite» — главное заявление о совместимости. Запускаются они тем же интерпретатором через regrtest (regression test runner):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>$ python -m test test_support
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>== Tests result: SUCCESS ==
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>1 test OK.
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>Total duration: 1.1 sec
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>Total tests: run=50 skipped=3
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>Total test files: run=1/1
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>Result: SUCCESS
+</span></code></pre></div>
+<p>Тот же runpy-механизм, что и у <code>-m unittest</code> (15.2): <code>test</code> — обычный пакет, <code>__main__</code> которого вызывает <code>test.libregrtest</code>. Полезные ручки (из <code>python -m test --help</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Флаг</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-j N</code></td>
+<td>параллельный запуск в N процессов — suite большой, так и в CPython CI гоняют</td>
+</tr>
+<tr>
+<td><code>-m ШАБЛОН</code></td>
+<td>фильтр тестов по имени (<code>-m test_dict</code> → только тесты с dict в имени)</td>
+</tr>
+<tr>
+<td><code>-u all</code> / <code>-u сетевые</code></td>
+<td>какие <strong>ресурсы</strong> разрешить: сеть, аудио, большие файлы; по умолчанию часть выключена</td>
+</tr>
+<tr>
+<td><code>-r</code>, <code>--randseed=N</code></td>
+<td>случайный порядок тестов (ловля скрытых зависимостей между тестами)</td>
+</tr>
+<tr>
+<td><code>--list-tests</code></td>
+<td>не запускать, только показать, что будет запускаться</td>
+</tr>
+<tr>
+<td><code>-f</code>, <code>-M</code>, <code>-T</code>, <code>-p</code></td>
+<td>список тестов из файла, memorylimit, покрытие trace-модулем, альтернативный интерпретатор для подпроцессов</td>
+</tr>
+</tbody>
+</table>
+<h3 id="15.10-refleaki">Охота на рефлаки: debug-сборка<a class="headerlink" href="#15.10-refleaki" title="Permanent link">#</a></h3>
+<p>Самый интересный режим regrtest — <code>-R</code> (hunt reference leaks): интерпретатор гоняет каждый тест несколько раз подряд и сравнивает суммарный refcount объектов между прогонами. Утечка рефлаков — рост счётчика от прогона к прогону — сигнал «модуль держит объекты дольше, чем нужно». Механика требует <code>sys.gettotalrefcount</code>, который существует <strong>только в debug-сборках</strong> CPython (<code>./configure --with-pydebug</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="nb">print</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;gettotalrefcount&quot;</span><span class="p">))</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="c1"># False  — релизная сборка (как в стандартных дистрибутивах)</span>
+</span></code></pre></div>
+<p>На debug-сборке <code>-R 3:3</code> означает «три прогрева и три контрольных прогона»: сначала несколько раз подряд исполняется тест (сборка мусора и прогрев кэшей — 8.6), затем замеряется <code>sys.gettotalrefcount()</code> после каждого прогона; рост счётчика от прогона к прогону печатается как leaked references, и regrtest возвращает провал. Отсюда же термин «refleak test» в changelog'ах CPython: правки перед релизом прогоняют именно на debug-сборке с <code>-R</code>, потому что утечка рефлаков в stdlib — это утечка памяти во всех приложениях на CPython.</p>
+<p>Второй слой — <code>test.support</code> (и подмодули <code>os_helper</code>, <code>import_helper</code>, <code>script_helper</code>, <code>warnings_helper</code>): утилиты, которыми пользуются тесты CPython, доступные и вам:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kn">from</span> <span class="nn">test</span> <span class="kn">import</span> <span class="n">support</span><span class="p">,</span> <span class="n">os_helper</span>
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="nb">print</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">support</span><span class="p">,</span> <span class="s2">&quot;captured_stdout&quot;</span><span class="p">),</span>      <span class="c1"># перехват stdout как контекст-менеджер</span>
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>      <span class="nb">hasattr</span><span class="p">(</span><span class="n">support</span><span class="p">,</span> <span class="s2">&quot;run_in_subinterp&quot;</span><span class="p">),</span>     <span class="c1"># код в суб-интерпретаторе</span>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>      <span class="nb">hasattr</span><span class="p">(</span><span class="n">os_helper</span><span class="p">,</span> <span class="s2">&quot;temp_dir&quot;</span><span class="p">))</span>           <span class="c1"># временные каталоги с уборкой</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="c1"># True True True</span>
+</span></code></pre></div>
+<p>⚠️ <code>test.support</code> — приватная территория: API меняется между версиями без предупреждений. Для продуктовых тестов — <code>tempfile</code>, <code>contextlib.redirect_stdout</code> (2.7) и <code>subprocess</code>; <code>test.support</code> — для тестов, живущих внутри CPython, или инструментов, осознанно привязанных к версии интерпретатора.</p>
+<h2 id="15.11">15.11. Тестовые режимы интерпретатора: шпаргалка<a class="headerlink" href="#15.11" title="Permanent link">#</a></h2>
+<p>Книга уже разобрала по одному все диагностические ручки CPython (10.1–10.3, 11.6, 9.1, 4.3, 10.8). Здесь они собраны вместе под тем углом, ради которого их чаще всего и включают: <strong>поймать проблему в тестах/CI, пока она не дошла до продакшена</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Ручка</th>
+<th>Что даёт в тестах</th>
+<th>Подробно</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-X dev</code> / <code>PYTHONDEVMODE</code></td>
+<td>«dev-режим»: видны <code>DeprecationWarning</code> и <code>ResourceWarning</code> (<code>unclosed file</code> и соседи), включается asyncio-debug, строже фильтры предупреждений</td>
+<td>10.2</td>
+</tr>
+<tr>
+<td><code>-W error::DeprecationWarning</code></td>
+<td>упреждающий провал тестов на устаревших вызовах — deprecated API превращается в ошибку</td>
+<td>11.6</td>
+</tr>
+<tr>
+<td><code>-X warn_default_encoding</code> / <code>PYTHONWARNDEFAULTENCODING</code></td>
+<td><code>EncodingWarning</code> на вызовах <code>open()</code> без явной кодировки — перед переходом на <code>-X utf8</code>-стратегию</td>
+<td>9.1</td>
+</tr>
+<tr>
+<td><code>PYTHONHASHSEED=0</code></td>
+<td>воспроизводимость: хэши (и порядок множеств/dict-ключей, зависящий от них) одинаковы между прогонами</td>
+<td>10.3</td>
+</tr>
+<tr>
+<td><code>PYTHONASYNCIODEBUG</code> / <code>asyncio.run(debug=True)</code></td>
+<td>лог «Executing … took 0.200 seconds» по «медленным» колбэкам, диагностика незавершённых корутин</td>
+<td>4.3</td>
+</tr>
+<tr>
+<td><code>-X faulthandler</code> / <code>faulthandler.enable()</code></td>
+<td>на segfault — не молчаливый «Segmentation fault», а <code>Fatal Python error</code> с питоновским стеком</td>
+<td>10.8</td>
+</tr>
+<tr>
+<td><code>PYTHONMALLOC=debug</code></td>
+<td>отлов ошибок работы с памятью в C-расширениях (запись за границу буфера, use-after-free)</td>
+<td>10.3</td>
+</tr>
+<tr>
+<td><code>-X utf8</code> / <code>PYTHONUTF8</code></td>
+<td>фиксированная кодировка IO в CI — тесты не зависят от локали машины</td>
+<td>10.3</td>
+</tr>
+</tbody>
+</table>
+<p>Пара живых прогонов, чтобы ручки перестали быть аббревиатурами. <code>PYTHONHASHSEED</code> управляет рандомизацией хэшей str/bytes (SipHash с рандомным ключом — защитой от hash-flooding):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>$ PYTHONHASHSEED=0 python -c &quot;print(hash(&#39;спам&#39;))&quot;
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>-4792541503203960822
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>$ PYTHONHASHSEED=0 python -c &quot;print(hash(&#39;спам&#39;))&quot;
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>-4792541503203960822          # то же самое — детерминизм
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>$ PYTHONHASHSEED=random python -c &quot;print(hash(&#39;спам&#39;))&quot;
+</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>-7698640846738831484          # каждый запуск — новый ключ
+</span></code></pre></div>
+<p><code>-X dev</code> делает видимой то, что по умолчанию спит:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>$ python -c &quot;open(&#39;/tmp/z.txt&#39;, &#39;w&#39;)&quot;          # файл забыли закрыть — тишина
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>$ python -X dev -c &quot;open(&#39;/tmp/z.txt&#39;, &#39;w&#39;)&quot;
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>&lt;string&gt;:1: ResourceWarning: unclosed file &lt;_io.TextIOWrapper name=&#39;/tmp/z.txt&#39; mode=&#39;w&#39; encoding=&#39;UTF-8&#39;&gt;
+</span></code></pre></div>
+<p>А <code>-X faulthandler</code> превращает segfault из «rc=-11 и ноль информации» в трейсбек:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>$ python -c &quot;import ctypes; ctypes.string_at(0)&quot;
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>Segmentation fault
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>$ python -X faulthandler -c &quot;import ctypes; ctypes.string_at(0)&quot;
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>Fatal Python error: Segmentation fault
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a>...
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a>Current thread 0x00007f… (most recent call first):
+</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a>  File &quot;&lt;string&gt;&quot;, line 1 in &lt;module&gt;
+</span></code></pre></div>
+<p>Для CI типовой сборкой становится комбинация:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nv">PYTHONHASHSEED</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">PYTHONDEVMODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="nv">PYTHONWARNDEFAULTENCODING</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>python<span class="w"> </span>-X<span class="w"> </span>faulthandler<span class="w"> </span>-W<span class="w"> </span>error::DeprecationWarning<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/
+</span></code></pre></div>
+<p>Мораль шпаргалки: интерпретатор уже содержит датчики почти всех классов проблем — невидимых предупреждений, локальной зависимости, порчи памяти, «тихих» падений. Тесты, запущенные с включёнными датчиками, ловят их за один прогон; продакшн — за инцидент.</p>
+<h3 id="15.11-benchmarki">Бенчмарки к Части XV<a class="headerlink" href="#15.11-benchmarki" title="Permanent link">#</a></h3>
+<p>Замеры на CPython 3.12.14 (Linux, x86_64); абсолютные числа зависят от машины, отношения — устойчивы.</p>
+<p><strong>1. Цена трассировки вызовов: <code>sys.monitoring</code> против старых крючков.</strong>
+Считаем вызовы пустой функции 200 000 раз четырьмя способами: без трассировки, <code>sys.monitoring</code> (PY_START), <code>sys.setprofile</code>, <code>sys.settrace</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>none         0.0225 с   — baseline
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>monitoring   0.0447 с   — 2.0×  к baseline
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>setprofile   0.0710 с   — 3.2×
+</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>settrace     0.0776 с   — 3.4×
+</span></code></pre></div>
+<p>Уже на голых call-событиях monitoring быстрее обоих старых крючков; разрыв растёт на line-событиях (замер 2). Важная деталь методики: у monitoring каждый вызов — python-колбэк на <code>PY_START</code>; если колбэк тяжёлый, вы тормозите сами.</p>
+<p><strong>2. LINE-события: где выгода monitoring становится видимой.</strong>
+~2 003 000 line-событий (1000 вызовов функции со 1000-итерационным циклом): baseline 0.040 с, <code>sys.monitoring</code> (LINE) 0.283 с ≈ <strong>7.1×</strong>, <code>sys.settrace</code> (line через локальный трейсер) 0.420 с ≈ <strong>10.6×</strong>. Отношение monitoring/settrace ≈ 1.5× — не «порядки», но на горячей трассировке это разница между «терпимо» и «мешает». Напоминание из 8.4: точную экономию меряйте на своём workload.</p>
+<p><strong>3. Цена вызова мока.</strong>
+300 000 вызовов <code>f(i)</code> на обычной функции и на моках:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>plain       0.0338 с   — baseline
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>Mock        1.8420 с   — 54×
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>MagicMock   1.8671 с   — 55×
+</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>autospec    2.7501 с   — 81×
+</span></code></pre></div>
+<p>Каждый вызов мока — питоновский <code>__call__</code> с записью <code>call_args</code>, проверкой <code>side_effect</code> и наложением <code>spec</code>. Отсюда практическое правило: в тестах производительности и в тестах с миллионами итераций моки не мокают, а считают.</p>
+<p><strong>4. Цена coverage-прогона.</strong>
+Один и тот же workload (функция с ветвлениями, ~0.05 с чистого прогона) под <code>coverage run</code> с разными движками:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>plain                0.046 с
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>coverage (ctrace)    0.196 с   — 4.3×
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>coverage (sysmon)    0.157 с   — 3.4×
+</span></code></pre></div>
+<p>Покрытие — это трассировка всего кода, поэтому замедление в разы — норма; экономия sysmon (15.7, 15.9) на 3.12+ уже заметна и растёт на ветвистом коде.</p>
+<p><strong>5. Цена входа/выхода в «замороженное время».</strong>
+300 циклов входа/выхода из контекста заморозки:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>freezegun      0.738 с   — чистый Python, патч множества модулей
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>time-machine   0.0005 с  — C-расширение, патч C-уровня   ≈ 1500×
+</span></code></pre></div>
+<p>Для теста, замораживающего время один раз, безразлично; для фикстуры-автозамены времени на каждый тест (function-scope, сотни тестов) — разница между минутами и мгновением (15.4).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood" target="_blank" rel="noopener" title="GitHub репозиторий" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.prev_next", "navigation.top", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
