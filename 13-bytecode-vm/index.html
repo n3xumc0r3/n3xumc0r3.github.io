@@ -638,14 +638,20 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="13.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#13.5-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части XIII
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -882,14 +888,20 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="13.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#13.5-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части XIII
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -983,7 +995,7 @@
 <p><code>checked_hash</code> проверяет хеш при каждом импорте; <code>unchecked_hash</code> верит файлу на слово — быстрее, но кэш никогда не инвалидируется сам. Разовые утилиты: <code>py_compile.compile()</code> для одного файла, <code>compileall</code> — для дерева каталогов. Окружение тоже влияет: <code>PYTHONDONTWRITEBYTECODE</code> (или <code>sys.flags.dont_write_bytecode</code>) запрещает создавать pyc вообще, <code>PYTHONPYCACHEPREFIX</code> уводит весь кэш в один общий каталог — удобно для деревьев исходников на read-only ФС.</p>
 <p>Две детали, о которых часто не догадываются. Первая: <strong>main-скрипт не кэшируется</strong> — запустите скрипт, импортирующий модуль, и загляните в <code>__pycache__</code>: там лежит pyc только модуля. Скрипт компилируется на каждом запуске; экономить нечего — он исполняется один раз за процесс. Вторая: декомпиляция pyc — это не симметричная операция. Инструменты (uncompyle6, decompyle3) полноценно работают примерно до 3.8; на актуальных версиях байт-код усложнился (специализации, кэши, таблицы исключений), и декомпиляторы отстают. «Отдам только pyc» сегодня защищает лучше, чем пять лет назад, — но байт-код всё равно читается вручную через <code>dis</code>, так что стратегией защиты кода это называть нельзя.</p>
 <h2 id="13.3">13.3. Пайплайн компилятора: токены → PEG → AST → байт-код<a class="headerlink" href="#13.3" title="Permanent link">#</a></h2>
-<p>Между исходником и байт-кодом — четыре станции. Токенизатор режет текст на лексемы (учитывая кодировочную декларацию, 12.1). Парсер строит дерево. Компилятор обходит дерево, составляет таблицу символов (кто local, кто free, кто global — именно здесь рождаются cell-объекты замыканий, 8.3) и генерирует байт-код в виде CFG — графа базовых блоков, который превращается в линейный поток инструкций плюс таблицы исключений.</p>
+<p>Между исходником и байт-кодом — четыре станции. Токенизатор режет текст на лексемы (учитывая кодировочную декларацию, 9.1). Парсер строит дерево. Компилятор обходит дерево, составляет таблицу символов (кто local, кто free, кто global — именно здесь рождаются cell-объекты замыканий, 8.3) и генерирует байт-код в виде CFG — графа базовых блоков, который превращается в линейный поток инструкций плюс таблицы исключений.</p>
 <p>С версии 3.9 парсер — PEG (PEP 617): грамматика языка описана в PEG-нотации в <code>Grammar/python.gram</code>, а прежний LL(1)-парсер с его «хаками» (токен-буфер, специальные случаи в лексере) отправлен на пенсию. Практическое следствие: у PEG-парсера нет ограничений LL(1), и грамматику стало проще расширять — часть новых синтаксисов (pattern matching) обязана этому удобству.</p>
 <p>Официальное окно в дерево — модуль <code>ast</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span> <span class="nn">ast</span>
@@ -1155,15 +1167,22 @@
 <p>Ускорение этой линейки — измеримое: 3.11 даёт в среднем порядка 1.25× на стандартном наборе бенчмарков против 3.10, часть этой работы — специализации. Следующий шаг — JIT (PEP 744, с 3.13): экспериментальный, copy-and-patch, включается при сборке интерпретатора; «горячий» код после всех специализаций компилируется в машинный код. Статус на текущую версию — в whatsnew конкретного релиза: эта часть книги про 3.12, где JIT ещё нет, а специализации — главный движок скорости.</p>
 <p>Про <strong>GIL</strong> в этих терминах: глобальная блокировка интерпретатора — это «один eval loop на процесс», то есть байт-код одного потока исполняется в каждый момент только одним потоком. Потоки переключаются не по тикам счётчика инструкций, а по времени: раз в <code>sys.getswitchinterval()</code> секунд (по умолчанию 0.005) активный поток сдаёт GIL. Свободная от GIL сборка (PEP 703, экспериментальная с 3.13) — это буквально сборка интерпретатора, где циклов столько, сколько потоков, а синхронизация переехала внутрь объектов; плата — overhead на счётчиках ссылок и требование, чтобы C-расширения были к этому готовы.</p>
 <p>Заглянуть в живую машину можно из Python: <code>sys.settrace</code>/<code>sys.setprofile</code> (отладчики и профайлеры сидят именно на этих крючках, поднимаемых между инструкциями) и audit hooks (10.7) — события уровня C API, независимо от того, какой опкод их породил.</p>
-<h2 id="13.5-benchmarki">Бенчмарки к Части XIII<a class="headerlink" href="#13.5-benchmarki" title="Permanent link">#</a></h2>
+<h3 id="13.5-benchmarki">Бенчмарки к Части XIII<a class="headerlink" href="#13.5-benchmarki" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># exec строки vs code object в цикле (CPython 3.12):</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;x = 1 + 2&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;bench&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">)</span>          <span class="c1"># ~0.02 с</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;x = 1 + 2&quot;</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">)</span>   <span class="c1"># ~0.55 с</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># повторный compile строки дороже в ~25 раз</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">)</span>          <span class="c1"># ≈ 0.02 с</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;x = 1 + 2&quot;</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">)</span>   <span class="c1"># ≈ 0.56 с</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># повторный compile строки дороже в ~26 раз</span>
 </span></code></pre></div>
 <p>Числа ориентировочные: абсолютные значения зависят от машины, отношение — нет. Вывод практический: если шаблон кода исполняется многократно — <code>compile</code> один раз, <code>exec</code> много раз.</p>
+<p><strong>2. pyc: что именно кэшируется.</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># импорт модуля на 2000 строк: тёплый __pycache__ vs пересборка байт-кода</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># (каждая итерация — свежий importlib.import_module)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># с готовым pyc:        ≈ 16.5 мс / 50 импортов</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># pyc удалён (recompile): ≈ 301 мс / 50 импортов — ~95% стоимости импорта — это компиляция</span>
+</span></code></pre></div>
+Это второй срез того же мифа из 13.1: pyc ускоряет <strong>импорт</strong> в разы — и не ускоряет исполнение ни на сколько. Стоимость hash-проверки (CHECKED_HASH против timestamp из 13.2) на этом фоне неразличима: 3.30 против 3.34 мс на 20 импортов — PEP 552 не делает импорт заметно дороже.</p>
 
 
 

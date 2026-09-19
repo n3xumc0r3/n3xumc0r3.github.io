@@ -786,7 +786,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-folding" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: оптимизация x + 0 → x (constant folding)
     </span>
@@ -795,7 +795,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-renamer" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: подмена имён переменных (обфускация)
     </span>
@@ -804,7 +804,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-instrumentation" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: instrumentation — подсчёт вызовов функций
     </span>
@@ -855,7 +855,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.14-dir" class="md-nav__link">
+  <a href="#7.14-bez-argumentov" class="md-nav__link">
     <span class="md-ellipsis">
       dir() без аргументов — для текущей области видимости
     </span>
@@ -1498,7 +1498,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-folding" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: оптимизация x + 0 → x (constant folding)
     </span>
@@ -1507,7 +1507,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-renamer" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: подмена имён переменных (обфускация)
     </span>
@@ -1516,7 +1516,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.13-polnyy" class="md-nav__link">
+  <a href="#7.13-polnyy-instrumentation" class="md-nav__link">
     <span class="md-ellipsis">
       Полный пример: instrumentation — подсчёт вызовов функций
     </span>
@@ -1567,7 +1567,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#7.14-dir" class="md-nav__link">
+  <a href="#7.14-bez-argumentov" class="md-nav__link">
     <span class="md-ellipsis">
       dir() без аргументов — для текущей области видимости
     </span>
@@ -1615,11 +1615,15 @@
 </span></code></pre></div>
 <p>В функциях — то же самое:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span> <span class="nf">calculate_something</span><span class="p">():</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">result</span><span class="p">:</span> <span class="mi">42</span>       <span class="c1"># аннотация без присваивания</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">result</span><span class="p">:</span> <span class="mi">42</span>       <span class="c1"># аннотация без присваивания — и она НЕ СОХРАНЯЕТСЯ (PEP 526)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">my_number</span> <span class="o">=</span> <span class="n">calculate_something</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">return</span> <span class="n">my_number</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">calculate_something</span><span class="p">())</span>   <span class="c1"># 42</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">calculate_something</span><span class="p">())</span>   <span class="c1"># KeyError: &#39;result&#39; — а не 42!</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Локальные аннотации интерпретатор только проверяет синтаксически и выбрасывает:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># __annotations__ у функции пуст ({}), в нём живут только аннотации параметров</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># и return. Сохраняются лишь аннотации уровня модуля/класса (как в примере выше).</span>
 </span></code></pre></div>
 <p>Что видит интерпретатор:</p>
 <ul>
@@ -1627,7 +1631,7 @@
 <li><code>result = 42</code> → <code>[IDENTIFIER, ASSIGN, NUMBER]</code>.</li>
 </ul>
 <p><code>.__annotations__['result']</code> → <code>[IDENTIFIER, DOT, IDENTIFIER, LBRACKET, STRING, RBRACKET]</code> — выглядит как обычное чтение словаря.</p>
-<p>⚠️ <strong>Получение аннотаций в Python 3.10+</strong>: <code>typing.get_type_hints(func)</code> делает правильный резолв строковых аннотаций (PEP 563, <code>from __future__ import annotations</code>), но для <code>result: 42</code> вернёт литеральное значение <code>42</code>, не тип.</p>
+<p>⚠️ <strong>Получение аннотаций в Python 3.10+</strong>: <code>typing.get_type_hints(func)</code> делает правильный резолв строковых аннотаций (PEP 563, <code>from __future__ import annotations</code>), но для функции из примера выше вернёт <code>{}</code> — локальная аннотация <code>result: 42</code> не сохраняется вообще (PEP 526).</p>
 <h2 id="7.2">7.2. <code>setattr</code>/<code>getattr</code>/<code>delattr</code><a class="headerlink" href="#7.2" title="Permanent link">#</a></h2>
 <p>Три функции для динамической работы с атрибутами:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Динамически получить атрибут объекта</span>
@@ -1661,7 +1665,7 @@
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>   <span class="c1"># напечатает &quot;Вызов add((2, 3), {})&quot; и вернёт 5</span>
 </span></code></pre></div>
-<p><code>@log_calls add</code> эквивалентно <code>add = log_calls(add)</code>.</p>
+<p><code>@log_calls add</code> — декоратор над <code>add</code>, эквивалентен <code>add = log_calls(add)</code>.</p>
 <p><strong>Параметризованный декоратор</strong> — вложенность на один уровень больше:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -1717,7 +1721,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>   <span class="c1"># копирует __name__, __doc__, __wrapped__, __dict__, signature</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>   <span class="c1"># копирует __module__, __name__, __qualname__, __doc__, __dict__ и ставит __wrapped__</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">return</span> <span class="n">wrapper</span>
@@ -1785,20 +1789,34 @@
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># ⚠️ Сигнатура types.CodeType различается по версиям Python:</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1">#   Python 3.6-3.7:  15 параметров (нет posonlyargcount; есть lnotab)</span>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="c1">#   Python 3.8-3.10: 16 параметров (добавлен posonlyargcount; есть lnotab)</span>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1">#   Python 3.11:    17 параметров (добавлен qualname; lnotab → linetable + exceptiontable)</span>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1">#   Python 3.12+:   18 параметров (linetable/exceptiontable; см. PEP 626 и PEP 657)</span>
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="c1">#</span>
-</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># Код ниже — для Python 3.8-3.10 (14 обязательных позиционных аргументов).</span>
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="c1"># На 3.11+ сигнатура несовместима — нужно добавить qualname и заменить</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="c1"># lnotab на linetable + exceptiontable. На 3.12 порядок ещё немного изменён.</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="c1"># На практике ручная сборка CodeType почти никогда не нужна — см. ниже</span>
-</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="c1"># шаблон с `__code__ = template.__code__`.</span>
-</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="n">my_runtime_func</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span>
-</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="n">types</span><span class="o">.</span><span class="n">CodeType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">code_bytes</span><span class="p">,</span> <span class="n">consts</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="p">(),</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
-</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>    <span class="nb">globals</span><span class="p">()</span>
-</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="p">)</span>
-</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>
-</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="nb">print</span><span class="p">(</span><span class="n">my_runtime_func</span><span class="p">())</span>   <span class="c1"># 42</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1">#   Python 3.11+:    18 параметров (добавлены qualname и exceptiontable; lnotab → linetable)</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1">#</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="c1"># Рабочий вызов на 3.12 (16 позиционных аргументов — проверено, возвращает 42):</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># На практике ручная сборка CodeType почти никогда не нужна — см. ниже</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="c1"># шаблон с `__code__ = template.__code__`.</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="n">my_runtime_func</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    <span class="n">types</span><span class="o">.</span><span class="n">CodeType</span><span class="p">(</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>        <span class="mi">0</span><span class="p">,</span>            <span class="c1"># argcount</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>        <span class="mi">0</span><span class="p">,</span>            <span class="c1"># posonlyargcount</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>        <span class="mi">0</span><span class="p">,</span>            <span class="c1"># kwonlyargcount</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>        <span class="mi">0</span><span class="p">,</span>            <span class="c1"># nlocals</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>        <span class="mi">1</span><span class="p">,</span>            <span class="c1"># stacksize</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>        <span class="mi">64</span><span class="p">,</span>           <span class="c1"># flags (NOFREE)</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>        <span class="n">code_bytes</span><span class="p">,</span>   <span class="c1"># b&#39;d\x01S\x00&#39; — LOAD_CONST 1; RETURN_VALUE</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>        <span class="n">consts</span><span class="p">,</span>       <span class="c1"># (None, 42)</span>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>        <span class="n">names</span><span class="p">,</span>        <span class="c1"># ()</span>
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>        <span class="p">(),</span>           <span class="c1"># varnames</span>
+</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        <span class="s1">&#39;&lt;s&gt;&#39;</span><span class="p">,</span>        <span class="c1"># filename</span>
+</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>        <span class="s1">&#39;t&#39;</span><span class="p">,</span>          <span class="c1"># name</span>
+</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>        <span class="s1">&#39;t&#39;</span><span class="p">,</span>          <span class="c1"># qualname</span>
+</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>        <span class="mi">1</span><span class="p">,</span>            <span class="c1"># firstlineno</span>
+</span><span id="__span-10-34"><a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>        <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span>          <span class="c1"># linetable</span>
+</span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>        <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span>          <span class="c1"># exceptiontable</span>
+</span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>    <span class="p">),</span>
+</span><span id="__span-10-37"><a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>    <span class="nb">globals</span><span class="p">()</span>
+</span><span id="__span-10-38"><a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="p">)</span>
+</span><span id="__span-10-39"><a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>
+</span><span id="__span-10-40"><a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="nb">print</span><span class="p">(</span><span class="n">my_runtime_func</span><span class="p">())</span>   <span class="c1"># 42</span>
 </span></code></pre></div>
 <p>⚠️ Сигнатура <code>CodeType</code> очень нестабильна между версиями. <strong>На практике проще</strong> взять готовый код-объект из существующей функции и заменить:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span> <span class="nf">template</span><span class="p">():</span>
@@ -1904,7 +1922,7 @@
 <li><code>exec</code> очевидно опасен — он «исполняет операторы», все понимают, что <code>exec("os.system(...)")</code> выполнит команду.</li>
 <li><code>eval</code> <strong>выглядит безобиднее</strong> — «вычисляет выражение». Но в Python <strong>вызов функции</strong> — это выражение. <code>os.system('...')</code> — валидное выражение. Так что <code>eval</code> <strong>так же опасен</strong>, как <code>exec</code>, просто об этом чаще забывают.</li>
 </ul>
-<p>Правило: <code>eval(untrusted_input)</code> == <code>exec(untrusted_input)</code> по уровню угрозы. Если бы не принимаете <code>exec</code>, не принимайте и <code>eval</code>.</p>
+<p>Правило: <code>eval(untrusted_input)</code> == <code>exec(untrusted_input)</code> по уровню угрозы. Если вы не принимаете <code>exec</code>, не принимайте и <code>eval</code>.</p>
 <h2 id="7.8">7.8. <code>locals()</code> и <code>globals()</code><a class="headerlink" href="#7.8" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># globals() — словарь глобального пространства имён модуля</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># locals() — словарь локальных переменных (внутри функции)</span>
@@ -2021,7 +2039,7 @@
 </span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="si">}</span><span class="s2">, default=</span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="si">}</span><span class="s2">, kind=</span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="c1"># x: &lt;class &#39;int&#39;&gt;, default=&lt;class &#39;inspect._empty&#39;&gt;, kind=POSITIONAL_OR_KEYWORD</span>
-</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="c1"># y: &lt;class &#39;str&#39;&gt;, default=&#39;default&#39;, kind=POSITIONAL_OR_KEYWORD</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="c1"># y: &lt;class &#39;str&#39;&gt;, default=default, kind=POSITIONAL_OR_KEYWORD</span>
 </span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="c1"># args: &lt;class &#39;inspect._empty&#39;&gt;, default=&lt;class &#39;inspect._empty&#39;&gt;, kind=VAR_POSITIONAL</span>
 </span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="c1"># kwargs: &lt;class &#39;inspect._empty&#39;&gt;, default=&lt;class &#39;inspect._empty&#39;&gt;, kind=VAR_KEYWORD</span>
 </span></code></pre></div>
@@ -2048,27 +2066,30 @@
 </span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>    <span class="k">def</span> <span class="nf">static</span><span class="p">():</span>
 </span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>        <span class="k">pass</span>
 </span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
-</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="c1"># Только публичные bound methods (передаём ЭКЗЕМПЛЯР c, не класс C):</span>
-</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">):</span>
-</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">member</span><span class="p">)</span>
-</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="c1"># method &lt;bound method C.method of &lt;__main__.C object at 0x...&gt;&gt;</span>
-</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>
-</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="c1"># ⚠️ Если передать класс C (а не экземпляр c) с ismethod — вернётся пустой список,</span>
-</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="c1"># потому что на уровне класса методы — это обычные function (не bound method).</span>
-</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="c1"># Для класса использай inspect.isfunction:</span>
-</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a>
-</span><span id="__span-30-19"><a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">):</span>
-</span><span id="__span-30-20"><a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
-</span><span id="__span-30-21"><a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a><span class="c1"># method &lt;function C.method at 0x...&gt;</span>
-</span><span id="__span-30-22"><a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a>
-</span><span id="__span-30-23"><a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a><span class="c1"># Только функции</span>
-</span><span id="__span-30-24"><a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">):</span>
-</span><span id="__span-30-25"><a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
-</span><span id="__span-30-26"><a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a>
-</span><span id="__span-30-27"><a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a><span class="c1"># Только классы в модуле</span>
-</span><span id="__span-30-28"><a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a><span class="kn">import</span> <span class="nn">my_module</span>
-</span><span id="__span-30-29"><a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">my_module</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">):</span>
-</span><span id="__span-30-30"><a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>   <span class="c1"># экземпляр (без него — NameError)</span>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>
+</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="c1"># Только публичные bound methods (передаём ЭКЗЕМПЛЯР c, не класс C):</span>
+</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">):</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">member</span><span class="p">)</span>
+</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="c1"># method &lt;bound method C.method of &lt;__main__.C object at 0x...&gt;&gt;</span>
+</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a>
+</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="c1"># ⚠️ Если передать класс C (а не экземпляр c) с ismethod — вернётся пустой список,</span>
+</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="c1"># потому что на уровне класса методы — это обычные function (не bound method).</span>
+</span><span id="__span-30-19"><a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a><span class="c1"># Для класса используйте inspect.isfunction:</span>
+</span><span id="__span-30-20"><a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>
+</span><span id="__span-30-21"><a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">):</span>
+</span><span id="__span-30-22"><a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+</span><span id="__span-30-23"><a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a><span class="c1"># method &lt;function C.method at 0x...&gt;</span>
+</span><span id="__span-30-24"><a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a><span class="c1"># static &lt;function C.static at 0x...&gt;   ← staticmethod на уровне класса тоже function</span>
+</span><span id="__span-30-25"><a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a>
+</span><span id="__span-30-26"><a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a><span class="c1"># Только функции</span>
+</span><span id="__span-30-27"><a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">):</span>
+</span><span id="__span-30-28"><a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+</span><span id="__span-30-29"><a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a>
+</span><span id="__span-30-30"><a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a><span class="c1"># Только классы в модуле</span>
+</span><span id="__span-30-31"><a id="__codelineno-30-31" name="__codelineno-30-31" href="#__codelineno-30-31"></a><span class="kn">import</span> <span class="nn">my_module</span>
+</span><span id="__span-30-32"><a id="__codelineno-30-32" name="__codelineno-30-32" href="#__codelineno-30-32"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">my_module</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">):</span>
+</span><span id="__span-30-33"><a id="__codelineno-30-33" name="__codelineno-30-33" href="#__codelineno-30-33"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="7.11-stek">Стек вызовов<a class="headerlink" href="#7.11-stek" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
@@ -2137,6 +2158,7 @@
 </span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>           <span class="c1"># {&#39;x&#39;: 1, &#39;y&#39;: 10}</span>
 </span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>         <span class="c1"># {&#39;x&#39;: 1, &#39;y&#39;: 2}</span>
 </span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>          <span class="c1"># {&#39;x&#39;: 5, &#39;y&#39;: 10}</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># (Формально deprecated с 3.5 — современная альтернатива: Signature.bind, см. выше.)</span>
 </span></code></pre></div>
 <p>Используется в тестах и в mock-фреймворках (например, <code>unittest.mock</code>).</p>
 <h3 id="7.11-inspectisgenerator"><code>inspect.isgenerator</code>, <code>iscoroutine</code>, <code>isawaitable</code><a class="headerlink" href="#7.11-inspectisgenerator" title="Permanent link">#</a></h3>
@@ -2147,7 +2169,10 @@
 </span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>
 </span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">gen</span><span class="p">()))</span>       <span class="c1"># True</span>
 </span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">coro</span><span class="p">))</span>  <span class="c1"># True</span>
-</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="k">yield</span><span class="p">)))</span>   <span class="c1"># проверяет async generator</span>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="k">yield</span><span class="p">)))</span>   <span class="c1"># False — это СИНХРОННЫЙ генератор!</span>
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">():</span>
+</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a>    <span class="k">yield</span> <span class="mi">1</span>
+</span><span id="__span-36-11"><a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">agen</span><span class="p">))</span>   <span class="c1"># True</span>
 </span></code></pre></div>
 <h2 id="7.12">7.12. <code>importlib</code> — программный импорт<a class="headerlink" href="#7.12" title="Permanent link">#</a></h2>
 <p><code>importlib</code> — современная альтернатива <code>__import__</code> для программного управления импортами.</p>
@@ -2177,7 +2202,7 @@
 <h3 id="7.12-importlibinvalidatecaches"><code>importlib.invalidate_caches</code> — пересканировать sys.path<a class="headerlink" href="#7.12-importlibinvalidatecaches" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">import</span> <span class="nn">importlib</span>
 </span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="c1"># Если в sys.path появились новые файлы, importlib их не увидит, пока не сбросить кэш</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="c1"># Если в sys.path появились новые файлы, importlib их не увидит, пока вы не сбросите кэш</span>
 </span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="n">importlib</span><span class="o">.</span><span class="n">invalidate_caches</span><span class="p">()</span>
 </span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="c1"># Теперь новый import найдёт свежесозданный модуль</span>
 </span></code></pre></div>
@@ -2234,9 +2259,29 @@
 </span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>
 </span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
 </span><span id="__span-43-9"><a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-</span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="c1"># Module(body=[FunctionDef(name=&#39;f&#39;, args=arguments(args=[arg(arg=&#39;x&#39;)]), </span>
-</span><span id="__span-43-11"><a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a><span class="c1">#   body=[Return(value=BinOp(left=BinOp(left=Name(&#39;x&#39;), op=Mult(), right=Constant(2)), </span>
-</span><span id="__span-43-12"><a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="c1">#   op=Add(), right=Constant(1))]))])</span>
+</span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="c1"># Module(</span>
+</span><span id="__span-43-11"><a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a><span class="c1">#   body=[</span>
+</span><span id="__span-43-12"><a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="c1">#     FunctionDef(</span>
+</span><span id="__span-43-13"><a id="__codelineno-43-13" name="__codelineno-43-13" href="#__codelineno-43-13"></a><span class="c1">#       name=&#39;f&#39;,</span>
+</span><span id="__span-43-14"><a id="__codelineno-43-14" name="__codelineno-43-14" href="#__codelineno-43-14"></a><span class="c1">#       args=arguments(</span>
+</span><span id="__span-43-15"><a id="__codelineno-43-15" name="__codelineno-43-15" href="#__codelineno-43-15"></a><span class="c1">#         posonlyargs=[],</span>
+</span><span id="__span-43-16"><a id="__codelineno-43-16" name="__codelineno-43-16" href="#__codelineno-43-16"></a><span class="c1">#         args=[</span>
+</span><span id="__span-43-17"><a id="__codelineno-43-17" name="__codelineno-43-17" href="#__codelineno-43-17"></a><span class="c1">#           arg(arg=&#39;x&#39;)],</span>
+</span><span id="__span-43-18"><a id="__codelineno-43-18" name="__codelineno-43-18" href="#__codelineno-43-18"></a><span class="c1">#         kwonlyargs=[],</span>
+</span><span id="__span-43-19"><a id="__codelineno-43-19" name="__codelineno-43-19" href="#__codelineno-43-19"></a><span class="c1">#         kw_defaults=[],</span>
+</span><span id="__span-43-20"><a id="__codelineno-43-20" name="__codelineno-43-20" href="#__codelineno-43-20"></a><span class="c1">#         defaults=[]),</span>
+</span><span id="__span-43-21"><a id="__codelineno-43-21" name="__codelineno-43-21" href="#__codelineno-43-21"></a><span class="c1">#       body=[</span>
+</span><span id="__span-43-22"><a id="__codelineno-43-22" name="__codelineno-43-22" href="#__codelineno-43-22"></a><span class="c1">#         Return(</span>
+</span><span id="__span-43-23"><a id="__codelineno-43-23" name="__codelineno-43-23" href="#__codelineno-43-23"></a><span class="c1">#           value=BinOp(</span>
+</span><span id="__span-43-24"><a id="__codelineno-43-24" name="__codelineno-43-24" href="#__codelineno-43-24"></a><span class="c1">#             left=BinOp(</span>
+</span><span id="__span-43-25"><a id="__codelineno-43-25" name="__codelineno-43-25" href="#__codelineno-43-25"></a><span class="c1">#               left=Name(id=&#39;x&#39;, ctx=Load()),</span>
+</span><span id="__span-43-26"><a id="__codelineno-43-26" name="__codelineno-43-26" href="#__codelineno-43-26"></a><span class="c1">#               op=Mult(),</span>
+</span><span id="__span-43-27"><a id="__codelineno-43-27" name="__codelineno-43-27" href="#__codelineno-43-27"></a><span class="c1">#               right=Constant(value=2)),</span>
+</span><span id="__span-43-28"><a id="__codelineno-43-28" name="__codelineno-43-28" href="#__codelineno-43-28"></a><span class="c1">#             op=Add(),</span>
+</span><span id="__span-43-29"><a id="__codelineno-43-29" name="__codelineno-43-29" href="#__codelineno-43-29"></a><span class="c1">#             right=Constant(value=1)))],</span>
+</span><span id="__span-43-30"><a id="__codelineno-43-30" name="__codelineno-43-30" href="#__codelineno-43-30"></a><span class="c1">#       decorator_list=[],</span>
+</span><span id="__span-43-31"><a id="__codelineno-43-31" name="__codelineno-43-31" href="#__codelineno-43-31"></a><span class="c1">#       type_params=[])],</span>
+</span><span id="__span-43-32"><a id="__codelineno-43-32" name="__codelineno-43-32" href="#__codelineno-43-32"></a><span class="c1">#   type_ignores=[])</span>
 </span></code></pre></div>
 <h3 id="7.13-astunparse"><code>ast.unparse</code> — AST обратно в код (Python 3.9+)<a class="headerlink" href="#7.13-astunparse" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;x = 1&quot;</span><span class="p">)</span>
@@ -2292,19 +2337,21 @@
 </span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 </span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="c1"># Module</span>
 </span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="c1"># Assign</span>
-</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="c1"># Name</span>
-</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Store</span>
+</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="c1"># Assign</span>
+</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Name</span>
 </span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="c1"># Constant</span>
-</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="c1"># Assign</span>
-</span><span id="__span-48-10"><a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="c1"># Name</span>
+</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="c1"># Name</span>
+</span><span id="__span-48-10"><a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="c1"># BinOp</span>
 </span><span id="__span-48-11"><a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a><span class="c1"># Store</span>
-</span><span id="__span-48-12"><a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a><span class="c1"># BinOp</span>
-</span><span id="__span-48-13"><a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="c1"># Add</span>
-</span><span id="__span-48-14"><a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a><span class="c1"># Name</span>
-</span><span id="__span-48-15"><a id="__codelineno-48-15" name="__codelineno-48-15" href="#__codelineno-48-15"></a><span class="c1"># Load</span>
-</span><span id="__span-48-16"><a id="__codelineno-48-16" name="__codelineno-48-16" href="#__codelineno-48-16"></a><span class="c1"># Constant</span>
+</span><span id="__span-48-12"><a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a><span class="c1"># Store</span>
+</span><span id="__span-48-13"><a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="c1"># Name</span>
+</span><span id="__span-48-14"><a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a><span class="c1"># Add</span>
+</span><span id="__span-48-15"><a id="__codelineno-48-15" name="__codelineno-48-15" href="#__codelineno-48-15"></a><span class="c1"># Constant</span>
+</span><span id="__span-48-16"><a id="__codelineno-48-16" name="__codelineno-48-16" href="#__codelineno-48-16"></a><span class="c1"># Load</span>
+</span><span id="__span-48-17"><a id="__codelineno-48-17" name="__codelineno-48-17" href="#__codelineno-48-17"></a><span class="c1"># ⚠️ ast.walk — обход в ШИРИНУ (BFS через deque): сначала оба Assign,</span>
+</span><span id="__span-48-18"><a id="__codelineno-48-18" name="__codelineno-48-18" href="#__codelineno-48-18"></a><span class="c1"># потом их дети. Для DFS пишите рекурсивный visitor.</span>
 </span></code></pre></div>
-<h3 id="7.13-polnyy">Полный пример: оптимизация <code>x + 0</code> → <code>x</code> (constant folding)<a class="headerlink" href="#7.13-polnyy" title="Permanent link">#</a></h3>
+<h3 id="7.13-polnyy-folding">Полный пример: оптимизация <code>x + 0</code> → <code>x</code> (constant folding)<a class="headerlink" href="#7.13-polnyy-folding" title="Permanent link">#</a></h3>
 <p>Реалистичная трансформация — найти все <code>BinOp</code> вида <code>something + 0</code> и заменить на <code>something</code>. Это базовая оптимизация, которую делают компиляторы; на Python её можно реализовать через <code>NodeTransformer</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kn">import</span> <span class="nn">ast</span>
 </span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>
@@ -2334,7 +2381,7 @@
 </span><span id="__span-49-26"><a id="__codelineno-49-26" name="__codelineno-49-26" href="#__codelineno-49-26"></a><span class="c1"># def f(x, y):</span>
 </span><span id="__span-49-27"><a id="__codelineno-49-27" name="__codelineno-49-27" href="#__codelineno-49-27"></a><span class="c1">#     return x + y + z</span>
 </span></code></pre></div>
-<h3 id="7.13-polnyy">Полный пример: подмена имён переменных (обфускация)<a class="headerlink" href="#7.13-polnyy" title="Permanent link">#</a></h3>
+<h3 id="7.13-polnyy-renamer">Полный пример: подмена имён переменных (обфускация)<a class="headerlink" href="#7.13-polnyy-renamer" title="Permanent link">#</a></h3>
 <p>Превращаем осмысленные имена в <code>_0</code>, <code>_1</code>, <code>_2</code>... — типичный шаг обфускации:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="kn">import</span> <span class="nn">ast</span>
 </span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>
@@ -2370,7 +2417,7 @@
 </span><span id="__span-50-32"><a id="__codelineno-50-32" name="__codelineno-50-32" href="#__codelineno-50-32"></a><span class="c1">#     return _1 * 10 + _2</span>
 </span></code></pre></div>
 <p>⚠️ Этот приём <strong>не отменяет</strong> плагиат-детекторы (см. Приложение A) — они тоже работают через AST-нормализацию, сливают <code>_0</code>, <code>_1</code> обратно в <code>IDENTIFIER</code>. Но он скрывает смысл от <strong>человека</strong>, читающего код.</p>
-<h3 id="7.13-polnyy">Полный пример: instrumentation — подсчёт вызовов функций<a class="headerlink" href="#7.13-polnyy" title="Permanent link">#</a></h3>
+<h3 id="7.13-polnyy-instrumentation">Полный пример: instrumentation — подсчёт вызовов функций<a class="headerlink" href="#7.13-polnyy-instrumentation" title="Permanent link">#</a></h3>
 <p>Вставляем <code>__count_X += 1</code> в начало каждой функции — типичная основа профайлеров и coverage-инструментов:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kn">import</span> <span class="nn">ast</span>
 </span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>
@@ -2413,7 +2460,7 @@
 <p><code>dir()</code> — встроенная функция, возвращающая <strong>сортированный список имён атрибутов</strong> объекта. Это первая команда, которую пишут, когда встречают незнакомый объект: <code>dir(obj)</code> показывает всё, что у него есть.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
 </span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
-</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">[</span><span class="s1">&#39;MAXYEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;MINYEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;__builtins__&#39;</span><span class="p">,</span> <span class="s1">&#39;__cached__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">[</span><span class="s1">&#39;MAXYEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;MINYEAR&#39;</span><span class="p">,</span> <span class="s1">&#39;UTC&#39;</span><span class="p">,</span> <span class="s1">&#39;__all__&#39;</span><span class="p">,</span> <span class="s1">&#39;__builtins__&#39;</span><span class="p">,</span> <span class="s1">&#39;__cached__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>
 </span><span id="__span-52-4"><a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime_CAPI&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;timedelta&#39;</span><span class="p">,</span> <span class="s1">&#39;timezone&#39;</span><span class="p">,</span> <span class="s1">&#39;tzinfo&#39;</span><span class="p">]</span>
 </span><span id="__span-52-5"><a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a>
 </span><span id="__span-52-6"><a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;hello&quot;</span>
@@ -2524,8 +2571,8 @@
 <h3 id="7.14-prakticheskie">Практические приёмы с <code>dir()</code><a class="headerlink" href="#7.14-prakticheskie" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="c1"># 1. Найти все методы объекта по префиксу/суффиксу</span>
 </span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">)]</span>
-</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="p">[</span><span class="s1">&#39;isalpha&#39;</span><span class="p">,</span> <span class="s1">&#39;isascii&#39;</span><span class="p">,</span> <span class="s1">&#39;isdecimal&#39;</span><span class="p">,</span> <span class="s1">&#39;isdigit&#39;</span><span class="p">,</span> <span class="s1">&#39;isidentifier&#39;</span><span class="p">,</span> <span class="s1">&#39;islower&#39;</span><span class="p">,</span>
-</span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a> <span class="s1">&#39;isnumeric&#39;</span><span class="p">,</span> <span class="s1">&#39;isprintable&#39;</span><span class="p">,</span> <span class="s1">&#39;isspace&#39;</span><span class="p">,</span> <span class="s1">&#39;istitle&#39;</span><span class="p">,</span> <span class="s1">&#39;isupper&#39;</span><span class="p">]</span>
+</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="p">[</span><span class="s1">&#39;isalnum&#39;</span><span class="p">,</span> <span class="s1">&#39;isalpha&#39;</span><span class="p">,</span> <span class="s1">&#39;isascii&#39;</span><span class="p">,</span> <span class="s1">&#39;isdecimal&#39;</span><span class="p">,</span> <span class="s1">&#39;isdigit&#39;</span><span class="p">,</span> <span class="s1">&#39;isidentifier&#39;</span><span class="p">,</span>
+</span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a> <span class="s1">&#39;islower&#39;</span><span class="p">,</span> <span class="s1">&#39;isnumeric&#39;</span><span class="p">,</span> <span class="s1">&#39;isprintable&#39;</span><span class="p">,</span> <span class="s1">&#39;isspace&#39;</span><span class="p">,</span> <span class="s1">&#39;istitle&#39;</span><span class="p">,</span> <span class="s1">&#39;isupper&#39;</span><span class="p">]</span>
 </span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>
 </span><span id="__span-55-6"><a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="c1"># 2. Отфильтровать dunder-методы (часто мешают)</span>
 </span><span id="__span-55-7"><a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
@@ -2545,11 +2592,12 @@
 </span><span id="__span-55-21"><a id="__codelineno-55-21" name="__codelineno-55-21" href="#__codelineno-55-21"></a>
 </span><span id="__span-55-22"><a id="__codelineno-55-22" name="__codelineno-55-22" href="#__codelineno-55-22"></a><span class="c1"># 5. Сравнить API двух классов</span>
 </span><span id="__span-55-23"><a id="__codelineno-55-23" name="__codelineno-55-23" href="#__codelineno-55-23"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">tuple</span><span class="p">))</span>   <span class="c1"># что есть у list, но нет у tuple</span>
-</span><span id="__span-55-24"><a id="__codelineno-55-24" name="__codelineno-55-24" href="#__codelineno-55-24"></a><span class="p">{</span><span class="s1">&#39;append&#39;</span><span class="p">,</span> <span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;extend&#39;</span><span class="p">,</span> <span class="s1">&#39;insert&#39;</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="s1">&#39;reverse&#39;</span><span class="p">,</span> <span class="s1">&#39;sort&#39;</span><span class="p">}</span>
-</span><span id="__span-55-25"><a id="__codelineno-55-25" name="__codelineno-55-25" href="#__codelineno-55-25"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">tuple</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>   <span class="c1"># что есть у tuple, но нет у list</span>
-</span><span id="__span-55-26"><a id="__codelineno-55-26" name="__codelineno-55-26" href="#__codelineno-55-26"></a><span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">}</span>   <span class="c1"># у tuple свой count, но и у list он есть — пересечение</span>
+</span><span id="__span-55-24"><a id="__codelineno-55-24" name="__codelineno-55-24" href="#__codelineno-55-24"></a><span class="p">{</span><span class="s1">&#39;append&#39;</span><span class="p">,</span> <span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;extend&#39;</span><span class="p">,</span> <span class="s1">&#39;insert&#39;</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">,</span> <span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="s1">&#39;reverse&#39;</span><span class="p">,</span> <span class="s1">&#39;sort&#39;</span><span class="p">,</span>
+</span><span id="__span-55-25"><a id="__codelineno-55-25" name="__codelineno-55-25" href="#__codelineno-55-25"></a> <span class="s1">&#39;__delitem__&#39;</span><span class="p">,</span> <span class="s1">&#39;__iadd__&#39;</span><span class="p">,</span> <span class="s1">&#39;__imul__&#39;</span><span class="p">,</span> <span class="s1">&#39;__reversed__&#39;</span><span class="p">,</span> <span class="s1">&#39;__setitem__&#39;</span><span class="p">}</span>
+</span><span id="__span-55-26"><a id="__codelineno-55-26" name="__codelineno-55-26" href="#__codelineno-55-26"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">tuple</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>   <span class="c1"># что есть у tuple, но нет у list</span>
+</span><span id="__span-55-27"><a id="__codelineno-55-27" name="__codelineno-55-27" href="#__codelineno-55-27"></a><span class="p">{</span><span class="s1">&#39;__getnewargs__&#39;</span><span class="p">}</span>   <span class="c1"># count есть у обоих — это пересечение, а не разница</span>
 </span></code></pre></div>
-<h3 id="7.14-dir"><code>dir()</code> без аргументов — для текущей области видимости<a class="headerlink" href="#7.14-dir" title="Permanent link">#</a></h3>
+<h3 id="7.14-bez-argumentov"><code>dir()</code> без аргументов — для текущей области видимости<a class="headerlink" href="#7.14-bez-argumentov" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">f</span><span class="p">():</span> <span class="k">pass</span>
 </span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
@@ -2605,7 +2653,7 @@
 </span><span id="__span-58-16"><a id="__codelineno-58-16" name="__codelineno-58-16" href="#__codelineno-58-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_lru(20)&quot;</span><span class="p">,</span>    <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с</span>
 </span><span id="__span-58-17"><a id="__codelineno-58-17" name="__codelineno-58-17" href="#__codelineno-58-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_manual(20)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.09 с</span>
 </span></code></pre></div>
-На CPython 3.12+ <code>lru_cache</code> <strong>на ~25% быстрее</strong> ручного <code>dict</code>-кеша (0.07 с vs 0.09 с). До 3.11 было наоборот — manual dict выигрывал. Причина: в 3.11+ <code>lru_cache</code> переписали на C (specialized adaptive interpreter), и он стал быстрее чистого Python-кода. Плюс <code>lru_cache</code> даёт <code>cache_info()</code>, <code>cache_clear()</code>, потокобезопасность и лимит размера — теперь <strong>нет причин</strong> писать свой кеш, кроме случаев с очень специфическими требованиями.</p>
+На CPython 3.12+ <code>lru_cache</code> <strong>в ~2.5 раза быстрее</strong> ручного <code>dict</code>-кеша (≈0.07 с vs ≈0.18 с, зависит от CPU). C-реализация <code>_lru_cache_wrapper</code> существует с 3.8 и используется до сих пор (<code>functools.py</code> импортирует её из <code>_functools</code>); на фоне специализаций PEP 659 чистый Python-вариант тоже ускорился, но C-версия всё равно впереди. Плюс <code>lru_cache</code> даёт <code>cache_info()</code>, <code>cache_clear()</code>, потокобезопасность и лимит размера — теперь <strong>нет причин</strong> писать свой кеш, кроме случаев с очень специфическими требованиями.</p>
 <p><strong>3. <code>type()</code> динамическое создание класса vs <code>class</code>.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="k">def</span> <span class="nf">via_class</span><span class="p">():</span>
@@ -2615,34 +2663,34 @@
 </span><span id="__span-59-6"><a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a><span class="k">def</span> <span class="nf">via_type</span><span class="p">():</span>
 </span><span id="__span-59-7"><a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a>    <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">(),</span> <span class="p">{</span><span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 </span><span id="__span-59-8"><a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a><span class="c1"># Создание 10 000 классов</span>
-</span><span id="__span-59-9"><a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_class</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.10 с</span>
-</span><span id="__span-59-10"><a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_type</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.05 с</span>
+</span><span id="__span-59-9"><a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_class</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.44 с (зависит от CPU)</span>
+</span><span id="__span-59-10"><a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_type</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.36 с</span>
 </span></code></pre></div>
-<code>type()</code> <strong>в ~2× быстрее</strong> при массовом создании классов — нет парсинга тела класса
+<code>type()</code> <strong>в ~1.2–1.3× быстрее</strong> при массовом создании классов — нет парсинга тела класса
 и построения AST. Но для статического кода разница незаметна. Главный плюс <code>type()</code> —
 динамичность (метапрограммирование, генерация DTO из схемы).</p>
 <p><strong>4. <code>eval</code>/<code>exec</code> vs прямая функция — цена интерпретации.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;1 + 2 * 3&quot;</span>
 </span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="c1"># eval — каждый раз парсит + компилирует</span>
-</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;eval(&#39;1 + 2 * 3&#39;)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.30 с</span>
+</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;eval(&#39;1 + 2 * 3&#39;)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.43 с (зависит от CPU)</span>
 </span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="c1"># compile один раз, потом eval по code-объекту</span>
 </span><span id="__span-60-6"><a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a><span class="n">compiled</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s2">&quot;&lt;s&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;eval&quot;</span><span class="p">)</span>
-</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;eval(compiled)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;compiled&quot;</span><span class="p">:</span> <span class="n">compiled</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.05 с</span>
+</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;eval(compiled)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;compiled&quot;</span><span class="p">:</span> <span class="n">compiled</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.027 с</span>
 </span><span id="__span-60-8"><a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a><span class="c1"># Прямая lambda</span>
 </span><span id="__span-60-9"><a id="__codelineno-60-9" name="__codelineno-60-9" href="#__codelineno-60-9"></a><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span>
-</span><span id="__span-60-10"><a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.012 с</span>
+</span><span id="__span-60-10"><a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.003 с</span>
 </span></code></pre></div>
-<code>eval</code> строки <strong>в 25× медленнее</strong> прямой функции. <code>eval</code> предкомпилированного
-code-объекта — в 4× медленнее. На горячих путях — предкомпилируйте или
+<code>eval</code> строки <strong>в ~100–130× медленнее</strong> прямой функции. <code>eval</code> предкомпилированного
+code-объекта — в ~8× медленнее. На горячих путях — предкомпилируйте или
 переписывайте на нормальные функции.</p>
 <p><strong>5. <code>inspect.signature</code> — цена интроспекции.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kn">import</span> <span class="nn">inspect</span><span class="o">,</span> <span class="nn">timeit</span>
 </span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="k">pass</span>
-</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.85 с</span>
-</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.05 с</span>
+</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.89 с (зависит от CPU)</span>
+</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.008 с</span>
 </span></code></pre></div>
-<code>inspect.signature</code> <strong>в ~17× медленнее</strong> прямого чтения <code>__code__</code> — он строит
+<code>inspect.signature</code> <strong>в ~100× медленнее</strong> прямого чтения <code>__code__</code> — он строит
 полноценный <code>Signature</code> объект с <code>Parameter</code>'ами, дефолтами, аннотациями.
 На горячих путях DI-фреймворков — кешируйте по <code>f</code>.</p>
 

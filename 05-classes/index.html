@@ -709,7 +709,7 @@
           <li class="md-nav__item">
   <a href="#5.12-protocol" class="md-nav__link">
     <span class="md-ellipsis">
-      Protocol с типами-параметрами (Python 3.12+)
+      Protocol с типами-параметрами (PEP 544, 3.8+; синтаксис PEP 695 — 3.12+)
     </span>
   </a>
   
@@ -743,7 +743,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-final" class="md-nav__link">
+  <a href="#5.12-final-type" class="md-nav__link">
     <span class="md-ellipsis">
       Final — нельзя переназначать
     </span>
@@ -752,7 +752,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal" class="md-nav__link">
+  <a href="#5.12-literal-alias" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -880,7 +880,7 @@
           <li class="md-nav__item">
   <a href="#5.12-dataclasstransform" class="md-nav__link">
     <span class="md-ellipsis">
-      dataclass_transform (PEP 712, Python 3.11+)
+      dataclass_transform (PEP 681, Python 3.11+)
     </span>
   </a>
   
@@ -947,7 +947,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.13-dataclass" class="md-nav__link">
+  <a href="#5.13-order" class="md-nav__link">
     <span class="md-ellipsis">
       @dataclass(order=True) — генерирует __lt__, __le__, __gt__, __ge__
     </span>
@@ -1803,7 +1803,7 @@
           <li class="md-nav__item">
   <a href="#5.12-protocol" class="md-nav__link">
     <span class="md-ellipsis">
-      Protocol с типами-параметрами (Python 3.12+)
+      Protocol с типами-параметрами (PEP 544, 3.8+; синтаксис PEP 695 — 3.12+)
     </span>
   </a>
   
@@ -1837,7 +1837,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-final" class="md-nav__link">
+  <a href="#5.12-final-type" class="md-nav__link">
     <span class="md-ellipsis">
       Final — нельзя переназначать
     </span>
@@ -1846,7 +1846,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal" class="md-nav__link">
+  <a href="#5.12-literal-alias" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -1974,7 +1974,7 @@
           <li class="md-nav__item">
   <a href="#5.12-dataclasstransform" class="md-nav__link">
     <span class="md-ellipsis">
-      dataclass_transform (PEP 712, Python 3.11+)
+      dataclass_transform (PEP 681, Python 3.11+)
     </span>
   </a>
   
@@ -2041,7 +2041,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.13-dataclass" class="md-nav__link">
+  <a href="#5.13-order" class="md-nav__link">
     <span class="md-ellipsis">
       @dataclass(order=True) — генерирует __lt__, __le__, __gt__, __ge__
     </span>
@@ -2462,7 +2462,7 @@
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">cleanup</span><span class="p">(</span><span class="n">FileHandle</span><span class="p">())</span>   <span class="c1"># работает — у FileHandle есть close()</span>
 </span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="n">cleanup</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;x.txt&#39;</span><span class="p">))</span>   <span class="c1"># работает — у file есть close()</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="n">cleanup</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>       <span class="c1"># mypy ошибётся — у list нет close()</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="n">cleanup</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>       <span class="c1"># mypy ошибётся, а в runtime — AttributeError: у list нет close()</span>
 </span></code></pre></div>
 <p><strong>Runtime checkable:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
@@ -2496,14 +2496,14 @@
 </span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
 </span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">()</span><span class="o">.</span><span class="n">f</span><span class="p">())</span>   <span class="c1"># &quot;B&quot; — D не имеет f, ищем в B — есть</span>
 </span></code></pre></div>
-<p>Порядок: <code>D → B → A → C → object</code> (проверьте: <code>print(D.__mro__)</code>).</p>
+<p>Порядок: <code>D → B → C → A → object</code> (проверьте: <code>print(D.__mro__)</code> — ровно как в примере выше; C3 вытягивает <code>A</code> наверх только после того, как решён порядок между <code>B</code> и <code>C</code>).</p>
 <p>⚠️ <strong>C3-линеаризация — это НЕ поиск в ширину</strong> (BFS). Распространённое заблуждение: «сначала все прямые родители, потом их предки». На самом деле алгоритм C3 гарантирует:</p>
 <ol>
 <li><strong>Локальный приоритет</strong>: если <code>class D(B, C)</code> — то <code>B</code> всегда раньше <code>C</code>.</li>
 <li><strong>Потомок раньше предка</strong>: <code>B</code> раньше <code>A</code> (т.к. <code>B(A)</code>).</li>
 <li><strong>Монотонность</strong>: порядок в дочерних классах не может противоречить порядку в базовых.</li>
 </ol>
-<p>Контрпример к BFS: <code>class D(B, C)</code> где <code>B(A)</code> — MRO даёт <code>[D, B, A, C, object]</code>, т.е. <code>A</code> (дедушка через <code>B</code>) стоит <strong>раньше</strong> <code>C</code> (прямого родителя). При BFS было бы <code>[D, B, C, A, object]</code> — но CPython выдаёт именно <code>[D, B, A, C, object]</code>.</p>
+<p>Контрпример к BFS требует класс, который <strong>не</strong> наследует общий предок: <code>class A: pass; class B(A): pass; class C: pass; class D(B, C)</code> — MRO даёт <code>[D, B, A, C, object]</code>: <code>A</code> (дедушка через <code>B</code>) стоит <strong>раньше</strong> <code>C</code> (прямого родителя). При BFS было бы <code>[D, B, C, A, object]</code> (прогон: <code>['D2','B2','A2','C2','object']</code>). А в ромбе выше (<code>C</code> тоже наследует <code>A</code>) C3 и BFS дают одинаковый <code>[D, B, C, A, object]</code>.</p>
 <p>Если C3 не может построить консистентный порядок — <code>TypeError: Cannot create a consistent method resolution order</code>.</p>
 <p><strong>«Diamond problem»</strong> — A.f вызывается через одну ветку:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
@@ -2557,7 +2557,7 @@
 <p><strong>Правила mixin:</strong></p>
 <ul>
 <li>Mixin не должен иметь <code>__init__</code> (или вызывает <code>super().__init__(*args, **kwargs)</code> — <strong>обязательно</strong> с <code>*args, **kwargs</code>, иначе разорвёт цепочку MRO).</li>
-<li><strong>Миксины всегда объявляются слева</strong> от основного базового класса: <code>class User(JsonMixin, BaseEntity)</code> — не наоборот, иначе <code>BaseEntity</code> встанет в MRO раньше миксина и его методы никогда не вызовутся.</li>
+<li><strong>Миксины всегда объявляются слева</strong> от основного базового класса: <code>class User(JsonMixin, BaseEntity)</code> — не наоборот, иначе <code>BaseEntity</code> встанет в MRO раньше миксина и одноимённые методы <code>BaseEntity</code> перекроют методы миксина.</li>
 <li>Если проект использует <code>__slots__</code>, mixin обязан объявить <code>__slots__ = ()</code> — иначе CPython создаст <code>__dict__</code> и уничтожит экономию памяти.</li>
 <li>Mixin обычно использует методы, которые определит целевой класс (как <code>_cmp_key()</code> выше). Для типизации в mypy — объявляйте их через <code>@abstractmethod</code> или <code>typing.Protocol</code>.</li>
 </ul>
@@ -2575,18 +2575,20 @@
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">registry</span> <span class="o">=</span> <span class="p">{}</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># обязательно! иначе object упадёт на неизвестных kwargs</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="c1"># __init_subclass__ — неявный classmethod (без @classmethod), cls = создаваемый подкласс</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="c1"># Вызывается после __set_name__ но до завершения создания класса</span>
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="n">Plugin</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">name</span> <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="k">class</span> <span class="nc">FooPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">):</span>
-</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    <span class="k">pass</span>
-</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
-</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="k">class</span> <span class="nc">BarPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
-</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="k">pass</span>
-</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
-</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">Plugin</span><span class="o">.</span><span class="n">registry</span><span class="p">)</span>  <span class="c1"># {&#39;foo&#39;: &lt;class &#39;FooPlugin&#39;&gt;, &#39;BarPlugin&#39;: &lt;class &#39;BarPlugin&#39;&gt;}</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># обязателен, чтобы цепочка хуков не рвалась;</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="c1"># бонус: неизвестные kwargs, дошедшие до object, дадут TypeError —</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="c1"># опечатки в class Foo(Base, kw=...) будут пойманы (без super() они молча теряются)</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="c1"># __init_subclass__ — неявный classmethod (без @classmethod), cls = создаваемый подкласс</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>        <span class="c1"># Вызывается после __set_name__ но до завершения создания класса</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>        <span class="n">Plugin</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">name</span> <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="k">class</span> <span class="nc">FooPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">):</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="k">pass</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="k">class</span> <span class="nc">BarPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    <span class="k">pass</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">Plugin</span><span class="o">.</span><span class="n">registry</span><span class="p">)</span>  <span class="c1"># {&#39;foo&#39;: &lt;class &#39;FooPlugin&#39;&gt;, &#39;BarPlugin&#39;: &lt;class &#39;BarPlugin&#39;&gt;}</span>
 </span></code></pre></div>
 <p><code>__init_subclass__</code> — это <strong>альтернатива метаклассам</strong> для большинства случаев. Срабатывает когда кто-то наследуется от класса, можно валидировать подклассы или регистрировать их.</p>
 <p><strong>Передача аргументов в <code>class Foo(Base, x=10)</code>:</strong></p>
@@ -2605,7 +2607,7 @@
 <p>⚠️ <strong><code>super()</code> без аргументов использует скрытую closure-ячейку <code>__class__</code></strong> (PEP 3135). Компилятор автоматически внедряет её при обнаружении <code>super()</code> в теле метода. Если скопировать метод из одного класса в другой (<code>B.f = A.f</code>), <code>__class__</code> всё равно будет указывать на <code>A</code> — MRO будет рассчитан относительно <code>A</code>, а не <code>B</code>.</p>
 <p>⚠️ <strong><code>super()</code> в <code>@staticmethod</code> без аргументов запрещён</strong> — <code>RuntimeError: super(): no arguments</code>. В статическом методе нет <code>self</code>/<code>cls</code>. Используйте <code>super(CurrentClass, target).method()</code> явно.</p>
 <p>⚠️ <strong><code>super()</code> в <code>@classmethod</code> работает</strong> — интерпретатор видит <code>cls</code> и компилирует как <code>super(CurrentClass, cls)</code>.</p>
-<p>⚠️ <strong>Связка <code>@classmethod @property</code> нестабильна между версиями</strong>: на Python 3.12 <code>MyClass.name</code> возвращает значение свойства (<code>'Python'</code>), но на <strong>Python 3.13</strong> поведение изменилось — возвращается <code>&lt;bound method&gt;</code> вместо значения, нужно вызывать <code>MyClass.name()</code>. Для свойств уровня класса используйте <code>@property</code> в <strong>метаклассе</strong>:
+<p>⚠️ <strong>Связка <code>@classmethod @property</code> удалена в Python 3.13</strong> (deprecated с 3.11): на 3.12 <code>MyClass.name</code> ещё возвращает значение свойства (<code>'Python'</code>), но в 3.13 chained classmethod-дескрипторы больше не поддерживаются — паттерн не работает вовсе. Для свойств уровня класса используйте <code>@property</code> в <strong>метаклассе</strong>:
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="nd">@property</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -2731,8 +2733,8 @@
 </tr>
 <tr>
 <td>Два slot-класса с общим slot-предком</td>
-<td>⚠️ иногда</td>
-<td>только если общий предок <strong>первый</strong> в MRO и имеет совместимый layout</td>
+<td>⚠️ только один непустой</td>
+<td>если у обоих непустые slots — <code>TypeError: multiple bases have instance lay-out conflict</code>, даже с общим предком; работает <code>D(E1, E3)</code>, где у <code>E3.__slots__ = ()</code></td>
 </tr>
 <tr>
 <td>Mixin с методами, но без slots + slot-класс</td>
@@ -2750,7 +2752,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">pickle</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">asdict</span>
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># Mixin&#39;ы БЕЗ __slots__ — у них есть __dict__, но они не добавляют атрибутов</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># Mixin&#39;ы БЕЗ __slots__ — не конфликтуют по layout, НО приносят экземплярам __dict__</span>
 </span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="k">class</span> <span class="nc">JsonMixin</span><span class="p">:</span>
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>        <span class="c1"># dataclasses.asdict умеет работать со slots-классами</span>
@@ -2769,15 +2771,17 @@
 </span><span id="__span-24-20"><a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;a@b.c&quot;</span><span class="p">)</span>
 </span><span id="__span-24-21"><a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>        <span class="c1"># &#39;{&quot;name&quot;: &quot;Alice&quot;, &quot;email&quot;: &quot;a@b.c&quot;}&#39;</span>
 </span><span id="__span-24-22"><a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])</span>  <span class="c1"># b&#39;\x80\x04\x95...&#39;</span>
-</span><span id="__span-24-23"><a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a><span class="c1"># Slot&#39;ы работают, mixin&#39;ы работают, конфликтов нет.</span>
+</span><span id="__span-24-23"><a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a><span class="c1"># Slot&#39;ы-дескрипторы работают, mixin&#39;ы работают, конфликтов нет.</span>
+</span><span id="__span-24-24"><a id="__codelineno-24-24" name="__codelineno-24-24" href="#__codelineno-24-24"></a><span class="c1"># ⚠️ Но экономии памяти НЕТ: из-за mixin&#39;ов без __slots__ у экземпляра есть</span>
+</span><span id="__span-24-25"><a id="__codelineno-24-25" name="__codelineno-24-25" href="#__codelineno-24-25"></a><span class="c1"># __dict__ (hasattr(u, &#39;__dict__&#39;) → True) — паттерн решает конфликт layout&#39;ов, а не память.</span>
 </span></code></pre></div>
 <p>⚠️ Если <strong>оба</strong> mixin'а имеют <code>__slots__</code> с разными атрибутами — это типичный сценарий конфликта. В Python <strong>невозможно</strong> наследовать два slot-класса с разными slots, если только они не образуют общую slot-иерархию. В этом случае откажитесь от slots у mixin'ов или переработайте архитектуру.</p>
 <p>⚠️ <strong>Скрытые проблемы со сторонними протоколами</strong>:</p>
 <ul>
-<li><strong><code>pickle</code></strong> со slots-классами не работает «из коробки» — default pickle path ищет <code>__dict__</code>. Чтобы pickle работал, нужно явно определить <code>__getstate__</code> и <code>__setstate__</code> (или <code>__reduce_ex__</code>), собирающие/восстанавливающие значения из slots через <code>__class__.__slots__</code> (учитывая наследование — обойти все классы в MRO). Если этого не сделать — <code>pickle.dumps(obj)</code> упадёт с <code>TypeError: cannot pickle</code>.</li>
+<li><strong><code>pickle</code></strong> со slots-классами работает «из коробки» (протокол 2+): значения slots едут в state-кортеже <code>(None, {slot: value})</code> — проверьте: <code>pickle.loads(pickle.dumps(P(1, 2)))</code> без ошибок. Явные <code>__getstate__</code>/<code>__setstate__</code> нужны только при <code>'__dict__'</code> в slots, сложном наследовании или нестандартной версии/сжатии.</li>
 <li><strong><code>copy.deepcopy</code></strong> для slots-классов обычно работает (через <code>__reduce_ex__</code>), но если в slots есть объекты без <code>__deepcopy__</code> — будут грабли.</li>
-<li><strong><code>functools.cached_property</code></strong> <strong>не работает</strong> на slots-классе без <code>__dict__</code> — он пытается записать результат в <code>__dict__</code>, а его нет. Получите <code>AttributeError</code>. Если нужен cached_property на slots-классе — придётся либо добавить <code>'__dict__'</code> в <code>__slots__</code> (что убивает экономию памяти), либо реализовать кэш вручную через один из slots.</li>
-<li><strong><code>@property</code> + <code>__slots__</code> с тем же именем</strong> — конфликт, описано выше. Но есть менее очевидное: <code>@property</code> <strong>без</strong> сеттера блокирует запись в этот slot, даже если slot был объявлен. То есть <code>__slots__ = ('x',)</code> + <code>@property def x(self): return self._x</code> приведёт к тому, что <code>self.x = 1</code> упадет (нет setter), а <code>self._x = 1</code> тоже упадёт (<code>_x</code> не в slots). Порядок объявления важен — <code>property</code> перекрывает slot.</li>
+<li><strong><code>functools.cached_property</code></strong> <strong>не работает</strong> на slots-классе без <code>__dict__</code> — он пытается записать результат в <code>__dict__</code>, а его нет. Получите <code>TypeError: No '__dict__' attribute on ... to cache 'val' property</code>. Если нужен cached_property на slots-классе — придётся либо добавить <code>'__dict__'</code> в <code>__slots__</code> (что убивает экономию памяти), либо реализовать кэш вручную через один из slots.</li>
+<li><strong><code>@property</code> + <code>__slots__</code> с тем же именем</strong> — конфликт, описано выше: <code>__slots__ = ('x',)</code> + <code>@property def x</code> в <strong>одном классе</strong> не соберётся вовсе — <code>ValueError: 'x' in __slots__ conflicts with class variable</code>. Реальный сценарий затенения — в подклассе: <code>class Base: __slots__ = ('x',)</code>, <code>class Sub(Base): @property def x(self): return self._x</code> — тогда <code>s.x = 1</code> упадёт (<code>AttributeError: property 'x' of 'Sub' object has no setter</code>), а <code>self._x = 1</code> упадёт только если у <code>Sub</code> свой <code>__slots__ = ()</code> (иначе <code>_x</code> уйдёт в появившийся <code>__dict__</code>).</li>
 </ul>
 <h2 id="5.9">5.9. <code>@classmethod</code> vs <code>@staticmethod</code><a class="headerlink" href="#5.9" title="Permanent link">#</a></h2>
 <p><strong><code>@classmethod</code></strong> — метод, получающий <strong>класс</strong> первым аргументом (обычно <code>cls</code>):</p>
@@ -2809,7 +2813,7 @@
 <li><code>@classmethod</code> — для альтернативных конструкторов (<code>from_string</code>, <code>from_dict</code>, <code>now</code>).</li>
 <li><code>@staticmethod</code> — для утилит, которые логически принадлежат классу, но не требуют ни экземпляра, ни класса.</li>
 </ul>
-<p>⚠️ <code>@classmethod</code> уважает наследование: <code>Date.from_string()</code> в подклассе вернёт экземпляр подкласса, а <code>Date</code>.</p>
+<p>⚠️ <code>@classmethod</code> уважает наследование: <code>Date.from_string()</code> в подклассе вернёт экземпляр подкласса, а не <code>Date</code>.</p>
 <h3 id="5.9-mutable">Mutable class variables — главная ловушка OOP<a class="headerlink" href="#5.9-mutable" title="Permanent link">#</a></h3>
 <p><strong>Самая частая ошибка</strong> в классах Python — mutable class variable. Все экземпляры <strong>разделяют</strong> один и тот же объект:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">class</span> <span class="nc">ShoppingCart</span><span class="p">:</span>
@@ -2839,7 +2843,7 @@
 </span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">cart2</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>   <span class="c1"># [] ← корректно, cart2 пуст</span>
 </span></code></pre></div>
 <p>Это та же ловушка, что <code>a = b = []</code> (см. 1.12) и <code>def f(x=[])</code> (default arguments — см. Приложение B). Правило: <strong>mutable объекты на уровне класса — всегда баг</strong>, если только ты не хочешь shared state (что редко).</p>
-<p>⚠️ <code>__slots__</code> защищает от этой ловушки — слоты создаются на экземпляр, не разделяются. Но <code>__slots__</code> с mutable default — другая история (нужен <code>field(default_factory=list)</code> в dataclass).</p>
+<p>⚠️ <code>__slots__</code> сам по себе <strong>не</strong> защищает от этой ловушки: имя вне slots можно объявить классовым атрибутом (<code>class Cart: __slots__ = ('n',); items = []</code>) — получите тот же shared mutable. Защита лишь косвенная: классовую переменную с именем ИЗ slots объявить нельзя (<code>ValueError</code> при создании класса). А <code>__slots__</code> с mutable default — другая история (нужен <code>field(default_factory=list)</code> в dataclass).</p>
 <h2 id="5.10">5.10. <code>enum</code> — Enum, IntEnum, IntFlag, auto<a class="headerlink" href="#5.10" title="Permanent link">#</a></h2>
 <p><code>enum</code> модуль — для перечислений. Заменяет константы вида <code>RED = 1</code>, <code>GREEN = 2</code>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">IntFlag</span><span class="p">,</span> <span class="n">auto</span>
@@ -2885,12 +2889,14 @@
 </span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">Priority</span><span class="o">.</span><span class="n">HIGH</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>                   <span class="c1"># 15 — арифметика работает</span>
 </span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>
 </span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="c1"># Используется как обычный int везде</span>
-</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="k">def</span> <span class="nf">set_priority</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>    <span class="n">set_priority_impl</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>
-</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a><span class="n">set_priority</span><span class="p">(</span><span class="n">Priority</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span>   <span class="c1"># OK — IntEnum это int</span>
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="k">def</span> <span class="nf">set_priority_impl</span><span class="p">(</span><span class="n">p</span><span class="p">):</span> <span class="k">pass</span>   <span class="c1"># заглушка для примера</span>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>
+</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="k">def</span> <span class="nf">set_priority</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>    <span class="n">set_priority_impl</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</span><span id="__span-31-15"><a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>
+</span><span id="__span-31-16"><a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="n">set_priority</span><span class="p">(</span><span class="n">Priority</span><span class="o">.</span><span class="n">HIGH</span><span class="p">)</span>   <span class="c1"># OK — IntEnum это int</span>
 </span></code></pre></div>
-<p>⚠️ Обычный <code>Enum</code> <strong>не</strong> сравним с int напрямую — <code>Priority.HIGH &gt; 3</code> вызовет <code>TypeError</code>. <code>IntEnum</code> наследуется от <code>int</code> и сравним.</p>
+<p>⚠️ Обычный <code>Enum</code> (не <code>IntEnum</code>, как <code>Priority</code> выше) <strong>не</strong> сравним с int напрямую: <code>class Plain(Enum): HIGH = 10</code>; <code>Plain.HIGH &gt; 3</code> — <code>TypeError: '&gt;' not supported between instances of 'Plain' and 'int'</code>. <code>IntEnum</code> наследуется от <code>int</code> и сравним.</p>
 <p><strong><code>StrEnum</code> (Python 3.11+) — строковые перечисления:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">StrEnum</span><span class="p">,</span> <span class="n">auto</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
@@ -2914,7 +2920,7 @@
 </span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>    <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># ValueError: duplicate values found</span>
 </span></code></pre></div>
-<p>⚠️ <strong>Нельзя расширять Enum</strong> с элементами через наследование: <code>class Extended(BaseEnum): NEW = 3</code> → <code>TypeError: Cannot extend enumerations</code>. Наследоваться можно только от Enum без элементов (для добавления методов).</p>
+<p>⚠️ <strong>Нельзя расширять Enum</strong> с элементами через наследование: <code>class Extended(BaseEnum): NEW = 3</code> → <code>TypeError: &lt;enum 'Extended'&gt; cannot extend &lt;enum 'BaseEnum'&gt;</code>. Наследоваться можно только от Enum без элементов (для добавления методов).</p>
 <p>⚠️ <strong>Сравнение через <code>is</code></strong> — элементы Enum гарантированно singleton в рамках процесса. <code>status is Status.ACTIVE</code> быстрее и безопаснее <code>==</code>.</p>
 <p><strong><code>IntFlag</code> — побитовые флаги (комбинируются через <code>|</code>):</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">class</span> <span class="nc">Permission</span><span class="p">(</span><span class="n">IntFlag</span><span class="p">):</span>
@@ -2923,9 +2929,9 @@
 </span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># execute</span>
 </span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>
 </span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="n">perm</span> <span class="o">=</span> <span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">W</span>
-</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>              <span class="c1"># Permission.W|R</span>
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>              <span class="c1"># 6 — с 3.11 str(IntFlag) числовой; repr: &lt;Permission.R|W: 6&gt;</span>
 </span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="ow">in</span> <span class="n">perm</span><span class="p">)</span>   <span class="c1"># True — проверка</span>
-</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span> <span class="o">&amp;</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>   <span class="c1"># Permission.0 — нет X</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span> <span class="o">&amp;</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>   <span class="c1"># 0 — нет X (int-результат)</span>
 </span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>
 </span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="c1"># Итерация по флагам</span>
 </span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">W</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">:</span>
@@ -2987,7 +2993,7 @@
 </span><span id="__span-37-17"><a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="c1"># {&#39;name&#39;: &#39;Backend&#39;, &#39;leader&#39;: {&#39;name&#39;: &#39;Alice&#39;, &#39;age&#39;: 30}}</span>
 </span><span id="__span-37-18"><a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="c1"># Вложенные dataclass тоже конвертируются рекурсивно!</span>
 </span></code></pre></div>
-<p>⚠️ <code>asdict</code> рекурсивно обходит вложенные dataclass, list/dict/tuple/... но <strong>не</strong> другие классы. Если внутри есть <code>datetime</code> или свой класс — <code>asdict</code> оставит его как есть (не преобразует).</p>
+<p>⚠️ <code>asdict</code> рекурсивно обходит вложенные dataclass, list/dict/tuple/... но <strong>не</strong> другие классы. Если внутри есть <code>datetime</code> или свой класс — тип не преобразуется, но объект <strong>копируется</strong> через <code>copy.deepcopy</code> (<code>d['blob'] is b</code> → <code>False</code>).</p>
 <h3 id="5.11-dataclassesastuple"><code>dataclasses.astuple</code> — в кортеж<a class="headerlink" href="#5.11-dataclassesastuple" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">astuple</span>
 </span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
@@ -2999,12 +3005,13 @@
 </span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
 </span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
 </span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">, default=</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">default</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="c1"># name: &lt;class &#39;str&#39;&gt;, default=&lt;class &#39;inspect._empty&#39;&gt;</span>
-</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="c1"># age: &lt;class &#39;int&#39;&gt;, default=&lt;class &#39;inspect._empty&#39;&gt;</span>
-</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>
-</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="c1"># Проверка поля</span>
-</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a><span class="n">fields_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">User</span><span class="p">)}</span>
-</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">fields_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="c1"># name: &lt;class &#39;str&#39;&gt;, default=&lt;dataclasses._MISSING_TYPE object at 0x...&gt;</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="c1"># age: &lt;class &#39;int&#39;&gt;, default=&lt;dataclasses._MISSING_TYPE object at 0x...&gt;</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="c1"># у поля без дефолта f.default/f.default_factory — сентинел dataclasses.MISSING</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>
+</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a><span class="c1"># Проверка поля</span>
+</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="n">fields_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">User</span><span class="p">)}</span>
+</span><span id="__span-39-11"><a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">fields_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="5.11-dataclassesreplace"><code>dataclasses.replace</code> — копия с изменёнными полями<a class="headerlink" href="#5.11-dataclassesreplace" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">replace</span>
@@ -3064,13 +3071,16 @@
 </span><span id="__span-44-9"><a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">first</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]))</span>        <span class="c1"># str → возвращает str</span>
 </span><span id="__span-44-10"><a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>
 </span><span id="__span-44-11"><a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="c1"># С ограничением (bound)</span>
-</span><span id="__span-44-12"><a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a><span class="n">Number</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s1">&#39;int | float&#39;</span><span class="p">)</span>   <span class="c1"># только числа</span>
+</span><span id="__span-44-12"><a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a><span class="n">Number</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>   <span class="c1"># только числа (constraints — тело проверяется mypy)</span>
 </span><span id="__span-44-13"><a id="__codelineno-44-13" name="__codelineno-44-13" href="#__codelineno-44-13"></a>
 </span><span id="__span-44-14"><a id="__codelineno-44-14" name="__codelineno-44-14" href="#__codelineno-44-14"></a><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
 </span><span id="__span-44-15"><a id="__codelineno-44-15" name="__codelineno-44-15" href="#__codelineno-44-15"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 </span><span id="__span-44-16"><a id="__codelineno-44-16" name="__codelineno-44-16" href="#__codelineno-44-16"></a>
-</span><span id="__span-44-17"><a id="__codelineno-44-17" name="__codelineno-44-17" href="#__codelineno-44-17"></a><span class="c1"># С перечислением возможных типов</span>
-</span><span id="__span-44-18"><a id="__codelineno-44-18" name="__codelineno-44-18" href="#__codelineno-44-18"></a><span class="n">StringOrBytes</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;StringOrBytes&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+</span><span id="__span-44-17"><a id="__codelineno-44-17" name="__codelineno-44-17" href="#__codelineno-44-17"></a><span class="c1"># ⚠️ bound-union — TypeVar(&#39;Number&#39;, bound=&#39;int | float&#39;) — mypy принимает при объявлении,</span>
+</span><span id="__span-44-18"><a id="__codelineno-44-18" name="__codelineno-44-18" href="#__codelineno-44-18"></a><span class="c1"># но не может проверить тело add (Incompatible return value type); используйте constraints.</span>
+</span><span id="__span-44-19"><a id="__codelineno-44-19" name="__codelineno-44-19" href="#__codelineno-44-19"></a>
+</span><span id="__span-44-20"><a id="__codelineno-44-20" name="__codelineno-44-20" href="#__codelineno-44-20"></a><span class="c1"># С перечислением возможных типов</span>
+</span><span id="__span-44-21"><a id="__codelineno-44-21" name="__codelineno-44-21" href="#__codelineno-44-21"></a><span class="n">StringOrBytes</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;StringOrBytes&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="5.12-generic"><code>Generic</code> — обобщённый класс<a class="headerlink" href="#5.12-generic" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">TypeVar</span>
@@ -3147,11 +3157,9 @@
 </span><span id="__span-48-26"><a id="__codelineno-48-26" name="__codelineno-48-26" href="#__codelineno-48-26"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">])</span>
 </span><span id="__span-48-27"><a id="__codelineno-48-27" name="__codelineno-48-27" href="#__codelineno-48-27"></a>    <span class="k">elif</span> <span class="n">e</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;keypress&quot;</span><span class="p">:</span>
 </span><span id="__span-48-28"><a id="__codelineno-48-28" name="__codelineno-48-28" href="#__codelineno-48-28"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">])</span>
-</span><span id="__span-48-29"><a id="__codelineno-48-29" name="__codelineno-48-29" href="#__codelineno-48-29"></a>
-</span><span id="__span-48-30"><a id="__codelineno-48-30" name="__codelineno-48-30" href="#__codelineno-48-30"></a><span class="err">⚠️</span> <span class="err">`</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span><span class="err">`</span> <span class="err">—</span> <span class="o">**</span><span class="n">невалидная</span> <span class="n">конструкция</span><span class="o">**</span><span class="p">:</span> <span class="n">в</span> <span class="err">`</span><span class="n">Union</span><span class="err">`</span> <span class="n">нельзя</span> <span class="n">передавать</span>
-</span><span id="__span-48-31"><a id="__codelineno-48-31" name="__codelineno-48-31" href="#__codelineno-48-31"></a><span class="nb">dict</span><span class="o">-</span><span class="n">литералы</span><span class="p">,</span> <span class="n">это</span> <span class="n">типы</span><span class="p">,</span> <span class="n">а</span> <span class="n">не</span> <span class="n">значения</span><span class="o">.</span> <span class="n">Discriminated</span> <span class="n">unions</span> <span class="n">в</span> <span class="n">Python</span> <span class="n">строятся</span>
-</span><span id="__span-48-32"><a id="__codelineno-48-32" name="__codelineno-48-32" href="#__codelineno-48-32"></a><span class="n">только</span> <span class="n">через</span> <span class="err">`</span><span class="n">TypedDict</span><span class="err">`</span> <span class="o">+</span> <span class="err">`</span><span class="n">Literal</span><span class="err">`</span><span class="o">-</span><span class="n">поле</span><span class="o">-</span><span class="n">дискриминатор</span><span class="o">.</span>
 </span></code></pre></div>
+<p>⚠️ В <code>Union</code> нельзя передавать <strong>значения</strong> — только типы: <code>Union[{"type": "click"}, ...]</code> — ошибка. (А вот <code>typing.Union[dict, dict]</code> валиден и дедуплицируется до <code>dict</code>.) Discriminated unions в Python строятся
+только через <code>TypedDict</code> + <code>Literal</code>-поле-дискриминатор.</p>
 <h3 id="5.12-final"><code>@final</code> — нельзя наследовать/переопределять<a class="headerlink" href="#5.12-final" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">final</span>
 </span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>
@@ -3186,7 +3194,7 @@
 </span><span id="__span-50-11"><a id="__codelineno-50-11" name="__codelineno-50-11" href="#__codelineno-50-11"></a>    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
 </span><span id="__span-50-12"><a id="__codelineno-50-12" name="__codelineno-50-12" href="#__codelineno-50-12"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># все поля опциональны</span>
 </span><span id="__span-50-13"><a id="__codelineno-50-13" name="__codelineno-50-13" href="#__codelineno-50-13"></a>
-</span><span id="__span-50-14"><a id="__codelineno-50-14" name="__codelineno-50-14" href="#__codelineno-50-14"></a><span class="c1"># Смешанное (Python 3.11+):</span>
+</span><span id="__span-50-14"><a id="__codelineno-50-14" name="__codelineno-50-14" href="#__codelineno-50-14"></a><span class="c1"># Смешанное (доступно с самого TypedDict, 3.8; Required/NotRequired по-полю — 3.11, PEP 655):</span>
 </span><span id="__span-50-15"><a id="__codelineno-50-15" name="__codelineno-50-15" href="#__codelineno-50-15"></a><span class="k">class</span> <span class="nc">UserMix</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
 </span><span id="__span-50-16"><a id="__codelineno-50-16" name="__codelineno-50-16" href="#__codelineno-50-16"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># required</span>
 </span><span id="__span-50-17"><a id="__codelineno-50-17" name="__codelineno-50-17" href="#__codelineno-50-17"></a>    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>           <span class="c1"># required</span>
@@ -3219,7 +3227,7 @@
 </span><span id="__span-51-20"><a id="__codelineno-51-20" name="__codelineno-51-20" href="#__codelineno-51-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">magnitude</span><span class="p">())</span>   <span class="c1"># 5.0</span>
 </span></code></pre></div>
 <p>⚠️ <code>NamedTuple</code> — это тот же <code>collections.namedtuple</code>, но с аннотациями. Неизменяемый.</p>
-<h3 id="5.12-protocol"><code>Protocol</code> с типами-параметрами (Python 3.12+)<a class="headerlink" href="#5.12-protocol" title="Permanent link">#</a></h3>
+<h3 id="5.12-protocol"><code>Protocol</code> с типами-параметрами (PEP 544, 3.8+; синтаксис PEP 695 — 3.12+)<a class="headerlink" href="#5.12-protocol" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">TypeVar</span>
 </span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>
 </span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
@@ -3265,8 +3273,8 @@
 </span><span id="__span-53-27"><a id="__codelineno-53-27" name="__codelineno-53-27" href="#__codelineno-53-27"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">Mapped</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">mapped_column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
 </span><span id="__span-53-28"><a id="__codelineno-53-28" name="__codelineno-53-28" href="#__codelineno-53-28"></a>    <span class="c1"># Mapped[int] = Annotated[int, ...] — встроенная в SQLAlchemy обёртка</span>
 </span></code></pre></div>
-<p><code>Annotated</code> позволяют third-party фреймворкам расширять систему типов без модификации самого Python.</p>
-<p>⚠️ В runtime <code>Annotated[int, "label"]</code> ≈ <code>int</code> — <code>isinstance</code> проверки используют только первый аргумент. Метаданные читаются через <code>typing.get_type_hints</code> + ручной разбор.</p>
+<p><code>Annotated</code> позволяет third-party фреймворкам расширять систему типов без модификации самого Python.</p>
+<p>⚠️ В runtime <code>Annotated[int, "label"]</code> — это <code>int</code> для аннотаций (<code>get_type_hints</code> вернёт <code>Annotated[...]</code>, метаданные читают фреймворки), но сам <code>Annotated[int, "label"]</code> в <code>isinstance</code> использовать нельзя — <code>TypeError: Subscripted generics cannot be used with class and instance checks</code>.</p>
 <h3 id="5.12-self"><code>Self</code> (PEP 673, Python 3.11+)<a class="headerlink" href="#5.12-self" title="Permanent link">#</a></h3>
 <p>Тип «этот же класс», для методов, возвращающих экземпляр своего класса. Заменяет необходимость писать <code>"MyClass"</code> в строковом виде:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Self</span>
@@ -3308,7 +3316,7 @@
 </span><span id="__span-55-13"><a id="__codelineno-55-13" name="__codelineno-55-13" href="#__codelineno-55-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">Counter</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span>   <span class="c1"># 2</span>
 </span></code></pre></div>
 <p>⚠️ <code>ClassVar</code> — для type checker. В runtime никаких проверок нет. <code>dataclass</code> уважает <code>ClassVar</code> и <strong>не</strong> включает её в <code>__init__</code>/<code>__repr__</code>.</p>
-<h3 id="5.12-final"><code>Final</code> — нельзя переназначать<a class="headerlink" href="#5.12-final" title="Permanent link">#</a></h3>
+<h3 id="5.12-final-type"><code>Final</code> — нельзя переназначать<a class="headerlink" href="#5.12-final-type" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 </span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>
 </span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="n">MAX_RETRIES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># mypy будет ругаться, если попытаться переназначить</span>
@@ -3316,8 +3324,8 @@
 </span><span id="__span-56-5"><a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># mypy ошибётся, в runtime — спокойно</span>
 </span></code></pre></div>
 <p>Также как <code>@final</code> декоратор (см. §5.12 выше).</p>
-<h3 id="5.12-literal"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal" title="Permanent link">#</a></h3>
-<p>(См. выше в §5.12.)</p>
+<h3 id="5.12-literal-alias"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal-alias" title="Permanent link">#</a></h3>
+<p>Альтернативная точка входа: полный разбор <code>Literal</code> — выше, в §5.12 (раздел «<code>Literal</code> — конкретное значение как тип»). Раздел оставлен для навигации: <code>Literal["fast", "slow"]</code> ограничивает значение набором констант и служит дискриминатором в <code>TypedDict</code>-union (см. пример выше).</p>
 <h3 id="5.12-never"><code>Never</code> и <code>NoReturn</code> — недостижимый код<a class="headerlink" href="#5.12-never" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Never</span><span class="p">,</span> <span class="n">NoReturn</span>
 </span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>
@@ -3336,7 +3344,7 @@
 </span><span id="__span-57-15"><a id="__codelineno-57-15" name="__codelineno-57-15" href="#__codelineno-57-15"></a>        <span class="n">fail</span><span class="p">(</span><span class="s2">&quot;negative&quot;</span><span class="p">)</span>   <span class="c1"># дальше mypy не анализирует</span>
 </span><span id="__span-57-16"><a id="__codelineno-57-16" name="__codelineno-57-16" href="#__codelineno-57-16"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;only if x &gt;= 0&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p><code>Never</code> (Python 3.11+) — более общее название, чем <code>NoReturn</code>. <code>NoReturn</code> теперь deprecated как alias для <code>Never</code> для контекста «функция без return».</p>
+<p><code>Never</code> (Python 3.11+) — то же понятие «нижнего типа» под более общим именем. <code>NoReturn</code> при этом <strong>не</strong> удалён и не помечен deprecated (проверьте: <code>typing.NoReturn is typing.Never</code> → <code>False</code> — это отдельные объекты); докстринг 3.12 лишь рекомендует <code>Never</code> для bottom-типа, а чекеры считают их эквивалентными.</p>
 <h3 id="5.12-any"><code>Any</code> vs <code>object</code><a class="headerlink" href="#5.12-any" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 </span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>
@@ -3495,7 +3503,7 @@
 </span><span id="__span-70-4"><a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a>    <span class="n">reveal_type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </span><span id="__span-70-5"><a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>    <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div>
-<p><code>reveal_type</code> — это <strong>mypy-specific</strong> функция, не существует в runtime. Только для отладки аннотаций.</p>
+<p><code>reveal_type</code> исторически — mypy-specific, но с Python 3.11 она есть и в <code>typing</code> (<code>typing.reveal_type(x)</code> в runtime напечатает <code>Runtime type is 'int'</code>). Назначение то же — отладка аннотаций: чекер покажет статический тип, runtime — фактический.</p>
 <h3 id="5.12-gettypehints"><code>get_type_hints</code> — резолвить строковые аннотации<a class="headerlink" href="#5.12-gettypehints" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">get_type_hints</span>
 </span><span id="__span-71-2"><a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>
@@ -3518,10 +3526,10 @@
 </span><span id="__span-72-9"><a id="__codelineno-72-9" name="__codelineno-72-9" href="#__codelineno-72-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>     <span class="c1"># (&lt;class &#39;str&#39;&gt;, &lt;class &#39;int&#39;&gt;)</span>
 </span><span id="__span-72-10"><a id="__codelineno-72-10" name="__codelineno-72-10" href="#__codelineno-72-10"></a>
 </span><span id="__span-72-11"><a id="__codelineno-72-11" name="__codelineno-72-11" href="#__codelineno-72-11"></a><span class="n">T</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span>
-</span><span id="__span-72-12"><a id="__codelineno-72-12" name="__codelineno-72-12" href="#__codelineno-72-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>     <span class="c1"># (typing.Union[int, str],)</span>
+</span><span id="__span-72-12"><a id="__codelineno-72-12" name="__codelineno-72-12" href="#__codelineno-72-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>     <span class="c1"># (int | str,) — PEP 604-union остаётся одним аргументом</span>
 </span></code></pre></div>
 <p>Полезно при написании своего ORM/сериализатора — динамически проверять аннотации полей.</p>
-<h3 id="5.12-dataclasstransform"><code>dataclass_transform</code> (PEP 712, Python 3.11+)<a class="headerlink" href="#5.12-dataclasstransform" title="Permanent link">#</a></h3>
+<h3 id="5.12-dataclasstransform"><code>dataclass_transform</code> (PEP 681, Python 3.11+)<a class="headerlink" href="#5.12-dataclasstransform" title="Permanent link">#</a></h3>
 <p>Для декораторов, которые делают то же, что <code>@dataclass</code> — добавляют методы, поля и т.д.:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">dataclass_transform</span>
 </span><span id="__span-73-2"><a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a>
@@ -3562,14 +3570,15 @@
 </span><span id="__span-74-21"><a id="__codelineno-74-21" name="__codelineno-74-21" href="#__codelineno-74-21"></a><span class="c1"># print(db.config_path)   # AttributeError — InitVar не сохраняется</span>
 </span></code></pre></div>
 <p>Главный кейс — параметры, которые нужны только для инициализации, не для состояния. Без <code>InitVar</code> пришлось бы сохранять <code>config_path</code> в экземпляре (лишнее поле).</p>
-<p>⚠️ <code>InitVar</code> нельзя сделать <code>field(default=...)</code> напрямую — нужно указать default в <code>__init__</code>:</p>
+<p>⚠️ <code>InitVar</code> может иметь дефолт — и через <code>=</code>, и через <code>field(default=...)</code> (проверено на 3.12):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="nd">@dataclass</span>
 </span><span id="__span-75-2"><a id="__codelineno-75-2" name="__codelineno-75-2" href="#__codelineno-75-2"></a><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
-</span><span id="__span-75-3"><a id="__codelineno-75-3" name="__codelineno-75-3" href="#__codelineno-75-3"></a>    <span class="n">x</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</span><span id="__span-75-3"><a id="__codelineno-75-3" name="__codelineno-75-3" href="#__codelineno-75-3"></a>    <span class="n">x</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hi&quot;</span>     <span class="c1"># или: x: InitVar[str] = field(default=&quot;hi&quot;)</span>
 </span><span id="__span-75-4"><a id="__codelineno-75-4" name="__codelineno-75-4" href="#__codelineno-75-4"></a>    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span id="__span-75-5"><a id="__codelineno-75-5" name="__codelineno-75-5" href="#__codelineno-75-5"></a>
 </span><span id="__span-75-6"><a id="__codelineno-75-6" name="__codelineno-75-6" href="#__codelineno-75-6"></a><span class="n">C</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># OK</span>
 </span><span id="__span-75-7"><a id="__codelineno-75-7" name="__codelineno-75-7" href="#__codelineno-75-7"></a><span class="n">C</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>       <span class="c1"># OK — y = 0 (default)</span>
+</span><span id="__span-75-8"><a id="__codelineno-75-8" name="__codelineno-75-8" href="#__codelineno-75-8"></a><span class="n">C</span><span class="p">()</span>              <span class="c1"># OK — x = &quot;hi&quot;, дефолт делает параметр необязательным</span>
 </span></code></pre></div>
 <h3 id="5.13-postinit"><code>__post_init__</code> — инициализация после <code>__init__</code><a class="headerlink" href="#5.13-postinit" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="nd">@dataclass</span>
@@ -3629,7 +3638,7 @@
 </span><span id="__span-79-10"><a id="__codelineno-79-10" name="__codelineno-79-10" href="#__codelineno-79-10"></a>    <span class="k">case</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;on Y axis at </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-79-11"><a id="__codelineno-79-11" name="__codelineno-79-11" href="#__codelineno-79-11"></a>    <span class="k">case</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;at (</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="5.13-dataclass"><code>@dataclass(order=True)</code> — генерирует <code>__lt__</code>, <code>__le__</code>, <code>__gt__</code>, <code>__ge__</code><a class="headerlink" href="#5.13-dataclass" title="Permanent link">#</a></h3>
+<h3 id="5.13-order"><code>@dataclass(order=True)</code> — генерирует <code>__lt__</code>, <code>__le__</code>, <code>__gt__</code>, <code>__ge__</code><a class="headerlink" href="#5.13-order" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-80-1"><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-80-2"><a id="__codelineno-80-2" name="__codelineno-80-2" href="#__codelineno-80-2"></a><span class="k">class</span> <span class="nc">Version</span><span class="p">:</span>
 </span><span id="__span-80-3"><a id="__codelineno-80-3" name="__codelineno-80-3" href="#__codelineno-80-3"></a>    <span class="n">major</span><span class="p">:</span> <span class="nb">int</span>
@@ -3674,7 +3683,7 @@
 </span><span id="__span-82-20"><a id="__codelineno-82-20" name="__codelineno-82-20" href="#__codelineno-82-20"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">gen</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 </span><span id="__span-82-21"><a id="__codelineno-82-21" name="__codelineno-82-21" href="#__codelineno-82-21"></a>    <span class="k">yield</span> <span class="mi">1</span>
 </span></code></pre></div>
-<p>⚠️ <strong>Частая ошибка</strong> — писать <code>async def f() -&gt; Awaitable[int]: return 42</code>. Это означает, что <code>await f()</code> вернёт <code>Awaitable[int]</code> (то есть нужно ещё раз await-ить), а не <code>int</code>. Type checker'ы (mypy, pyright) такое пропустят, но смысл будет неверный. Правильно — <code>async def f() -&gt; int: return 42</code>. <code>Coroutine[None, None, T]</code> как return-аннотация для <code>async def</code> — та же ловушка.</p>
+<p>⚠️ <strong>Частая ошибка</strong> — писать <code>async def f() -&gt; Awaitable[int]: return 42</code>. Это означает, что <code>await f()</code> вернёт <code>Awaitable[int]</code> (то есть нужно ещё раз await-ить), а не <code>int</code>. mypy такое НЕ пропустит: <code>error: Incompatible return value type (got "int", expected "Awaitable[int]")</code> — семантика аннотации неверна. Правильно — <code>async def f() -&gt; int: return 42</code>. <code>Coroutine[None, None, T]</code> как return-аннотация для <code>async def</code> — та же ловушка.</p>
 <p>Эти типы полезны в аннотациях сигнатур, особенно для абстракций (например, <code>async def process(stream: AsyncIterator[bytes]) -&gt; None</code>).</p>
 <h3 id="5.14-typingio">typing.IO / TextIO / BinaryIO<a class="headerlink" href="#5.14-typingio" title="Permanent link">#</a></h3>
 <p>Абстракции над файлами, чтобы не привязываться к конкретному типу:</p>
@@ -3733,10 +3742,12 @@
 </span><span id="__span-84-33"><a id="__codelineno-84-33" name="__codelineno-84-33" href="#__codelineno-84-33"></a>    <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span></code></pre></div>
 <p>⚠️ <code>collections.abc</code> (не <code>typing</code>) — это «настоящие» ABC, с методами по умолчанию. <code>typing.Iterable</code> — это typing-алиас для <code>collections.abc.Iterable</code>. В современном коде (Python 3.9+) можно писать просто <code>Iterable</code>, импортируя из <code>collections.abc</code>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-85-1"><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="c1"># Старый (typing) и новый (collections.abc) — эквивалентны:</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-85-1"><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="c1"># Старый (typing) — обёртка над новым (collections.abc):</span>
 </span><span id="__span-85-2"><a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span>
 </span><span id="__span-85-3"><a id="__codelineno-85-3" name="__codelineno-85-3" href="#__codelineno-85-3"></a><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span> <span class="k">as</span> <span class="n">IterableABC</span>
-</span><span id="__span-85-4"><a id="__codelineno-85-4" name="__codelineno-85-4" href="#__codelineno-85-4"></a><span class="n">Iterable</span> <span class="ow">is</span> <span class="n">IterableABC</span>   <span class="c1"># True в Python 3.9+</span>
+</span><span id="__span-85-4"><a id="__codelineno-85-4" name="__codelineno-85-4" href="#__codelineno-85-4"></a><span class="n">Iterable</span> <span class="ow">is</span> <span class="n">IterableABC</span>                    <span class="c1"># False — это разные объекты</span>
+</span><span id="__span-85-5"><a id="__codelineno-85-5" name="__codelineno-85-5" href="#__codelineno-85-5"></a><span class="n">Iterable</span><span class="o">.</span><span class="n">__origin__</span> <span class="ow">is</span> <span class="n">IterableABC</span>         <span class="c1"># True — typing-версия ссылается на abc</span>
+</span><span id="__span-85-6"><a id="__codelineno-85-6" name="__codelineno-85-6" href="#__codelineno-85-6"></a><span class="c1"># isinstance и сабскрипты работают одинаково; с 3.9 пишите просто collections.abc.Iterable</span>
 </span></code></pre></div>
 <h3 id="5.14-typing-aliasy">typing-алиасы для collections<a class="headerlink" href="#5.14-typing-aliasy" title="Permanent link">#</a></h3>
 <p>Для typing коллекций в старом стиле (Python 3.8 и ниже). В 3.9+ используйте просто <code>list[int]</code>, <code>dict[str, int]</code>, и т.д.</p>
@@ -3772,7 +3783,7 @@
 </span><span id="__span-87-6"><a id="__codelineno-87-6" name="__codelineno-87-6" href="#__codelineno-87-6"></a><span class="k">if</span> <span class="n">match</span><span class="p">:</span>
 </span><span id="__span-87-7"><a id="__codelineno-87-7" name="__codelineno-87-7" href="#__codelineno-87-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>   <span class="c1"># &#39;42&#39;</span>
 </span></code></pre></div>
-<p>⚠️ В Python 3.8+ <code>Pattern</code> и <code>Match</code> deprecated — используйте <code>re.Pattern[str]</code> и <code>re.Match[str]</code> напрямую.</p>
+<p>⚠️ В Python 3.8+ <code>Pattern</code> и <code>Match</code> deprecated — используйте <code>re.Pattern[str]</code> и <code>re.Match[str]</code> напрямую. В Python 3.13 <code>typing.Pattern</code>/<code>typing.Match</code> (и пространства <code>typing.io</code>/<code>typing.re</code>) <strong>удалены</strong>.</p>
 <h2 id="5.15">5.15. <code>typing.TYPE_CHECKING</code> — типы только для статического анализа<a class="headerlink" href="#5.15" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-88-1"><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 </span><span id="__span-88-2"><a id="__codelineno-88-2" name="__codelineno-88-2" href="#__codelineno-88-2"></a>
@@ -3837,7 +3848,7 @@
 </span><span id="__span-92-10"><a id="__codelineno-92-10" name="__codelineno-92-10" href="#__codelineno-92-10"></a>
 </span><span id="__span-92-11"><a id="__codelineno-92-11" name="__codelineno-92-11" href="#__codelineno-92-11"></a><span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 </span><span id="__span-92-12"><a id="__codelineno-92-12" name="__codelineno-92-12" href="#__codelineno-92-12"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">repr</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>            <span class="c1"># &quot;Person(name=&#39;Alice&#39;, age=30)&quot;</span>
-</span><span id="__span-92-13"><a id="__codelineno-92-13" name="__codelineno-92-13" href="#__codelineno-92-13"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>             <span class="c1"># &quot;Alice (30 лет)&quot;</span>
+</span><span id="__span-92-13"><a id="__codelineno-92-13" name="__codelineno-92-13" href="#__codelineno-92-13"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>             <span class="c1"># &#39;Alice (30 лет)&#39;</span>
 </span><span id="__span-92-14"><a id="__codelineno-92-14" name="__codelineno-92-14" href="#__codelineno-92-14"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span>                  <span class="c1"># в REPL — repr (через sys.displayhook)</span>
 </span><span id="__span-92-15"><a id="__codelineno-92-15" name="__codelineno-92-15" href="#__codelineno-92-15"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>           <span class="c1"># str</span>
 </span><span id="__span-92-16"><a id="__codelineno-92-16" name="__codelineno-92-16" href="#__codelineno-92-16"></a><span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>             <span class="c1"># str</span>
@@ -4020,8 +4031,9 @@
 </span><span id="__span-101-15"><a id="__codelineno-101-15" name="__codelineno-101-15" href="#__codelineno-101-15"></a><span class="c1"># - a[obj]            ← __getitem__ с __index__</span>
 </span><span id="__span-101-16"><a id="__codelineno-101-16" name="__codelineno-101-16" href="#__codelineno-101-16"></a><span class="c1"># - a[i:j:k]          ← slice — все три через __index__</span>
 </span><span id="__span-101-17"><a id="__codelineno-101-17" name="__codelineno-101-17" href="#__codelineno-101-17"></a><span class="c1"># - bin(obj), hex(obj), oct(obj)</span>
-</span><span id="__span-101-18"><a id="__codelineno-101-18" name="__codelineno-101-18" href="#__codelineno-101-18"></a><span class="c1"># - int.from_bytes(..., byteorder) если byteorder — объект с __index__</span>
-</span><span id="__span-101-19"><a id="__codelineno-101-19" name="__codelineno-101-19" href="#__codelineno-101-19"></a><span class="c1"># - array(&#39;i&#39;, ...) при определении размера</span>
+</span><span id="__span-101-18"><a id="__codelineno-101-18" name="__codelineno-101-18" href="#__codelineno-101-18"></a><span class="c1"># - (⚠️ byteorder в int.from_bytes обязан быть строкой &#39;big&#39;/&#39;little&#39; —</span>
+</span><span id="__span-101-19"><a id="__codelineno-101-19" name="__codelineno-101-19" href="#__codelineno-101-19"></a><span class="c1">#    TypeError: from_bytes() argument &#39;byteorder&#39; must be str, not H)</span>
+</span><span id="__span-101-20"><a id="__codelineno-101-20" name="__codelineno-101-20" href="#__codelineno-101-20"></a><span class="c1"># - array(&#39;i&#39;, ...) при определении размера</span>
 </span></code></pre></div>
 <p>⚠️ <strong><code>__int__</code> vs <code>__index__</code></strong> — разные протоколы:</p>
 <ul>
@@ -4058,8 +4070,8 @@
 </span></code></pre></div>
 <p>⚠️ <strong>Не полагайся на <code>__del__</code></strong> для критичных cleanup-операций (закрытие файлов, соединений с БД, снятие блокировок):</p>
 <ul>
-<li>GC может не вызвать <code>__del__</code> до выхода процесса (особенно для циклических ссылок).</li>
-<li>При <code>sys.exit()</code> или <code>os._exit()</code> <code>__del__</code> не вызывается.</li>
+<li>GC может не вызвать <code>__del__</code> до выхода процесса. Циклические ссылки с 3.4 (PEP 442) собираются безопасно — финализаторы вызываются; реальный риск — порядок финализации при завершении и уже уничтоженные глобалы, на которые опирается <code>__del__</code>.</li>
+<li>При <code>os._exit()</code> и <code>kill -9</code> <code>__del__</code> не вызывается вовсе; при <code>sys.exit()</code> интерпретатор финализируется нормально и финализаторы запускаются (проверено: subprocess печатает 'released via sys.exit').</li>
 <li>Порядок вызова между объектами не гарантирован.</li>
 </ul>
 <p>Для детерминированного cleanup используй <strong>контекстные менеджеры</strong> (<code>with</code>, см. Часть II) или <code>weakref.finalize</code> (Часть VIII, 8.14). <code>__del__</code> — только для best-effort cleanup (логирование, статистика, кэш).</p>
@@ -4121,8 +4133,8 @@
 </tr>
 <tr>
 <td><strong>Доступ по ключу</strong></td>
-<td><code>__getitem__</code>, <code>__setitem__</code>, <code>__delitem__</code>, <code>__missing__</code>, <code>__len__</code></td>
-<td><code>obj[k]</code>, <code>obj[k]=v</code>, <code>del obj[k]</code>, <code>len()</code></td>
+<td><code>__getitem__</code>, <code>__setitem__</code>, <code>__delitem__</code>, <code>__missing__</code></td>
+<td><code>obj[k]</code>, <code>obj[k]=v</code>, <code>del obj[k]</code></td>
 </tr>
 <tr>
 <td><strong>Атрибуты</strong></td>
@@ -4151,8 +4163,28 @@
 </tr>
 <tr>
 <td><strong>Размер</strong></td>
-<td><code>__sizeof__</code></td>
-<td><code>sys.getsizeof()</code></td>
+<td><code>__sizeof__</code>, <code>__len__</code></td>
+<td><code>sys.getsizeof()</code>, <code>len()</code></td>
+</tr>
+<tr>
+<td><strong>Битовые</strong></td>
+<td><code>__and__</code>, <code>__or__</code>, <code>__xor__</code>, <code>__lshift__</code>, <code>__rshift__</code> (+ reflected/in-place)</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Копирование/сериализация</strong></td>
+<td><code>__copy__</code>, <code>__deepcopy__</code>, <code>__reduce__</code>, <code>__reduce_ex__</code>, <code>__getstate__</code>, <code>__setstate__</code></td>
+<td><code>copy</code>, <code>pickle</code></td>
+</tr>
+<tr>
+<td><strong>Параметрика/мета</strong></td>
+<td><code>__class_getitem__</code>, <code>__instancecheck__</code>, <code>__subclasscheck__</code>, <code>__length_hint__</code></td>
+<td><code>list[int]</code>, <code>isinstance</code> (у метакласса)</td>
+</tr>
+<tr>
+<td><strong>Пути и async</strong></td>
+<td><code>__fspath__</code>, <code>__await__</code>, <code>__aiter__</code>, <code>__anext__</code></td>
+<td><code>os.fspath</code>, <code>await</code>, <code>async for</code></td>
 </tr>
 </tbody>
 </table>
@@ -4172,8 +4204,8 @@
 </span><span id="__span-103-12"><a id="__codelineno-103-12" name="__codelineno-103-12" href="#__codelineno-103-12"></a>
 </span><span id="__span-103-13"><a id="__codelineno-103-13" name="__codelineno-103-13" href="#__codelineno-103-13"></a><span class="n">p1</span> <span class="o">=</span> <span class="n">PointClass</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
 </span><span id="__span-103-14"><a id="__codelineno-103-14" name="__codelineno-103-14" href="#__codelineno-103-14"></a><span class="n">p2</span> <span class="o">=</span> <span class="n">PointData</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
-</span><span id="__span-103-15"><a id="__codelineno-103-15" name="__codelineno-103-15" href="#__codelineno-103-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p1</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>   <span class="c1"># 48 + 112 = 160 байт</span>
-</span><span id="__span-103-16"><a id="__codelineno-103-16" name="__codelineno-103-16" href="#__codelineno-103-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p2</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>   <span class="c1"># 48 + 112 = 160 байт</span>
+</span><span id="__span-103-15"><a id="__codelineno-103-15" name="__codelineno-103-15" href="#__codelineno-103-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p1</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>   <span class="c1"># 48 + 296 = 344 байта (3.12)</span>
+</span><span id="__span-103-16"><a id="__codelineno-103-16" name="__codelineno-103-16" href="#__codelineno-103-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p2</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>   <span class="c1"># 48 + 296 = 344 байта</span>
 </span></code></pre></div>
 Память <strong>идентична</strong> — <code>dataclass</code> генерирует тот же <code>__init__</code>, что и ручной.
 Выгода <code>dataclass</code> — в <code>__repr__</code>, <code>__eq__</code>, <code>__hash__</code>, <code>field()</code>, <code>__post_init__</code>
@@ -4190,15 +4222,17 @@
 </span><span id="__span-104-9"><a id="__codelineno-104-9" name="__codelineno-104-9" href="#__codelineno-104-9"></a><span class="k">class</span> <span class="nc">WithSlots</span><span class="p">:</span>
 </span><span id="__span-104-10"><a id="__codelineno-104-10" name="__codelineno-104-10" href="#__codelineno-104-10"></a>    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">;</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">;</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;origin&quot;</span>
 </span><span id="__span-104-11"><a id="__codelineno-104-11" name="__codelineno-104-11" href="#__codelineno-104-11"></a>
-</span><span id="__span-104-12"><a id="__codelineno-104-12" name="__codelineno-104-12" href="#__codelineno-104-12"></a><span class="n">n</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ws</span> <span class="o">=</span> <span class="mi">100_000</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[]</span>
-</span><span id="__span-104-13"><a id="__codelineno-104-13" name="__codelineno-104-13" href="#__codelineno-104-13"></a><span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="n">NoSlots</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>   <span class="c1"># 1 000 000 объектов</span>
+</span><span id="__span-104-12"><a id="__codelineno-104-12" name="__codelineno-104-12" href="#__codelineno-104-12"></a><span class="n">n</span> <span class="o">=</span> <span class="mi">100_000</span>
+</span><span id="__span-104-13"><a id="__codelineno-104-13" name="__codelineno-104-13" href="#__codelineno-104-13"></a><span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="n">NoSlots</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>   <span class="c1"># 100 000 объектов</span>
 </span><span id="__span-104-14"><a id="__codelineno-104-14" name="__codelineno-104-14" href="#__codelineno-104-14"></a><span class="n">ws</span> <span class="o">=</span> <span class="p">[</span><span class="n">WithSlots</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-</span><span id="__span-104-15"><a id="__codelineno-104-15" name="__codelineno-104-15" href="#__codelineno-104-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>  <span class="c1"># ≈ 160 байт/объект</span>
-</span><span id="__span-104-16"><a id="__codelineno-104-16" name="__codelineno-104-16" href="#__codelineno-104-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>                                  <span class="c1"># ≈ 64 байта/объект</span>
-</span><span id="__span-104-17"><a id="__codelineno-104-17" name="__codelineno-104-17" href="#__codelineno-104-17"></a><span class="c1"># На 1M объектов: 160 MB vs 64 MB — экономия ~96 MB (≈40%)</span>
+</span><span id="__span-104-15"><a id="__codelineno-104-15" name="__codelineno-104-15" href="#__codelineno-104-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>  <span class="c1"># 48 + 296 = 344 байта/объект</span>
+</span><span id="__span-104-16"><a id="__codelineno-104-16" name="__codelineno-104-16" href="#__codelineno-104-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>                                  <span class="c1"># 56 байт/объект</span>
+</span><span id="__span-104-17"><a id="__codelineno-104-17" name="__codelineno-104-17" href="#__codelineno-104-17"></a><span class="c1"># На 1M по getsizeof: ~344 MB vs ~56 MB — экономия ≈84%.</span>
+</span><span id="__span-104-18"><a id="__codelineno-104-18" name="__codelineno-104-18" href="#__codelineno-104-18"></a><span class="c1"># Нюанс 3.12: instance-__dict__ хранится inline и не материализуется до</span>
+</span><span id="__span-104-19"><a id="__codelineno-104-19" name="__codelineno-104-19" href="#__codelineno-104-19"></a><span class="c1"># обращения — фактическая разница по tracemalloc меньше (см. бенчмарк 8.15).</span>
 </span></code></pre></div>
-Дополнительно: доступ к слот-атрибуту ~1.05× быстрее обычного (<code>__dict__</code> lookup
-— это хеш-таблица, slot — это смещение в массиве).</p>
+Дополнительно: доступ к слот-атрибуту на 3.12 сопоставим с обычным (~1.0× —
+специализированные LOAD_ATTR сравняли их); главный выигрыш slots — память.</p>
 <p><strong>3. <code>frozen=True</code> vs обычный класс — цена immutability.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-105-1"><a id="__codelineno-105-1" name="__codelineno-105-1" href="#__codelineno-105-1"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 </span><span id="__span-105-2"><a id="__codelineno-105-2" name="__codelineno-105-2" href="#__codelineno-105-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
@@ -4228,7 +4262,7 @@
 </span><span id="__span-106-10"><a id="__codelineno-106-10" name="__codelineno-106-10" href="#__codelineno-106-10"></a>    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">;</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
 </span><span id="__span-106-11"><a id="__codelineno-106-11" name="__codelineno-106-11" href="#__codelineno-106-11"></a>
 </span><span id="__span-106-12"><a id="__codelineno-106-12" name="__codelineno-106-12" href="#__codelineno-106-12"></a><span class="c1"># Mutable.__init__ (упрощённо): прямая запись в __dict__</span>
-</span><span id="__span-106-13"><a id="__codelineno-106-13" name="__codelineno-106-13" href="#__codelineno-106-13"></a><span class="c1">#   LOAD_FAST &#39;x&#39;; STORE_FAST &#39;self.x&#39;   ← один опкод на поле</span>
+</span><span id="__span-106-13"><a id="__codelineno-106-13" name="__codelineno-106-13" href="#__codelineno-106-13"></a><span class="c1">#   LOAD_FAST x; LOAD_FAST self; STORE_ATTR x   ← STORE_ATTR на каждое поле</span>
 </span><span id="__span-106-14"><a id="__codelineno-106-14" name="__codelineno-106-14" href="#__codelineno-106-14"></a>
 </span><span id="__span-106-15"><a id="__codelineno-106-15" name="__codelineno-106-15" href="#__codelineno-106-15"></a><span class="c1"># Frozen.__init__: ВЫЗОВ object.__setattr__ на каждое поле</span>
 </span><span id="__span-106-16"><a id="__codelineno-106-16" name="__codelineno-106-16" href="#__codelineno-106-16"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">Frozen</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
@@ -4241,7 +4275,7 @@
 </span><span id="__span-106-23"><a id="__codelineno-106-23" name="__codelineno-106-23" href="#__codelineno-106-23"></a><span class="c1">#   POP_TOP</span>
 </span><span id="__span-106-24"><a id="__codelineno-106-24" name="__codelineno-106-24" href="#__codelineno-106-24"></a><span class="c1"># (повторяется для y)</span>
 </span></code></pre></div>
-<p>Mutable пишет поля напрямую в <code>self.__dict__</code> (опкод <code>STORE_FAST</code>-подобный). Frozen <strong>не может</strong> так делать — <code>__dict__</code> недоступен (точнее, писать в него напрямую нельзя, иначе frozen можно было бы обойти). Поэтому сгенерированный <code>__init__</code> идёт через <code>object.__setattr__(self, 'x', x)</code> — это <strong>функциональный вызов</strong> на каждое поле, плюс lookup <code>__setattr__</code> через closure (<code>__dataclass_builtins_object__</code>). Это и есть основная цена замедления.</p>
+<p>Mutable пишет поля напрямую (опкод <code>STORE_ATTR</code>). Frozen <strong>не может</strong> так делать — <code>__dict__</code> недоступен (точнее, писать в него напрямую нельзя, иначе frozen можно было бы обойти). Поэтому сгенерированный <code>__init__</code> идёт через <code>object.__setattr__(self, 'x', x)</code> — это <strong>функциональный вызов</strong> на каждое поле, плюс lookup <code>__setattr__</code> через closure (<code>__dataclass_builtins_object__</code>). Это и есть основная цена замедления.</p>
 <p><strong>А что же проверяет <code>__setattr__</code>?</strong> Сгенерированный <code>Frozen.__setattr__</code> поднимает <code>FrozenInstanceError</code>, <strong>но он не вызывается из <code>__init__</code></strong> (тот идёт через <code>object.__setattr__</code> напрямую, минуя переопределённый <code>__setattr__</code> класса). Проверка работает только при <strong>последующих</strong> попытках мутации:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-107-1"><a id="__codelineno-107-1" name="__codelineno-107-1" href="#__codelineno-107-1"></a><span class="n">f</span> <span class="o">=</span> <span class="n">Frozen</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
 </span><span id="__span-107-2"><a id="__codelineno-107-2" name="__codelineno-107-2" href="#__codelineno-107-2"></a><span class="n">f</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># ← вот тут сработает Frozen.__setattr__ → FrozenInstanceError</span>
@@ -4318,9 +4352,9 @@
 </span><span id="__span-112-17"><a id="__codelineno-112-17" name="__codelineno-112-17" href="#__codelineno-112-17"></a><span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ABCDrawable</span><span class="p">))</span>    <span class="c1"># False (не наследует)</span>
 </span><span id="__span-112-18"><a id="__codelineno-112-18" name="__codelineno-112-18" href="#__codelineno-112-18"></a><span class="nb">print</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ProtoDrawable</span><span class="p">))</span>  <span class="c1"># True (структурно)</span>
 </span><span id="__span-112-19"><a id="__codelineno-112-19" name="__codelineno-112-19" href="#__codelineno-112-19"></a><span class="c1"># Скорость isinstance:</span>
-</span><span id="__span-112-20"><a id="__codelineno-112-20" name="__codelineno-112-20" href="#__codelineno-112-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ProtoDrawable</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.20 с</span>
+</span><span id="__span-112-20"><a id="__codelineno-112-20" name="__codelineno-112-20" href="#__codelineno-112-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ProtoDrawable</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.4 с (зависит от CPU)</span>
 </span></code></pre></div>
-<code>runtime_checkable</code>-проверка <strong>медленнее</strong> обычного <code>isinstance</code> (~0.2 мкс/вызов),
+<code>runtime_checkable</code>-проверка <strong>медленнее</strong> обычного <code>isinstance</code> (~0.4 мкс/вызов на 3.12),
 потому что проверяет наличие методов через <code>hasattr</code>. На горячих путях — кешируйте.</p>
 <p><strong>5. <code>Enum</code> vs <code>str</code>-константы — скорость сравнения.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-113-1"><a id="__codelineno-113-1" name="__codelineno-113-1" href="#__codelineno-113-1"></a><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>

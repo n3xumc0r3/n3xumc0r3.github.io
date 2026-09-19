@@ -649,6 +649,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="14.4. REPL поверх REPL: IPython, Jupyter и соседи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14.4-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XIV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -855,6 +870,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="14.4. REPL поверх REPL: IPython, Jupyter и соседи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14.4-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XIV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -893,7 +923,7 @@
 <p>Идея «сделать Python не на C» исполнена много раз — от академических проектов до промышленных платформ. Обзор живых и исторических, с причиной существования каждого.</p>
 <p><strong>PyPy</strong> — самая известная альтернатива, интерпретатор на RPython (строгое подмножество Python, компилируемое в C) с <strong>мета-tracing JIT</strong>: JIT не трассирует ваш код напрямую — он трассирует цикл самого интерпретатора и удаляет слои абстракции между уровнями, специализируя исполнение под конкретную программу. На чистом Python-коде (длинные циклы, словари, списки) PyPy в разы быстрее CPython. Слабое место — C-расширения: мост <code>cpyext</code> эмулирует CPython C API, и через границу «C-расширение ↔ JIT-код» выигрыш часто сгорает. Статус: жив и развивается, поддерживает версии CPython с лагом в один-два года — проверяйте актуальный на сайте проекта.</p>
 <p><strong>GraalPy</strong> — реализация Oracle Labs поверх Truffle (фреймворк для интерпретаторов с частичной компиляцией из мира JVM). Фишка — на удивление хорошая совместимость с C-расширениями; мотивация — дать Python жить в JVM-экосистеме рядом с Java, JavaScript и другими Truffle-языками.</p>
-<p><strong>MicroPython</strong> (и образовательный форк CircuitPython) — Python для микроконтроллеров. Написан на C, но это <strong>не</strong> CPython: самостоятельная реализация, укладывающаяся примерно в 256 КБ flash и 16 КБ RAM, с усечённым языком и собственными модулями стандартной библиотеки. Компилирует исходник прямо на устройстве; для горячего кода есть декораторы <code>@micropython.native</code> и <code>@micropython.viper</code>. Живёт на ESP32, Raspberry Pi Pico и сотнях плат, где стандартный CPython не влезает физически:</p>
+<p><strong>MicroPython</strong> (и образовательный форк CircuitPython) — Python для микроконтроллеров. Написан на C, но это <strong>не</strong> CPython: самостоятельная реализация, укладывающаяся примерно в 256 КБ flash и 16 КБ RAM (порядок величин для минимальной конфигурации, не спецификация), с усечённым языком и собственными модулями стандартной библиотеки. Компилирует исходник прямо на устройстве; для горячего кода есть декораторы <code>@micropython.native</code> и <code>@micropython.viper</code>. Живёт на ESP32, Raspberry Pi Pico и сотнях плат, где стандартный CPython не влезает физически:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># на CPython и MicroPython работает одинаково:</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -1063,6 +1093,20 @@
 </tbody>
 </table>
 <p>Общая мораль части: «Python» — это контракт, и его исполняют многие. CPython остаётся дефолтом не потому, что язык неотделим от него, а потому, что он эталон совместимости, у него самая широкая экосистема C-расширений и с 2021 года его ускорение — приоритет самих разработчиков. Все остальные — осознанный выбор под задачу: скорость (PyPy), размер (MicroPython), платформа (JVM/.NET/WASM), среда (IPython/Jupyter).</p>
+<h3 id="14.4-benchmarki">Бенчмарки к Части XIV<a class="headerlink" href="#14.4-benchmarki" title="Permanent link">#</a></h3>
+<p>Замеры на CPython 3.12 (Linux, x86_64); абсолютные числа зависят от машины и диска, отношения — устойчивы.</p>
+<p><strong>1. Старт интерпретатора — цена <code>site</code> и импортов.</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">         </span><span class="c1"># ≈ 0.015 с</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>python<span class="w"> </span>-S<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">      </span><span class="c1"># ≈ 0.008 с — без site почти вдвое быстрее</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json&quot;</span><span class="w">  </span><span class="c1"># ≈ 0.019 с</span>
+</span></code></pre></div>
+Половина старта CPython — это <code>site</code> (11.31): сканирование каталогов, <code>.pth</code>-файлы, импорт <code>sitecustomize</code>. Отсюда ответ на «почему CLI-утилиты на Python медленно стартуют»: сам интерпретатор готов за ~15 мс, остальное — импорты библиотек (уже <code>json</code> добавляет ~5 мс, а тяжёлые пакеты — сотни).</p>
+<p><strong>2. IPython — цена оболочки.</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>ipython<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">   </span><span class="c1"># ≈ 1.05 с — ~70× старта python -c pass</span>
+</span></code></pre></div>
+Оболочка (prompt_toolkit, история, магии, ~200 импортированных модулей) дороже самого интерпретатора на два порядка. Для одноразовых скриптов и CI — стандартный REPL или <code>python -c</code>; IPython — интерактивный инструмент, и его стартовая цена того не отменяет (14.4).</p>
+<p><strong>3. Старт: интерпретатор vs реализации.</strong>
+PyPy стартует на порядки дольше CPython (JIT-инфраструктура и импорт большого рантайма), MicroPython на микроконтроллере — на порядки быстрее (нечего импортировать). Замерить в одной таблице честно не выйдет — платформы несравнимы; смотрите бенчмарки самих проектов: speed.pypy.org для PyPy, docs.micropython.org для микро-плат. Урок тот же, что в 14.2: «быстрее» без уточнения нагрузки — не ответ.</p>
 
 
 

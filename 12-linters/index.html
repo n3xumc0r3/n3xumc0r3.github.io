@@ -631,7 +631,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12.5-gruppa" class="md-nav__link">
+  <a href="#12.5-gruppa-ew" class="md-nav__link">
     <span class="md-ellipsis">
       Группа E и W (pycodestyle / PEP 8)
     </span>
@@ -640,7 +640,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12.5-gruppa" class="md-nav__link">
+  <a href="#12.5-gruppa-pl" class="md-nav__link">
     <span class="md-ellipsis">
       Группа PL (Pylint) — архитектурные грехи
     </span>
@@ -979,7 +979,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12.5-gruppa" class="md-nav__link">
+  <a href="#12.5-gruppa-ew" class="md-nav__link">
     <span class="md-ellipsis">
       Группа E и W (pycodestyle / PEP 8)
     </span>
@@ -988,7 +988,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12.5-gruppa" class="md-nav__link">
+  <a href="#12.5-gruppa-pl" class="md-nav__link">
     <span class="md-ellipsis">
       Группа PL (Pylint) — архитектурные грехи
     </span>
@@ -1087,7 +1087,7 @@
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># coding=iso-8859-1</span>
 </span></code></pre></div>
 <h2 id="12.2">12.2. <code># type: int</code> (PEP 484)<a class="headerlink" href="#12.2" title="Permanent link">#</a></h2>
-<p>Type comments — до того как в Python появились полноценные аннотации через двоеточие (<code>x: int = 5</code>), типы писали в комментариях. CPython до сих пор парсит их в специальный флаг AST <code>type_ignores</code>:</p>
+<p>Type comments — до того как в Python появились полноценные аннотации через двоеточие (<code>x: int = 5</code>), типы писали в комментариях. CPython до сих пор умеет их парсить — в поле AST <code>type_ignores</code> (заполняется только при <code>ast.parse(..., type_comments=True)</code> / флаге <code>PyCF_TYPE_COMMENTS</code>):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># type: int</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  <span class="c1"># type: (int) -&gt; str</span>
@@ -1135,7 +1135,7 @@
 <li><code>+NORMALIZE_WHITESPACE</code> — пробелы в выводе игнорируются.</li>
 <li><code>+SKIP</code> — пропустить тест.</li>
 <li><code>+IGNORE_EXCEPTION_DETAIL</code> — не проверять детали исключения (только тип).</li>
-<li><code>+NUMBER</code> — численные сравнения с допуском.</li>
+<li><code>DONT_ACCEPT_BLANKLINE</code> — пустые строки в выводе не матчатся (<code>#</code> — заглушка пустой строки).</li>
 </ul>
 <h2 id="12.5">12.5. Коды flake8/pylint<a class="headerlink" href="#12.5" title="Permanent link">#</a></h2>
 <p>В больших проектах линтеры настраиваются в <code>pyproject.toml</code> или <code>.flake8</code> через <code>ignore = ["E501", "F401"]</code>. Если конфига нет — точечное <code># noqa: [код]</code> в строке.</p>
@@ -1146,25 +1146,25 @@
 <li><strong>F811 — Redefinition of unused name</strong> — повторное определение, которое перекрывает предыдущее.</li>
 <li><strong>F541 — f-string without placeholders</strong> — <code>f"hello"</code> без <code>{}</code>.</li>
 <li><strong>F821 — Undefined name</strong> — использование неопределённой переменной.</li>
-<li><strong>F811 — Redefinition of unused name</strong>.</li>
+<li><strong>F632 — use of <code>is</code> to compare str/bytes/int literals</strong> — <code>s is "hello"</code> вместо <code>==</code>.</li>
 </ul>
-<h3 id="12.5-gruppa">Группа E и W (pycodestyle / PEP 8)<a class="headerlink" href="#12.5-gruppa" title="Permanent link">#</a></h3>
+<h3 id="12.5-gruppa-ew">Группа E и W (pycodestyle / PEP 8)<a class="headerlink" href="#12.5-gruppa-ew" title="Permanent link">#</a></h3>
 <ul>
 <li><strong>E501 — Line too long (&gt;79 characters)</strong> — самое знаменитое правило PEP 8.</li>
 <li><strong>E203 — Whitespace before <code>:</code></strong>: <code>python a[x : y]   # вместо a[x:y]</code></li>
 <li><strong>E302, E303, E305</strong> — правила пустых строк:</li>
 <li>E302: между импортами и функцией должно быть 2 пустые строки.</li>
-<li>E303: внутри функции не больше 1 пустой строки подряд.</li>
+<li>E303: срабатывает на 3+ пустых строках подряд (допустимо максимум 2).</li>
 <li>E305: между концом функции и <code>if __name__</code> — 2 пустые строки.</li>
 <li><strong>E711, E712</strong> — сравнение с <code>None</code> через <code>==</code> (надо <code>is None</code>), с <code>True</code>/<code>False</code> через <code>==</code> (надо <code>if x:</code>).</li>
 <li><strong>E722</strong> — голый <code>except:</code> без указания типа исключения.</li>
 <li><strong>W291, W293</strong> — trailing whitespace и whitespace на пустых строках.</li>
 </ul>
-<h3 id="12.5-gruppa">Группа PL (Pylint) — архитектурные грехи<a class="headerlink" href="#12.5-gruppa" title="Permanent link">#</a></h3>
+<h3 id="12.5-gruppa-pl">Группа PL (Pylint) — архитектурные грехи<a class="headerlink" href="#12.5-gruppa-pl" title="Permanent link">#</a></h3>
 <ul>
 <li><strong><code>pylint: disable=broad-except</code> (W0703)</strong> — перехват всех ошибок через <code>except Exception:</code>.</li>
 <li><strong><code>pylint: disable=too-many-arguments</code> (R0913)</strong> — слишком много аргументов (&gt;5).</li>
-<li><strong><code>pylint: disable=missing-docstring</code> (C0111)</strong> — нет docstring.</li>
+<li><strong><code>pylint: disable=missing-module-docstring</code>/<code>-class-docstring</code>/<code>-function-docstring</code> (C0114/C0115/C0116)</strong> — нет docstring (старый код C0111 устарел с pylint 2.0).</li>
 <li><strong><code>pylint: disable=eval-used</code> (W0122)</strong> — использование <code>eval</code>.</li>
 <li><strong><code>pylint: disable=too-few-public-methods</code> (R0903)</strong> — слишком мало публичных методов.</li>
 <li><strong><code>pylint: disable=import-outside-toplevel</code> (C0415)</strong> — импорт вне верхнего уровня.</li>
@@ -1194,7 +1194,7 @@
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="n">quote-style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;double&quot;</span>
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">indent-style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;space&quot;</span>
 </span></code></pre></div>
-<p>Аналогично для flake8 (через <code>[tool.flake8]</code> или отдельный <code>.flake8</code>):</p>
+<p>Аналогично для flake8 (нативно <code>pyproject.toml</code> он НЕ читает — нужен плагин <code>flake8-pyproject</code> или отдельный <code>.flake8</code>/<code>setup.cfg</code>):</p>
 <div class="language-ini highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">[flake8]</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="na">max-line-length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">120</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="na">extend-ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">E501, F401, E203</span>
@@ -1510,7 +1510,7 @@
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install pre-commit &amp;&amp; pre-commit run --all-files</span>
 </span></code></pre></div>
-<p>Альтернатива без своего CI-шага — <a href="https://pre-commit.ci">pre-commit.ci</a>: сервис сам гоняет хуки на PR и сам обновляет <code>rev</code> хуков автопокерами.</p>
+<p>Альтернатива без своего CI-шага — <a href="https://pre-commit.ci">pre-commit.ci</a>: сервис сам гоняет хуки на PR и сам обновляет <code>rev</code> хуков автоматически.</p>
 <p>Что остаётся за кадром: pre-commit защищает <strong>коммиты</strong>, но не историю — хук можно обойти <code>git commit --no-verify</code>. Для гарантий CI-прогон обязателен: хуки ускоряют обратную связь, CI — единственный источник истины.</p>
 <p>→ <strong>см. также:</strong> 12.7 — конфиг ruff; 12.9 — коды mypy; 12.6 — общий <code>pyproject.toml</code>.</p>
 <hr />
@@ -1522,7 +1522,7 @@
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># ruff:      ≈ 0.06 с  (140× быстрее flake8, 750× быстрее pylint)</span>
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="c1"># ruff --fix:≈ 0.12 с (с применением автофиксов)</span>
 </span></code></pre></div>
-<code>ruff</code> написан на Rust, парсит через <code>rustpython-parser</code>, без Python-импортов.
+<code>ruff</code> написан на Rust, парсит собственным парсером (<code>ruff_python_parser</code>; <code>rustpython-parser</code> использовался только в ранних версиях), без Python-импортов.
 На CI для проекта среднего размера экономит <strong>минуты на каждом пуше</strong>.
 Pylint медленнее, но ловит больше семантических проблем (напр. неиспользуемые
 импорты в условных ветках, недостижимый код).</p>

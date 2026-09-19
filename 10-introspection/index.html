@@ -1083,7 +1083,9 @@
 <p>Слить в stderr/stdout:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">json</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">flags_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)}</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FLAGS_DUMP: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">flags_dict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># ⚠️ dir() содержит методы count/index — без default=str json.dumps упадёт</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># с TypeError: Object of type builtin_function_or_method is not JSON serializable</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FLAGS_DUMP: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">flags_dict</span><span class="p">,</span><span class="w"> </span><span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="10.2">10.2. <code>sys._xoptions</code> — <code>-X</code> опции<a class="headerlink" href="#10.2" title="Permanent link">#</a></h2>
 <p>Некоторые флаги не имеют поля в <code>sys.flags</code> — они передаются через <code>-X</code> (расширенные опции), доступны в <code>sys._xoptions</code> (словарь):</p>
@@ -1093,7 +1095,7 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># {&#39;dev&#39;: True} при python -X dev</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># {&#39;faulthandler&#39;: True} при python -X faulthandler</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># {&#39;importtime&#39;: True} при python -X importtime</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># {&#39;utf8&#39;: 1} при python -X utf8=1</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># {&#39;utf8&#39;: &#39;1&#39;} при python -X utf8=1 (значения строковые; флаг без = → True)</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># {&#39;tracemalloc&#39;: &#39;10&#39;} при python -X tracemalloc=10</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># {&#39;frozen_modules&#39;: &#39;off&#39;} при python -X frozen_modules=off</span>
 </span></code></pre></div>
@@ -1106,7 +1108,7 @@
 <li><code>-X int_max_str_digits=N</code> — лимит на длину int-строки</li>
 <li><code>-X utf8</code> / <code>-X utf8=1</code> — UTF-8 Mode</li>
 <li><code>-X frozen_modules=on/off</code> — использовать ли замороженные модули</li>
-<li><code>-X path</code> — показать итоговый <code>sys.path</code></li>
+<li>неизвестные <code>-X</code> игнорируются молча (<code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code>)</li>
 </ul>
 <h2 id="10.3">10.3. <code>os.environ</code> и <code>PYTHON*</code> переменные<a class="headerlink" href="#10.3" title="Permanent link">#</a></h2>
 <p>⚠️ <strong>Переменные <code>PYTHON*</code> читаются ТОЛЬКО при старте CPython.</strong> Изменение <code>os.environ['PYTHONUNBUFFERED'] = '1'</code> внутри работающего скрипта <strong>не повлияет на текущий процесс</strong> — только на дочерние процессы (запущенные через <code>subprocess</code>). Все <code>PYTHON*</code> должны быть выставлены <strong>до</strong> запуска <code>python</code>.</p>
@@ -1133,14 +1135,14 @@
 </span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="c1">#   &#39;VIRTUAL_ENV&#39;: &#39;/srv/venv&#39;,</span>
 </span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1"># }</span>
 </span></code></pre></div>
-<p>Полный список (по <a href="https://docs.python.org/3/using/cmdline.html#environment-variables">Python docs → Command line and environment</a>):</p>
+<p>Основные переменные (полный список — <a href="https://docs.python.org/3/using/cmdline.html#environment-variables">Python docs → Command line and environment</a>):</p>
 <ul>
 <li><code>PYTHONHOME</code> — альтернативный каталог установки Python.</li>
 <li><code>PYTHONPATH</code> — дополнительные пути для <code>sys.path</code>.</li>
 <li><code>PYTHONSTARTUP</code> — файл, исполняемый перед REPL.</li>
 <li><code>PYTHONINSPECT</code> — эквивалент флага <code>-i</code>.</li>
 <li><code>PYTHONBREAKPOINT</code> — переопределяет <code>breakpoint()</code>.</li>
-<li><code>PYTHONDEBUG</code> — устаревший, эквивалент <code>-d</code>.</li>
+<li><code>PYTHONDEBUG</code> — эквивалент <code>-d</code>.</li>
 <li><code>PYTHONOPTIMIZE</code> — эквивалент <code>-O</code>. Если установлена, <code>__debug__ = False</code>.</li>
 <li><code>PYTHONUNBUFFERED</code> — эквивалент <code>-u</code>.</li>
 <li><code>PYTHONFAULTHANDLER</code> — включает <code>faulthandler</code> при старте.</li>
@@ -1152,6 +1154,12 @@
 <li><code>PYTHONIOENCODING</code> — кодировка stdin/stdout/stderr.</li>
 <li><code>PYTHONNODEBUGRANGES</code> — отключить отладочную инфу в Traceback.</li>
 <li><code>PYTHONCOERCECLOCALE</code> — для UNIX локалей.</li>
+<li><code>PYTHONUTF8</code> — эквивалент <code>-X utf8</code>.</li>
+<li><code>PYTHONSAFEPATH</code> — эквивалент <code>-P</code> (не добавлять каталог скрипта в sys.path).</li>
+<li><code>PYTHONPYCACHEPREFIX</code> — альтернативный корень для <code>__pycache__</code>.</li>
+<li><code>PYTHONINTMAXSTRDIGITS</code> — лимит int↔str (эквивалент <code>-X int_max_str_digits</code>).</li>
+<li><code>PYTHON_GIL</code> — 0/1 для free-threaded сборок (3.13+).</li>
+<li><code>PYTHONPLATLIBDIR</code> — имя каталога платформенных библиотек.</li>
 </ul>
 <p>⚠️ <strong>Все <code>PYTHON*</code> переменные игнорируются</strong> при флаге <code>-E</code> или <code>-I</code>.</p>
 <h2 id="10.4">10.4. <code>sys.implementation</code>, <code>platform.*</code><a class="headerlink" href="#10.4" title="Permanent link">#</a></h2>
@@ -1263,7 +1271,7 @@
 </span></code></pre></div>
 <p><code>/proc/self/environ</code> часто <strong>полезнее</strong>, чем <code>os.environ</code> — даёт вообще всё окружение, не отфильтрованное.</p>
 <h2 id="10.7">10.7. Audit hooks (PEP 578, Python 3.8+)<a class="headerlink" href="#10.7" title="Permanent link">#</a></h2>
-<p><code>sys.addaudithook(hook)</code> ставит <strong>глобальный перехватчик</strong> для всех «интересных» событий: <code>import</code>, <code>exec</code>, <code>eval</code>, <code>open</code>, <code>socket.*</code>, <code>subprocess.Popen</code>, <code>compile</code>, <code>code.__new__</code>, и т.д. Полный список событий в <a href="https://peps.python.org/pep-0578/">PEP 578</a>.</p>
+<p><code>sys.addaudithook(hook)</code> ставит <strong>глобальный перехватчик</strong> для всех «интересных» событий: <code>import</code>, <code>exec</code> (порождается и <code>exec()</code>, и <code>eval()</code>), <code>open</code>, <code>socket.*</code>, <code>subprocess.Popen</code>, <code>compile</code>, <code>code.__new__</code>, и т.д. Полный список событий в <a href="https://peps.python.org/pep-0578/">PEP 578</a>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">sys</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">def</span> <span class="nf">my_hook</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
@@ -1298,8 +1306,8 @@
 </tr>
 <tr>
 <td><code>compile</code></td>
-<td><code>compile(source, ...)</code></td>
-<td><code>(code, filename, mode)</code></td>
+<td><code>compile(source, filename, ...)</code></td>
+<td><code>(source, filename)</code> — по PEP 578, без mode</td>
 </tr>
 <tr>
 <td><code>import</code></td>
@@ -1353,12 +1361,12 @@
 </tr>
 </tbody>
 </table>
-<p>Для задач из 10.6 («что делает тестирующая система с моим файлом») самый частотный набор — <code>open</code>, <code>import</code>, <code>exec</code>, <code>compile</code>, <code>socket.*</code>, <code>subprocess.Popen</code>.</p>
+<p>Для задач из 10.7 («что делает тестирующая система с моим файлом») самый частотный набор — <code>open</code>, <code>import</code>, <code>exec</code>, <code>compile</code>, <code>socket.*</code>, <code>subprocess.Popen</code>.</p>
 <p><strong>Обработчик «мониторинг + блокировка».</strong> Исключение, поднятое из хука, распространяется <strong>в место вызова аудируемой операции</strong> и срабатывает до её выполнения — так хук превращается из журнала в запретитель:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">BLOCKED</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;os.system&quot;</span><span class="p">,</span> <span class="s2">&quot;subprocess.Popen&quot;</span><span class="p">,</span> <span class="s2">&quot;socket.connect&quot;</span><span class="p">}</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">SUSPICIOUS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;/etc/&quot;</span><span class="p">,</span> <span class="s2">&quot;answers&quot;</span><span class="p">,</span> <span class="s2">&quot;etalone&quot;</span><span class="p">,</span> <span class="s2">&quot;tests/&quot;</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">SUSPICIOUS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;/etc/&quot;</span><span class="p">,</span> <span class="s2">&quot;answers&quot;</span><span class="p">,</span> <span class="s2">&quot;etalon&quot;</span><span class="p">,</span> <span class="s2">&quot;tests/&quot;</span><span class="p">)</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">def</span> <span class="nf">guard</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="c1"># 1) мониторинг: всё интересное — в лог</span>
@@ -1405,7 +1413,7 @@
 </span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">faulthandler</span><span class="o">.</span><span class="n">dump_traceback</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
 </span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
 </span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="c1"># Если есть долгий цикл — можно включить периодический dump</span>
-</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="n">faulthandler</span><span class="o">.</span><span class="n">dump_traceback_later</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># каждые 5 сек</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="n">faulthandler</span><span class="o">.</span><span class="n">dump_traceback_later</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># один раз через 5 сек (для периодики — repeat=True)</span>
 </span></code></pre></div>
 <p>В тестирующей системе с таймаутами (Task timed out) <code>dump_traceback_later</code> выведет в stderr стек всех тредов — видно, на чём зависла программа.</p>
 <h2 id="10.9">10.9. Универсальный «комбайн» для одной попытки<a class="headerlink" href="#10.9" title="Permanent link">#</a></h2>
@@ -1446,11 +1454,11 @@
 <p><strong>1. <code>sys.flags</code> vs <code>os.environ["PYTHON..."]</code> — где искать флаги.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">timeit</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># sys.flags — именованный кортеж, доступ O(1)</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">optimize</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.08 с</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">optimize</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с (зависит от CPU)</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># os.environ[&#39;PYTHONOPTIMIZE&#39;] — словарный lookup + str compare</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PYTHONOPTIMIZE&quot;</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.20 с</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PYTHONOPTIMIZE&quot;</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>  <span class="c1"># ≈ 0.71 с</span>
 </span></code></pre></div>
-<code>sys.flags</code> <strong>в 2.5× быстрее</strong> и даёт уже распарсенные int/bool, а не строки.
+<code>sys.flags</code> <strong>в ~10× быстрее</strong> и даёт уже распарсенные int/bool, а не строки.
 Но <code>os.environ</code> содержит <strong>больше</strong> информации (произвольные <code>PYTHON*</code> переменные),
 а <code>sys.flags</code> — только флаги командной строки <code>python</code>.</p>
 <p><strong>2. Audit hooks (PEP 578) — цена перехвата всех событий.</strong>
@@ -1458,7 +1466,7 @@
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Без hook&#39;а</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">def</span> <span class="nf">no_hook</span><span class="p">():</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">):</span> <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">,</span> <span class="p">{})</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">no_hook</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 0.85 с</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">no_hook</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 4.8 с (зависит от CPU; exec сам по себе дорог)</span>
 </span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># С простым hook&#39;ом</span>
 </span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="n">calls</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">def</span> <span class="nf">hook</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
@@ -1466,7 +1474,7 @@
 </span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="n">sys</span><span class="o">.</span><span class="n">addaudithook</span><span class="p">(</span><span class="n">hook</span><span class="p">)</span>
 </span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="k">def</span> <span class="nf">with_hook</span><span class="p">():</span>
 </span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">):</span> <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">,</span> <span class="p">{})</span>
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">with_hook</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 1.10 с</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">with_hook</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 5.3 с (+11% overhead от простого счётчика)</span>
 </span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="c1"># С hook&#39;ом, который ещё и логирует</span>
 </span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="kn">import</span> <span class="nn">logging</span>
 </span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
@@ -1500,10 +1508,10 @@ Audit hook'и добавляют <strong>~30%</strong> к стоимости <co
 </span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">def</span> <span class="nf">via_resource</span><span class="p">():</span>
 </span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="kn">import</span> <span class="nn">resource</span>
 </span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="k">return</span> <span class="n">resource</span><span class="o">.</span><span class="n">getrusage</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">RUSAGE_SELF</span><span class="p">)</span><span class="o">.</span><span class="n">ru_maxrss</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_proc</span><span class="p">,</span>      <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.10 с</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_resource</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.02 с</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_proc</span><span class="p">,</span>      <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.11 с (зависит от CPU)</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_resource</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.006 с</span>
 </span></code></pre></div>
-<code>resource.getrusage</code> <strong>в 5× быстрее</strong> — один syscall, без чтения файла.
+<code>resource.getrusage</code> <strong>в ~15–20× быстрее</strong> — один syscall, без чтения файла.
 Но <code>/proc/self/status</code> даёт <strong>текущий</strong> RSS, а <code>ru_maxrss</code> — <strong>пиковый</strong> за всё
 время жизни процесса. Для мониторинга утечек берите <code>/proc</code>.</p>
 <p><strong>5. <code>sys._current_frames()</code> vs <code>threading.enumerate()</code>.</strong>
@@ -1512,8 +1520,8 @@ Audit hook'и добавляют <strong>~30%</strong> к стоимости <co
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_current_frames</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">def</span> <span class="nf">via_threading</span><span class="p">():</span>
 </span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">ident</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threading</span><span class="o">.</span><span class="n">enumerate</span><span class="p">()]</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_frames</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.05 с</span>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_threading</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.10 с</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_frames</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.005 с (зависит от CPU)</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_threading</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.011 с</span>
 </span></code></pre></div>
 <code>_current_frames()</code> <strong>в 2× быстрее</strong> и даёт ещё и стек каждого потока —
 бесценно для отладки дедлоков в production. Но он <strong>не возвращает</strong> имена

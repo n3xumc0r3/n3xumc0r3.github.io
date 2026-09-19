@@ -1257,7 +1257,9 @@
 </span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
 </span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>                <span class="k">break</span>   <span class="c1"># выходим из with — gen.aclose() вызовется</span>
-</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="c1"># Выведет: 1, 2, cleanup</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>   <span class="c1"># запуск примера (определён выше, но не вызван)</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="c1"># Выведет: 1, 2, cleanup</span>
 </span></code></pre></div>
 <p><code>aclosing</code> вызывает <code>agen.aclose()</code> при выходе — корректно закрывает async-генератор, что гарантирует выполнение <code>finally</code> блока. Без него генератор может «зависнуть» неочищенным — GC работает синхронно и <strong>не может выполнить <code>await</code></strong> для кода внутри <code>finally</code> асинхронного генератора, что приводит к <code>ResourceWarning: unclosed asynchronous generator</code>.</p>
 <h3 id="2.8-nullcontext"><code>nullcontext</code> (Python 3.7+) — менеджер-заглушка<a class="headerlink" href="#2.8-nullcontext" title="Permanent link">#</a></h3>
@@ -1311,13 +1313,13 @@
 </span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
 </span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="n">use_class</span><span class="p">,</span> <span class="n">use_dec</span><span class="p">,</span> <span class="n">use_suppress</span><span class="p">):</span>
 </span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="c1"># use_class   ≈ 0.55 с  ← быстрее всего: прямые вызовы методов</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># use_dec     ≈ 1.10 с  ← накладные расходы на генератор</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_suppress≈ 0.95 с</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="c1"># use_class   ≈ 0.06 с  ← быстрее всего: прямые вызовы методов (зависит от CPU)</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># use_dec     ≈ 0.21 с  ← накладные расходы на генератор</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_suppress≈ 0.06 с  ← suppress без исключений почти равен классу</span>
 </span></code></pre></div>
-Класс-менеджер <strong>в ~2 раза быстрее</strong> <code>@contextmanager</code>, потому что декоратор
-строит генератор + прокси-обёртку <code>_GeneratorContextManager</code> на каждый вызов.
-На горячих путях (открытие файлов в цикле) — заметно.</p>
+Декоратор <code>@contextmanager</code> <strong>в ~3.5–4 раза медленнее</strong> класса-менеджера, потому что
+строит генератор + прокси-обёртку <code>_GeneratorContextManager</code> на каждый вызов;
+<code>suppress</code> без исключений почти равен классу. На горячих путях (открытие файлов в цикле) — заметно.</p>
 <p><strong>2. Несколько менеджеров в одном <code>with</code> vs вложенные.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Вложенно</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">as</span> <span class="n">fa</span><span class="p">:</span>
@@ -1328,7 +1330,7 @@
 </span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">as</span> <span class="n">fa</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">as</span> <span class="n">fb</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">as</span> <span class="n">fc</span><span class="p">:</span>
 </span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="k">pass</span>
 </span></code></pre></div>
-Байт-код <strong>идентичен</strong> — <code>SETUP_WITH</code> + <code>WITH_CLEANUP</code> повторяются трижды.
+Байт-код <strong>идентичен</strong> (тезис верен — сравните инструкции без CACHE/RESUME). Реальных опкодов SETUP_WITH/WITH_CLEANUP в 3.11+ нет: вход — <code>BEFORE_WITH</code>, выход — вызов <code>__exit__</code> (<code>CALL 2</code>) + <code>WITH_EXCEPT_START</code> в обработчике; они повторяются трижды.
 Разница только в читаемости: одна строка короче, но при длинных именах
 вложенность лучше переносится в IDE.</p>
 <p><strong>3. <code>ExitStack</code> для динамического числа ресурсов.</strong>
@@ -1346,10 +1348,10 @@
 </span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">def</span> <span class="nf">captured</span><span class="p">():</span>
 </span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="k">with</span> <span class="n">redirect_stdout</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()):</span>
 </span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">plain</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.13 с</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">captured</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.30 с</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">plain</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.012 с (зависит от CPU)</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">captured</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.049 с</span>
 </span></code></pre></div>
-Перехват удваивает стоимость <code>print</code>. На горячих путях логирования
+Перехват увеличивает стоимость <code>print</code> примерно в 4 раза. На горячих путях логирования
 лучше использовать <code>logging</code> с фильтром, чем <code>redirect_stdout</code>.</p>
 <p><strong>5. Подавление исключений: <code>suppress</code> vs <code>try/except: pass</code>.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">def</span> <span class="nf">try_except</span><span class="p">():</span>
@@ -1357,10 +1359,10 @@
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="k">pass</span>
 </span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="k">def</span> <span class="nf">use_suppress</span><span class="p">():</span>
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">):</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># try_except  ≈ 0.18 с / 1M вызовов</span>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># use_suppress≈ 0.32 с / 1M вызовов</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># try_except  ≈ 0.046 с / 1M вызовов (зависит от CPU)</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># use_suppress≈ 0.116 с / 1M вызовов</span>
 </span></code></pre></div>
-<code>suppress</code> почти вдвое медленнее из-за накладных расходов на контекстный менеджер.
+<code>suppress</code> в ~2–2.5 раза медленнее из-за накладных расходов на контекстный менеджер.
 Берите его для <strong>читаемости</strong>, а не для скорости.</p>
 
 
