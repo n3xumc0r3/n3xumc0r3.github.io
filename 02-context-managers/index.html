@@ -783,6 +783,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -801,10 +821,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -815,8 +835,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1069,6 +1089,7 @@
 
 
 <h1 id="ii">Часть II. Контекстные менеджеры<a class="headerlink" href="#ii" title="Permanent link">#</a></h1>
+<p>В туториалах <code>with</code> открывает файлы. На самом деле это протокол из двух методов, поверх которого построены блокировки, транзакции, подмена stdout, точечное подавление исключений и стеки завершающих действий. Часть идёт от механики (<code>__enter__</code>/<code>__exit__</code>) через собственные менеджеры к <code>contextlib</code> и его менее известным обитателям — и каждый раз показывает, что происходит при выходе из блока, включая аварийный.</p>
 <h2 id="2.1">2.1. <code>with</code> — внутренности (<code>__enter__</code>/<code>__exit__</code>)<a class="headerlink" href="#2.1" title="Permanent link">#</a></h2>
 <p>Контекстный менеджер — это объект, реализующий протокол из двух методов:</p>
 <ol>

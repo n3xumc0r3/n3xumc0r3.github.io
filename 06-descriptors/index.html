@@ -807,6 +807,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -825,10 +845,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -839,8 +859,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1117,6 +1137,7 @@
 
 
 <h1 id="vi-property">Часть VI. Дескрипторы и property<a class="headerlink" href="#vi-property" title="Permanent link">#</a></h1>
+<p>Дескриптор — это крючок, срабатывающий при обращении к атрибуту класса. На нём стоят <code>property</code>, обычные методы, <code>classmethod</code>/<code>staticmethod</code>, <code>cached_property</code>, ORM-поля и валидация — всё это один и тот же протокол с разными обёртками (6.9 показывает, что «просто метод» — тоже дескриптор). Разбор нужен перед Частью VII: без него метаклассы и <code>__init_subclass__</code> выглядят магией, с ним — сантехникой.</p>
 <h2 id="6.1">6.1. <code>__get__</code>/<code>__set__</code>/<code>__delete__</code> — протокол дескрипторов<a class="headerlink" href="#6.1" title="Permanent link">#</a></h2>
 <p><strong>Дескриптор</strong> — это объект, который реализует один или несколько из методов <code>__get__</code>, <code>__set__</code>, <code>__delete__</code>. Когда такой объект используется как атрибут класса, Python <strong>перехватывает</strong> доступ и вызывает эти методы.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">TypedField</span><span class="p">:</span>

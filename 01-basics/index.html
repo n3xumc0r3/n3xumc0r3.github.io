@@ -1983,6 +1983,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -2001,10 +2021,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2015,8 +2035,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -3469,6 +3489,7 @@
 
 
 <h1 id="i">Часть I. Базовые скрытые особенности языка<a class="headerlink" href="#i" title="Permanent link">#</a></h1>
+<p>Эта часть — про мелочи, которые выглядят как опечатки или магия, а являются документированными фичами: усечённые числовые литералы, неявное склеивание строковых литералов, <code>else</code> у циклов, моржовый оператор, цепочки сравнений, пасхалки. Каждый раздел — минимальный пример плюс объяснение того, что при этом делает интерпретатор. Заучивать ничего не нужно — но, встретив такое в чужом коде, ты больше не примешь это за баг.</p>
 <h2 id="1.1">1.1. Числовые литералы: <code>.9</code>, <code>1.</code>, underscores, hex/oct/bin, экспонента <code>1e3</code>, комплексные <code>1j</code><a class="headerlink" href="#1.1" title="Permanent link">#</a></h2>
 <p>В Python валидны «усечённые» записи float — без ведущего нуля или без дробной части:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">.9</span>

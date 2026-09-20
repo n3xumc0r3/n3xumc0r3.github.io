@@ -524,6 +524,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xvii-c-c-api-python-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XVII. C-расширения и C API: из Python в C и обратно
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -889,6 +898,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -907,10 +936,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -921,8 +950,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1236,6 +1265,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#xvii-c-c-api-python-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Часть XVII. C-расширения и C API: из Python в C и обратно
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       Приложения
@@ -1291,7 +1329,7 @@
 <h2 id="_1">Для кого<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
 <p>Для разработчиков, которые уже пишут на Python и хотят понимать, что происходит под капотом. Не учебник для новичков — предполагается, что вы знаете базовый синтаксис, разбираетесь в классах и хотя бы раз запускали <code>asyncio</code>. Книга будет полезна тем, кто готовится к сложным собеседованиям, пишет библиотеки и фреймворки, занимается оптимизацией или просто хочет выйти за рамки «написал код — заработало». Часть VIII (internals CPython) и приложения A–B полезны преподавателям, ревьюерам и авторам проверяющих систем.</p>
 <h2 id="_2">Объём<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>~21 500 строк, ~1.2 МБ исходника. 16 частей и 4 приложения, 202 раздела с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
+<p>~22 600 строк, ~1.3 МБ исходника. 17 частей и 4 приложения, 213 разделов с собственным якорем <code>#N.M</code>. Все примеры проверены на CPython 3.12+. Книга в активной доработке — возможны опечатки и неточности, если нашли — открывайте issue или PR. Сайт подключён к IndexNow для мгновенной индексации изменений в Bing и Yandex.</p>
 <h2 id="_3">Лицензия<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>Текст — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, код в примерах — <a href="https://github.com/n3xumc0r3/py-underhood/blob/main/CODE_LICENSE">MIT</a>. Бесплатно для чтения и некоммерческого использования. Внести правку можно через PR — <a href="https://github.com/n3xumc0r3/py-underhood/pulls">создайте его прямо на GitHub</a>, открыв любой файл в <code>book/</code> и нажав «Edit».</p>
 <h2 id="_4">Структура по сложности<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
@@ -1311,6 +1349,7 @@
 <p><a href="14-implementations/">Часть XIV</a> — не только CPython: реализации и REPL-ы</p>
 <p><a href="15-testing/">Часть XV</a> — тестирование: assert, unittest, mock, doctest, pytest, coverage, sys.monitoring</p>
 <p><a href="16-import/">Часть XVI</a> — механика импорта: finders, spec, namespace-пакеты, хуки</p>
+<p><a href="17-c-api/">Часть XVII</a> — C-расширения и C API: ctypes, cffi, PyObject, свой модуль и тип, GIL, встраивание</p>
 <p><a href="appendix-a-plagiarism/">Приложение A</a> — системы обнаружения плагиата</p>
 <p><a href="appendix-b-code-checkers/">Приложение B</a> — взаимодействие с системами проверки кода</p>
 <p><a href="appendix-c-code-golf/">Приложение C</a> — code golf</p>
@@ -1582,6 +1621,21 @@
 <li><a href="16-import/#16.9">16.9. Особые виды модулей: builtin, frozen, extension, zipimport</a></li>
 <li><a href="16-import/#16.10">16.10. Кастомные импорт-хуки: от логгера до блокировщика</a></li>
 <li><a href="16-import/#16.11">16.11. Диагностика старта: <code>-X importtime</code></a></li>
+</ul>
+<h3 id="xvii-c-c-api-python-c">Часть XVII. C-расширения и C API: из Python в C и обратно<a class="headerlink" href="#xvii-c-c-api-python-c" title="Permanent link">#</a></h3>
+<p><a href="17-c-api/">Открыть часть →</a></p>
+<ul>
+<li><a href="17-c-api/#17.1">17.1. Три пути в C: ctypes, cffi, C API</a></li>
+<li><a href="17-c-api/#17.2">17.2. <code>ctypes</code> — C без компиляции</a></li>
+<li><a href="17-c-api/#17.3">17.3. <code>cffi</code> — объявления вместо прототипов</a></li>
+<li><a href="17-c-api/#17.4">17.4. <code>PyObject</code> и подсчёт ссылок</a></li>
+<li><a href="17-c-api/#17.5">17.5. Свой модуль на C API</a></li>
+<li><a href="17-c-api/#17.6">17.6. Свой тип из C API</a></li>
+<li><a href="17-c-api/#17.7">17.7. Ошибки и исключения из C</a></li>
+<li><a href="17-c-api/#17.8">17.8. GIL из C-кода</a></li>
+<li><a href="17-c-api/#17.9">17.9. Stable ABI и сборки без GIL</a></li>
+<li><a href="17-c-api/#17.10">17.10. Встраивание интерпретатора в C</a></li>
+<li><a href="17-c-api/#17.11">17.11. Отладка C-расширений</a></li>
 </ul>
 <h3 id="_6">Приложения<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <ul>

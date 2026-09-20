@@ -1005,6 +1005,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -1023,10 +1043,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1037,8 +1057,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1513,6 +1533,7 @@
 
 
 <h1 id="iv">Часть IV. Асинхронность<a class="headerlink" href="#iv" title="Permanent link">#</a></h1>
+<p><code>async def</code> выглядит как обычная функция с лишним ключевым словом, но под капотом это генератор (Часть III) плюс цикл событий — один поток, который гоняет тысячи задач по очереди, пока те ждут I/O. Часть разбирает event loop руками (4.1), потом API asyncio — от <code>run</code> и <code>gather</code> до <code>TaskGroup</code>, отмен и таймаутов — и заканчивает выбором между threads, asyncio и multiprocessing (4.11), включая debug-режим asyncio (4.3).</p>
 <h2 id="4.1">4.1. Что такое event loop<a class="headerlink" href="#4.1" title="Permanent link">#</a></h2>
 <p><strong>Event loop (цикл событий)</strong> — это единый поток, который:</p>
 <ol>

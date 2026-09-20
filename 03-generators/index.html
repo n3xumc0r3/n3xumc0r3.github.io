@@ -900,6 +900,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -918,10 +938,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -932,8 +952,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -1303,6 +1323,7 @@
 
 
 <h1 id="iii">Часть III. Генераторы и итераторы<a class="headerlink" href="#iii" title="Permanent link">#</a></h1>
+<p>Генератор — это функция, исполнение которой ставится на паузу с сохранением всего фрейма. Из этого одного факта следует всё остальное: ленивость, конвейеры с нулевой памятью, <code>send</code>/<code>throw</code>/<code>close</code>, делегирование через <code>yield from</code> — и, в конечном счёте, <code>async/await</code> (Часть IV), который компилируется в те же механизмы (4.2). Здесь — генераторы как таковые, плюс итераторный инструментарий <code>itertools</code>/<code>collections</code>, которым они питаются.</p>
 <h2 id="3.1">3.1. <code>yield</code>, <code>next</code>, <code>StopIteration</code><a class="headerlink" href="#3.1" title="Permanent link">#</a></h2>
 <p>Функция с <code>yield</code> вместо <code>return</code> — это <strong>генератор</strong>. Она возвращает не значение, а итератор.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">generate_numbers</span><span class="p">():</span>

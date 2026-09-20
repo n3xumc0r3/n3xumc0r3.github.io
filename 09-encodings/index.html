@@ -738,6 +738,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -756,10 +776,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -770,8 +790,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -979,10 +999,11 @@
 
 
 <h1 id="ix">Часть IX. Кодировки и кодеки<a class="headerlink" href="#ix" title="Permanent link">#</a></h1>
-<h2 id="9.1">9.1. PEP 263: <code># -*- coding: ... -*-</code><a class="headerlink" href="#9.1" title="Permanent link">#</a></h2>
+<p>Снаружи Python 3 прост: весь текст — Unicode-<code>str</code>, а байты живут отдельно. Под капотом — директивы парсера, таблица кодеков, <code>search_function</code> и системные настройки, из-за которых один и тот же скрипт на разных машинах ведёт себя по-разному. Часть идёт от PEP 263 через собственный кодек (9.5) к механике поиска кодеков в <code>encodings/__init__.py</code> (9.6).</p>
 <blockquote>
 <p><strong>→ см. также:</strong> Часть X (10.1–10.3) — <code>sys.flags.utf8_mode</code>, <code>-X utf8</code>, <code>PYTHONUTF8</code> как глобальные переключатели кодировки.</p>
 </blockquote>
+<h2 id="9.1">9.1. PEP 263: <code># -*- coding: ... -*-</code><a class="headerlink" href="#9.1" title="Permanent link">#</a></h2>
 <p>Жёсткая директива для парсера CPython. Когда Python открывает файл, он читает первые две строки и ищет регулярное выражение <code>coding[:=]\s*([-\w.]+)</code>. Если находит — пропускает весь оставшийся текст файла через этот кодек.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># -*- coding: utf-8 -*-</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># coding: cp1251</span>
