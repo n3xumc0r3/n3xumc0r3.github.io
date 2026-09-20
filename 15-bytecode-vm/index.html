@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/13-bytecode-vm/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/15-bytecode-vm/">
       
       
-        <link rel="prev" href="../12-linters/">
+        <link rel="prev" href="../14-packaging/">
       
       
-        <link rel="next" href="../14-implementations/">
+        <link rel="next" href="../16-import/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>Часть XIII. От .py к байт-коду: компиляция и виртуальная машина - Python под капотом</title>
+        <title>Часть XV. От .py к байт-коду: компиляция и виртуальная машина - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="Часть XIII. От .py к байт-коду: компиляция и виртуальная машина — Python под капотом">
+  <meta property="og:title" content="Часть XV. От .py к байт-коду: компиляция и виртуальная машина — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/13-bytecode-vm/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/15-bytecode-vm/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Часть XIII. От .py к байт-коду: компиляция и виртуальная машина — Python под капотом">
+  <meta name="twitter:title" content="Часть XV. От .py к байт-коду: компиляция и виртуальная машина — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#xiii-py-" class="md-skip">
+        <a href="#xv-py-" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+              Часть XV. От .py к байт-коду: компиляция и виртуальная машина
             
           </span>
         </div>
@@ -547,6 +547,46 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIII. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-packaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Упаковка: от исходников до PyPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -563,7 +603,7 @@
           
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -574,7 +614,7 @@
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -596,55 +636,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#13.1" class="md-nav__link">
+  <a href="#15.1" class="md-nav__link">
     <span class="md-ellipsis">
-      13.1. Почему Python и компилируется, и интерпретируется
+      15.1. Почему Python и компилируется, и интерпретируется
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.2" class="md-nav__link">
+  <a href="#15.2" class="md-nav__link">
     <span class="md-ellipsis">
-      13.2. Импорт и .pyc: формат, кэширование, инвалидация
+      15.2. Импорт и .pyc: формат, кэширование, инвалидация
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.3" class="md-nav__link">
+  <a href="#15.3" class="md-nav__link">
     <span class="md-ellipsis">
-      13.3. Пайплайн компилятора: токены → PEG → AST → байт-код
+      15.3. Пайплайн компилятора: токены → PEG → AST → байт-код
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.4" class="md-nav__link">
+  <a href="#15.4" class="md-nav__link">
     <span class="md-ellipsis">
-      13.4. Стековая машина: как читается байт-код
+      15.4. Стековая машина: как читается байт-код
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.5" class="md-nav__link">
+  <a href="#15.5" class="md-nav__link">
     <span class="md-ellipsis">
-      13.5. Виртуальная машина: eval loop, специализация, GIL, JIT
+      15.5. Виртуальная машина: eval loop, специализация, GIL, JIT
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="13.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
+    <nav class="md-nav" aria-label="15.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#13.5-benchmarki" class="md-nav__link">
+  <a href="#15.5-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XIII
+      Бенчмарки к Части XV
     </span>
   </a>
   
@@ -659,46 +699,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -730,11 +730,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+      <a href="../17-implementations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
@@ -750,11 +750,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -926,55 +926,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#13.1" class="md-nav__link">
+  <a href="#15.1" class="md-nav__link">
     <span class="md-ellipsis">
-      13.1. Почему Python и компилируется, и интерпретируется
+      15.1. Почему Python и компилируется, и интерпретируется
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.2" class="md-nav__link">
+  <a href="#15.2" class="md-nav__link">
     <span class="md-ellipsis">
-      13.2. Импорт и .pyc: формат, кэширование, инвалидация
+      15.2. Импорт и .pyc: формат, кэширование, инвалидация
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.3" class="md-nav__link">
+  <a href="#15.3" class="md-nav__link">
     <span class="md-ellipsis">
-      13.3. Пайплайн компилятора: токены → PEG → AST → байт-код
+      15.3. Пайплайн компилятора: токены → PEG → AST → байт-код
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.4" class="md-nav__link">
+  <a href="#15.4" class="md-nav__link">
     <span class="md-ellipsis">
-      13.4. Стековая машина: как читается байт-код
+      15.4. Стековая машина: как читается байт-код
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#13.5" class="md-nav__link">
+  <a href="#15.5" class="md-nav__link">
     <span class="md-ellipsis">
-      13.5. Виртуальная машина: eval loop, специализация, GIL, JIT
+      15.5. Виртуальная машина: eval loop, специализация, GIL, JIT
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="13.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
+    <nav class="md-nav" aria-label="15.5. Виртуальная машина: eval loop, специализация, GIL, JIT">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#13.5-benchmarki" class="md-nav__link">
+  <a href="#15.5-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XIII
+      Бенчмарки к Части XV
     </span>
   </a>
   
@@ -1000,14 +1000,14 @@
                   
 
 
-<h1 id="xiii-py-">Часть XIII. От .py к байт-коду: компиляция и виртуальная машина<a class="headerlink" href="#xiii-py-" title="Permanent link">#</a></h1>
+<h1 id="xv-py-">Часть XV. От .py к байт-коду: компиляция и виртуальная машина<a class="headerlink" href="#xv-py-" title="Permanent link">#</a></h1>
 <p>Часть VIII показывала внутренности CPython через готовые объекты: фреймы (8.4), <code>__code__</code> (8.7), <code>dis</code> как дизассемблер (8.9). Здесь — два недостающих этажа ниже и выше: <strong>как исходник становится байт-кодом</strong> (пайплайн компилятора и формат <code>.pyc</code>) и <strong>что исполняет этот байт-код</strong> (виртуальная машина, её специализации и GIL). Все примеры проверены на CPython 3.12; там, где поведение зависит от версии, это оговорено.</p>
-<h2 id="13.1">13.1. Почему Python и компилируется, и интерпретируется<a class="headerlink" href="#13.1" title="Permanent link">#</a></h2>
-<p>Вопрос «Python — компилируемый или интерпретируемый язык?» построен на ложной дихотомии. Компиляция — свойство <strong>трансляции</strong>: исходник переводится в другое представление. Интерпретация — свойство <strong>исполнения</strong>: кто выполняет это представление. CPython делает и то, и другое: сначала компилирует исходник в байт-код, затем интерпретирует байт-код в цикле виртуальной машины (13.5). Java устроена так же; C компилирует в машинный код, который исполняет уже процессор; у bash стадия компиляции вырождена — интерпретатор ходит по исходнику почти напрямую.</p>
+<h2 id="15.1">15.1. Почему Python и компилируется, и интерпретируется<a class="headerlink" href="#15.1" title="Permanent link">#</a></h2>
+<p>Вопрос «Python — компилируемый или интерпретируемый язык?» построен на ложной дихотомии. Компиляция — свойство <strong>трансляции</strong>: исходник переводится в другое представление. Интерпретация — свойство <strong>исполнения</strong>: кто выполняет это представление. CPython делает и то, и другое: сначала компилирует исходник в байт-код, затем интерпретирует байт-код в цикле виртуальной машины (15.5). Java устроена так же; C компилирует в машинный код, который исполняет уже процессор; у bash стадия компиляции вырождена — интерпретатор ходит по исходнику почти напрямую.</p>
 <p>Почему не компилировать сразу в машинный код, как C? Потому что в Python ключевая информация известна только в рантайме. Для <code>x * 2</code> нельзя выбрать машинную инструкцию умножения: <code>x</code> может быть int, float, str, списком, объектом с <code>__mul__</code> — и ещё измениться до исполнения. Имена и атрибуты разрешаются в момент обращения, код может появляться во время работы программы (<code>exec</code>, <code>input</code> → <code>eval</code>, интерактивная сессия). Статическая компиляция либо потеряла бы часть семантики языка, либо превратила бы каждый оператор в пачку типовых проверок — что, впрочем, и происходит дальше в этой части: только проверки эти <strong>рантайм-наблюдаемые</strong>, а не зафиксированные при компиляции.</p>
 <p>Компиляция происходит не один раз и не в одном месте:</p>
 <ul>
-<li><strong>при <code>import</code> модуля</strong> — и результат кэшируется в <code>.pyc</code> (13.2);</li>
+<li><strong>при <code>import</code> модуля</strong> — и результат кэшируется в <code>.pyc</code> (15.2);</li>
 <li><strong>при запуске скрипта</strong> — компилируется весь файл целиком, до исполнения первой строки;</li>
 <li><strong>в REPL и в <code>exec</code>/<code>eval</code></strong> — компилируется каждый введённый блок.</li>
 </ul>
@@ -1023,8 +1023,8 @@
 </span></code></pre></div>
 <p><code>print</code> стоит выше ошибки, но «первая строка» не успела выполниться: скрипт компилируется целиком, и <code>SyntaxError</code> поднимается раньше, чем интерпретатор приступил к исполнению. (В REPL всё иначе — каждый блок компилируется отдельно, поэтому ранее введённые строки уже исполнены.)</p>
 <p>Миф о <code>.pyc</code>, который стоит развеять сразу: наличие файла байт-кода <strong>не ускоряет исполнение кода</strong>. Экономится только парсинг и компиляция при импорте — один проход на процесс, а не на каждую инструкцию. И <code>.pyc</code> — не защита кода: байт-код читается <code>dis</code> (8.9) едва ли не лучше исходника.</p>
-<p>Наконец, байт-код — промежуточное представление (IR): компактное и переносимое между машинами одной архитектуры, но <strong>не между версиями Python</strong> — набор опкодов меняется от версии к версии, и именно это фиксирует magic number в заголовке <code>.pyc</code> (13.2).</p>
-<h2 id="13.2">13.2. Импорт и .pyc: формат, кэширование, инвалидация<a class="headerlink" href="#13.2" title="Permanent link">#</a></h2>
+<p>Наконец, байт-код — промежуточное представление (IR): компактное и переносимое между машинами одной архитектуры, но <strong>не между версиями Python</strong> — набор опкодов меняется от версии к версии, и именно это фиксирует magic number в заголовке <code>.pyc</code> (15.2).</p>
+<h2 id="15.2">15.2. Импорт и .pyc: формат, кэширование, инвалидация<a class="headerlink" href="#15.2" title="Permanent link">#</a></h2>
 <p>При <code>import demo_mod</code> конвейер выглядит так: механизмы импорта находят модуль (finders), <code>SourceFileLoader</code> читает исходник, компилирует его <code>compile()</code> и исполняет в отдельном пространстве имён; результат кэшируется в <code>sys.modules</code> — второй <code>import</code> того же модуля уже ничего не читает и не исполняет. Компиляция — дорогая часть конвейера, и ради неё кэш: рядом с исходником появляется <code>__pycache__</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># в каталоге модуля после первого import:</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># __pycache__/demo_mod.cpython-312.pyc</span>
@@ -1074,7 +1074,7 @@
 </span></code></pre></div>
 <p><code>checked_hash</code> проверяет хеш при каждом импорте; <code>unchecked_hash</code> верит файлу на слово — быстрее, но кэш никогда не инвалидируется сам. Режим проверки при старте переключается флагом <code>--check-hash-based-pycs always|default|never</code>: <code>always</code> — валидировать все hash-pyc, <code>never</code> — доверять всем без чтения исходника, <code>default</code> — по бит-полю (<code>checked_hash</code> проверяет, <code>unchecked_hash</code> — нет). Сам хеш — blake2b от содержимого исходника с ключом из <code>PYTHONHASHSEED</code> (PEP 552). Разовые утилиты: <code>py_compile.compile()</code> для одного файла, <code>compileall</code> — для дерева каталогов. Окружение тоже влияет: <code>PYTHONDONTWRITEBYTECODE</code> (или <code>sys.flags.dont_write_bytecode</code>) запрещает создавать pyc вообще, <code>PYTHONPYCACHEPREFIX</code> уводит весь кэш в один общий каталог — удобно для деревьев исходников на read-only ФС.</p>
 <p>Две детали, о которых часто не догадываются. Первая: <strong>main-скрипт не кэшируется</strong> — запустите скрипт, импортирующий модуль, и загляните в <code>__pycache__</code>: там лежит pyc только модуля. Скрипт компилируется на каждом запуске; экономить нечего — он исполняется один раз за процесс. Вторая: декомпиляция pyc — это не симметричная операция. Инструменты (uncompyle6, decompyle3) полноценно работают примерно до 3.8; на актуальных версиях байт-код усложнился (специализации, кэши, таблицы исключений), и декомпиляторы отстают. «Отдам только pyc» сегодня защищает лучше, чем пять лет назад, — но байт-код всё равно читается вручную через <code>dis</code>, так что стратегией защиты кода это называть нельзя.</p>
-<h2 id="13.3">13.3. Пайплайн компилятора: токены → PEG → AST → байт-код<a class="headerlink" href="#13.3" title="Permanent link">#</a></h2>
+<h2 id="15.3">15.3. Пайплайн компилятора: токены → PEG → AST → байт-код<a class="headerlink" href="#15.3" title="Permanent link">#</a></h2>
 <p>Между исходником и байт-кодом — четыре станции. Токенизатор режет текст на лексемы (учитывая кодировочную декларацию, 9.1). Парсер строит дерево. Компилятор обходит дерево, составляет таблицу символов (кто local, кто free, кто global — именно здесь рождаются cell-объекты замыканий, 8.3) и генерирует байт-код в виде CFG — графа базовых блоков, который превращается в линейный поток инструкций плюс таблицы исключений.</p>
 <p>С версии 3.9 парсер — PEG (PEP 617): грамматика языка описана в PEG-нотации в <code>Grammar/python.gram</code>, а прежний LL(1)-парсер с его «хаками» (токен-буфер, специальные случаи в лексере) отправлен на пенсию. Практическое следствие: у PEG-парсера нет ограничений LL(1), и грамматику стало проще расширять — часть новых синтаксисов (pattern matching) обязана этому удобству.</p>
 <p>Официальное окно в дерево — модуль <code>ast</code>:</p>
@@ -1111,7 +1111,7 @@
 </span></code></pre></div>
 <p>Попутно PEP 657 научил трейсбеки показывать точный фрагмент выражения, а не целую строку — разметка для этого тоже живёт в таблицах.</p>
 <p>Публичный вход во весь пайплайн — функция <code>compile(source, filename, mode)</code>: режимы <code>exec</code> (набор инструкций), <code>eval</code> (одно выражение), <code>single</code> (REPL-блок с печатью результата). Готовый code object исполняется <code>exec</code>-ом многократно дешевле, чем повторный <code>compile</code> строки — в цикле разница видна на микробенчмарках. И <code>compile</code> — дешёвый «линкер-проверка»: он ловит <code>SyntaxError</code> до исполнения, не запуская ни одной строки кода.</p>
-<h2 id="13.4">13.4. Стековая машина: как читается байт-код<a class="headerlink" href="#13.4" title="Permanent link">#</a></h2>
+<h2 id="15.4">15.4. Стековая машина: как читается байт-код<a class="headerlink" href="#15.4" title="Permanent link">#</a></h2>
 <p>Байт-код CPython — <strong>wordcode</strong> (с 3.6): каждая инструкция — чётное число байтов, минимум два: байт opcode и байт oparg. Безоперандные инструкции oparg игнорируют. Разбор начнём с простой функции:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">2</span>
@@ -1177,7 +1177,7 @@
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">#  7a 05 — BINARY_OP *;  00 00 — кэш-слово;  64 01 — LOAD_CONST 2;</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1">#  7a 00 — BINARY_OP +;  00 00 — кэш-слово;  53 00 — RETURN_VALUE</span>
 </span></code></pre></div>
-<p>18 байтов на шесть «настоящих» инструкций: с 3.11 поток байт-кода вперемешку с <strong>кэш-словами</strong> — нулевыми заполнителями, которые VM после прогрева записывает данными для быстрой инструкции (13.5). В свежескомпилированном <code>co_code</code> они нули.</p>
+<p>18 байтов на шесть «настоящих» инструкций: с 3.11 поток байт-кода вперемешку с <strong>кэш-словами</strong> — нулевыми заполнителями, которые VM после прогрева записывает данными для быстрой инструкции (15.5). В свежескомпилированном <code>co_code</code> они нули.</p>
 <p>Микро-деталь из дизассемблера: <code>RETURN_CONST</code> (3.12+) — возврат константы одним опкодом вместо пары <code>LOAD_CONST</code> + <code>RETURN_VALUE</code>. На таком уровне язык байт-кода продолжает чиниться от версии к версии — ещё одна причина, почему magic number строгий.</p>
 <p>Генераторы выглядят в байт-коде заметно иначе (механика генераторов — Часть III):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span> <span class="nf">g</span><span class="p">():</span>
@@ -1199,11 +1199,11 @@
 </span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>ExceptionTable:
 </span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>  4 to 14 -&gt; 16 [0] lasti
 </span></code></pre></div>
-<p>Первые же инструкции объясняют, почему вызов <code>g()</code> не исполняет тело: <code>RETURN_GENERATOR</code> возвращает генератор-объект <strong>до</strong> входа в тело функции. <code>RESUME</code> — точка, с которой VM продолжает исполнение после каждого <code>yield</code> (аргумент отличает первичный вход от возобновления). Хвост с <code>CALL_INTRINSIC_1 (INTRINSIC_STOPITERATION_ERROR)</code> — разметка для случая, когда генератор завершается <code>return</code>: обычный <code>StopIteration</code> надо превратить в ошибку «generator raised StopIteration» (PEP 479). А блок <code>ExceptionTable:</code> внизу — та самая таблица исключений из 13.3, здесь она размечает, куда идти при ошибке внутри <code>yield</code>.</p>
-<h2 id="13.5">13.5. Виртуальная машина: eval loop, специализация, GIL, JIT<a class="headerlink" href="#13.5" title="Permanent link">#</a></h2>
+<p>Первые же инструкции объясняют, почему вызов <code>g()</code> не исполняет тело: <code>RETURN_GENERATOR</code> возвращает генератор-объект <strong>до</strong> входа в тело функции. <code>RESUME</code> — точка, с которой VM продолжает исполнение после каждого <code>yield</code> (аргумент отличает первичный вход от возобновления). Хвост с <code>CALL_INTRINSIC_1 (INTRINSIC_STOPITERATION_ERROR)</code> — разметка для случая, когда генератор завершается <code>return</code>: обычный <code>StopIteration</code> надо превратить в ошибку «generator raised StopIteration» (PEP 479). А блок <code>ExceptionTable:</code> внизу — та самая таблица исключений из 15.3, здесь она размечает, куда идти при ошибке внутри <code>yield</code>.</p>
+<h2 id="15.5">15.5. Виртуальная машина: eval loop, специализация, GIL, JIT<a class="headerlink" href="#15.5" title="Permanent link">#</a></h2>
 <p>Исполнением байт-кода занимается eval loop — вечный цикл в <code>Python/ceval.c</code>: прочитать инструкцию, декодировать, исполнить в гигантском <code>switch</code>, повторить. Стек фреймов (8.4) задаёт контекст — локальные переменные, стек операндов, точку возврата; сам цикл общий для всего потока. Это и есть «виртуальная машина»: программная машина с собственным набором инструкций, исполняемая поверх реальной.</p>
 <p>С 3.11 этот цикл стал <strong>адаптивно специализирующимся</strong> (PEP 659). Идея: пока типы неизвестны — исполнять универсальную инструкцию, но считать её исполнения; после прогрева VM смотрит, какие типы ходили через инструкцию, и <strong>заменяет</strong> её в потоке байт-кода на специализированный вариант. То, что вычисляет <code>f(2, 3)</code> после тридцати вызовов с int:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">adaptive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># тот же f из 13.4, после прогрева int&#39;ами</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">adaptive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># тот же f из 15.4, после прогрева int&#39;ами</span>
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>  1           0 RESUME                   0
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
@@ -1215,7 +1215,7 @@
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>             16 RETURN_VALUE
 </span></code></pre></div>
 <p><code>BINARY_OP</code> превратился в <code>BINARY_OP_MULTIPLY_INT</code> — без проверки типов и без диспетчеризации через protocol; соседние <code>LOAD_FAST</code> склеились в суперинструкцию <code>LOAD_FAST__LOAD_FAST</code>. Опкод в потоке байт-кода — то есть в самом code object — <strong>физически заменён</strong>. Если через инструкцию пойдут другие типы, специализация провалится и вернёт универсальный вариант (deopt).</p>
-<p>Для атрибутов и операций, чья скорость зависит не только от типа, но и от истории объекта, специализация работает в паре с <strong>инлайновыми кэшами</strong> — теми самыми кэш-словами из 13.4:</p>
+<p>Для атрибутов и операций, чья скорость зависит не только от типа, но и от истории объекта, специализация работает в паре с <strong>инлайновыми кэшами</strong> — теми самыми кэш-словами из 15.4:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">class</span> <span class="nc">P</span><span class="p">:</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1247,7 +1247,7 @@
 <p>Ускорение этой линейки — измеримое: 3.11 даёт в среднем порядка 1.25× на стандартном наборе бенчмарков против 3.10, часть этой работы — специализации. Следующий шаг — JIT (PEP 744, с 3.13): экспериментальный, copy-and-patch, включается при сборке интерпретатора; «горячий» код после всех специализаций компилируется в машинный код. Статус на текущую версию — в whatsnew конкретного релиза: эта часть книги про 3.12, где JIT ещё нет, а специализации — главный движок скорости.</p>
 <p>Про <strong>GIL</strong> в этих терминах: глобальная блокировка интерпретатора — это «один eval loop на процесс», то есть байт-код одного потока исполняется в каждый момент только одним потоком. Потоки переключаются не по тикам счётчика инструкций, а по времени: раз в <code>sys.getswitchinterval()</code> секунд (по умолчанию 0.005) активный поток сдаёт GIL. Свободная от GIL сборка (PEP 703, экспериментальная с 3.13) — это буквально сборка интерпретатора, где циклов столько, сколько потоков, а синхронизация переехала внутрь объектов; плата — overhead на счётчиках ссылок и требование, чтобы C-расширения были к этому готовы.</p>
 <p>Заглянуть в живую машину можно из Python: <code>sys.settrace</code>/<code>sys.setprofile</code> (отладчики и профайлеры сидят именно на этих крючках, поднимаемых между инструкциями) и audit hooks (10.7) — события уровня C API, независимо от того, какой опкод их породил.</p>
-<h3 id="13.5-benchmarki">Бенчмарки к Части XIII<a class="headerlink" href="#13.5-benchmarki" title="Permanent link">#</a></h3>
+<h3 id="15.5-benchmarki">Бенчмарки к Части XV<a class="headerlink" href="#15.5-benchmarki" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># exec строки vs code object в цикле (CPython 3.12):</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;x = 1 + 2&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;bench&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
@@ -1262,7 +1262,7 @@
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># с готовым pyc:        ≈ 16.5 мс / 50 импортов</span>
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># pyc удалён (recompile): ≈ 301 мс / 50 импортов — ~95% стоимости импорта — это компиляция</span>
 </span></code></pre></div>
-Это второй срез того же мифа из 13.1: pyc ускоряет <strong>импорт</strong> в разы — и не ускоряет исполнение ни на сколько. Стоимость hash-проверки (CHECKED_HASH против timestamp из 13.2) на этом фоне неразличима: 3.30 против 3.34 мс на 20 импортов — PEP 552 не делает импорт заметно дороже.</p>
+Это второй срез того же мифа из 15.1: pyc ускоряет <strong>импорт</strong> в разы — и не ускоряет исполнение ни на сколько. Стоимость hash-проверки (CHECKED_HASH против timestamp из 15.2) на этом фоне неразличима: 3.30 против 3.34 мс на 20 импортов — PEP 552 не делает импорт заметно дороже.</p>
 
 
 

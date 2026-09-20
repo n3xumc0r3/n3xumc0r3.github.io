@@ -686,11 +686,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
+      <a href="../13-testing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -706,11 +706,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
+      <a href="../14-packaging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
+    Часть XIV. Упаковка: от исходников до PyPI
   </span>
   
 
@@ -726,11 +726,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -766,11 +766,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+      <a href="../17-implementations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
@@ -786,11 +786,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -1073,7 +1073,7 @@
 
 
 <h1 id="x">Часть X. Интроспекция окружения<a class="headerlink" href="#x" title="Permanent link">#</a></h1>
-<p>Эта часть — про то, как узнать, <strong>как именно</strong> запущен интерпретатор и что происходит в процессе: <code>sys.flags</code> и <code>sys._xoptions</code> (10.1–10.2), <code>PYTHON*</code>-переменные (10.3), лимиты ресурсов и <code>/proc</code> (10.5–10.6), audit hooks (10.7) и faulthandler (10.8). Отсюда же растут CLI-темы 11.31 и диагностические режимы Части XV.</p>
+<p>Эта часть — про то, как узнать, <strong>как именно</strong> запущен интерпретатор и что происходит в процессе: <code>sys.flags</code> и <code>sys._xoptions</code> (10.1–10.2), <code>PYTHON*</code>-переменные (10.3), лимиты ресурсов и <code>/proc</code> (10.5–10.6), audit hooks (10.7) и faulthandler (10.8). Отсюда же растут CLI-темы 11.32 и диагностические режимы Части XIII.</p>
 <h2 id="10.1">10.1. <code>sys.flags</code> — флаги командной строки Python<a class="headerlink" href="#10.1" title="Permanent link">#</a></h2>
 <p><code>sys.flags</code> — именованный кортеж с полным набором флагов <code>python</code>. Самый точный способ узнать, <strong>как именно Python был запущен</strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">sys</span>
@@ -1286,7 +1286,7 @@
 <li><code>PYTHON_CPU_COUNT</code> — эквивалент <code>-X cpu_count=N</code>: подмена <code>os.cpu_count()</code>.</li>
 <li><code>PYTHON_HISTORY</code> — путь к файлу истории REPL (по умолчанию <code>~/.python_history</code>).</li>
 <li><code>PYTHON_COLORS</code> — управление цветами сообщений/трейсбеков (авто/always/never).</li>
-<li><code>PYTHON_BASIC_REPL</code> — <code>1</code> возвращает до-3.13 REPL без <code>_pyrepl</code> (см. 14.4).</li>
+<li><code>PYTHON_BASIC_REPL</code> — <code>1</code> возвращает до-3.13 REPL без <code>_pyrepl</code> (см. 17.4).</li>
 <li><code>PYTHON_PRESITE</code> — эквивалент <code>-X presite=package.module</code>.</li>
 <li><code>PYTHON_JIT</code> — 0/1 для экспериментального JIT (работает только если интерпретатор собран с <code>--enable-experimental-jit</code>).</li>
 <li><code>PYTHON_TLBC</code> — счётчики tier-2 байт-кода (микро-телеметрия специализированных инструкций, 3.14+).</li>

@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/15-testing/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/13-testing/">
       
       
-        <link rel="prev" href="../14-implementations/">
+        <link rel="prev" href="../12-linters/">
       
       
-        <link rel="next" href="../16-import/">
+        <link rel="next" href="../14-packaging/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>Часть XV. Тестирование: от assert до тестов самого CPython - Python под капотом</title>
+        <title>Часть XIII. Тестирование: от assert до тестов самого CPython - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="Часть XV. Тестирование: от assert до тестов самого CPython — Python под капотом">
+  <meta property="og:title" content="Часть XIII. Тестирование: от assert до тестов самого CPython — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/15-testing/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/13-testing/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Часть XV. Тестирование: от assert до тестов самого CPython — Python под капотом">
+  <meta name="twitter:title" content="Часть XIII. Тестирование: от assert до тестов самого CPython — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#xv-assert-cpython" class="md-skip">
+        <a href="#xiii-assert-cpython" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Часть XV. Тестирование: от assert до тестов самого CPython
+              Часть XIII. Тестирование: от assert до тестов самого CPython
             
           </span>
         </div>
@@ -547,46 +547,6 @@
       
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -603,7 +563,7 @@
           
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -614,7 +574,7 @@
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -636,17 +596,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#15.1" class="md-nav__link">
+  <a href="#13.1" class="md-nav__link">
     <span class="md-ellipsis">
-      15.1. assert под капотом: байт-код, -O и тонкие локации ошибок
+      13.1. assert под капотом: байт-код, -O и тонкие локации ошибок
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
+    <nav class="md-nav" aria-label="13.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.1-pep-657" class="md-nav__link">
+  <a href="#13.1-pep-657" class="md-nav__link">
     <span class="md-ellipsis">
       PEP 657: тонкие локации ошибок в трейсбеках (3.11+)
     </span>
@@ -660,17 +620,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.2" class="md-nav__link">
+  <a href="#13.2" class="md-nav__link">
     <span class="md-ellipsis">
-      15.2. unittest изнутри: loader → suite → runner → result
+      13.2. unittest изнутри: loader → suite → runner → result
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.2. unittest изнутри: loader → suite → runner → result">
+    <nav class="md-nav" aria-label="13.2. unittest изнутри: loader → suite → runner → result">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.2-poryadok" class="md-nav__link">
+  <a href="#13.2-poryadok" class="md-nav__link">
     <span class="md-ellipsis">
       Порядок тестов и discovery
     </span>
@@ -679,7 +639,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.2-result" class="md-nav__link">
+  <a href="#13.2-result" class="md-nav__link">
     <span class="md-ellipsis">
       TestResult: куда деваются skip, xfail и subTest
     </span>
@@ -693,17 +653,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.3" class="md-nav__link">
+  <a href="#13.3" class="md-nav__link">
     <span class="md-ellipsis">
-      15.3. unittest.mock изнутри: анатомия подмены
+      13.3. unittest.mock изнутри: анатомия подмены
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.3. unittest.mock изнутри: анатомия подмены">
+    <nav class="md-nav" aria-label="13.3. unittest.mock изнутри: анатомия подмены">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.3-zapis-vyzovov" class="md-nav__link">
+  <a href="#13.3-zapis-vyzovov" class="md-nav__link">
     <span class="md-ellipsis">
       Авто-атрибуты и запись вызовов
     </span>
@@ -712,7 +672,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.3-spec-i-autospec" class="md-nav__link">
+  <a href="#13.3-spec-i-autospec" class="md-nav__link">
     <span class="md-ellipsis">
       spec и autospec: мок, который не врёт
     </span>
@@ -721,7 +681,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.3-lovushka-from-import" class="md-nav__link">
+  <a href="#13.3-lovushka-from-import" class="md-nav__link">
     <span class="md-ellipsis">
       patch: setattr с откатом — и классическая ловушка
     </span>
@@ -735,35 +695,35 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.4" class="md-nav__link">
+  <a href="#13.4" class="md-nav__link">
     <span class="md-ellipsis">
-      15.4. Подмена времени и окружения в тестах
+      13.4. Подмена времени и окружения в тестах
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.5" class="md-nav__link">
+  <a href="#13.5" class="md-nav__link">
     <span class="md-ellipsis">
-      15.5. doctest изнутри
+      13.5. doctest изнутри
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.6" class="md-nav__link">
+  <a href="#13.6" class="md-nav__link">
     <span class="md-ellipsis">
-      15.6. pytest изнутри
+      13.6. pytest изнутри
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.6. pytest изнутри">
+    <nav class="md-nav" aria-label="13.6. pytest изнутри">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.6-sbor" class="md-nav__link">
+  <a href="#13.6-sbor" class="md-nav__link">
     <span class="md-ellipsis">
       Сбор: голые функции, TestCase, parametrize
     </span>
@@ -772,7 +732,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-assertion-rewriting" class="md-nav__link">
+  <a href="#13.6-assertion-rewriting" class="md-nav__link">
     <span class="md-ellipsis">
       Assertion rewriting: почему assert pytest'а такой умный
     </span>
@@ -781,7 +741,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-fikstury" class="md-nav__link">
+  <a href="#13.6-fikstury" class="md-nav__link">
     <span class="md-ellipsis">
       Фикстуры: dependency injection по имени
     </span>
@@ -790,7 +750,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-plaginy" class="md-nav__link">
+  <a href="#13.6-plaginy" class="md-nav__link">
     <span class="md-ellipsis">
       Плагины и кэш
     </span>
@@ -804,17 +764,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.7" class="md-nav__link">
+  <a href="#13.7" class="md-nav__link">
     <span class="md-ellipsis">
-      15.7. coverage.py: измерение покрытия
+      13.7. coverage.py: измерение покрытия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.7. coverage.py: измерение покрытия">
+    <nav class="md-nav" aria-label="13.7. coverage.py: измерение покрытия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.7-vetvnoe-pokrytie" class="md-nav__link">
+  <a href="#13.7-vetvnoe-pokrytie" class="md-nav__link">
     <span class="md-ellipsis">
       Ветвное покрытие
     </span>
@@ -823,7 +783,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.7-dvizhki" class="md-nav__link">
+  <a href="#13.7-dvizhki" class="md-nav__link">
     <span class="md-ellipsis">
       Внутри: SQLite и движки трассировки
     </span>
@@ -837,17 +797,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.8" class="md-nav__link">
+  <a href="#13.8" class="md-nav__link">
     <span class="md-ellipsis">
-      15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
+      13.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
+    <nav class="md-nav" aria-label="13.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.8-izmeneniya-3-12" class="md-nav__link">
+  <a href="#13.8-izmeneniya-3-12" class="md-nav__link">
     <span class="md-ellipsis">
       Что изменилось в 3.12: settrace теперь эмуляция
     </span>
@@ -861,17 +821,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.9" class="md-nav__link">
+  <a href="#13.9" class="md-nav__link">
     <span class="md-ellipsis">
-      15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
+      13.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
+    <nav class="md-nav" aria-label="13.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.9-lokalnye-sobytiya" class="md-nav__link">
+  <a href="#13.9-lokalnye-sobytiya" class="md-nav__link">
     <span class="md-ellipsis">
       Локальные события: подписка на один код-объект
     </span>
@@ -885,17 +845,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.10" class="md-nav__link">
+  <a href="#13.10" class="md-nav__link">
     <span class="md-ellipsis">
-      15.10. Тесты самого CPython: python -m test
+      13.10. Тесты самого CPython: python -m test
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.10. Тесты самого CPython: python -m test">
+    <nav class="md-nav" aria-label="13.10. Тесты самого CPython: python -m test">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.10-refleaki" class="md-nav__link">
+  <a href="#13.10-refleaki" class="md-nav__link">
     <span class="md-ellipsis">
       Охота на рефлаки: debug-сборка
     </span>
@@ -909,19 +869,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.11" class="md-nav__link">
+  <a href="#13.11" class="md-nav__link">
     <span class="md-ellipsis">
-      15.11. Тестовые режимы интерпретатора: шпаргалка
+      13.11. Тестовые режимы интерпретатора: шпаргалка
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.11. Тестовые режимы интерпретатора: шпаргалка">
+    <nav class="md-nav" aria-label="13.11. Тестовые режимы интерпретатора: шпаргалка">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.11-benchmarki" class="md-nav__link">
+  <a href="#13.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XV
+      Бенчмарки к Части XIII
     </span>
   </a>
   
@@ -936,6 +896,46 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-packaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Упаковка: от исходников до PyPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -967,11 +967,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+      <a href="../17-implementations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
@@ -987,11 +987,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -1163,17 +1163,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#15.1" class="md-nav__link">
+  <a href="#13.1" class="md-nav__link">
     <span class="md-ellipsis">
-      15.1. assert под капотом: байт-код, -O и тонкие локации ошибок
+      13.1. assert под капотом: байт-код, -O и тонкие локации ошибок
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
+    <nav class="md-nav" aria-label="13.1. assert под капотом: байт-код, -O и тонкие локации ошибок">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.1-pep-657" class="md-nav__link">
+  <a href="#13.1-pep-657" class="md-nav__link">
     <span class="md-ellipsis">
       PEP 657: тонкие локации ошибок в трейсбеках (3.11+)
     </span>
@@ -1187,17 +1187,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.2" class="md-nav__link">
+  <a href="#13.2" class="md-nav__link">
     <span class="md-ellipsis">
-      15.2. unittest изнутри: loader → suite → runner → result
+      13.2. unittest изнутри: loader → suite → runner → result
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.2. unittest изнутри: loader → suite → runner → result">
+    <nav class="md-nav" aria-label="13.2. unittest изнутри: loader → suite → runner → result">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.2-poryadok" class="md-nav__link">
+  <a href="#13.2-poryadok" class="md-nav__link">
     <span class="md-ellipsis">
       Порядок тестов и discovery
     </span>
@@ -1206,7 +1206,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.2-result" class="md-nav__link">
+  <a href="#13.2-result" class="md-nav__link">
     <span class="md-ellipsis">
       TestResult: куда деваются skip, xfail и subTest
     </span>
@@ -1220,17 +1220,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.3" class="md-nav__link">
+  <a href="#13.3" class="md-nav__link">
     <span class="md-ellipsis">
-      15.3. unittest.mock изнутри: анатомия подмены
+      13.3. unittest.mock изнутри: анатомия подмены
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.3. unittest.mock изнутри: анатомия подмены">
+    <nav class="md-nav" aria-label="13.3. unittest.mock изнутри: анатомия подмены">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.3-zapis-vyzovov" class="md-nav__link">
+  <a href="#13.3-zapis-vyzovov" class="md-nav__link">
     <span class="md-ellipsis">
       Авто-атрибуты и запись вызовов
     </span>
@@ -1239,7 +1239,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.3-spec-i-autospec" class="md-nav__link">
+  <a href="#13.3-spec-i-autospec" class="md-nav__link">
     <span class="md-ellipsis">
       spec и autospec: мок, который не врёт
     </span>
@@ -1248,7 +1248,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.3-lovushka-from-import" class="md-nav__link">
+  <a href="#13.3-lovushka-from-import" class="md-nav__link">
     <span class="md-ellipsis">
       patch: setattr с откатом — и классическая ловушка
     </span>
@@ -1262,35 +1262,35 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.4" class="md-nav__link">
+  <a href="#13.4" class="md-nav__link">
     <span class="md-ellipsis">
-      15.4. Подмена времени и окружения в тестах
+      13.4. Подмена времени и окружения в тестах
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.5" class="md-nav__link">
+  <a href="#13.5" class="md-nav__link">
     <span class="md-ellipsis">
-      15.5. doctest изнутри
+      13.5. doctest изнутри
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.6" class="md-nav__link">
+  <a href="#13.6" class="md-nav__link">
     <span class="md-ellipsis">
-      15.6. pytest изнутри
+      13.6. pytest изнутри
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.6. pytest изнутри">
+    <nav class="md-nav" aria-label="13.6. pytest изнутри">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.6-sbor" class="md-nav__link">
+  <a href="#13.6-sbor" class="md-nav__link">
     <span class="md-ellipsis">
       Сбор: голые функции, TestCase, parametrize
     </span>
@@ -1299,7 +1299,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-assertion-rewriting" class="md-nav__link">
+  <a href="#13.6-assertion-rewriting" class="md-nav__link">
     <span class="md-ellipsis">
       Assertion rewriting: почему assert pytest'а такой умный
     </span>
@@ -1308,7 +1308,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-fikstury" class="md-nav__link">
+  <a href="#13.6-fikstury" class="md-nav__link">
     <span class="md-ellipsis">
       Фикстуры: dependency injection по имени
     </span>
@@ -1317,7 +1317,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.6-plaginy" class="md-nav__link">
+  <a href="#13.6-plaginy" class="md-nav__link">
     <span class="md-ellipsis">
       Плагины и кэш
     </span>
@@ -1331,17 +1331,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.7" class="md-nav__link">
+  <a href="#13.7" class="md-nav__link">
     <span class="md-ellipsis">
-      15.7. coverage.py: измерение покрытия
+      13.7. coverage.py: измерение покрытия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.7. coverage.py: измерение покрытия">
+    <nav class="md-nav" aria-label="13.7. coverage.py: измерение покрытия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.7-vetvnoe-pokrytie" class="md-nav__link">
+  <a href="#13.7-vetvnoe-pokrytie" class="md-nav__link">
     <span class="md-ellipsis">
       Ветвное покрытие
     </span>
@@ -1350,7 +1350,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#15.7-dvizhki" class="md-nav__link">
+  <a href="#13.7-dvizhki" class="md-nav__link">
     <span class="md-ellipsis">
       Внутри: SQLite и движки трассировки
     </span>
@@ -1364,17 +1364,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.8" class="md-nav__link">
+  <a href="#13.8" class="md-nav__link">
     <span class="md-ellipsis">
-      15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
+      13.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
+    <nav class="md-nav" aria-label="13.8. sys.settrace/sys.setprofile: крючки отладчика и профайлера">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.8-izmeneniya-3-12" class="md-nav__link">
+  <a href="#13.8-izmeneniya-3-12" class="md-nav__link">
     <span class="md-ellipsis">
       Что изменилось в 3.12: settrace теперь эмуляция
     </span>
@@ -1388,17 +1388,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.9" class="md-nav__link">
+  <a href="#13.9" class="md-nav__link">
     <span class="md-ellipsis">
-      15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
+      13.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
+    <nav class="md-nav" aria-label="13.9. sys.monitoring (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.9-lokalnye-sobytiya" class="md-nav__link">
+  <a href="#13.9-lokalnye-sobytiya" class="md-nav__link">
     <span class="md-ellipsis">
       Локальные события: подписка на один код-объект
     </span>
@@ -1412,17 +1412,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.10" class="md-nav__link">
+  <a href="#13.10" class="md-nav__link">
     <span class="md-ellipsis">
-      15.10. Тесты самого CPython: python -m test
+      13.10. Тесты самого CPython: python -m test
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.10. Тесты самого CPython: python -m test">
+    <nav class="md-nav" aria-label="13.10. Тесты самого CPython: python -m test">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.10-refleaki" class="md-nav__link">
+  <a href="#13.10-refleaki" class="md-nav__link">
     <span class="md-ellipsis">
       Охота на рефлаки: debug-сборка
     </span>
@@ -1436,19 +1436,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#15.11" class="md-nav__link">
+  <a href="#13.11" class="md-nav__link">
     <span class="md-ellipsis">
-      15.11. Тестовые режимы интерпретатора: шпаргалка
+      13.11. Тестовые режимы интерпретатора: шпаргалка
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="15.11. Тестовые режимы интерпретатора: шпаргалка">
+    <nav class="md-nav" aria-label="13.11. Тестовые режимы интерпретатора: шпаргалка">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#15.11-benchmarki" class="md-nav__link">
+  <a href="#13.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XV
+      Бенчмарки к Части XIII
     </span>
   </a>
   
@@ -1474,9 +1474,9 @@
                   
 
 
-<h1 id="xv-assert-cpython">Часть XV. Тестирование: от assert до тестов самого CPython<a class="headerlink" href="#xv-assert-cpython" title="Permanent link">#</a></h1>
-<p>До сих пор тесты в этой книге мелькали только мимоходом — как источник примеров или сосед по CLI. Эта часть смотрит на тестирование так, как смотрит вся книга: что происходит под капотом. Каждый тестовый инструмент сидит на конкретном крючке интерпретатора: <code>assert</code> — это скомпилированный байт-код с отдельным <code>LOAD_ASSERTION_ERROR</code>; <code>unittest.mock</code> — дисциплина над <code>setattr</code>/<code>__getattribute__</code>; <code>coverage.py</code> — счётчики на line-событиях трейсера; отладчики и профайлеры в 3.12+ — уже не <code>sys.settrace</code>, а новый API <code>sys.monitoring</code> (PEP 669). А «тесты самого CPython» — это вообще исполняемая спецификация языка (14.1). Разделы идут от простого к сложному: сначала то, что есть в любом тесте (<code>assert</code>, <code>unittest</code>, mock), затем фреймворки (<code>doctest</code>, <code>pytest</code>, coverage), затем интерпретаторная кухня (трассировка, monitoring, regrtest, диагностические режимы).</p>
-<h2 id="15.1">15.1. <code>assert</code> под капотом: байт-код, <code>-O</code> и тонкие локации ошибок<a class="headerlink" href="#15.1" title="Permanent link">#</a></h2>
+<h1 id="xiii-assert-cpython">Часть XIII. Тестирование: от assert до тестов самого CPython<a class="headerlink" href="#xiii-assert-cpython" title="Permanent link">#</a></h1>
+<p>До сих пор тесты в этой книге мелькали только мимоходом — как источник примеров или сосед по CLI. Эта часть смотрит на тестирование так, как смотрит вся книга: что происходит под капотом. Каждый тестовый инструмент сидит на конкретном крючке интерпретатора: <code>assert</code> — это скомпилированный байт-код с отдельным <code>LOAD_ASSERTION_ERROR</code>; <code>unittest.mock</code> — дисциплина над <code>setattr</code>/<code>__getattribute__</code>; <code>coverage.py</code> — счётчики на line-событиях трейсера; отладчики и профайлеры в 3.12+ — уже не <code>sys.settrace</code>, а новый API <code>sys.monitoring</code> (PEP 669). А «тесты самого CPython» — это вообще исполняемая спецификация языка (17.1). Разделы идут от простого к сложному: сначала то, что есть в любом тесте (<code>assert</code>, <code>unittest</code>, mock), затем фреймворки (<code>doctest</code>, <code>pytest</code>, coverage), затем интерпретаторная кухня (трассировка, monitoring, regrtest, диагностические режимы).</p>
+<h2 id="13.1">13.1. <code>assert</code> под капотом: байт-код, <code>-O</code> и тонкие локации ошибок<a class="headerlink" href="#13.1" title="Permanent link">#</a></h2>
 <p>Базовая единица любого теста — <code>assert</code>. В 1.15 разобраны ловушки синтаксиса и флаг <code>-O</code>; здесь — как assert живёт в байт-коде и почему трейсбеки в 3.11+ стали такими точными.</p>
 <p>Компиляция <code>assert x &gt; 0, "bad"</code> на 3.12 (8.9):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">dis</span>
@@ -1506,7 +1506,7 @@
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># RAISE_VARARGS в -O-версии: False</span>
 </span></code></pre></div>
 <p>Отсюда правило из 1.15 на языке байт-кода: <code>-O</code> не «выключает» assert'ы — она <strong>не компилирует их вовсе</strong>, вместе с сообщением и любыми побочными эффектами в нём.</p>
-<h3 id="15.1-pep-657">PEP 657: тонкие локации ошибок в трейсбеках (3.11+)<a class="headerlink" href="#15.1-pep-657" title="Permanent link">#</a></h3>
+<h3 id="13.1-pep-657">PEP 657: тонкие локации ошибок в трейсбеках (3.11+)<a class="headerlink" href="#13.1-pep-657" title="Permanent link">#</a></h3>
 <p>До 3.11 traceback показывал только строку, где что-то пошло не так. PEP 657 добавил в кодовые объекты точные колонки начала и конца каждого выражения (<code>co_positions()</code>), и теперь каретки <code>^</code> в трейсбеке указывают на конкретный фрагмент выражения:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># t.py</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
@@ -1529,8 +1529,8 @@
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>           ^^^^^^^^^^^^^^^^
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>AssertionError: fail
 </span></code></pre></div>
-<p>⚠️ Предел точности задаёт байт-код: у <code>and</code>-цепочки нет отдельной инструкции на каждый операнд, поэтому каретки накрывают всё условие. Чем «плоско» выражение, тем точнее прицел. Именно это улучшение сделало сообщения тестов читаемыми без отладчика: видно <strong>что именно</strong> в строке упало. А pytest идёт дальше и переписывает сами assert'ы (15.6) — уже не локация, а интерпретация.</p>
-<h2 id="15.2">15.2. <code>unittest</code> изнутри: loader → suite → runner → result<a class="headerlink" href="#15.2" title="Permanent link">#</a></h2>
+<p>⚠️ Предел точности задаёт байт-код: у <code>and</code>-цепочки нет отдельной инструкции на каждый операнд, поэтому каретки накрывают всё условие. Чем «плоско» выражение, тем точнее прицел. Именно это улучшение сделало сообщения тестов читаемыми без отладчика: видно <strong>что именно</strong> в строке упало. А pytest идёт дальше и переписывает сами assert'ы (13.6) — уже не локация, а интерпретация.</p>
+<h2 id="13.2">13.2. <code>unittest</code> изнутри: loader → suite → runner → result<a class="headerlink" href="#13.2" title="Permanent link">#</a></h2>
 <p><code>unittest</code> — xUnit-порт из Java (за авторством Steve'а Purcell'а, в stdlib с 2.1), и его архитектура — конвейер из четырёх ролей:</p>
 <table>
 <thead>
@@ -1569,7 +1569,7 @@
 </tbody>
 </table>
 <p>Ключ к пониманию — что <code>TestCase</code> — это <strong>не</strong> «тест». Это класс-фабрика: <code>TestLoader.loadTestsFromTestCase(T)</code> создаёт по одному экземпляру <code>T</code> на каждый метод <code>test_*</code>. Каждый экземпляр — самостоятельный тест со своим <code>setUp</code>/<code>tearDown</code>: изоляция достигается тем, что каждый тест живёт в свежем объекте, а не тем, что состояние «чистится» после.</p>
-<p>Запуск через <code>python -m unittest</code> — это тот же runpy-механизм, что у <code>python -m json.tool</code> (11.31): интерпретатор импортирует пакет <code>unittest</code> как <code>__main__</code>, тот подхватывает <code>unittest.main()</code> и дальше — loader/runner. Живой вывод:</p>
+<p>Запуск через <code>python -m unittest</code> — это тот же runpy-механизм, что у <code>python -m json.tool</code> (11.32): интерпретатор импортирует пакет <code>unittest</code> как <code>__main__</code>, тот подхватывает <code>unittest.main()</code> и дальше — loader/runner. Живой вывод:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ python -m unittest -v
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>test_add (test_demo.TD.test_add) ... ok
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
@@ -1578,7 +1578,7 @@
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>OK
 </span></code></pre></div>
-<h3 id="15.2-poryadok">Порядок тестов и discovery<a class="headerlink" href="#15.2-poryadok" title="Permanent link">#</a></h3>
+<h3 id="13.2-poryadok">Порядок тестов и discovery<a class="headerlink" href="#13.2-poryadok" title="Permanent link">#</a></h3>
 <p>Первое, что удивляет тех, кто ждёт «порядок объявления»: тесты исполняются <strong>в алфавитном порядке</strong> имён. Это свойство лоадера — <code>TestLoader.sortTestMethodsUsing</code> (по умолчанию <code>three_way_cmp</code>):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">unittest</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
@@ -1606,8 +1606,8 @@
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">tests</span><span class="o">.</span><span class="n">countTestCases</span><span class="p">())</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 1   — test_y.py просканирован, но голой функции там нет</span>
 </span></code></pre></div>
-<p>Это самое заметное отличие от pytest, который собирает голые функции <code>test_*</code> как полноценные тесты (15.6).</p>
-<h3 id="15.2-result">TestResult: куда деваются skip, xfail и subTest<a class="headerlink" href="#15.2-result" title="Permanent link">#</a></h3>
+<p>Это самое заметное отличие от pytest, который собирает голые функции <code>test_*</code> как полноценные тесты (13.6).</p>
+<h3 id="13.2-result">TestResult: куда деваются skip, xfail и subTest<a class="headerlink" href="#13.2-result" title="Permanent link">#</a></h3>
 <p>Runner ничего не решает — он передаёт события в <code>TestResult</code>. Отсюда механика всех «статусов»:</p>
 <ul>
 <li><code>skipTest()</code> / <code>@unittest.skip(...)</code>: тест бросает <code>unittest.SkipTest</code>, лоадер/раннер ловит его отдельно → <code>result.skipped</code> — список пар <code>(тест, причина)</code>;</li>
@@ -1647,9 +1647,9 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span>
 </span></code></pre></div>
 <p>Выход менеджера при этом будет выполнен <strong>после</strong> <code>tearDown</code> — контекстные менеджеры, зарегистрированные через <code>enterContext</code>, стекуются в <code>ExitStack</code> теста (2.4).</p>
-<h2 id="15.3">15.3. <code>unittest.mock</code> изнутри: анатомия подмены<a class="headerlink" href="#15.3" title="Permanent link">#</a></h2>
+<h2 id="13.3">13.3. <code>unittest.mock</code> изнутри: анатомия подмены<a class="headerlink" href="#13.3" title="Permanent link">#</a></h2>
 <p><code>unittest.mock</code> кажется магией: объект, который «умеет всё» и помнит все вызовы. Под капотом — только три механизма: <code>__getattr__</code> создаёт дочерние моки на лету, <code>__call__</code> записывает вызовы, а <code>patch</code> — это <code>setattr</code> с откатом.</p>
-<h3 id="15.3-zapis-vyzovov">Авто-атрибуты и запись вызовов<a class="headerlink" href="#15.3-zapis-vyzovov" title="Permanent link">#</a></h3>
+<h3 id="13.3-zapis-vyzovov">Авто-атрибуты и запись вызовов<a class="headerlink" href="#13.3-zapis-vyzovov" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">m</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
@@ -1675,7 +1675,7 @@
 </span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># 9  — side_effect (как iterable) имеет приоритет над return_value</span>
 </span></code></pre></div>
 <p><code>MagicMock</code> — то же самое, но с <strong>заранее настроенными dunder-методами</strong> (5.17): <code>len(MagicMock()) == 0</code>, <code>iter()</code> отдаёт пустой итератор, сравнения работают. Голый <code>Mock</code> dunder-ы не настраивает — <code>len(Mock())</code> упадёт <code>TypeError</code>. Правило: почти всегда берите <code>MagicMock</code> (он и есть значение по умолчанию у <code>patch</code>).</p>
-<h3 id="15.3-spec-i-autospec">spec и autospec: мок, который не врёт<a class="headerlink" href="#15.3-spec-i-autospec" title="Permanent link">#</a></h3>
+<h3 id="13.3-spec-i-autospec">spec и autospec: мок, который не врёт<a class="headerlink" href="#13.3-spec-i-autospec" title="Permanent link">#</a></h3>
 <p>Авто-атрибуты — и главная дыра моков: опечатка в имени метода делает тест, который проверяет <strong>несуществующий</strong> API. Лечится <code>spec</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">mi</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">mi</span><span class="o">.</span><span class="n">no_such</span>
@@ -1693,7 +1693,7 @@
 </span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># TypeError: missing a required argument: &#39;a&#39;  — вызов проверяется как настоящий</span>
 </span></code></pre></div>
 <p>⚠️ <code>autospec</code> полагается на интроспекцию, а она у C-функций ограничена: <code>create_autospec(len)</code> даёт мок с сигнатурой <code>(*args, **kwargs)</code> — проверка аргументов <strong>не включается</strong>, и <code>len(1, 2)</code> на моке не падает. Для C-API мок с autospec — не гарантия совместимости, а просто замещающий объект.</p>
-<h3 id="15.3-lovushka-from-import"><code>patch</code>: setattr с откатом — и классическая ловушка<a class="headerlink" href="#15.3-lovushka-from-import" title="Permanent link">#</a></h3>
+<h3 id="13.3-lovushka-from-import"><code>patch</code>: setattr с откатом — и классическая ловушка<a class="headerlink" href="#13.3-lovushka-from-import" title="Permanent link">#</a></h3>
 <p><code>mock.patch("os.getcwd", return_value="/stub")</code> механически делает вот что: разрезает строку-цель по точкам, импортирует корневой модуль, спускается по цепочке <code>getattr</code> до родителя, запоминает старое значение атрибута и делает <code>setattr(parent, "getcwd", Mock(return_value="/stub"))</code>. На выходе из блока — <code>setattr</code> обратно. Всё. Никакой интерпретаторной магии — потому и работает одинаково с чем угодно, к чему применим <code>setattr</code>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;os.getcwd&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s2">&quot;/stub&quot;</span><span class="p">):</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
@@ -1717,9 +1717,9 @@
 <li><code>mock.seal(m)</code> — «замораживает» дерево моков: существующие атрибуты работают, новые создать нельзя (<code>AttributeError: Cannot set mock.new_attr</code>) — страховка от случайных обращений к несуществующему API, аналог <code>spec</code> для моков, собранных руками.</li>
 </ul>
 <p>Производительность моков — отдельная тема: вызов <code>Mock</code> в десятки раз дороже обычного вызова функции (54× у <code>Mock</code>, 81× у autospec — бенчмарк в конце части). В горячих путях тестов это складывается в минуты.</p>
-<h2 id="15.4">15.4. Подмена времени и окружения в тестах<a class="headerlink" href="#15.4" title="Permanent link">#</a></h2>
+<h2 id="13.4">13.4. Подмена времени и окружения в тестах<a class="headerlink" href="#13.4" title="Permanent link">#</a></h2>
 <p>«Сейчас» — самый неприятный фактор недетерминизма в тестах: код смотрит на <code>datetime.now()</code>, <code>time.time()</code>, <code>time.monotonic()</code>. Инструменты заморозки времени различаются глубиной, на которой живут.</p>
-<p>Уровень один — тот же <code>patch</code> из 15.3:</p>
+<p>Уровень один — тот же <code>patch</code> из 13.3:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">import</span> <span class="nn">time</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
@@ -1755,8 +1755,8 @@
 </span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>    <span class="c1"># 0.2 — время течёт от заданной точки</span>
 </span></code></pre></div>
 <p>Выбор: точечные проверки — <code>patch</code>; «остановить всё время» для интеграционных тестов — <code>freezegun</code> (дороже на входе/выходе, но тащит за собой <code>datetime</code> и сдвигает время при <code>sleep</code>-ах сторонних библиотек через свои настройки); частая заморозка в перфоманс-чувствительных тестах — <code>time-machine</code> (≈1500× быстрее freezegun на входе/выходе — бенчмарк в конце части).</p>
-<p>Часовые пояса подменяются окружением: <code>os.environ["TZ"] = "UTC"; time.tzset()</code> — POSIX-only (на Windows <code>tzset</code> нет), поэтому в кросс-платформенных тестах это делают через <code>monkeypatch</code>/<code>patch.dict</code> (2.4, 15.3) и пропускают тест на Windows (<code>@unittest.skipIf(sys.platform == "win32", ...)</code>).</p>
-<h2 id="15.5">15.5. <code>doctest</code> изнутри<a class="headerlink" href="#15.5" title="Permanent link">#</a></h2>
+<p>Часовые пояса подменяются окружением: <code>os.environ["TZ"] = "UTC"; time.tzset()</code> — POSIX-only (на Windows <code>tzset</code> нет), поэтому в кросс-платформенных тестах это делают через <code>monkeypatch</code>/<code>patch.dict</code> (2.4, 13.3) и пропускают тест на Windows (<code>@unittest.skipIf(sys.platform == "win32", ...)</code>).</p>
+<h2 id="13.5">13.5. <code>doctest</code> изнутри<a class="headerlink" href="#13.5" title="Permanent link">#</a></h2>
 <p>Директивы doctest разобраны в 12.4; здесь — как модуль устроен. <code>doctest</code> — конвейер из двух компонентов: <code>DocTestParser</code> вырезает из текста примеры (<code>&gt;&gt;&gt; ...</code> в начале строки + ожидаемый вывод до пустой строки или следующего <code>&gt;&gt;&gt;</code>), а <code>DocTestRunner</code> исполняет их и сравнивает вывод.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span> <span class="nn">doctest</span><span class="o">,</span> <span class="nn">types</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
@@ -1797,16 +1797,16 @@
 </span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>1
 </span></code></pre></div>
 <p>Traceback-примеры матчатся по типу исключения и сообщению, а <code># doctest: +IGNORE_EXCEPTION_DETAIL</code> (12.4) ослабляет проверку до одного типа. Там же — таблица директив (<code>+ELLIPSIS</code>, <code>+SKIP</code>, <code>+NORMALIZE_WHITESPACE</code>), здесь повторять её не будем.</p>
-<p>⚠️ Границы применимости: doctest — это <strong>документация с гарантией свежести</strong>, а не набор тестов. Он идеален там, где пример и есть спецификация (README, docstring чистых функций), и плох там, где нужны фикстуры, изоляция состояния и проверка побочных эффектов — это уже территория 15.2/15.6.</p>
-<h2 id="15.6">15.6. <code>pytest</code> изнутри<a class="headerlink" href="#15.6" title="Permanent link">#</a></h2>
+<p>⚠️ Границы применимости: doctest — это <strong>документация с гарантией свежести</strong>, а не набор тестов. Он идеален там, где пример и есть спецификация (README, docstring чистых функций), и плох там, где нужны фикстуры, изоляция состояния и проверка побочных эффектов — это уже территория 13.2/13.6.</p>
+<h2 id="13.6">13.6. <code>pytest</code> изнутри<a class="headerlink" href="#13.6" title="Permanent link">#</a></h2>
 <p><code>pytest</code> — не stdlib (<code>pip install pytest</code>), но де-факто стандарт индустрии, и его «магия» — собирать голые функции, показывать умные diff'ы, раздавать фикстуры по имени аргумента — стоит на трёх конкретных механизмах: свой протокол сбора, переписывание assert'ов через импорт-хук и ленивая dependency-injection фикстур.</p>
-<h3 id="15.6-sbor">Сбор: голые функции, TestCase, parametrize<a class="headerlink" href="#15.6-sbor" title="Permanent link">#</a></h3>
-<p>Коллектор pytest обходит дерево от rootdir, импортирует файлы <code>test_*.py</code>/<code>*_test.py</code> и собирает всё, что похоже на тест: голые функции <code>test_*</code>, методы <code>test_*</code> в классах <code>Test*</code> (без <code>__init__</code>) — и заодно полноценные <code>unittest.TestCase</code> (15.2) в режиме совместимости:</p>
+<h3 id="13.6-sbor">Сбор: голые функции, TestCase, parametrize<a class="headerlink" href="#13.6-sbor" title="Permanent link">#</a></h3>
+<p>Коллектор pytest обходит дерево от rootdir, импортирует файлы <code>test_*.py</code>/<code>*_test.py</code> и собирает всё, что похоже на тест: голые функции <code>test_*</code>, методы <code>test_*</code> в классах <code>Test*</code> (без <code>__init__</code>) — и заодно полноценные <code>unittest.TestCase</code> (13.2) в режиме совместимости:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># test_flat.py</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">import</span> <span class="nn">unittest</span><span class="o">,</span> <span class="nn">pytest</span>
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
 </span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="k">def</span> <span class="nf">test_bare</span><span class="p">():</span>                     <span class="c1"># голая функция — pytest соберёт,</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>                <span class="c1"># unittest.discover — нет (15.2)</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>                <span class="c1"># unittest.discover — нет (13.2)</span>
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
 </span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="k">class</span> <span class="nc">TC</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>         <span class="c1"># unittest-стиль — тоже соберёт</span>
 </span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1839,9 +1839,9 @@
 </span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>...
 </span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>============== 1 failed, 5 passed, 1 skipped, 1 xfailed ==============
 </span></code></pre></div>
-<p><code>parametrize</code> — это генерация тестов <strong>на этапе сбора</strong>: из одного определения делается три теста с идентификаторами <code>[2-4]</code>, <code>[3-9]</code>, <code>[4-16]</code> (значения параметров в имени). Статусы совпадают с unittest-овскими по смыслу, но есть важная разница в сборе: pytest собирает голые функции, unittest — нет (15.2).</p>
-<h3 id="15.6-assertion-rewriting">Assertion rewriting: почему assert pytest'а такой умный<a class="headerlink" href="#15.6-assertion-rewriting" title="Permanent link">#</a></h3>
-<p>Обычный <code>assert a == b</code> в падении говорит только «assert failed» — выражение уже вычислено и потеряно (15.1). pytest перед импортом каждого тестового модуля <strong>переписывает его AST</strong>: каждый <code>assert</code> заменяется на код, который вычисляет подвыражения, сохраняет их в служебные переменные <code>@py_assert*</code> и в случае падения собирает из них человекочитаемое сообщение. Механику видно напрямую — тот же трансформер, что крутится в импорт-хуке:</p>
+<p><code>parametrize</code> — это генерация тестов <strong>на этапе сбора</strong>: из одного определения делается три теста с идентификаторами <code>[2-4]</code>, <code>[3-9]</code>, <code>[4-16]</code> (значения параметров в имени). Статусы совпадают с unittest-овскими по смыслу, но есть важная разница в сборе: pytest собирает голые функции, unittest — нет (13.2).</p>
+<h3 id="13.6-assertion-rewriting">Assertion rewriting: почему assert pytest'а такой умный<a class="headerlink" href="#13.6-assertion-rewriting" title="Permanent link">#</a></h3>
+<p>Обычный <code>assert a == b</code> в падении говорит только «assert failed» — выражение уже вычислено и потеряно (13.1). pytest перед импортом каждого тестового модуля <strong>переписывает его AST</strong>: каждый <code>assert</code> заменяется на код, который вычисляет подвыражения, сохраняет их в служебные переменные <code>@py_assert*</code> и в случае падения собирает из них человекочитаемое сообщение. Механику видно напрямую — тот же трансформер, что крутится в импорт-хуке:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">import</span> <span class="nn">ast</span><span class="o">,</span> <span class="nn">dis</span>
 </span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="kn">from</span> <span class="nn">_pytest.assertion</span> <span class="kn">import</span> <span class="n">rewrite</span>
 </span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
@@ -1869,8 +1869,8 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>E   AssertionError: assert [1, 2, 3] == [1, 2, 4]
 </span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>E     At index 2 diff: 3 != 4
 </span></code></pre></div>
-<p>Проверки строятся из того же сравнения <code>==</code>, что и обычный assert, но с сохранёнными operand'ами. Переписывание можно выключить (<code>--assert=plain</code>) — и вы сразу вернётесь к сухим сообщениям из 15.1.</p>
-<h3 id="15.6-fikstury">Фикстуры: dependency injection по имени<a class="headerlink" href="#15.6-fikstury" title="Permanent link">#</a></h3>
+<p>Проверки строятся из того же сравнения <code>==</code>, что и обычный assert, но с сохранёнными operand'ами. Переписывание можно выключить (<code>--assert=plain</code>) — и вы сразу вернётесь к сухим сообщениям из 13.1.</p>
+<h3 id="13.6-fikstury">Фикстуры: dependency injection по имени<a class="headerlink" href="#13.6-fikstury" title="Permanent link">#</a></h3>
 <p>Фикстура — функция под <code>@pytest.fixture</code>, которую pytest вызывает сам, когда тест объявляет её имя параметром. Это DI-контейнер: тест запрашивает зависимости по имени, pytest резолвит их рекурсивно (фикстура может зависеть от фикстуры), кэширует результат в рамках scope и гарантированно выполняет teardown после.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">import</span> <span class="nn">pytest</span>
 </span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1894,11 +1894,11 @@
 </span></code></pre></div>
 <p>Три факта механики. <strong>Setup идёт по цепочке зависимостей</strong> (<code>one</code> прежде <code>two</code>), независимо от порядка параметров теста. <strong>Teardown — стек в обратном порядке</strong> (<code>two</code> прежде <code>one</code>): код после <code>yield</code> исполняется как финализаторы в <code>ExitStack</code> (2.4). <strong>Scope по умолчанию — <code>"function"</code></strong>: на следующий тест фикстура пересоздаётся целиком; <code>"module"</code>/<code>"session"</code> кэшируют результат между тестами — и тогда порядок teardown'ов между тестами становится важным наблюдаемым поведением.</p>
 <p><code>yield</code>-фикстура — это <code>@contextmanager</code> (2.3) в миниатюре: код до <code>yield</code> — setup, после — teardown. Если setup упал, teardown не вызывается; если упал teardown — pytest сообщит об ошибке фикстуры отдельно от результата теста.</p>
-<h3 id="15.6-plaginy">Плагины и кэш<a class="headerlink" href="#15.6-plaginy" title="Permanent link">#</a></h3>
+<h3 id="13.6-plaginy">Плагины и кэш<a class="headerlink" href="#13.6-plaginy" title="Permanent link">#</a></h3>
 <p>Вся внешняя логика pytest — хуки. Заголовок сессии показывает, что реально подгружено (в нашем прогоне выше: <code>plugins: time-machine-3.5.1</code> — плагин time-machine объявил себя через entry points и загрузился <strong>автоматически</strong>, без конфига). Система хуков — <code>pluggy</code>, та же библиотека, что питает хуки в setuptools; точка расширения — entry points группы <code>pytest.plugins</code> (7.9) или <code>conftest.py</code>. Кэш сессии — каталог <code>.pytest_cache</code> (последние провалы для <code>--lf</code>, nodeids); его можно отключить флагом <code>-p no:cacheprovider</code> — <code>-p</code> загружает/блокирует плагины по имени, и кэш — тоже плагин.</p>
 <p>⚠️ Порядок импорта при сборе не случайность, а контракты: <code>conftest.py</code>-файлы импортируются до тестовых модулей, а сам pytest предлагает три import-режима (<code>--import-mode=prepend|append|importlib</code>, дефолт <code>prepend</code>). В <code>prepend</code> каталог теста вставляется в <code>sys.path[0]</code> — отсюда классические «два файла с одинаковым именем не собираются вместе»: pytest видит один и тот же модуль. Лечится <code>__init__.py</code>-пакетами или <code>--import-mode=importlib</code>.</p>
-<h2 id="15.7">15.7. <code>coverage.py</code>: измерение покрытия<a class="headerlink" href="#15.7" title="Permanent link">#</a></h2>
-<p>Coverage отвечает на вопрос «какие строки исполнились», и это тоже интерпретаторный крючок: чтобы узнать, на каких строках побежал код, нужно получать line-события трейсера (15.8). <code>coverage.py</code> — эталонная реализация, под капотом которой два переключаемых движка (ниже).</p>
+<h2 id="13.7">13.7. <code>coverage.py</code>: измерение покрытия<a class="headerlink" href="#13.7" title="Permanent link">#</a></h2>
+<p>Coverage отвечает на вопрос «какие строки исполнились», и это тоже интерпретаторный крючок: чтобы узнать, на каких строках побежал код, нужно получать line-события трейсера (13.8). <code>coverage.py</code> — эталонная реализация, под капотом которой два переключаемых движка (ниже).</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># mod.py</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 </span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1922,7 +1922,7 @@
 </span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>TOTAL        8      2    75%
 </span></code></pre></div>
 <p>Читается мгновенно: не исполнены строка 4 (<code>return "even"</code> — условие было ложным) и строка 7 (<code>dead()</code>), а <code>skip_me</code> целиком исключён директивой <code># pragma: no cover</code> — потому у него нет строки в отчёте. <code>Stmts</code> считает исполняемые statements, а не все строки файла.</p>
-<h3 id="15.7-vetvnoe-pokrytie">Ветвное покрытие<a class="headerlink" href="#15.7-vetvnoe-pokrytie" title="Permanent link">#</a></h3>
+<h3 id="13.7-vetvnoe-pokrytie">Ветвное покрытие<a class="headerlink" href="#13.7-vetvnoe-pokrytie" title="Permanent link">#</a></h3>
 <p>Строчное покрытие обманчиво: строка <code>if n % 2 == 0:</code> исполнилась — но <strong>оба ли</strong> исхода условия проверены? Флаг <code>--branch</code> переводит coverage на arc-модель: единица измерения — не строка, а <strong>переход</strong> (дуга) между строками, как в graph-представлении кода:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>$ coverage run --branch use.py &amp;&amp; coverage report -m
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Name     Stmts   Miss Branch BrPart  Cover   Missing
@@ -1933,7 +1933,7 @@
 </span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>TOTAL        8      2      2      1    70%
 </span></code></pre></div>
 <p>Появились колонки <code>Branch</code> (всего дуг) и <code>BrPart</code> (частично покрытые ветвления) — покрытие стало ниже (62% против 67%) при том же коде, потому что теперь честно учитывается непроверенный исход <code>if</code>. Для тестов, ориентированных на «100%», имеет смысл именно ветвное — строчное достигается почти случайно.</p>
-<h3 id="15.7-dvizhki">Внутри: SQLite и движки трассировки<a class="headerlink" href="#15.7-dvizhki" title="Permanent link">#</a></h3>
+<h3 id="13.7-dvizhki">Внутри: SQLite и движки трассировки<a class="headerlink" href="#13.7-dvizhki" title="Permanent link">#</a></h3>
 <p>Результат <code>coverage run</code> — файл <code>.coverage</code>, и это обычная SQLite-база:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
 </span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;.coverage&quot;</span><span class="p">)</span>
@@ -1944,12 +1944,12 @@
 <p>Ключевая таблица — <code>line_bits</code>: номера исполненных строк, упакованные в блобы схемой RLE (пары «сколько строк пропустить — сколько закрасить»); при <code>--branch</code> рядом лежит <code>arc</code> — пары переходов. <code>context</code> хранит контексты (<code>coverage run --context=название</code> — размечать замеры, например по тест-группам), <code>meta</code> — версию формата. <code>coverage combine</code> сливает параллельные <code>.coverage.&lt;хост&gt;.&lt;pid&gt;</code>-файлы в один — потому CI-джобы пишут в отдельные файлы, а не в общий.</p>
 <p>Движки трассировки переключаются переменной окружения <code>COVERAGE_CORE</code>:</p>
 <ul>
-<li><code>ctrace</code> (по умолчанию на 3.12) — C-трассировщик <code>CTracer</code>, собственной механикой повторяющий <code>sys.settrace</code> (15.8), но целиком в C: события line/call/return снимаются с минимальной питоновской обвязки;</li>
-<li><code>sysmon</code> — <code>sys.monitoring</code> (PEP 669, 15.9): <code>COVERAGE_CORE=sysmon coverage run …</code>; неверное значение бракуется сразу: <code>Unknown core value: 'bogus'</code>.</li>
+<li><code>ctrace</code> (по умолчанию на 3.12) — C-трассировщик <code>CTracer</code>, собственной механикой повторяющий <code>sys.settrace</code> (13.8), но целиком в C: события line/call/return снимаются с минимальной питоновской обвязки;</li>
+<li><code>sysmon</code> — <code>sys.monitoring</code> (PEP 669, 13.9): <code>COVERAGE_CORE=sysmon coverage run …</code>; неверное значение бракуется сразу: <code>Unknown core value: 'bogus'</code>.</li>
 </ul>
 <p>⚠️ Движки дают одинаковые данные, но не идентичную скорость: на нашем workload'е ctrace замедлил запуск в 4.3 раза, sysmon — в 3.4 (бенчмарк в конце части). Порог перехода на sysmon — 3.12+ и тип нагрузки: чем больше line-событий, тем заметнее преимущество monitoring-механики.</p>
-<h2 id="15.8">15.8. <code>sys.settrace</code>/<code>sys.setprofile</code>: крючки отладчика и профайлера<a class="headerlink" href="#15.8" title="Permanent link">#</a></h2>
-<p><code>pdb</code> (1.16), <code>bdb</code> (11.30), <code>profile</code> (11.30) и line-события coverage (15.7) сидят на одном и том же крючке — <code>sys.settrace</code>. Это функция-трейсер, которую интерпретатор вызывает при трёх классах событий:</p>
+<h2 id="13.8">13.8. <code>sys.settrace</code>/<code>sys.setprofile</code>: крючки отладчика и профайлера<a class="headerlink" href="#13.8" title="Permanent link">#</a></h2>
+<p><code>pdb</code> (1.16), <code>bdb</code> (11.31), <code>profile</code> (11.31) и line-события coverage (13.7) сидят на одном и том же крючке — <code>sys.settrace</code>. Это функция-трейсер, которую интерпретатор вызывает при трёх классах событий:</p>
 <table>
 <thead>
 <tr>
@@ -2027,9 +2027,9 @@
 </span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">profevents</span><span class="p">)</span>
 </span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="c1"># [&#39;c_call&#39;, &#39;c_return&#39;]</span>
 </span></code></pre></div>
-<p>Экономнее на порядки — потому профайлеры (<code>cProfile</code>, 11.30) используют именно <code>setprofile</code>, а отладчики — <code>settrace</code>.</p>
-<h3 id="15.8-izmeneniya-3-12">Что изменилось в 3.12: settrace теперь эмуляция<a class="headerlink" href="#15.8-izmeneniya-3-12" title="Permanent link">#</a></h3>
-<p>В 3.12 <code>settrace</code>/<code>setprofile</code> внутренне <strong>переписаны поверх <code>sys.monitoring</code></strong> (15.9): это уже не прямой механизм eval loop, а адаптер (в исходниках CPython — <code>Python/legacy_tracing.c</code>). Появились поведенческие отличия, каждое из которых проверено на 3.12.14 и 3.13.5:</p>
+<p>Экономнее на порядки — потому профайлеры (<code>cProfile</code>, 11.31) используют именно <code>setprofile</code>, а отладчики — <code>settrace</code>.</p>
+<h3 id="13.8-izmeneniya-3-12">Что изменилось в 3.12: settrace теперь эмуляция<a class="headerlink" href="#13.8-izmeneniya-3-12" title="Permanent link">#</a></h3>
+<p>В 3.12 <code>settrace</code>/<code>setprofile</code> внутренне <strong>переписаны поверх <code>sys.monitoring</code></strong> (13.9): это уже не прямой механизм eval loop, а адаптер (в исходниках CPython — <code>Python/legacy_tracing.c</code>). Появились поведенческие отличия, каждое из которых проверено на 3.12.14 и 3.13.5:</p>
 <ul>
 <li><strong><code>return None</code> из локального трейсера больше не гасит трассировку кадра.</strong> В документации до 3.11 было: «локальный трейсер должен вернуть себя… или <code>None</code>, чтобы отключить трассировку в этой области». В 3.12 формулировка заменена на «возвращаемое значение задаёт новый локальный трейсер» — и на практике <code>None</code> просто сохраняет текущий:</li>
 </ul>
@@ -2057,12 +2057,12 @@
 <p><strong>Исключение в трейсере прокидывается в трассируемый код.</strong> Документация по-прежнему обещает «ошибка в трейсере снимает его, как <code>settrace(None)</code>» — трейсер действительно снимается, но исключение в 3.12+ больше не глотается: <code>RuntimeError("boom")</code> из трейсера доезжает до исполняемого кода и обрывает его. Отладчику теперь обязательно оборачивать собственные колбэки в <code>try/except</code>.</p>
 </li>
 <li>
-<p><strong><code>opcode</code>-события через <code>frame.f_trace_opcodes = True</code>: на 3.12 не приходят</strong> (эмуляция не раздаёт opcode-события из <code>settrace</code>-адаптера), на 3.13.5 — приходят. Если нужны инструкции — надёжнее <code>sys.monitoring</code> с <code>INSTRUCTION</code> (15.9).</p>
+<p><strong><code>opcode</code>-события через <code>frame.f_trace_opcodes = True</code>: на 3.12 не приходят</strong> (эмуляция не раздаёт opcode-события из <code>settrace</code>-адаптера), на 3.13.5 — приходят. Если нужны инструкции — надёжнее <code>sys.monitoring</code> с <code>INSTRUCTION</code> (13.9).</p>
 </li>
 </ul>
 <p>⚠️ Код, который трассирует другие процессы/потоки через <code>settrace</code> и опирается на старые тонкости (гашение через <code>None</code>, тихие исключения), после миграции на 3.12+ меняет поведение молча — проверяйте трейсеры тестами (благо для этого теперь есть <code>sys.monitoring</code>-детект: <code>sys.gettrace()</code> возвращает трейсер, но события могут не совпадать со старой семантикой).</p>
-<p>Параноидальное дополнение из 11.30 остаётся в силе: если ваш код исполняет чужой Python и разрешает <code>breakpoint()</code>/<code>sys.settrace</code> — вы дали чужому коду полный контроль над выполнением. Песочницы перезаписывают <code>sys.settrace</code> первым делом.</p>
-<h2 id="15.9">15.9. <code>sys.monitoring</code> (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage<a class="headerlink" href="#15.9" title="Permanent link">#</a></h2>
+<p>Параноидальное дополнение из 11.31 остаётся в силе: если ваш код исполняет чужой Python и разрешает <code>breakpoint()</code>/<code>sys.settrace</code> — вы дали чужому коду полный контроль над выполнением. Песочницы перезаписывают <code>sys.settrace</code> первым делом.</p>
+<h2 id="13.9">13.9. <code>sys.monitoring</code> (PEP 669, 3.12+): один API для отладчиков, профайлеров и coverage<a class="headerlink" href="#13.9" title="Permanent link">#</a></h2>
 <p>PEP 669 — главный интерпретаторный подарок тестово-отладочной экосистеме в 3.12. Идея: вместо двух старых крючков (<code>settrace</code> для отладчиков, <code>setprofile</code> для профайлеров) с их ценой на каждое событие — единый API <code>sys.monitoring</code>, где инструмент <strong>регистрируется</strong> под фиксированным ID и подписывается только на нужные события. Цена неподписанных событий — ноль: компилятор генерирует соответствующие проверки только при активных инструментах.</p>
 <p>Инструментальные ID фиксированы стандартом — одновременно могут работать несколько инструментов (у <code>settrace</code> был один глобальный трейсер):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">import</span> <span class="nn">sys</span>
@@ -2070,7 +2070,7 @@
 </span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">DEBUGGER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">PROFILER_ID</span><span class="p">,</span> <span class="n">mon</span><span class="o">.</span><span class="n">OPTIMIZER_ID</span><span class="p">)</span>
 </span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="c1"># 0 1 2 5</span>
 </span></code></pre></div>
-<p>(<code>OPTIMIZER_ID=5</code> зарезервирован — в 3.13 на него встал экспериментальный tier-2 оптимизатор из 13.5.)</p>
+<p>(<code>OPTIMIZER_ID=5</code> зарезервирован — в 3.13 на него встал экспериментальный tier-2 оптимизатор из 15.5.)</p>
 <p>Набор событий (17 на 3.12):</p>
 <table>
 <thead>
@@ -2127,7 +2127,7 @@
 </span><span id="__span-39-22"><a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a><span class="c1"># 3 None</span>
 </span></code></pre></div>
 <p>Протокол — пары «подписка → колбэк» на каждый тип события; <code>get_tool(id)</code> подтверждает, что после <code>free_tool_id</code> слот свободен. В реальных инструментах в колбэках сразу фильтруют по <code>code.co_filename</code> — событие приходит на <strong>каждый</strong> вызов любой функции, и тривиальный счётчик без фильтра сам станет просадкой.</p>
-<h3 id="15.9-lokalnye-sobytiya">Локальные события: подписка на один код-объект<a class="headerlink" href="#15.9-lokalnye-sobytiya" title="Permanent link">#</a></h3>
+<h3 id="13.9-lokalnye-sobytiya">Локальные события: подписка на один код-объект<a class="headerlink" href="#13.9-lokalnye-sobytiya" title="Permanent link">#</a></h3>
 <p><code>set_events</code> действует глобально, а <code>set_local_events</code> — на <strong>один</strong> код-объект (8.7). Это API для точечного инструментария: «трассируй только эту функцию» без цены на весь процесс:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">mon</span><span class="o">.</span><span class="n">use_tool_id</span><span class="p">(</span><span class="n">mon</span><span class="o">.</span><span class="n">COVERAGE_ID</span><span class="p">,</span> <span class="s2">&quot;local-demo&quot;</span><span class="p">)</span>
 </span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="n">code_obj</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="s2">&quot;def h(x):</span><span class="se">\n</span><span class="s2">    return x * 2</span><span class="se">\n\n</span><span class="s2">result = h(21)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;t&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">)</span>
@@ -2148,9 +2148,9 @@
 </span><span id="__span-40-17"><a id="__codelineno-40-17" name="__codelineno-40-17" href="#__codelineno-40-17"></a><span class="c1"># 4         — (code, instruction_offset, callable, arg0)</span>
 </span></code></pre></div>
 <p>Обратите внимание на арность: у большинства событий колбэк — <code>(code, instruction_offset)</code>, но <code>CALL</code> дополнительно передаёт callable и первый аргумент (4 аргумента), <code>RAISE</code> — исключение. Главное — <strong>локальные события работают автономно</strong>: глобальная подписка для них не нужна (в прогоне выше <code>get_events</code> вернул 0).</p>
-<p>Кто уже сидит на PEP 669: coverage.py — опционально через <code>COVERAGE_CORE=sysmon</code> (15.7), фреймворки отладчиков (<code>debugpy</code> и наследники pdb) мигрируют постепенно, а в 3.14 на этот же API легла remote-отладка (PEP 768 — подключение отладчика к работающему процессу; его CLI-ручка <code>-X disable_remote_debug</code> разобрана в 10.3). Старый <code>settrace</code> (15.8) теперь — обёртка над этим же механизмом, так что у интерпретатора остался один системный крючок вместо трёх.</p>
-<h2 id="15.10">15.10. Тесты самого CPython: <code>python -m test</code><a class="headerlink" href="#15.10" title="Permanent link">#</a></h2>
-<p>Внутри каждого CPython лежит <code>test</code> — пакет с ~сотнями тестовых модулей, и это не «какие-то тесты»: для альтернативных реализаций они играют роль исполняемой спецификации языка (14.1) — «прошёл test suite» — главное заявление о совместимости. Запускаются они тем же интерпретатором через regrtest (regression test runner):</p>
+<p>Кто уже сидит на PEP 669: coverage.py — опционально через <code>COVERAGE_CORE=sysmon</code> (13.7), фреймворки отладчиков (<code>debugpy</code> и наследники pdb) мигрируют постепенно, а в 3.14 на этот же API легла remote-отладка (PEP 768 — подключение отладчика к работающему процессу; его CLI-ручка <code>-X disable_remote_debug</code> разобрана в 10.3). Старый <code>settrace</code> (13.8) теперь — обёртка над этим же механизмом, так что у интерпретатора остался один системный крючок вместо трёх.</p>
+<h2 id="13.10">13.10. Тесты самого CPython: <code>python -m test</code><a class="headerlink" href="#13.10" title="Permanent link">#</a></h2>
+<p>Внутри каждого CPython лежит <code>test</code> — пакет с ~сотнями тестовых модулей, и это не «какие-то тесты»: для альтернативных реализаций они играют роль исполняемой спецификации языка (17.1) — «прошёл test suite» — главное заявление о совместимости. Запускаются они тем же интерпретатором через regrtest (regression test runner):</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>$ python -m test test_support
 </span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>== Tests result: SUCCESS ==
 </span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>
@@ -2161,7 +2161,7 @@
 </span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>Total test files: run=1/1
 </span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>Result: SUCCESS
 </span></code></pre></div>
-<p>Тот же runpy-механизм, что и у <code>-m unittest</code> (15.2): <code>test</code> — обычный пакет, <code>__main__</code> которого вызывает <code>test.libregrtest</code>. Полезные ручки (из <code>python -m test --help</code>):</p>
+<p>Тот же runpy-механизм, что и у <code>-m unittest</code> (13.2): <code>test</code> — обычный пакет, <code>__main__</code> которого вызывает <code>test.libregrtest</code>. Полезные ручки (из <code>python -m test --help</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2196,7 +2196,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="15.10-refleaki">Охота на рефлаки: debug-сборка<a class="headerlink" href="#15.10-refleaki" title="Permanent link">#</a></h3>
+<h3 id="13.10-refleaki">Охота на рефлаки: debug-сборка<a class="headerlink" href="#13.10-refleaki" title="Permanent link">#</a></h3>
 <p>Самый интересный режим regrtest — <code>-R</code> (hunt reference leaks): интерпретатор гоняет каждый тест несколько раз подряд и сравнивает суммарный refcount объектов между прогонами. Утечка рефлаков — рост счётчика от прогона к прогону — сигнал «модуль держит объекты дольше, чем нужно». Механика требует <code>sys.gettotalrefcount</code>, который существует <strong>только в debug-сборках</strong> CPython (<code>./configure --with-pydebug</code>):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">import</span> <span class="nn">sys</span>
 </span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="nb">print</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;gettotalrefcount&quot;</span><span class="p">))</span>
@@ -2211,7 +2211,7 @@
 </span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="c1"># True True True</span>
 </span></code></pre></div>
 <p>⚠️ <code>test.support</code> — приватная территория: API меняется между версиями без предупреждений. Для продуктовых тестов — <code>tempfile</code>, <code>contextlib.redirect_stdout</code> (2.7) и <code>subprocess</code>; <code>test.support</code> — для тестов, живущих внутри CPython, или инструментов, осознанно привязанных к версии интерпретатора.</p>
-<h2 id="15.11">15.11. Тестовые режимы интерпретатора: шпаргалка<a class="headerlink" href="#15.11" title="Permanent link">#</a></h2>
+<h2 id="13.11">13.11. Тестовые режимы интерпретатора: шпаргалка<a class="headerlink" href="#13.11" title="Permanent link">#</a></h2>
 <p>Книга уже разобрала по одному все диагностические ручки CPython (10.1–10.3, 11.6, 9.1, 4.3, 10.8). Здесь они собраны вместе под тем углом, ради которого их чаще всего и включают: <strong>поймать проблему в тестах/CI, пока она не дошла до продакшена</strong>.</p>
 <table>
 <thead>
@@ -2292,7 +2292,7 @@
 </span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>python<span class="w"> </span>-X<span class="w"> </span>faulthandler<span class="w"> </span>-W<span class="w"> </span>error::DeprecationWarning<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/
 </span></code></pre></div>
 <p>Мораль шпаргалки: интерпретатор уже содержит датчики почти всех классов проблем — невидимых предупреждений, локальной зависимости, порчи памяти, «тихих» падений. Тесты, запущенные с включёнными датчиками, ловят их за один прогон; продакшн — за инцидент.</p>
-<h3 id="15.11-benchmarki">Бенчмарки к Части XV<a class="headerlink" href="#15.11-benchmarki" title="Permanent link">#</a></h3>
+<h3 id="13.11-benchmarki">Бенчмарки к Части XIII<a class="headerlink" href="#13.11-benchmarki" title="Permanent link">#</a></h3>
 <p>Замеры на CPython 3.12.14 (Linux, x86_64); абсолютные числа зависят от машины, отношения — устойчивы.</p>
 <p><strong>1. Цена трассировки вызовов: <code>sys.monitoring</code> против старых крючков.</strong>
 Считаем вызовы пустой функции 200 000 раз четырьмя способами: без трассировки, <code>sys.monitoring</code> (PY_START), <code>sys.setprofile</code>, <code>sys.settrace</code>:</p>
@@ -2318,13 +2318,13 @@
 </span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>coverage (ctrace)    0.196 с   — 4.3×
 </span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>coverage (sysmon)    0.157 с   — 3.4×
 </span></code></pre></div>
-<p>Покрытие — это трассировка всего кода, поэтому замедление в разы — норма; экономия sysmon (15.7, 15.9) на 3.12+ уже заметна и растёт на ветвистом коде.</p>
+<p>Покрытие — это трассировка всего кода, поэтому замедление в разы — норма; экономия sysmon (13.7, 13.9) на 3.12+ уже заметна и растёт на ветвистом коде.</p>
 <p><strong>5. Цена входа/выхода в «замороженное время».</strong>
 300 циклов входа/выхода из контекста заморозки:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>freezegun      0.738 с   — чистый Python, патч множества модулей
 </span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>time-machine   0.0005 с  — C-расширение, патч C-уровня   ≈ 1500×
 </span></code></pre></div>
-<p>Для теста, замораживающего время один раз, безразлично; для фикстуры-автозамены времени на каждый тест (function-scope, сотни тестов) — разница между минутами и мгновением (15.4).</p>
+<p>Для теста, замораживающего время один раз, безразлично; для фикстуры-автозамены времени на каждый тест (function-scope, сотни тестов) — разница между минутами и мгновением (13.4).</p>
 
 
 

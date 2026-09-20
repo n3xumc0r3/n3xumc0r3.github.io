@@ -851,11 +851,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
+      <a href="../13-testing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -871,11 +871,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
+      <a href="../14-packaging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
+    Часть XIV. Упаковка: от исходников до PyPI
   </span>
   
 
@@ -891,11 +891,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -931,11 +931,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+      <a href="../17-implementations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
@@ -951,11 +951,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -1403,7 +1403,7 @@
 
 
 <h1 id="viii-cpython">Часть VIII. Внутренности CPython<a class="headerlink" href="#viii-cpython" title="Permanent link">#</a></h1>
-<p>Первый этаж internals — то, что можно потрогать из чистого Python, не заходя в C: интернация строк (8.1), кэш малых чисел (8.2), фреймы и ячейки (8.3–8.4), счётчик ссылок (8.5), сборщик мусора (8.6), <code>__code__</code> и <code>dis</code> (8.7–8.9). Почти каждая находка этой части используется дальше — от контекстных переменных (8.11) до байт-кода Части XIII и импорта Части XVI.</p>
+<p>Первый этаж internals — то, что можно потрогать из чистого Python, не заходя в C: интернация строк (8.1), кэш малых чисел (8.2), фреймы и ячейки (8.3–8.4), счётчик ссылок (8.5), сборщик мусора (8.6), <code>__code__</code> и <code>dis</code> (8.7–8.9). Почти каждая находка этой части используется дальше — от контекстных переменных (8.11) до байт-кода Части XV и импорта Части XVI.</p>
 <h2 id="8.1">8.1. Интернация строк и <code>sys.intern</code><a class="headerlink" href="#8.1" title="Permanent link">#</a></h2>
 <p>CPython <strong>автоматически</strong> интернирует строки, которые выглядят как валидные идентификаторы (только латиница, цифры, <code>_</code>) — но только те, что появляются в исходном коде как литералы или формируются компилятором. <strong>Runtime-конкатенация</strong> (<code>"a" + "b"</code>) интернирования не делает — для неё нужно явное <code>sys.intern()</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;hello_world&quot;</span>   <span class="c1"># валидный идентификатор</span>

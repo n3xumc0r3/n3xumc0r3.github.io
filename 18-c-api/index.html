@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/17-c-api/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/18-c-api/">
       
       
-        <link rel="prev" href="../16-import/">
+        <link rel="prev" href="../17-implementations/">
       
       
-        <link rel="next" href="../18-packaging/">
+        <link rel="next" href="../appendix-a-plagiarism/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>Часть XVII. C-расширения и C API: из Python в C и обратно - Python под капотом</title>
+        <title>Часть XVIII. C-расширения и C API: из Python в C и обратно - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="Часть XVII. C-расширения и C API: из Python в C и обратно — Python под капотом">
+  <meta property="og:title" content="Часть XVIII. C-расширения и C API: из Python в C и обратно — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/17-c-api/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/18-c-api/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Часть XVII. C-расширения и C API: из Python в C и обратно — Python под капотом">
+  <meta name="twitter:title" content="Часть XVIII. C-расширения и C API: из Python в C и обратно — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#xvii-c-c-api-python-c" class="md-skip">
+        <a href="#xviii-c-c-api-python-c" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Часть XVII. C-расширения и C API: из Python в C и обратно
+              Часть XVIII. C-расширения и C API: из Python в C и обратно
             
           </span>
         </div>
@@ -550,11 +550,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
+      <a href="../13-testing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -570,11 +570,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
+      <a href="../14-packaging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
+    Часть XIV. Упаковка: от исходников до PyPI
   </span>
   
 
@@ -590,11 +590,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -627,6 +627,26 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-implementations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -643,7 +663,7 @@
           
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -654,7 +674,7 @@
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -676,26 +696,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#17.1" class="md-nav__link">
+  <a href="#18.1" class="md-nav__link">
     <span class="md-ellipsis">
-      17.1. Три пути в C: ctypes, cffi, C API
+      18.1. Три пути в C: ctypes, cffi, C API
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.2" class="md-nav__link">
+  <a href="#18.2" class="md-nav__link">
     <span class="md-ellipsis">
-      17.2. ctypes — C без компиляции
+      18.2. ctypes — C без компиляции
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.2. ctypes — C без компиляции">
+    <nav class="md-nav" aria-label="18.2. ctypes — C без компиляции">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.2-restype" class="md-nav__link">
+  <a href="#18.2-restype" class="md-nav__link">
     <span class="md-ellipsis">
       Прототип обязателен: две ловушки argtypes/restype
     </span>
@@ -704,7 +724,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-errno" class="md-nav__link">
+  <a href="#18.2-errno" class="md-nav__link">
     <span class="md-ellipsis">
       Ошибки C: use_errno
     </span>
@@ -713,7 +733,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-structs" class="md-nav__link">
+  <a href="#18.2-structs" class="md-nav__link">
     <span class="md-ellipsis">
       Структуры, массивы, указатели
     </span>
@@ -722,7 +742,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-callbacks" class="md-nav__link">
+  <a href="#18.2-callbacks" class="md-nav__link">
     <span class="md-ellipsis">
       Колбэки: C вызывает Python
     </span>
@@ -731,7 +751,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-gil" class="md-nav__link">
+  <a href="#18.2-gil" class="md-nav__link">
     <span class="md-ellipsis">
       CDLL против PyDLL: кто держит GIL
     </span>
@@ -745,26 +765,26 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.3" class="md-nav__link">
+  <a href="#18.3" class="md-nav__link">
     <span class="md-ellipsis">
-      17.3. cffi — объявления вместо прототипов
+      18.3. cffi — объявления вместо прототипов
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.4" class="md-nav__link">
+  <a href="#18.4" class="md-nav__link">
     <span class="md-ellipsis">
-      17.4. PyObject и подсчёт ссылок
+      18.4. PyObject и подсчёт ссылок
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.4. PyObject и подсчёт ссылок">
+    <nav class="md-nav" aria-label="18.4. PyObject и подсчёт ссылок">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.4-refs" class="md-nav__link">
+  <a href="#18.4-refs" class="md-nav__link">
     <span class="md-ellipsis">
       Правила ссылок: owned vs borrowed
     </span>
@@ -773,7 +793,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.4-immortal" class="md-nav__link">
+  <a href="#18.4-immortal" class="md-nav__link">
     <span class="md-ellipsis">
       Бессмертные объекты (PEP 683, Python 3.12+)
     </span>
@@ -787,17 +807,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.5" class="md-nav__link">
+  <a href="#18.5" class="md-nav__link">
     <span class="md-ellipsis">
-      17.5. Свой модуль на C API
+      18.5. Свой модуль на C API
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.5. Свой модуль на C API">
+    <nav class="md-nav" aria-label="18.5. Свой модуль на C API">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.5-conventions" class="md-nav__link">
+  <a href="#18.5-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       Конвенции вызова: METH_*
     </span>
@@ -806,7 +826,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.5-parse" class="md-nav__link">
+  <a href="#18.5-parse" class="md-nav__link">
     <span class="md-ellipsis">
       Разбор аргументов: PyArg_ParseTuple
     </span>
@@ -815,7 +835,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.5-moduledef" class="md-nav__link">
+  <a href="#18.5-moduledef" class="md-nav__link">
     <span class="md-ellipsis">
       PyModuleDef: m_size и multi-phase init
     </span>
@@ -829,17 +849,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.6" class="md-nav__link">
+  <a href="#18.6" class="md-nav__link">
     <span class="md-ellipsis">
-      17.6. Свой тип из C API
+      18.6. Свой тип из C API
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.6. Свой тип из C API">
+    <nav class="md-nav" aria-label="18.6. Свой тип из C API">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.6-slots" class="md-nav__link">
+  <a href="#18.6-slots" class="md-nav__link">
     <span class="md-ellipsis">
       Слоты ↔ dunder
     </span>
@@ -848,7 +868,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.6-heaptypes" class="md-nav__link">
+  <a href="#18.6-heaptypes" class="md-nav__link">
     <span class="md-ellipsis">
       Heap-типы: PyType_FromSpec
     </span>
@@ -862,17 +882,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.7" class="md-nav__link">
+  <a href="#18.7" class="md-nav__link">
     <span class="md-ellipsis">
-      17.7. Ошибки и исключения из C
+      18.7. Ошибки и исключения из C
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.7. Ошибки и исключения из C">
+    <nav class="md-nav" aria-label="18.7. Ошибки и исключения из C">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.7-pyerr" class="md-nav__link">
+  <a href="#18.7-pyerr" class="md-nav__link">
     <span class="md-ellipsis">
       Таблица PyErr_*
     </span>
@@ -881,7 +901,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.7-badnull" class="md-nav__link">
+  <a href="#18.7-badnull" class="md-nav__link">
     <span class="md-ellipsis">
       Протокол нарушен: что бывает за return NULL без PyErr_*
     </span>
@@ -895,17 +915,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.8" class="md-nav__link">
+  <a href="#18.8" class="md-nav__link">
     <span class="md-ellipsis">
-      17.8. GIL из C-кода
+      18.8. GIL из C-кода
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.8. GIL из C-кода">
+    <nav class="md-nav" aria-label="18.8. GIL из C-кода">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.8-pygilstate" class="md-nav__link">
+  <a href="#18.8-pygilstate" class="md-nav__link">
     <span class="md-ellipsis">
       PyGILState_*: когда поток чужой
     </span>
@@ -919,17 +939,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.9" class="md-nav__link">
+  <a href="#18.9" class="md-nav__link">
     <span class="md-ellipsis">
-      17.9. Stable ABI и сборки без GIL
+      18.9. Stable ABI и сборки без GIL
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.9. Stable ABI и сборки без GIL">
+    <nav class="md-nav" aria-label="18.9. Stable ABI и сборки без GIL">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.9-limited" class="md-nav__link">
+  <a href="#18.9-limited" class="md-nav__link">
     <span class="md-ellipsis">
       Ограниченный C API: один .so на все версии
     </span>
@@ -938,7 +958,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.9-freethreading" class="md-nav__link">
+  <a href="#18.9-freethreading" class="md-nav__link">
     <span class="md-ellipsis">
       Сборки без GIL
     </span>
@@ -952,17 +972,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.10" class="md-nav__link">
+  <a href="#18.10" class="md-nav__link">
     <span class="md-ellipsis">
-      17.10. Встраивание интерпретатора в C
+      18.10. Встраивание интерпретатора в C
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.10. Встраивание интерпретатора в C">
+    <nav class="md-nav" aria-label="18.10. Встраивание интерпретатора в C">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.10-subinterps" class="md-nav__link">
+  <a href="#18.10-subinterps" class="md-nav__link">
     <span class="md-ellipsis">
       Суб-интерпретаторы
     </span>
@@ -976,19 +996,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.11" class="md-nav__link">
+  <a href="#18.11" class="md-nav__link">
     <span class="md-ellipsis">
-      17.11. Отладка C-расширений
+      18.11. Отладка C-расширений
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.11. Отладка C-расширений">
+    <nav class="md-nav" aria-label="18.11. Отладка C-расширений">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.11-benchmarki" class="md-nav__link">
+  <a href="#18.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XVII
+      Бенчмарки к Части XVIII
     </span>
   </a>
   
@@ -1003,26 +1023,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1190,26 +1190,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#17.1" class="md-nav__link">
+  <a href="#18.1" class="md-nav__link">
     <span class="md-ellipsis">
-      17.1. Три пути в C: ctypes, cffi, C API
+      18.1. Три пути в C: ctypes, cffi, C API
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.2" class="md-nav__link">
+  <a href="#18.2" class="md-nav__link">
     <span class="md-ellipsis">
-      17.2. ctypes — C без компиляции
+      18.2. ctypes — C без компиляции
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.2. ctypes — C без компиляции">
+    <nav class="md-nav" aria-label="18.2. ctypes — C без компиляции">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.2-restype" class="md-nav__link">
+  <a href="#18.2-restype" class="md-nav__link">
     <span class="md-ellipsis">
       Прототип обязателен: две ловушки argtypes/restype
     </span>
@@ -1218,7 +1218,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-errno" class="md-nav__link">
+  <a href="#18.2-errno" class="md-nav__link">
     <span class="md-ellipsis">
       Ошибки C: use_errno
     </span>
@@ -1227,7 +1227,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-structs" class="md-nav__link">
+  <a href="#18.2-structs" class="md-nav__link">
     <span class="md-ellipsis">
       Структуры, массивы, указатели
     </span>
@@ -1236,7 +1236,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-callbacks" class="md-nav__link">
+  <a href="#18.2-callbacks" class="md-nav__link">
     <span class="md-ellipsis">
       Колбэки: C вызывает Python
     </span>
@@ -1245,7 +1245,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.2-gil" class="md-nav__link">
+  <a href="#18.2-gil" class="md-nav__link">
     <span class="md-ellipsis">
       CDLL против PyDLL: кто держит GIL
     </span>
@@ -1259,26 +1259,26 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.3" class="md-nav__link">
+  <a href="#18.3" class="md-nav__link">
     <span class="md-ellipsis">
-      17.3. cffi — объявления вместо прототипов
+      18.3. cffi — объявления вместо прототипов
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.4" class="md-nav__link">
+  <a href="#18.4" class="md-nav__link">
     <span class="md-ellipsis">
-      17.4. PyObject и подсчёт ссылок
+      18.4. PyObject и подсчёт ссылок
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.4. PyObject и подсчёт ссылок">
+    <nav class="md-nav" aria-label="18.4. PyObject и подсчёт ссылок">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.4-refs" class="md-nav__link">
+  <a href="#18.4-refs" class="md-nav__link">
     <span class="md-ellipsis">
       Правила ссылок: owned vs borrowed
     </span>
@@ -1287,7 +1287,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.4-immortal" class="md-nav__link">
+  <a href="#18.4-immortal" class="md-nav__link">
     <span class="md-ellipsis">
       Бессмертные объекты (PEP 683, Python 3.12+)
     </span>
@@ -1301,17 +1301,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.5" class="md-nav__link">
+  <a href="#18.5" class="md-nav__link">
     <span class="md-ellipsis">
-      17.5. Свой модуль на C API
+      18.5. Свой модуль на C API
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.5. Свой модуль на C API">
+    <nav class="md-nav" aria-label="18.5. Свой модуль на C API">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.5-conventions" class="md-nav__link">
+  <a href="#18.5-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       Конвенции вызова: METH_*
     </span>
@@ -1320,7 +1320,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.5-parse" class="md-nav__link">
+  <a href="#18.5-parse" class="md-nav__link">
     <span class="md-ellipsis">
       Разбор аргументов: PyArg_ParseTuple
     </span>
@@ -1329,7 +1329,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.5-moduledef" class="md-nav__link">
+  <a href="#18.5-moduledef" class="md-nav__link">
     <span class="md-ellipsis">
       PyModuleDef: m_size и multi-phase init
     </span>
@@ -1343,17 +1343,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.6" class="md-nav__link">
+  <a href="#18.6" class="md-nav__link">
     <span class="md-ellipsis">
-      17.6. Свой тип из C API
+      18.6. Свой тип из C API
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.6. Свой тип из C API">
+    <nav class="md-nav" aria-label="18.6. Свой тип из C API">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.6-slots" class="md-nav__link">
+  <a href="#18.6-slots" class="md-nav__link">
     <span class="md-ellipsis">
       Слоты ↔ dunder
     </span>
@@ -1362,7 +1362,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.6-heaptypes" class="md-nav__link">
+  <a href="#18.6-heaptypes" class="md-nav__link">
     <span class="md-ellipsis">
       Heap-типы: PyType_FromSpec
     </span>
@@ -1376,17 +1376,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.7" class="md-nav__link">
+  <a href="#18.7" class="md-nav__link">
     <span class="md-ellipsis">
-      17.7. Ошибки и исключения из C
+      18.7. Ошибки и исключения из C
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.7. Ошибки и исключения из C">
+    <nav class="md-nav" aria-label="18.7. Ошибки и исключения из C">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.7-pyerr" class="md-nav__link">
+  <a href="#18.7-pyerr" class="md-nav__link">
     <span class="md-ellipsis">
       Таблица PyErr_*
     </span>
@@ -1395,7 +1395,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.7-badnull" class="md-nav__link">
+  <a href="#18.7-badnull" class="md-nav__link">
     <span class="md-ellipsis">
       Протокол нарушен: что бывает за return NULL без PyErr_*
     </span>
@@ -1409,17 +1409,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.8" class="md-nav__link">
+  <a href="#18.8" class="md-nav__link">
     <span class="md-ellipsis">
-      17.8. GIL из C-кода
+      18.8. GIL из C-кода
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.8. GIL из C-кода">
+    <nav class="md-nav" aria-label="18.8. GIL из C-кода">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.8-pygilstate" class="md-nav__link">
+  <a href="#18.8-pygilstate" class="md-nav__link">
     <span class="md-ellipsis">
       PyGILState_*: когда поток чужой
     </span>
@@ -1433,17 +1433,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.9" class="md-nav__link">
+  <a href="#18.9" class="md-nav__link">
     <span class="md-ellipsis">
-      17.9. Stable ABI и сборки без GIL
+      18.9. Stable ABI и сборки без GIL
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.9. Stable ABI и сборки без GIL">
+    <nav class="md-nav" aria-label="18.9. Stable ABI и сборки без GIL">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.9-limited" class="md-nav__link">
+  <a href="#18.9-limited" class="md-nav__link">
     <span class="md-ellipsis">
       Ограниченный C API: один .so на все версии
     </span>
@@ -1452,7 +1452,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#17.9-freethreading" class="md-nav__link">
+  <a href="#18.9-freethreading" class="md-nav__link">
     <span class="md-ellipsis">
       Сборки без GIL
     </span>
@@ -1466,17 +1466,17 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.10" class="md-nav__link">
+  <a href="#18.10" class="md-nav__link">
     <span class="md-ellipsis">
-      17.10. Встраивание интерпретатора в C
+      18.10. Встраивание интерпретатора в C
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.10. Встраивание интерпретатора в C">
+    <nav class="md-nav" aria-label="18.10. Встраивание интерпретатора в C">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.10-subinterps" class="md-nav__link">
+  <a href="#18.10-subinterps" class="md-nav__link">
     <span class="md-ellipsis">
       Суб-интерпретаторы
     </span>
@@ -1490,19 +1490,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#17.11" class="md-nav__link">
+  <a href="#18.11" class="md-nav__link">
     <span class="md-ellipsis">
-      17.11. Отладка C-расширений
+      18.11. Отладка C-расширений
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="17.11. Отладка C-расширений">
+    <nav class="md-nav" aria-label="18.11. Отладка C-расширений">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#17.11-benchmarki" class="md-nav__link">
+  <a href="#18.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XVII
+      Бенчмарки к Части XVIII
     </span>
   </a>
   
@@ -1528,9 +1528,9 @@
                   
 
 
-<h1 id="xvii-c-c-api-python-c">Часть XVII. C-расширения и C API: из Python в C и обратно<a class="headerlink" href="#xvii-c-c-api-python-c" title="Permanent link">#</a></h1>
+<h1 id="xviii-c-c-api-python-c">Часть XVIII. C-расширения и C API: из Python в C и обратно<a class="headerlink" href="#xviii-c-c-api-python-c" title="Permanent link">#</a></h1>
 <p>Часть XVI показывала, что для импорт-механики C-расширение не отличается от обычного модуля — тот же PathFinder, просто суффикс <code>.cpython-312-x86_64-linux-gnu.so</code> с высшим приоритетом (16.3) и точка входа <code>PyInit_&lt;имя&gt;</code> (16.9). Здесь — сама C-сторона: как вызвать C из Python без компиляции (<code>ctypes</code>), через библиотеку объявлений (<code>cffi</code>) и на полном C API; как устроен <code>PyObject</code> и подсчёт ссылок (8.5 — продолжение темы); как писать свой модуль и свой тип; как обходиться с GIL из C; и как встроить интерпретатор в чужую C-программу. Каждый пример в этой части собран и прогнан реальным компилятором на CPython 3.12 — числа из бенчмарков в конце части сняты на машине с 2 ядрами.</p>
-<h2 id="17.1">17.1. Три пути в C: <code>ctypes</code>, <code>cffi</code>, C API<a class="headerlink" href="#17.1" title="Permanent link">#</a></h2>
+<h2 id="18.1">18.1. Три пути в C: <code>ctypes</code>, <code>cffi</code>, C API<a class="headerlink" href="#18.1" title="Permanent link">#</a></h2>
 <p>Python-программа может добраться до нативного кода тремя дорогами разной глубины:</p>
 <table>
 <thead>
@@ -1579,7 +1579,7 @@
 <td>компилятором</td>
 </tr>
 <tr>
-<td>Цена вызова (17.11)</td>
+<td>Цена вызова (18.11)</td>
 <td>~400 нс</td>
 <td>~300 нс</td>
 <td>~90–120 нс</td>
@@ -1597,7 +1597,7 @@
 <td>—</td>
 <td>—</td>
 <td>да</td>
-<td>опционально (17.9)</td>
+<td>опционально (18.9)</td>
 </tr>
 <tr>
 <td>Когда выбирать</td>
@@ -1608,9 +1608,9 @@
 </tr>
 </tbody>
 </table>
-<p>Правила выбора на практике просты. Если нужна <strong>одна-две функции</strong> из существующей библиотеки — <code>ctypes</code>, он в stdlib и работает без единого компилятора. Если вы <strong>оборачиваете крупную C-библиотеку</strong> (как <code>cryptography</code> оборачивает OpenSSL) или целитесь в <strong>PyPy</strong> (14.2), где <code>cffi</code> — родной механизм, а мост <code>cpyext</code> для C-расширений медленный — берите <code>cffi</code>. Если же вы пишете <strong>свой</strong> быстрый код, которому нужны типы, объекты, методики Части XIII на C-уровне, — только полный C API.</p>
+<p>Правила выбора на практике просты. Если нужна <strong>одна-две функции</strong> из существующей библиотеки — <code>ctypes</code>, он в stdlib и работает без единого компилятора. Если вы <strong>оборачиваете крупную C-библиотеку</strong> (как <code>cryptography</code> оборачивает OpenSSL) или целитесь в <strong>PyPy</strong> (17.2), где <code>cffi</code> — родной механизм, а мост <code>cpyext</code> для C-расширений медленный — берите <code>cffi</code>. Если же вы пишете <strong>свой</strong> быстрый код, которому нужны типы, объекты, методики Части XV на C-уровне, — только полный C API.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Асимметрия цены: C-функция через C API быстрее, чем вызов самой Python-функции</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">fastext</span>                    <span class="c1"># расширение из 17.5</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">fastext</span>                    <span class="c1"># расширение из 18.5</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span> <span class="nf">py_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
@@ -1619,8 +1619,8 @@
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">fastext</span><span class="o">.</span><span class="n">add_fast</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>        <span class="c1"># ~84 нс — METH_FASTCALL, кортежа нет</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">fastext</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>                    <span class="c1"># ~63 нс — METH_O: дешевле, чем вызов Python-функции</span>
 </span></code></pre></div>
-<p>✅ Важный вывод из бенчмарков (17.11): вызов C-функции с правильной конвенцией (<code>METH_O</code>, <code>METH_FASTCALL</code>) <strong>дешевле</strong> вызова обычной Python-функции — фрейм создавать не нужно. Дорогой бывает не C, а преобразование на границе: <code>ctypes</code> на каждый вызов конвертирует аргументы через libffi, и три наносекунды экономии внутри C легко съедаются четырьмя сотнями на границе.</p>
-<h2 id="17.2">17.2. <code>ctypes</code> — C без компиляции<a class="headerlink" href="#17.2" title="Permanent link">#</a></h2>
+<p>✅ Важный вывод из бенчмарков (18.11): вызов C-функции с правильной конвенцией (<code>METH_O</code>, <code>METH_FASTCALL</code>) <strong>дешевле</strong> вызова обычной Python-функции — фрейм создавать не нужно. Дорогой бывает не C, а преобразование на границе: <code>ctypes</code> на каждый вызов конвертирует аргументы через libffi, и три наносекунды экономии внутри C легко съедаются четырьмя сотнями на границе.</p>
+<h2 id="18.2">18.2. <code>ctypes</code> — C без компиляции<a class="headerlink" href="#18.2" title="Permanent link">#</a></h2>
 <p><code>ctypes</code> грузит готовую динамическую библиотеку через <code>dlopen</code> и вызывает функции через <strong>libffi</strong> — ту же библиотеку, на которой стоят колбэки CPython. Никакого компилятора, никаких заголовков: только знание сигнатур.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span><span class="p">,</span> <span class="n">c_double</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span> <span class="nn">ctypes.util</span>
@@ -1636,7 +1636,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">libc</span> <span class="o">=</span> <span class="n">CDLL</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>          <span class="c1"># None = handle ГЛАВНОГО процесса: функции уже загружены в него</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># это работает и наоборот: расширение CPython&#39;а можно найти в самом себе</span>
 </span></code></pre></div>
-<h3 id="17.2-restype">Прототип обязателен: две ловушки <code>argtypes</code>/<code>restype</code><a class="headerlink" href="#17.2-restype" title="Permanent link">#</a></h3>
+<h3 id="18.2-restype">Прототип обязателен: две ловушки <code>argtypes</code>/<code>restype</code><a class="headerlink" href="#18.2-restype" title="Permanent link">#</a></h3>
 <p>Без <code>argtypes</code>/<code>restype</code> ctypes по умолчанию конвертирует только целые (в <code>c_int</code>) и <code>bytes</code>, а возвращает <code>c_int</code>. Две следствия — одно громкое, второе коварное:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Ловушка 1 (громкая): float без argtypes не конвертируется ВООБЩЕ</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">libm</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>      <span class="c1"># ctypes.ArgumentError: argument 1: TypeError:</span>
@@ -1651,7 +1651,7 @@
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">libm</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                  <span class="c1"># 497 — мусор из rax, на другой машине число другое</span>
 </span></code></pre></div>
 <p>⚠️ Вторая ловушка хуже первой: <code>sin(0) → 0</code> <strong>совпадает с правдой</strong>, <code>sqrt(2) → 497</code> — «зависит от фаз луны». Всегда задавайте <code>argtypes</code> и <code>restype</code> для каждой функции. <code>restype=None</code> означает <code>void</code>.</p>
-<h3 id="17.2-errno">Ошибки C: <code>use_errno</code><a class="headerlink" href="#17.2-errno" title="Permanent link">#</a></h3>
+<h3 id="18.2-errno">Ошибки C: <code>use_errno</code><a class="headerlink" href="#18.2-errno" title="Permanent link">#</a></h3>
 <p>C-функции сообщают об ошибке через возврат <code>-1</code> и <code>errno</code> — исключений в C нет. ctypes по умолчанию <strong>глотает</strong> errno; флаг <code>use_errno=True</code> сохраняет его в <code>ctypes.get_errno()</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CDLL</span><span class="p">,</span> <span class="n">c_char_p</span><span class="p">,</span> <span class="n">c_int</span><span class="p">,</span> <span class="n">get_errno</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -1664,7 +1664,7 @@
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">get_errno</span><span class="p">()</span> <span class="c1"># 2              — ENOENT, достаём сами</span>
 </span></code></pre></div>
 <p>⚠️ Обратная сторона: ошибки сегментации ctypes поймать не может — передача не того указателя убивает весь процесс. Исключение <code>ArgumentError</code> возникает только на этапе <strong>конверсии аргумента</strong> (см. ловушки выше), но не внутри C-кода.</p>
-<h3 id="17.2-structs">Структуры, массивы, указатели<a class="headerlink" href="#17.2-structs" title="Permanent link">#</a></h3>
+<h3 id="18.2-structs">Структуры, массивы, указатели<a class="headerlink" href="#18.2-structs" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CDLL</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">,</span> <span class="n">Structure</span><span class="p">,</span> <span class="n">c_double</span><span class="p">,</span> <span class="n">c_int</span><span class="p">,</span> <span class="n">c_long</span><span class="p">)</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>                <span class="c1"># аналог C struct point { double x, y; }</span>
@@ -1682,7 +1682,7 @@
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">demolib</span><span class="o">.</span><span class="n">sum_arr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>                          <span class="c1"># 15.0 — массив сам кастуется к указателю</span>
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="n">ctypes</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_double</span><span class="p">))</span>              <span class="c1"># явный каст, если нужен</span>
 </span></code></pre></div>
-<h3 id="17.2-callbacks">Колбэки: C вызывает Python<a class="headerlink" href="#17.2-callbacks" title="Permanent link">#</a></h3>
+<h3 id="18.2-callbacks">Колбэки: C вызывает Python<a class="headerlink" href="#18.2-callbacks" title="Permanent link">#</a></h3>
 <p><code>CFUNCTYPE</code> создаёт C-совместимый указатель на функцию из Python-замыкания — через тот же libffi-трамплин. Классика жанра: <code>qsort</code> из libc с Python-компаратором:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">CFUNCTYPE</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">,</span> <span class="n">c_int</span><span class="p">,</span> <span class="n">CDLL</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
@@ -1700,8 +1700,8 @@
 </span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="n">libc</span><span class="o">.</span><span class="n">qsort</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">sizeof</span><span class="p">(</span><span class="n">c_int</span><span class="p">),</span> <span class="n">cmp_func</span><span class="p">)</span>
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>   <span class="c1"># [1, 2, 3, 5, 7, 9]</span>
 </span></code></pre></div>
-<p>⚠️ Колбэк из C в Python — самый дорогой вид вызова (FFI-переход в обе стороны, ~540 нс, 17.11) и самый опасный: если хранить ссылку на <code>cmp_func</code> нигде, а C-код держит указатель — GC соберёт обёртку, и следующий вызов из C упадёт. Живите на колбэке всё время, пока он нужен C-стороне.</p>
-<h3 id="17.2-gil"><code>CDLL</code> против <code>PyDLL</code>: кто держит GIL<a class="headerlink" href="#17.2-gil" title="Permanent link">#</a></h3>
+<p>⚠️ Колбэк из C в Python — самый дорогой вид вызова (FFI-переход в обе стороны, ~540 нс, 18.11) и самый опасный: если хранить ссылку на <code>cmp_func</code> нигде, а C-код держит указатель — GC соберёт обёртку, и следующий вызов из C упадёт. Живите на колбэке всё время, пока он нужен C-стороне.</p>
+<h3 id="18.2-gil"><code>CDLL</code> против <code>PyDLL</code>: кто держит GIL<a class="headerlink" href="#18.2-gil" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
@@ -1732,7 +1732,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>CDLL:  3 017 607 итераций за 1 секунду   — GIL освобождён, цикл крутится
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>PyDLL:    15 064 итераций                — GIL удерживается, цикл стоит
 </span></code></pre></div>
-<h2 id="17.3">17.3. <code>cffi</code> — объявления вместо прототипов<a class="headerlink" href="#17.3" title="Permanent link">#</a></h2>
+<h2 id="18.3">18.3. <code>cffi</code> — объявления вместо прототипов<a class="headerlink" href="#18.3" title="Permanent link">#</a></h2>
 <p><code>cffi</code> (авторы PyPy; ставится через <code>pip install cffi</code>) решает главную ergonomic-проблему ctypes: сигнатуры описываются <strong>одной C-декларацией</strong>, которую парсит настоящий C-парсер (<code>pycparser</code>). Ошибки в типах ловятся на этапе объявления, а не в проде на 497-м значении.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">cffi</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
@@ -1783,9 +1783,9 @@
 </tr>
 </tbody>
 </table>
-<p>API-режим собирает C-файл, в котором ваши Python-вызовы <code>C.add2(...)</code> превращаются в прямые вызовы C с проверкой типов на этапе <strong>компиляции</strong> — граница FFI исчезает, остаётся обычный вызов функции расширения (17.11: на одном порядке с METH_*). Именно поэтому у <code>cryptography</code> нет бинарных проблем «ctypes-строка не совпала с реальной сигнатурой».</p>
-<p>✅ PyPy-симметрия (14.2): на PyPy <code>cffi</code>-модули исполняются <strong>нативно</strong> JIT'ом (cffi — часть его stdlib), а C-расширения через мост <code>cpyext</code> теряют скорость на каждой границе. Если библиотеку планируется гонять на нескольких реализациях Python — API-режим cffi безопаснее C API.</p>
-<h2 id="17.4">17.4. <code>PyObject</code> и подсчёт ссылок<a class="headerlink" href="#17.4" title="Permanent link">#</a></h2>
+<p>API-режим собирает C-файл, в котором ваши Python-вызовы <code>C.add2(...)</code> превращаются в прямые вызовы C с проверкой типов на этапе <strong>компиляции</strong> — граница FFI исчезает, остаётся обычный вызов функции расширения (18.11: на одном порядке с METH_*). Именно поэтому у <code>cryptography</code> нет бинарных проблем «ctypes-строка не совпала с реальной сигнатурой».</p>
+<p>✅ PyPy-симметрия (17.2): на PyPy <code>cffi</code>-модули исполняются <strong>нативно</strong> JIT'ом (cffi — часть его stdlib), а C-расширения через мост <code>cpyext</code> теряют скорость на каждой границе. Если библиотеку планируется гонять на нескольких реализациях Python — API-режим cffi безопаснее C API.</p>
+<h2 id="18.4">18.4. <code>PyObject</code> и подсчёт ссылок<a class="headerlink" href="#18.4" title="Permanent link">#</a></h2>
 <p>Каждый объект CPython начинается с одного и того же заголовка. Это не упрощение — дословно <code>object.h</code> из CPython 3.12:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">_object</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="k">union</span><span class="w"> </span><span class="p">{</span>
@@ -1800,7 +1800,7 @@
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="n">Py_ssize_t</span><span class="w"> </span><span class="n">ob_size</span><span class="p">;</span><span class="w">                   </span><span class="cm">/* размер переменной части */</span>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="p">}</span><span class="w"> </span><span class="n">PyVarObject</span><span class="p">;</span>
 </span></code></pre></div>
-<p>Весь Python — миллионы объектов списков, функций, модулей — сидит на этих двух полях: <strong>сколько ссылок</strong> и <strong>какой тип</strong>. «Класс» в рантайме — это <code>ob_type</code>, указывающий на <code>PyTypeObject</code> со слотами (17.6). Отсюда же прозрачность объектов для <code>ctypes</code>: заглянуть в заголовок можно без единой строчки C:</p>
+<p>Весь Python — миллионы объектов списков, функций, модулей — сидит на этих двух полях: <strong>сколько ссылок</strong> и <strong>какой тип</strong>. «Класс» в рантайме — это <code>ob_type</code>, указывающий на <code>PyTypeObject</code> со слотами (18.6). Отсюда же прозрачность объектов для <code>ctypes</code>: заглянуть в заголовок можно без единой строчки C:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">ctypes</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">Structure</span><span class="p">,</span> <span class="n">c_ssize_t</span><span class="p">,</span> <span class="n">c_void_p</span><span class="p">,</span> <span class="n">c_double</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -1814,7 +1814,7 @@
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">ctypes</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">head</span><span class="o">.</span><span class="n">ob_type</span><span class="p">,</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">py_object</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># list — ob_type</span>
 </span></code></pre></div>
 <p>✅ Совпадение проверено: <code>head.ob_refcnt == sys.getrefcount(x) - 1</code>. Правило «+1» — базовая ловушка <code>getrefcount</code> (8.5): аргумент, переданный в функцию, временно держит ссылку.</p>
-<h3 id="17.4-refs">Правила ссылок: owned vs borrowed<a class="headerlink" href="#17.4-refs" title="Permanent link">#</a></h3>
+<h3 id="18.4-refs">Правила ссылок: owned vs borrowed<a class="headerlink" href="#18.4-refs" title="Permanent link">#</a></h3>
 <p>Вся дисциплина C API — про то, <strong>кто владеет ссылкой</strong>:</p>
 <table>
 <thead>
@@ -1854,7 +1854,7 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">Py_XINCREF</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Py_XDECREF</span><span class="w">  </span><span class="cm">/* NULL-безопасные варианты */</span>
 </span></code></pre></div>
 <p>⚠️ <code>Py_DECREF</code> может <strong>выполнить произвольный Python-код</strong> (деструктор <code>__del__</code>, weakref-колбэки — 8.14, 8.6): после <code>Py_DECREF(obj)</code> указатель <code>obj</code> — висячий, и держать его «до конца функции» нельзя. Циклы ссылок refcnt не разрывает — за этим ходит генерационный GC (8.6).</p>
-<h3 id="17.4-immortal">Бессмертные объекты (PEP 683, Python 3.12+)<a class="headerlink" href="#17.4-immortal" title="Permanent link">#</a></h3>
+<h3 id="18.4-immortal">Бессмертные объекты (PEP 683, Python 3.12+)<a class="headerlink" href="#18.4-immortal" title="Permanent link">#</a></h3>
 <p>С 3.12 <code>None</code>, <code>True</code>, <code>False</code>, <code>Ellipsis</code>, <code>NotImplemented</code>, маленькие целые и все интернированные строки <strong>бессмертны</strong>: их refcnt никогда не меняется. Значение метки видно прямо из Python:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">sys</span><span class="o">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>    <span class="c1"># 4294967295 — 0xFFFFFFFF, все младшие 32 бита установлены</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>    <span class="c1"># 4294967295</span>
@@ -1862,9 +1862,9 @@
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>                                   <span class="c1"># литералов сложилось бы компилятором)</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">sys</span><span class="o">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>     <span class="c1"># 2 — обычный объект: globals + временный аргумент</span>
 </span></code></pre></div>
-<p>В заголовке 3.12 метка определена как <code>_Py_IMMORTAL_REFCNT = UINT_MAX</code> (0xFFFFFFFF) на 64-битных системах — проверка бессмертия по знаковому биту (<code>(int32_t)ob_refcnt &lt; 0</code>), на 32-битных — <code>UINT_MAX &gt;&gt; 2</code> (0x3FFFFFFF). В C-коде это значит: <code>Py_INCREF</code>/<code>Py_DECREF</code> на <code>None</code> — безопасны, но бессмысленны; расширениям больше не нужно охранять глобальные синглтоны от зануления счётчика. Обратная сторона: <code>Py_Finalize</code> больше не «обнуляет мир» — часть объектов умирает бессмертной (см. 17.10).</p>
+<p>В заголовке 3.12 метка определена как <code>_Py_IMMORTAL_REFCNT = UINT_MAX</code> (0xFFFFFFFF) на 64-битных системах — проверка бессмертия по знаковому биту (<code>(int32_t)ob_refcnt &lt; 0</code>), на 32-битных — <code>UINT_MAX &gt;&gt; 2</code> (0x3FFFFFFF). В C-коде это значит: <code>Py_INCREF</code>/<code>Py_DECREF</code> на <code>None</code> — безопасны, но бессмысленны; расширениям больше не нужно охранять глобальные синглтоны от зануления счётчика. Обратная сторона: <code>Py_Finalize</code> больше не «обнуляет мир» — часть объектов умирает бессмертной (см. 18.10).</p>
 <p>Новые функции-заменители borrowed-доступа продолжают появляться: <code>PyDict_GetItemRef</code>/<code>PyDict_SetItemRef</code> (3.13+) возвращают <strong>новую</strong> ссылку и код ошибки вместо borrowed-указателя — миграция API идёт в сторону «никаких borrowed».</p>
-<h2 id="17.5">17.5. Свой модуль на C API<a class="headerlink" href="#17.5" title="Permanent link">#</a></h2>
+<h2 id="18.5">18.5. Свой модуль на C API<a class="headerlink" href="#18.5" title="Permanent link">#</a></h2>
 <p>Минимальный набор: <code>Python.h</code>, таблица функций <code>PyMethodDef</code>, описание модуля <code>PyModuleDef</code>, конструктор <code>PyInit_&lt;имя&gt;</code>. Ровно этот модуль использован во всех примерах части (<code>fastext</code>):</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="cp">#define PY_SSIZE_T_CLEAN</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span>
@@ -1946,13 +1946,13 @@
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-Wall<span class="w"> </span>-shared<span class="w"> </span>-fPIC<span class="w"> </span>-I<span class="s2">&quot;</span><span class="nv">$INC</span><span class="s2">&quot;</span><span class="w"> </span>fastext.c<span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;fastext</span><span class="nv">$EXT</span><span class="s2">&quot;</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># -&gt; fastext.cpython-312-x86_64-linux-gnu.so</span>
 </span></code></pre></div>
-<p>Суффикс <code>EXT_SUFFIX</code> — не украшение: именно по нему импорт-механика (16.3, 16.9) отличает расширение от исходника и проверяет совместимость ABI (<code>cpython-312</code> = только 3.12). Файл с суффиксом <code>.so</code> без тега тоже импортируется, но его нет в wheel-тегах (14.1).</p>
+<p>Суффикс <code>EXT_SUFFIX</code> — не украшение: именно по нему импорт-механика (16.3, 16.9) отличает расширение от исходника и проверяет совместимость ABI (<code>cpython-312</code> = только 3.12). Файл с суффиксом <code>.so</code> без тега тоже импортируется, но его нет в wheel-тегах (17.1).</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span> <span class="nn">fastext</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">fastext</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>          <span class="c1"># 832040</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">fastext</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>        <span class="c1"># 5.0</span>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">fastext</span><span class="o">.</span><span class="n">add_kw</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 3.0 — именованные аргументы работают</span>
 </span></code></pre></div>
-<h3 id="17.5-conventions">Конвенции вызова: <code>METH_*</code><a class="headerlink" href="#17.5-conventions" title="Permanent link">#</a></h3>
+<h3 id="18.5-conventions">Конвенции вызова: <code>METH_*</code><a class="headerlink" href="#18.5-conventions" title="Permanent link">#</a></h3>
 <p>Флаг в таблице выбирает <strong>сигнатуру C-функции</strong> и то, сколько работы делает интерпретатор до вызова:</p>
 <table>
 <thead>
@@ -1995,11 +1995,11 @@
 </tr>
 </tbody>
 </table>
-<p><code>METH_FASTCALL</code> — самый быстрый вариант для фиксированной арности: кортеж не создаётся вообще (17.11: 84 нс против 124 нс у VARARGS). Уточнение для stable ABI: в ограниченном API <code>METH_FASTCALL</code> доступен только с версии 3.10 (<code>Py_LIMITED_API &gt;= 0x030A0000</code> — проверено по <code>methodobject.h</code> 3.12).</p>
+<p><code>METH_FASTCALL</code> — самый быстрый вариант для фиксированной арности: кортеж не создаётся вообще (18.11: 84 нс против 124 нс у VARARGS). Уточнение для stable ABI: в ограниченном API <code>METH_FASTCALL</code> доступен только с версии 3.10 (<code>Py_LIMITED_API &gt;= 0x030A0000</code> — проверено по <code>methodobject.h</code> 3.12).</p>
 <p>⚠️ GCC 14 (стандарт C23 по умолчанию) отказывается компилировать таблицу с FASTCALL/KEYWORDS-функциями без явного каста — <code>ml_meth</code> декларирован как один тип <code>PyCFunction</code> на все конвенции:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span><span class="s">&quot;add_fast&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">PyCFunction</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">void</span><span class="p">))</span><span class="n">add_fast</span><span class="p">,</span><span class="w"> </span><span class="n">METH_FASTCALL</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;...&quot;</span><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="17.5-parse">Разбор аргументов: <code>PyArg_ParseTuple</code><a class="headerlink" href="#17.5-parse" title="Permanent link">#</a></h3>
+<h3 id="18.5-parse">Разбор аргументов: <code>PyArg_ParseTuple</code><a class="headerlink" href="#18.5-parse" title="Permanent link">#</a></h3>
 <p>Форматная строка — мини-язык: <code>"dd"</code> (два double), <code>"dd|d"</code> (третий опционален), <code>":имя"</code> — имя функции в сообщениях об ошибках. Частые коды:</p>
 <table>
 <thead>
@@ -2060,14 +2060,14 @@
 </span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>                         <span class="c1"># — сообщение наше, арность проверяем сами</span>
 </span></code></pre></div>
 <p>✅ Обратите внимание: <code>"d"</code> <strong>не</strong> принимает строки — конверсия строгая (PyFloat_AsDouble, а не <code>float()</code>). Кто хочет <code>float("3")</code> — делает это в Python-обёртке или явным <code>PyNumber_Float</code>.</p>
-<h3 id="17.5-moduledef"><code>PyModuleDef</code>: <code>m_size</code> и multi-phase init<a class="headerlink" href="#17.5-moduledef" title="Permanent link">#</a></h3>
-<p>Поле <code>m_size</code> — не «размер», а флаг изоляции: <code>-1</code> — модуль держит глобальное состояние и суб-интерпретаторы (17.10) не поддерживает; <code>0</code> — состояние только в атрибутах модуля; <code>&gt; 0</code> — статическая память на каждый суб-интерпретатор. Пойманный при написании этой главы <code>SystemError</code> — заодно демонстрация:</p>
+<h3 id="18.5-moduledef"><code>PyModuleDef</code>: <code>m_size</code> и multi-phase init<a class="headerlink" href="#18.5-moduledef" title="Permanent link">#</a></h3>
+<p>Поле <code>m_size</code> — не «размер», а флаг изоляции: <code>-1</code> — модуль держит глобальное состояние и суб-интерпретаторы (18.10) не поддерживает; <code>0</code> — состояние только в атрибутах модуля; <code>&gt; 0</code> — статическая память на каждый суб-интерпретатор. Пойманный при написании этой главы <code>SystemError</code> — заодно демонстрация:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>m_size = -1 + PyModuleDef_Init() (multi-phase init, PEP 489)  -&gt;
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>SystemError: module fastext: m_size may not be negative for
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>             multi-phase initialization
 </span></code></pre></div>
-<p>Multi-phase init (создание модуля отделено от исполнения <code>m_exec</code>) обязателен для free-threaded сборок (17.9) — там глобальное состояние недопустимо в принципе.</p>
-<h2 id="17.6">17.6. Свой тип из C API<a class="headerlink" href="#17.6" title="Permanent link">#</a></h2>
+<p>Multi-phase init (создание модуля отделено от исполнения <code>m_exec</code>) обязателен для free-threaded сборок (18.9) — там глобальное состояние недопустимо в принципе.</p>
+<h2 id="18.6">18.6. Свой тип из C API<a class="headerlink" href="#18.6" title="Permanent link">#</a></h2>
 <p>Тип в C API — это заполненный <code>PyTypeObject</code>: десятки слотов-указателей, каждый соответствует dunder-протоколу. Демонстрационный тип — пара <code>long</code>-ов в C-структуре (<code>pairext.Pair</code>):</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="n">PyObject_HEAD</span><span class="w">               </span><span class="cm">/* раскрывается в PyObject ob_base; */</span>
@@ -2145,7 +2145,7 @@
 </span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>                                           <span class="c1"># == откатился к identity</span>
 </span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>         <span class="c1"># TypeError: Pair.sum() takes no arguments (1 given)</span>
 </span></code></pre></div>
-<h3 id="17.6-slots">Слоты ↔ dunder<a class="headerlink" href="#17.6-slots" title="Permanent link">#</a></h3>
+<h3 id="18.6-slots">Слоты ↔ dunder<a class="headerlink" href="#18.6-slots" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
@@ -2208,8 +2208,8 @@
 </tbody>
 </table>
 <p><code>tp_members</code> с <code>T_LONG</code> даёт не только чтение, но и запись с проверкой типа — заодно объясняет, почему Python-классам со <code>__slots__</code> не нужна корзина <code>__dict__</code> (6.10): C-типы живут так с рождения.</p>
-<h3 id="17.6-heaptypes">Heap-типы: <code>PyType_FromSpec</code><a class="headerlink" href="#17.6-heaptypes" title="Permanent link">#</a></h3>
-<p><code>static PyTypeObject</code> — глобальная C-переменная: тип нельзя создать динамически и нельзя выгрузить. Альтернатива — <strong>heap-тип</strong> из спецификации, доступный в том числе в ограниченном API (17.9):</p>
+<h3 id="18.6-heaptypes">Heap-типы: <code>PyType_FromSpec</code><a class="headerlink" href="#18.6-heaptypes" title="Permanent link">#</a></h3>
+<p><code>static PyTypeObject</code> — глобальная C-переменная: тип нельзя создать динамически и нельзя выгрузить. Альтернатива — <strong>heap-тип</strong> из спецификации, доступный в том числе в ограниченном API (18.9):</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">static</span><span class="w"> </span><span class="n">PyType_Slot</span><span class="w"> </span><span class="n">SpecSlots</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="p">{</span><span class="n">Py_tp_new</span><span class="p">,</span><span class="w">     </span><span class="n">Pair_new</span><span class="p">},</span>
 </span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="p">{</span><span class="n">Py_tp_repr</span><span class="p">,</span><span class="w">    </span><span class="n">Pair_repr</span><span class="p">},</span>
@@ -2232,7 +2232,7 @@
 </span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">pairext</span><span class="o">.</span><span class="n">make_spec_pair</span><span class="p">()</span> <span class="ow">is</span> <span class="n">pairext</span><span class="o">.</span><span class="n">make_spec_pair</span><span class="p">()</span>   <span class="c1"># False!</span>
 </span></code></pre></div>
 <p>⚠️ Каждый вызов <code>PyType_FromSpec</code> создаёт <strong>новый класс</strong> — повторный вызов не вернёт закэшированный. Тип с состоянием кэшируют в атрибуте модуля или на C-статике. Разница static/heap глубже, чем кажется: heap-типы участвуют в GC и собираются (refcnt=0 → tp_dealloc типа), static — живут до выгрузки процесса; <code>Py_TPFLAGS_HEAPTYPE = 1 &lt;&lt; 9</code> (проверено по object.h 3.12).</p>
-<h2 id="17.7">17.7. Ошибки и исключения из C<a class="headerlink" href="#17.7" title="Permanent link">#</a></h2>
+<h2 id="18.7">18.7. Ошибки и исключения из C<a class="headerlink" href="#18.7" title="Permanent link">#</a></h2>
 <p>Исключений в C нет — есть <strong>протокол</strong>: функция возвращает <code>NULL</code> и кладёт активное исключение в thread state текущего потока (не в глобальную переменную). Python-сторона видит обычный <code>raise</code>. Ставят ошибку три главных функции:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_ZeroDivisionError</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;division by zero&quot;</span><span class="p">);</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">PyErr_Format</span><span class="p">(</span><span class="n">PyExc_ValueError</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fib() needs 0 &lt;= n &lt;= 92, got %ld&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
@@ -2246,7 +2246,7 @@
 <div class="language-c highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PyErr_Occurred</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">      </span><span class="cm">/* активно ли исключение */</span>
 </span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">PyErr_Clear</span><span class="p">();</span><span class="w">                     </span><span class="cm">/* проглотить его — аналог except: pass */</span>
 </span></code></pre></div>
-<h3 id="17.7-pyerr">Таблица <code>PyErr_*</code><a class="headerlink" href="#17.7-pyerr" title="Permanent link">#</a></h3>
+<h3 id="18.7-pyerr">Таблица <code>PyErr_*</code><a class="headerlink" href="#18.7-pyerr" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
@@ -2297,7 +2297,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="17.7-badnull">Протокол нарушен: что бывает за <code>return NULL</code> без <code>PyErr_*</code><a class="headerlink" href="#17.7-badnull" title="Permanent link">#</a></h3>
+<h3 id="18.7-badnull">Протокол нарушен: что бывает за <code>return NULL</code> без <code>PyErr_*</code><a class="headerlink" href="#18.7-badnull" title="Permanent link">#</a></h3>
 <p>C-код, вернувший <code>NULL</code> без активного исключения, нарушает контракт — интерпретатор это ловит и превращает в <code>SystemError</code> (проверено на функции <code>bad_null</code> из демо-модуля):</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>SystemError: &lt;built-in function bad_null&gt; returned NULL without setting
 </span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>             an exception
@@ -2316,8 +2316,8 @@
 </span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">    </span><span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">r</span><span class="p">);</span><span class="w">   </span><span class="cm">/* NULL-безопасные */</span>
 </span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
 </span></code></pre></div>
-<h2 id="17.8">17.8. GIL из C-кода<a class="headerlink" href="#17.8" title="Permanent link">#</a></h2>
-<p>GIL — «один eval loop на процесс» (13.5), конкурентность против параллелизма (4.10) — но на C-уровне это просто мьютекс, <strong>владельцем которого является C-код расширения</strong>, и он может его отдавать. Макрос-пара для CPU-bound/блокирующих участков:</p>
+<h2 id="18.8">18.8. GIL из C-кода<a class="headerlink" href="#18.8" title="Permanent link">#</a></h2>
+<p>GIL — «один eval loop на процесс» (15.5), конкурентность против параллелизма (4.10) — но на C-уровне это просто мьютекс, <strong>владельцем которого является C-код расширения</strong>, и он может его отдавать. Макрос-пара для CPU-bound/блокирующих участков:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nf">count_primes</span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w">   </span><span class="cm">/* GIL ОСВОБОЖДЁН на время счёта */</span>
 </span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="p">{</span>
@@ -2359,7 +2359,7 @@
 </tbody>
 </table>
 <p>✅ released-вариант уложился в 1.33× (а не 2×) на 2 ядрах — счёт идёт с кэш-трафиком и запуском потоков; главное — он не деградировал до 2× как held-вариант. Тот же приём использует любой честный драйвер БД: освобождая GIL на ожидании сокета, он не блокирует остальные потоки.</p>
-<h3 id="17.8-pygilstate"><code>PyGILState_*</code>: когда поток чужой<a class="headerlink" href="#17.8-pygilstate" title="Permanent link">#</a></h3>
+<h3 id="18.8-pygilstate"><code>PyGILState_*</code>: когда поток чужой<a class="headerlink" href="#18.8-pygilstate" title="Permanent link">#</a></h3>
 <p>Колбэку, вызванному из C-потока, созданного <strong>вне</strong> Python (сетевой демон, threadpool библиотеки), GIL не принадлежит. Универсальная обёртка:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">c_thread_callback</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">    </span><span class="n">PyGILState_STATE</span><span class="w"> </span><span class="n">gstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyGILState_Ensure</span><span class="p">();</span><span class="w">  </span><span class="cm">/* взять GIL (создать ThreadState) */</span>
@@ -2369,10 +2369,10 @@
 </span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">    </span><span class="n">PyGILState_Release</span><span class="p">(</span><span class="n">gstate</span><span class="p">);</span><span class="w">                     </span><span class="cm">/* вернуть */</span>
 </span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>Противоположность — <code>PyDLL</code> из ctypes (17.2): он <strong>не</strong> освобождает GIL при вызове, потому что его функции вправе звать Python C API. Проверка на живой машине — тот же эксперимент, что выше: <code>CDLL</code>-сон не мешает главному циклу (3 017 607 итераций за секунду), <code>PyDLL</code>-сон блокирует всё (15 064).</p>
+<p>Противоположность — <code>PyDLL</code> из ctypes (18.2): он <strong>не</strong> освобождает GIL при вызове, потому что его функции вправе звать Python C API. Проверка на живой машине — тот же эксперимент, что выше: <code>CDLL</code>-сон не мешает главному циклу (3 017 607 итераций за секунду), <code>PyDLL</code>-сон блокирует всё (15 064).</p>
 <p>Устаревший сахар: <code>PyEval_InitThreads()</code>/<code>PyEval_ThreadsInitialized()</code> deprecated с 3.9, удалены в 3.13 — GIL инициализируется всегда, звать ничего не нужно.</p>
-<h2 id="17.9">17.9. Stable ABI и сборки без GIL<a class="headerlink" href="#17.9" title="Permanent link">#</a></h2>
-<h3 id="17.9-limited">Ограниченный C API: один <code>.so</code> на все версии<a class="headerlink" href="#17.9-limited" title="Permanent link">#</a></h3>
+<h2 id="18.9">18.9. Stable ABI и сборки без GIL<a class="headerlink" href="#18.9" title="Permanent link">#</a></h2>
+<h3 id="18.9-limited">Ограниченный C API: один <code>.so</code> на все версии<a class="headerlink" href="#18.9-limited" title="Permanent link">#</a></h3>
 <p>Обычное расширение слинковано с внутренностями конкретной версии: заголовок 3.12 описывает поля структур, которые в 3.13 изменились. Определение <code>Py_LIMITED_API</code> перед <code>Python.h</code> отрезает всё нестабильное:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="cp">#define Py_LIMITED_API 0x030A0000   </span><span class="cm">/* «мне достаточно API версии 3.10+» */</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span>
@@ -2405,7 +2405,7 @@
 <tr>
 <td>Создание типов</td>
 <td>static <code>PyTypeObject</code></td>
-<td><strong>обязательно</strong> <code>PyType_FromSpec</code> (17.6)</td>
+<td><strong>обязательно</strong> <code>PyType_FromSpec</code> (18.6)</td>
 </tr>
 <tr>
 <td>Суффикс файла</td>
@@ -2415,12 +2415,12 @@
 <tr>
 <td>Wheel-тег</td>
 <td><code>cp312-cp312-manylinux...</code></td>
-<td><code>cp312-abi3-manylinux...</code> — один wheel на все версии (14.1)</td>
+<td><code>cp312-abi3-manylinux...</code> — один wheel на все версии (17.1)</td>
 </tr>
 </tbody>
 </table>
 <p><code>.abi3.so</code> в порядке поиска суффиксов стоит между тегированным и голым <code>.so</code> (16.3). Цена stable ABI — скорость и доступ: макросов нет, структур нет, огромная часть API недокументирована для limited-режима. Для одиночных библиотек типа «обёртка над libfoo» — честный размен; для NumPy-style кода — нет.</p>
-<h3 id="17.9-freethreading">Сборки без GIL<a class="headerlink" href="#17.9-freethreading" title="Permanent link">#</a></h3>
+<h3 id="18.9-freethreading">Сборки без GIL<a class="headerlink" href="#18.9-freethreading" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
@@ -2438,7 +2438,7 @@
 <tr>
 <td>Per-interpreter GIL (PEP 684)</td>
 <td><strong>3.12+</strong></td>
-<td>каждый суб-интерпретатор (17.10) — свой GIL; требует multi-phase init (17.5) и <code>m_size != -1</code></td>
+<td>каждый суб-интерпретатор (18.10) — свой GIL; требует multi-phase init (18.5) и <code>m_size != -1</code></td>
 </tr>
 <tr>
 <td>Free-threaded (PEP 703)</td>
@@ -2447,8 +2447,8 @@
 </tr>
 </tbody>
 </table>
-<p>Free-threaded сборка — отдельный бинарник интерпретатора; обнаружить из C можно по макросу <code>Py_GIL_DISABLED</code>, из Python — <code>sys._is_gil_enabled()</code> (3.13+). Требования к расширению там радикально выше: разделяемая C-статика, лениво инициализированные глобальные указатели, кэши без блокировок — всё становится гонкой. Поэтому же multi-phase init (17.5) в free-threaded сборке обязателен.</p>
-<h2 id="17.10">17.10. Встраивание интерпретатора в C<a class="headerlink" href="#17.10" title="Permanent link">#</a></h2>
+<p>Free-threaded сборка — отдельный бинарник интерпретатора; обнаружить из C можно по макросу <code>Py_GIL_DISABLED</code>, из Python — <code>sys._is_gil_enabled()</code> (3.13+). Требования к расширению там радикально выше: разделяемая C-статика, лениво инициализированные глобальные указатели, кэши без блокировок — всё становится гонкой. Поэтому же multi-phase init (18.5) в free-threaded сборке обязателен.</p>
+<h2 id="18.10">18.10. Встраивание интерпретатора в C<a class="headerlink" href="#18.10" title="Permanent link">#</a></h2>
 <p>Обратное направление: не «Python вызывает C», а «C-программа содержит Python». Скриптовый движок в игре, конфигурация в своей программе, плагины — всё это <code>Py_Initialize</code> + вызовы C API. Полная рабочая программа (собирается и запускается — см. вывод ниже):</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span>
 </span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
@@ -2483,11 +2483,11 @@
 </span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="c1"># hex(255) from C: 0xff</span>
 </span></code></pre></div>
 <p>Каждый шаг с комментарием «новая ссылка» — owned: забытый <code>Py_DECREF</code> здесь не GC догонит, а утёчка на каждый вызов. <code>PyUnicode_AsUTF8</code> возвращает указатель на внутренний буфер строки (borrowed) — строку нельзя DECREF-нуть до окончания использования буфера.</p>
-<p>⚠️ Жизненный цикл жёстче, чем кажется: после <code>Py_FinalizeEx</code> повторная инициализация в том же процессе <strong>не поддерживается</strong>; из-за бессмертных объектов (17.4) часть памяти не возвращается ОС в принципе. Утилизаторам памяти стоит мерить «до finalize», а не RSS после выхода.</p>
-<h3 id="17.10-subinterps">Суб-интерпретаторы<a class="headerlink" href="#17.10-subinterps" title="Permanent link">#</a></h3>
-<p>В одном процессе можно держать несколько изолированных интерпретаторов — <code>Py_NewInterpreter()</code>/<code>Py_EndInterpreter()</code>, модуль-обёртка <code>_interpreters</code> (экспериментальный). Каждый суб-интерпретатор имеет собственные <code>sys.modules</code> и поток-стейты; с 3.12 (PEP 684) каждый может получить и <strong>свой GIL</strong> — это фундамент будущего параллелизма внутри одного процесса. Условие из 17.5 всплывает здесь же: модуль с <code>m_size = -1</code> суб-интерпретаторы ломает, и при импорте в новый интерпретатор такие модули переинициализируются с нуля. Для честной изоляции модули должны хранить состояние в самом объекте модуля, а не в C-статике.</p>
-<p>Практическая альтернатива, покрывающая 90% хотелок «встроить Python» — отдельный процесс: <code>subprocess</code> (11.29) или сокет к обычному интерпретатору; встраивание оправдано, когда нужен именно in-process вызов с нулевой задержкой границы.</p>
-<h2 id="17.11">17.11. Отладка C-расширений<a class="headerlink" href="#17.11" title="Permanent link">#</a></h2>
+<p>⚠️ Жизненный цикл жёстче, чем кажется: после <code>Py_FinalizeEx</code> повторная инициализация в том же процессе <strong>не поддерживается</strong>; из-за бессмертных объектов (18.4) часть памяти не возвращается ОС в принципе. Утилизаторам памяти стоит мерить «до finalize», а не RSS после выхода.</p>
+<h3 id="18.10-subinterps">Суб-интерпретаторы<a class="headerlink" href="#18.10-subinterps" title="Permanent link">#</a></h3>
+<p>В одном процессе можно держать несколько изолированных интерпретаторов — <code>Py_NewInterpreter()</code>/<code>Py_EndInterpreter()</code>, модуль-обёртка <code>_interpreters</code> (экспериментальный). Каждый суб-интерпретатор имеет собственные <code>sys.modules</code> и поток-стейты; с 3.12 (PEP 684) каждый может получить и <strong>свой GIL</strong> — это фундамент будущего параллелизма внутри одного процесса. Условие из 18.5 всплывает здесь же: модуль с <code>m_size = -1</code> суб-интерпретаторы ломает, и при импорте в новый интерпретатор такие модули переинициализируются с нуля. Для честной изоляции модули должны хранить состояние в самом объекте модуля, а не в C-статике.</p>
+<p>Практическая альтернатива, покрывающая 90% хотелок «встроить Python» — отдельный процесс: <code>subprocess</code> (11.30) или сокет к обычному интерпретатору; встраивание оправдано, когда нужен именно in-process вызов с нулевой задержкой границы.</p>
+<h2 id="18.11">18.11. Отладка C-расширений<a class="headerlink" href="#18.11" title="Permanent link">#</a></h2>
 <p>Расширение падает иначе, чем Python-код: сегфолт вместо исключения, порча памяти вместо <code>TypeError</code>, утечка вместо молчания. Набор инструментов:</p>
 <table>
 <thead>
@@ -2524,7 +2524,7 @@
 <td><code>gdb python3 core</code>; скрипт идёт с поставкой CPython</td>
 </tr>
 <tr>
-<td><code>-X perf</code> (11.7, 13.5)</td>
+<td><code>-X perf</code> (11.7, 15.5)</td>
 <td>профилирование C-функций расширения в perf</td>
 <td><code>python3 -X perf script.py</code> + <code>perf record</code></td>
 </tr>
@@ -2536,8 +2536,8 @@
 </tbody>
 </table>
 <p>Базовая стратегия «кто испортил память»: собрать CPython/расширение с AddressSanitizer (<code>-fsanitize=address</code>) или запустить с <code>PYTHONMALLOC=debug</code> — обе дороги находят двойные <code>Py_DECREF</code> и выходы за границы буферов. Классическая утечка в расширении ловится дешёвым циклом: N раз вызвать подозрительную функцию, сравнить <code>sys.getrefcount</code>/RSS до и после (8.5, 8.6).</p>
-<h3 id="17.11-benchmarki">Бенчмарки к Части XVII<a class="headerlink" href="#17.11-benchmarki" title="Permanent link">#</a></h3>
-<p>Машина: 2 ядра, CPython 3.12.14, gcc 14.2, <code>timeit</code> best-of-5. Абсолютные числа — свойство машины; интересны отношения.</p>
+<h3 id="18.11-benchmarki">Бенчмарки к Части XVIII<a class="headerlink" href="#18.11-benchmarki" title="Permanent link">#</a></h3>
+<p>Машина: 2 ядра, CPython 3.12.14, gcc 17.2, <code>timeit</code> best-of-5. Абсолютные числа — свойство машины; интересны отношения.</p>
 <p><strong>B1. Стоимость вызова, нс/вызов</strong> (та же семантика «сложить два double», где применимо):</p>
 <table>
 <thead>
@@ -2581,7 +2581,7 @@
 </tbody>
 </table>
 <p>Иерархия длинная: от 0.6× у <code>METH_O</code> (дешевле Python-вызова — фрейм не создаётся) до 3.8× у ctypes (libffi-переход + конверсия аргументов на каждый вызов). API-режим cffi попадает в диапазон METH_VARARGS — на границе остаётся только компиляция, а не интерпретация деклараций.</p>
-<p><strong>B2. GIL release, 2 потока CPU-bound, N = 4 000 000</strong> — см. таблицу в 17.8: 1.00× / 1.33× (released) / 2.00× (held).</p>
+<p><strong>B2. GIL release, 2 потока CPU-bound, N = 4 000 000</strong> — см. таблицу в 18.8: 1.00× / 1.33× (released) / 2.00× (held).</p>
 <p><strong>B3. ctypes: цена конверсий и колбэков:</strong></p>
 <table>
 <thead>

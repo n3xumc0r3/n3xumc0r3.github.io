@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/14-implementations/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/17-implementations/">
       
       
-        <link rel="prev" href="../13-bytecode-vm/">
+        <link rel="prev" href="../16-import/">
       
       
-        <link rel="next" href="../15-testing/">
+        <link rel="next" href="../18-c-api/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>Часть XIV. Не только CPython: кто ещё исполняет Python - Python под капотом</title>
+        <title>Часть XVII. Не только CPython: кто ещё исполняет Python - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="Часть XIV. Не только CPython: кто ещё исполняет Python — Python под капотом">
+  <meta property="og:title" content="Часть XVII. Не только CPython: кто ещё исполняет Python — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/14-implementations/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/17-implementations/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Часть XIV. Не только CPython: кто ещё исполняет Python — Python под капотом">
+  <meta name="twitter:title" content="Часть XVII. Не только CPython: кто ещё исполняет Python — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#xiv-cpython-python" class="md-skip">
+        <a href="#xvii-cpython-python" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Часть XIV. Не только CPython: кто ещё исполняет Python
+              Часть XVII. Не только CPython: кто ещё исполняет Python
             
           </span>
         </div>
@@ -550,126 +550,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
+      <a href="../13-testing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Содержание">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Содержание
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#14.1" class="md-nav__link">
-    <span class="md-ellipsis">
-      14.1. Язык против реализации: контракт Python
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14.2" class="md-nav__link">
-    <span class="md-ellipsis">
-      14.2. Альтернативные реализации: кто, на чём, зачем
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14.3" class="md-nav__link">
-    <span class="md-ellipsis">
-      14.3. Не реализации: Numba, Cython и граница «тот же язык»
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14.4" class="md-nav__link">
-    <span class="md-ellipsis">
-      14.4. REPL поверх REPL: IPython, Jupyter и соседи
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="14.4. REPL поверх REPL: IPython, Jupyter и соседи">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#14.4-benchmarki" class="md-nav__link">
-    <span class="md-ellipsis">
-      Бенчмарки к Части XIV
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -681,11 +570,31 @@
   
   
     <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
+      <a href="../14-packaging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XIV. Упаковка: от исходников до PyPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -718,18 +627,109 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Часть XVII. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#17.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.1. Язык против реализации: контракт Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.2. Альтернативные реализации: кто, на чём, зачем
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.3. Не реализации: Numba, Cython и граница «тот же язык»
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      17.4. REPL поверх REPL: IPython, Jupyter и соседи
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17.4. REPL поверх REPL: IPython, Jupyter и соседи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#17.4-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XVII
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -741,11 +741,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -917,46 +917,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#14.1" class="md-nav__link">
+  <a href="#17.1" class="md-nav__link">
     <span class="md-ellipsis">
-      14.1. Язык против реализации: контракт Python
+      17.1. Язык против реализации: контракт Python
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#14.2" class="md-nav__link">
+  <a href="#17.2" class="md-nav__link">
     <span class="md-ellipsis">
-      14.2. Альтернативные реализации: кто, на чём, зачем
+      17.2. Альтернативные реализации: кто, на чём, зачем
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#14.3" class="md-nav__link">
+  <a href="#17.3" class="md-nav__link">
     <span class="md-ellipsis">
-      14.3. Не реализации: Numba, Cython и граница «тот же язык»
+      17.3. Не реализации: Numba, Cython и граница «тот же язык»
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#14.4" class="md-nav__link">
+  <a href="#17.4" class="md-nav__link">
     <span class="md-ellipsis">
-      14.4. REPL поверх REPL: IPython, Jupyter и соседи
+      17.4. REPL поверх REPL: IPython, Jupyter и соседи
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="14.4. REPL поверх REPL: IPython, Jupyter и соседи">
+    <nav class="md-nav" aria-label="17.4. REPL поверх REPL: IPython, Jupyter и соседи">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#14.4-benchmarki" class="md-nav__link">
+  <a href="#17.4-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
-      Бенчмарки к Части XIV
+      Бенчмарки к Части XVII
     </span>
   </a>
   
@@ -982,24 +982,24 @@
                   
 
 
-<h1 id="xiv-cpython-python">Часть XIV. Не только CPython: кто ещё исполняет Python<a class="headerlink" href="#xiv-cpython-python" title="Permanent link">#</a></h1>
+<h1 id="xvii-cpython-python">Часть XVII. Не только CPython: кто ещё исполняет Python<a class="headerlink" href="#xvii-cpython-python" title="Permanent link">#</a></h1>
 <p>«Python» в этой книге до сих пор означал CPython — и в 99% случаев это правильное сокращение. Но язык и реализация — разные вещи: спецификация одна, а исполняют её разные программы. Эта часть — про то, что Python можно исполнить не только интерпретатором на C, что это уже много раз делали, и про оболочки (IPython и соседи), которые сами не интерпретаторы, но меняют среду, в которой вы пишете и исполняете код.</p>
-<h2 id="14.1">14.1. Язык против реализации: контракт Python<a class="headerlink" href="#14.1" title="Permanent link">#</a></h2>
+<h2 id="17.1">17.1. Язык против реализации: контракт Python<a class="headerlink" href="#17.1" title="Permanent link">#</a></h2>
 <p>Что определяет «язык Python»? Не CPython, а связка: reference — описание языка (Language Reference), документация стандартной библиотеки и тесты CPython, которые де-факто служат исполняемой спецификацией. Всё, что <em>исполняет</em> эту спецификацию, вправе называться реализацией Python — независимо от языка, на котором написано.</p>
 <p>Контракт — это семантика языка, а не внутренности конкретной реализации. За скобками остаются вещи, на которые код опираться не должен, потому что другие реализации их не гарантируют (и CPython не обещает):</p>
 <ul>
 <li>момент срабатывания деструктора: <code>__del__</code> при обнулении счётчика ссылок — деталь refcount-модели CPython (8.5), в реализациях с GC-трассировкой объект умрёт позже;</li>
 <li>значения <code>id()</code> и <code>sys.getrefcount()</code> — детали refcount-модели; на PyPy <code>getrefcount</code> ведёт себя по-другому;</li>
 <li>интернирование строк (8.1) и кэш малых чисел (8.2) — оптимизации CPython, не языковые гарантии;</li>
-<li>формат <code>.pyc</code> и magic number (13.2) — внутренний кэш CPython.</li>
+<li>формат <code>.pyc</code> и magic number (15.2) — внутренний кэш CPython.</li>
 </ul>
-<p>Узнать, кто исполняет код, можно из <code>sys.implementation</code> — у CPython это namespace с <code>name='cpython'</code> и <code>cache_tag='cpython-312'</code> (тем самым тегом из имён pyc-файлов, 13.2).</p>
+<p>Узнать, кто исполняет код, можно из <code>sys.implementation</code> — у CPython это namespace с <code>name='cpython'</code> и <code>cache_tag='cpython-312'</code> (тем самым тегом из имён pyc-файлов, 15.2).</p>
 <p>Практическое следствие раздельной природы языка и реализации: бинарные C-расширения собираются под конкретный ABI, и тег платформы в имени wheel'а (PEP 425) прямо называет целевую реализацию:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>numpy-2.1.0-cp312-cp312-manylinux_2_17_x86_64.whl   # CPython 3.12
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>numpy-2.1.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.whl   # PyPy 3.10
 </span></code></pre></div>
 <p>Wheel с тегом <code>cp312</code> на PyPy не встанет — у PyPy свои сборки (<code>pp…</code>) или установка из исходников. Отсюда правило большого пальца: «чистый Python» на альтернативных реализациях живёт заметно комфортнее, чем код с расширениями — расширения привязаны к ABI CPython.</p>
-<h2 id="14.2">14.2. Альтернативные реализации: кто, на чём, зачем<a class="headerlink" href="#14.2" title="Permanent link">#</a></h2>
+<h2 id="17.2">17.2. Альтернативные реализации: кто, на чём, зачем<a class="headerlink" href="#17.2" title="Permanent link">#</a></h2>
 <p>Идея «сделать Python не на C» исполнена много раз — от академических проектов до промышленных платформ. Обзор живых и исторических, с причиной существования каждого.</p>
 <p><strong>PyPy</strong> — самая известная альтернатива, интерпретатор на RPython (строгое подмножество Python, компилируемое в C) с <strong>мета-tracing JIT</strong>: JIT не трассирует ваш код напрямую — он трассирует цикл самого интерпретатора и удаляет слои абстракции между уровнями, специализируя исполнение под конкретную программу. На чистом Python-коде (длинные циклы, словари, списки) PyPy в разы быстрее CPython. Слабое место — C-расширения: мост <code>cpyext</code> эмулирует CPython C API, и через границу «C-расширение ↔ JIT-код» выигрыш часто сгорает. Статус: жив и развивается, поддерживает версии CPython с лагом в один-два года — проверяйте актуальный на сайте проекта.</p>
 <p><strong>GraalPy</strong> — реализация Oracle Labs поверх Truffle (фреймворк для интерпретаторов с частичной компиляцией из мира JVM). Фишка — на удивление хорошая совместимость с C-расширениями; мотивация — дать Python жить в JVM-экосистеме рядом с Java, JavaScript и другими Truffle-языками.</p>
@@ -1020,7 +1020,7 @@
 <li><strong>Jython</strong> (JVM): давал бесшовный мост в Java и настоящие потоки без GIL — но застрял на 2.7 и заморожен. Урок: совместимость с актуальным языком важнее архитектурных красот.</li>
 <li><strong>IronPython</strong> (.NET): та же идея для CLR; после долгой паузы вышла ветка 3.4, живёт в нише.</li>
 <li><strong>Stackless Python</strong> — модификация CPython с микропотоками (tasklets) и стеками вне стека C; годами двигал MMO Eve Online. Нишу съел <code>asyncio</code> (4.13): сопрограммы дешевле tasklets и не требуют отдельного интерпретатора.</li>
-<li><strong>Pyston</strong>: попытка Dropbox ускорить CPython «снаружи» (2014–2017) закрылась; возрождённая как дистрибутив Pyston 2 (2020) на базе CPython 3.8 дала ~20–30% — и снова заснула. Урок: догонять выпуски CPython извне — беговая дорожка; поэтому собственно ускорением с 2021 занимается команда Faster CPython <strong>внутри</strong> проекта (13.5).</li>
+<li><strong>Pyston</strong>: попытка Dropbox ускорить CPython «снаружи» (2014–2017) закрылась; возрождённая как дистрибутив Pyston 2 (2020) на базе CPython 3.8 дала ~20–30% — и снова заснула. Урок: догонять выпуски CPython извне — беговая дорожка; поэтому собственно ускорением с 2021 занимается команда Faster CPython <strong>внутри</strong> проекта (15.5).</li>
 <li><strong>CPython без GIL</strong>: PEP 703 — не новая реализация, а отдельная сборка того же CPython; в матрицу реализаций её добавлять честно, но полезно помнить, что «CPython» уже не значит ровно одно.</li>
 </ul>
 <p>Сводная таблица:</p>
@@ -1100,12 +1100,12 @@
 </tr>
 </tbody>
 </table>
-<h2 id="14.3">14.3. Не реализации: Numba, Cython и граница «тот же язык»<a class="headerlink" href="#14.3" title="Permanent link">#</a></h2>
+<h2 id="17.3">17.3. Не реализации: Numba, Cython и граница «тот же язык»<a class="headerlink" href="#17.3" title="Permanent link">#</a></h2>
 <p>Рядом с реализациями живут инструменты, которые часто называют ускорителями Python, но интерпретаторами они не являются — и разница принципиальна.</p>
 <p><strong>Numba</strong> — JIT-компилятор числового кода: декоратор <code>@njit</code> компилирует функцию в машинный код через LLVM при первом вызове (поэтому первый вызов медленный, а последующие — нативные). Компилируется <strong>подмножество</strong> языка: числовые скаляры, numpy-массивы, ограниченные конструкции. Numba не исполняет остальной Python — она его не понимает.</p>
 <p><strong>Cython</strong> — транспилятор: язык-надмножество Python (с аннотациями типов C) переводится в C-код, который собирается в обычное расширение. Никакой интерпретации — статическая компиляция на этапе сборки.</p>
-<p>Развилка, которая держит голову в порядке: <strong>подмножество языка, скомпилированное частично</strong> (Numba) против <strong>надмножества, скомпилированного заранее</strong> (Cython) против <strong>того же языка целиком на другом движке</strong> (PyPy и все из 14.2). Реализация обязана исполнять язык; ускоритель — нет, и именно поэтому он может быть быстрее на своём участке: меньше динамики, больше гарантий.</p>
-<h2 id="14.4">14.4. REPL поверх REPL: IPython, Jupyter и соседи<a class="headerlink" href="#14.4" title="Permanent link">#</a></h2>
+<p>Развилка, которая держит голову в порядке: <strong>подмножество языка, скомпилированное частично</strong> (Numba) против <strong>надмножества, скомпилированного заранее</strong> (Cython) против <strong>того же языка целиком на другом движке</strong> (PyPy и все из 17.2). Реализация обязана исполнять язык; ускоритель — нет, и именно поэтому он может быть быстрее на своём участке: меньше динамики, больше гарантий.</p>
+<h2 id="17.4">17.4. REPL поверх REPL: IPython, Jupyter и соседи<a class="headerlink" href="#17.4" title="Permanent link">#</a></h2>
 <p>Тот же CPython, другая оболочка — отдельная категория «не-стандартного Python-опыта».</p>
 <p><strong>Стандартный REPL</strong> долгое время был аскетичным: readline-подсказки и всё. В 3.13 его заменил <code>_pyrepl</code> — с подсветкой синтаксиса при вводе, честным многострочным редактированием и листанием истории. У нового REPL есть и CLI-ручки: <code>PYTHON_BASIC_REPL=1</code> возвращает до-3.13 оболочку, <code>PYTHON_HISTORY</code> задаёт файл истории (по умолчанию <code>~/.python_history</code>), <code>PYTHON_COLORS</code> управляет цветами сообщений (всё — 3.13+), а в 3.14 появились <code>--help-env</code> / <code>--help-xoptions</code> / <code>--help-all</code> — интерпретатор сам рассказывает про свои переменные окружения и <code>-X</code>-опции. Минимальный «свой REPL» — несколько строк stdlib: <code>python -i script.py</code> (после скрипта остаётся интерактивная сессия со всеми его переменными — быстрый способ дебажить), а <code>code.interact()</code> — встроенная интерактивная пауза где угодно в программе, предок всех <code>breakpoint()</code>-практик.</p>
 <p><strong>IPython</strong> — то, что многие подразумевают под «питоном в терминале». Это не интерпретатор другой — это другая оболочка над тем же CPython:</p>
@@ -1156,11 +1156,11 @@
 </tr>
 <tr>
 <td>Ускорить числовое ядро</td>
-<td>Numba (14.3)</td>
+<td>Numba (17.3)</td>
 </tr>
 <tr>
 <td>Ускорить чистый Python целиком</td>
-<td>PyPy (14.2)</td>
+<td>PyPy (17.2)</td>
 </tr>
 <tr>
 <td>Код на микроконтроллере</td>
@@ -1173,20 +1173,20 @@
 </tbody>
 </table>
 <p>Общая мораль части: «Python» — это контракт, и его исполняют многие. CPython остаётся дефолтом не потому, что язык неотделим от него, а потому, что он эталон совместимости, у него самая широкая экосистема C-расширений и с 2021 года его ускорение — приоритет самих разработчиков. Все остальные — осознанный выбор под задачу: скорость (PyPy), размер (MicroPython), платформа (JVM/.NET/WASM), среда (IPython/Jupyter).</p>
-<h3 id="14.4-benchmarki">Бенчмарки к Части XIV<a class="headerlink" href="#14.4-benchmarki" title="Permanent link">#</a></h3>
+<h3 id="17.4-benchmarki">Бенчмарки к Части XVII<a class="headerlink" href="#17.4-benchmarki" title="Permanent link">#</a></h3>
 <p>Замеры на CPython 3.12 (Linux, x86_64); абсолютные числа зависят от машины и диска, отношения — устойчивы.</p>
 <p><strong>1. Старт интерпретатора — цена <code>site</code> и импортов.</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">         </span><span class="c1"># ≈ 0.015 с</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>python<span class="w"> </span>-S<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">      </span><span class="c1"># ≈ 0.008 с — без site почти вдвое быстрее</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json&quot;</span><span class="w">  </span><span class="c1"># ≈ 0.019 с</span>
 </span></code></pre></div>
-Половина старта CPython — это <code>site</code> (11.31): сканирование каталогов, <code>.pth</code>-файлы, импорт <code>sitecustomize</code>. Отсюда ответ на «почему CLI-утилиты на Python медленно стартуют»: сам интерпретатор готов за ~15 мс, остальное — импорты библиотек (уже <code>json</code> добавляет ~5 мс, а тяжёлые пакеты — сотни).</p>
+Половина старта CPython — это <code>site</code> (11.32): сканирование каталогов, <code>.pth</code>-файлы, импорт <code>sitecustomize</code>. Отсюда ответ на «почему CLI-утилиты на Python медленно стартуют»: сам интерпретатор готов за ~15 мс, остальное — импорты библиотек (уже <code>json</code> добавляет ~5 мс, а тяжёлые пакеты — сотни).</p>
 <p><strong>2. IPython — цена оболочки.</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>ipython<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">   </span><span class="c1"># ≈ 1.05 с — ~70× старта python -c pass</span>
 </span></code></pre></div>
-Оболочка (prompt_toolkit, история, магии, ~200 импортированных модулей) дороже самого интерпретатора на два порядка. Для одноразовых скриптов и CI — стандартный REPL или <code>python -c</code>; IPython — интерактивный инструмент, и его стартовая цена того не отменяет (14.4).</p>
+Оболочка (prompt_toolkit, история, магии, ~200 импортированных модулей) дороже самого интерпретатора на два порядка. Для одноразовых скриптов и CI — стандартный REPL или <code>python -c</code>; IPython — интерактивный инструмент, и его стартовая цена того не отменяет (17.4).</p>
 <p><strong>3. Старт: интерпретатор vs реализации.</strong>
-PyPy стартует на порядки дольше CPython (JIT-инфраструктура и импорт большого рантайма), MicroPython на микроконтроллере — на порядки быстрее (нечего импортировать). Замерить в одной таблице честно не выйдет — платформы несравнимы; смотрите бенчмарки самих проектов: speed.pypy.org для PyPy, docs.micropython.org для микро-плат. Урок тот же, что в 14.2: «быстрее» без уточнения нагрузки — не ответ.</p>
+PyPy стартует на порядки дольше CPython (JIT-инфраструктура и импорт большого рантайма), MicroPython на микроконтроллере — на порядки быстрее (нечего импортировать). Замерить в одной таблице честно не выйдет — платформы несравнимы; смотрите бенчмарки самих проектов: speed.pypy.org для PyPy, docs.micropython.org для микро-плат. Урок тот же, что в 17.2: «быстрее» без уточнения нагрузки — не ответ.</p>
 
 
 

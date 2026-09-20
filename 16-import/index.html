@@ -21,10 +21,10 @@
         <link rel="canonical" href="https://n3xumc0r3.github.io/16-import/">
       
       
-        <link rel="prev" href="../15-testing/">
+        <link rel="prev" href="../15-bytecode-vm/">
       
       
-        <link rel="next" href="../17-c-api/">
+        <link rel="next" href="../17-implementations/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -550,11 +550,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../13-bytecode-vm/" class="md-nav__link">
+      <a href="../13-testing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+    Часть XIII. Тестирование: от assert до тестов самого CPython
   </span>
   
 
@@ -570,11 +570,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../14-implementations/" class="md-nav__link">
+      <a href="../14-packaging/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XIV. Не только CPython: кто ещё исполняет Python
+    Часть XIV. Упаковка: от исходников до PyPI
   </span>
   
 
@@ -590,11 +590,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../15-testing/" class="md-nav__link">
+      <a href="../15-bytecode-vm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XV. Тестирование: от assert до тестов самого CPython
+    Часть XV. От .py к байт-коду: компиляция и виртуальная машина
   </span>
   
 
@@ -871,11 +871,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../17-c-api/" class="md-nav__link">
+      <a href="../17-implementations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVII. C-расширения и C API: из Python в C и обратно
+    Часть XVII. Не только CPython: кто ещё исполняет Python
   </span>
   
 
@@ -891,11 +891,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../18-packaging/" class="md-nav__link">
+      <a href="../18-c-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Часть XVIII. Упаковка: от исходников до PyPI
+    Часть XVIII. C-расширения и C API: из Python в C и обратно
   </span>
   
 
@@ -1283,7 +1283,7 @@
 
 
 <h1 id="xvi-import-x">Часть XVI. Механика импорта: от <code>import x</code> до исполняемого модуля<a class="headerlink" href="#xvi-import-x" title="Permanent link">#</a></h1>
-<p>Уровень API уже разобран: <code>sys.modules</code> и <code>__import__</code> (7.9), программный <code>importlib</code> (7.12), формат <code>.pyc</code> (13.2), импорт-режимы pytest (15.6). Здесь — сам конвейер: как стейтмент превращается в байт-код, где живёт кэш модулей, кто и в каком порядке собирает <code>sys.path</code>, как устроены finders, specs и loaders, чем namespace-пакет отличается от обычного, почему возникают круговые импорты, как работает ленивая загрузка и <code>reload</code>, какие бывают виды модулей, как писать свои импорт-хуки и как диагностировать медленный старт процесса. Разделы идут по ходу движения модуля: от стейтмента — через поиск и загрузку — к кухне диагностики. Все примеры проверены на CPython 3.12; версионные оговорки — по месту.</p>
+<p>Уровень API уже разобран: <code>sys.modules</code> и <code>__import__</code> (7.9), программный <code>importlib</code> (7.12), формат <code>.pyc</code> (15.2), импорт-режимы pytest (13.6). Здесь — сам конвейер: как стейтмент превращается в байт-код, где живёт кэш модулей, кто и в каком порядке собирает <code>sys.path</code>, как устроены finders, specs и loaders, чем namespace-пакет отличается от обычного, почему возникают круговые импорты, как работает ленивая загрузка и <code>reload</code>, какие бывают виды модулей, как писать свои импорт-хуки и как диагностировать медленный старт процесса. Разделы идут по ходу движения модуля: от стейтмента — через поиск и загрузку — к кухне диагностики. Все примеры проверены на CPython 3.12; версионные оговорки — по месту.</p>
 <h2 id="16.1">16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules<a class="headerlink" href="#16.1" title="Permanent link">#</a></h2>
 <p><code>import</code> — обычная инструкция языка, и у неё есть байт-код. Компилятор переводит стейтмент в <code>IMPORT_NAME</code>, который вызывает встроенную <code>__import__</code> (7.9):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">dis</span>
@@ -1321,7 +1321,7 @@
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">mod_once</span> <span class="ow">is</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;mod_once&quot;</span><span class="p">]</span>      <span class="c1"># True — это тот же объект</span>
 </span></code></pre></div>
-<p>Отсюда два классических эффекта. Положительный: модули с побочными эффектами (регистрация плагинов, патчинг, открытие ресурсов) срабатывают один раз, даже если десять подсистем сделали <code>import</code>. Отрицательный: тот же механизм означает, что <strong>повторный импорт не «обновит» модуль</strong> после изменения файла на диске — это работа для <code>reload</code> (16.8), и именно поэтому тесты с подменой окружения часто требуют перезагрузки конфиг-модулей (15.2).</p>
+<p>Отсюда два классических эффекта. Положительный: модули с побочными эффектами (регистрация плагинов, патчинг, открытие ресурсов) срабатывают один раз, даже если десять подсистем сделали <code>import</code>. Отрицательный: тот же механизм означает, что <strong>повторный импорт не «обновит» модуль</strong> после изменения файла на диске — это работа для <code>reload</code> (16.8), и именно поэтому тесты с подменой окружения часто требуют перезагрузки конфиг-модулей (13.2).</p>
 <h3 id="16.1-dunders">Что появляется у модуля при первом импорте<a class="headerlink" href="#16.1-dunders" title="Permanent link">#</a></h3>
 <p>До исполнения тела интерпретатор создаёт объект модуля и заселяет его служебными атрибутами — полная анатомия свежесозданного модуля на 3.12:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">sorted</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mod_once</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))</span>
@@ -1340,7 +1340,7 @@
 <tr>
 <td><code>__name__</code></td>
 <td>имя, по которому искали</td>
-<td>для <code>__main__</code> — это имя запущенного скрипта, не модуля (13.2)</td>
+<td>для <code>__main__</code> — это имя запущенного скрипта, не модуля (15.2)</td>
 </tr>
 <tr>
 <td><code>__spec__</code></td>
@@ -1381,7 +1381,7 @@
 </table>
 <p>У regular-пакета <code>json.__path__</code> — обычный <code>list</code>; у namespace-пакета — специальный <code>_NamespacePath</code> (16.5). <code>__spec__.parent</code> и <code>__package__</code> всегда совпадают.</p>
 <h3 id="16.1-sysmodules">sys.modules — обычный dict, и это фича<a class="headerlink" href="#16.1-sysmodules" title="Permanent link">#</a></h3>
-<p><code>sys.modules</code> — не магическая структура, а словарь «имя → модуль», и с ним можно делать всё, что делают со словарями. Две канонические техники. Первая — «тихий импорт» и проверка «уже импортировано?» (7.9): <code>if 'json' in sys.modules</code> стоит наносекунды и не тянет за собой загрузку. Вторая — <strong>заглушки</strong>: положить в <code>sys.modules</code> подменыш <em>до</em> импорта зависимого кода — стандартный приём тестов (15.3 подменяет модули через <code>patch.dict(os.environ)</code> и <code>sys.modules</code>-манипуляции), и того же механика работает у фреймворков для опциональных зависимостей:</p>
+<p><code>sys.modules</code> — не магическая структура, а словарь «имя → модуль», и с ним можно делать всё, что делают со словарями. Две канонические техники. Первая — «тихий импорт» и проверка «уже импортировано?» (7.9): <code>if 'json' in sys.modules</code> стоит наносекунды и не тянет за собой загрузку. Вторая — <strong>заглушки</strong>: положить в <code>sys.modules</code> подменыш <em>до</em> импорта зависимого кода — стандартный приём тестов (13.3 подменяет модули через <code>patch.dict(os.environ)</code> и <code>sys.modules</code>-манипуляции), и того же механика работает у фреймворков для опциональных зависимостей:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">types</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;pysqlite2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">SimpleNamespace</span><span class="p">(</span><span class="n">connect</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># теперь любой код, делающий `import pysqlite2`, получит заглушку</span>
@@ -1415,13 +1415,13 @@
 <td>3</td>
 <td>стандартная библиотека</td>
 <td>каталог stdlib интерпретатора + zip-архивы stdlib, если есть</td>
-<td>определяется при сборке; <code>sys.prefix</code> (11.31)</td>
+<td>определяется при сборке; <code>sys.prefix</code> (11.32)</td>
 </tr>
 <tr>
 <td>4</td>
 <td><code>site.py</code></td>
 <td><code>site-packages</code> самого интерпретатора, user site-packages, всё из <code>.pth</code>-файлов</td>
-<td><code>PYTHONNOUSERSITE</code>, <code>-s</code>, <code>-I</code> (11.31)</td>
+<td><code>PYTHONNOUSERSITE</code>, <code>-s</code>, <code>-I</code> (11.32)</td>
 </tr>
 </tbody>
 </table>
@@ -1447,7 +1447,7 @@
 </span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>$ PYTHONSAFEPATH=1 python -c &#39;import random; print(hasattr(random, &quot;x&quot;))&#39;
 </span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>False                                 # то же через окружение (10.3)
 </span></code></pre></div>
-<p><code>-I</code> (isolated) включает <code>-P</code> в комплекте с <code>-s</code> и <code>-E</code> — игнорировать user site и <code>PYTHON*</code>-переменные; в 15.11 он фигурирует как режим для воспроизводимых прогонов.</p>
+<p><code>-I</code> (isolated) включает <code>-P</code> в комплекте с <code>-s</code> и <code>-E</code> — игнорировать user site и <code>PYTHON*</code>-переменные; в 13.11 он фигурирует как режим для воспроизводимых прогонов.</p>
 <h3 id="16.2-pth"><code>.pth</code>-файлы: самый недооценённый механизм site.py<a class="headerlink" href="#16.2-pth" title="Permanent link">#</a></h3>
 <p><code>site.py</code> сканирует <code>site-packages</code> на файлы <code>*.pth</code>. Каждая строка файла — либо путь, который добавляется в <code>sys.path</code>, либо строка, начинающаяся с <code>import</code> — <strong>исполняемый код</strong>, который запускается при каждом старте интерпретатора. Второе и есть механика нескольких «волшебств»: editable-установки pip кладут <code>__editable__*.pth</code>, а хуки инструментария — <code>sitecustomize</code>/<code>usercustomize</code> (16.10). В <code>-X importtime</code>-трассе старта видно, сколько стоит этот слой: в нашем прогоне весь <code>site</code> — около 1.4 мс из ~6.3 мс общего импорта <code>json</code> вместе со стартом (16.11).</p>
 <p>Проверить, кто именно собрал текущий <code>sys.path</code>, можно на месте: пути до «текущего места» и <code>PYTHONPATH</code> уже стоят к моменту, когда исполняется ваш код, а всё после stdlib — работа <code>site</code>. Сравните <code>python -c 'import sys; print(len(sys.path))'</code> и <code>python -S -c ...</code> — разница покажет вклад <code>site.py</code>.</p>
@@ -1509,7 +1509,7 @@
 </tr>
 </tbody>
 </table>
-<p>Список живёт в <code>importlib.machinery.EXTENSION_SUFFIXES / SOURCE_SUFFIXES / BYTECODE_SUFFIXES</code>. Приоритет означает: если рядом лежат <code>m.py</code> и <code>m.pyc</code>, импортируется <code>.py</code> (а <code>.pyc</code> используется как кэш, 13.2); «голый» <code>.pyc</code> без исходника тоже импортируется — <code>SourcelessFileLoader</code> именно это и делает, и это законный способ поставлять код без исходников.</p>
+<p>Список живёт в <code>importlib.machinery.EXTENSION_SUFFIXES / SOURCE_SUFFIXES / BYTECODE_SUFFIXES</code>. Приоритет означает: если рядом лежат <code>m.py</code> и <code>m.pyc</code>, импортируется <code>.py</code> (а <code>.pyc</code> используется как кэш, 15.2); «голый» <code>.pyc</code> без исходника тоже импортируется — <code>SourcelessFileLoader</code> именно это и делает, и это законный способ поставлять код без исходников.</p>
 <p>Узнать, «как бы импортировался модуль», не исполняя его, можно публичным API:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">importlib.util</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
@@ -1566,7 +1566,7 @@
 <li><code>create_module(spec)</code> — создать объект модуля (по умолчанию <code>None</code> — «создай стандартный <code>ModuleType</code>»; возвращать свой объект — продвинутый случай, так делают C-расширения и <code>LazyLoader</code>, 16.7);</li>
 <li><code>exec_module(module)</code> — исполнить код модуля в его пространстве имён.</li>
 </ul>
-<p>Внутри <code>SourceFileLoader.exec_module</code> живёт вся pyc-кухня из 13.2: <code>get_code()</code> проверяет <code>__pycache__</code>, валидирует magic number и mtime, при промахе компилирует и пишет кэш. Разница между «импортом» и «ручной загрузкой» в том, кто вызывает эти методы: обычно — bootstrap-механизм, но ничто не мешает вам сделать то же самое руками. Классический сценарий — модуль с нестандартным расширением (файл <code>plugin.txt</code> с питоновским кодом):</p>
+<p>Внутри <code>SourceFileLoader.exec_module</code> живёт вся pyc-кухня из 15.2: <code>get_code()</code> проверяет <code>__pycache__</code>, валидирует magic number и mtime, при промахе компилирует и пишет кэш. Разница между «импортом» и «ручной загрузкой» в том, кто вызывает эти методы: обычно — bootstrap-механизм, но ничто не мешает вам сделать то же самое руками. Классический сценарий — модуль с нестандартным расширением (файл <code>plugin.txt</code> с питоновским кодом):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">sys</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">spec_from_file_location</span><span class="p">,</span> <span class="n">module_from_spec</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">importlib.machinery</span> <span class="kn">import</span> <span class="n">SourceFileLoader</span>
@@ -1656,7 +1656,7 @@
 </tr>
 </tbody>
 </table>
-<p>Зачем это нужно в реальности: namespace-пакет — способ нескольким <strong>независимым дистрибутивам</strong> поставлять код под общим корнем. Классические примеры — <code>google.*</code> (пакеты protobuf, google-auth и десятки других кладут свои <code>google/</code>-каталоги без <code>__init__.py</code>, и все они сливаются в один namespace) и <code>zope.*</code> из эпохи Zope. Механика существует с 3.3 (PEP 420), и с тех пор это не экзотика, а штатный способ: если вы делаете монорепо с несколькими устанавливаемыми пакетами под общим именем — namespace-пакет избавляет от конфликтов <code>__init__.py</code> при установке (подробнее о том, как это выглядит в пакетах — перспективно в Части XVIII про упаковку).</p>
+<p>Зачем это нужно в реальности: namespace-пакет — способ нескольким <strong>независимым дистрибутивам</strong> поставлять код под общим корнем. Классические примеры — <code>google.*</code> (пакеты protobuf, google-auth и десятки других кладут свои <code>google/</code>-каталоги без <code>__init__.py</code>, и все они сливаются в один namespace) и <code>zope.*</code> из эпохи Zope. Механика существует с 3.3 (PEP 420), и с тех пор это не экзотика, а штатный способ: если вы делаете монорепо с несколькими устанавливаемыми пакетами под общим именем — namespace-пакет избавляет от конфликтов <code>__init__.py</code> при установке (подробнее о том, как это выглядит в пакетах — перспективно в Части XIV про упаковку).</p>
 <h2 id="16.6">16.6. Круговые импорты: анатомия и лечение<a class="headerlink" href="#16.6" title="Permanent link">#</a></h2>
 <p>Круговой импорт — это когда <code>a</code> импортирует <code>b</code>, а <code>b</code> — <code>a</code>. У фреймворков с ленивой загрузкой моделей такая связка возникает сама (модель ссылается на пользователя, пользователь — на модель). Чтобы понять, почему одни круги падают, а другие нет, достаточно одной фразы: <strong>модуль попадает в <code>sys.modules</code> до начала исполнения своего тела</strong> (16.1, шаг 4 — точнее, регистрация происходит на входе в загрузку). С одной стороны, именно это гарантирует одноразовость и останавливает бесконечную рекурсию: встретив круг, система видит модуль в кэше и возвращает «как есть». С другой — «как есть» на этот момент означает <strong>полуисполненный</strong> модуль: в нём есть только то, что успело исполниться до точки круга.</p>
 <p>Разберём оба варианта. Падающий круг — <code>from</code>-импорт на верхнем уровне:</p>
@@ -1769,7 +1769,7 @@
 <p>❌ Ловушка обоих механизмов: <strong><code>from mod import name</code> пробуждает ленивую загрузку</strong>. <code>IMPORT_FROM</code> читает атрибут модуля (16.1) — это уже «первое обращение». Лень работает только пока с модулем обращаются как с модулем (<code>mod.name</code>), и не работает, когда имя достают сразу.</p>
 <p>Цена вопроса — секунды старта CLI-приложений и тысячи минут CI. Прагматика: ленивыми делают то, что нужно не каждому запуску — тяжёлые бэкенды опциональных зависимостей, подкоманды CLI, драйверы. Полную автоматизацию предлагал PEP 690 (ленивый импорт по умолчанию) — PEP отклонён: неявная лень ломает модули с осмысленными сайд-эффектами и monkeypatch-паттерны; лень в Python остаётся <strong>явной</strong> обязанностью автора API. Замер реальной экономии — в 16.11 и бенчмарках (B2, B5): четыре «просто импортируем сверху» модуля стоят ~15 мс на каждый запуск процесса.</p>
 <h2 id="16.8">16.8. <code>reload</code>: механика перезагрузки и её границы<a class="headerlink" href="#16.8" title="Permanent link">#</a></h2>
-<p><code>importlib.reload(module)</code> — попытка «перечитать» модуль без перезапуска процесса. Механика: берётся существующий <code>module.__spec__</code>, loader заново читает код (исходник с диска — pyc-инвалидация работает как обычно, 13.2) и <strong>исполняет его в том же самом объекте модуля</strong>. Namespace не пересоздаётся, а переиспользуется: <code>reload</code> не «очищает» модуль, а дописывает поверх.</p>
+<p><code>importlib.reload(module)</code> — попытка «перечитать» модуль без перезапуска процесса. Механика: берётся существующий <code>module.__spec__</code>, loader заново читает код (исходник с диска — pyc-инвалидация работает как обычно, 15.2) и <strong>исполняет его в том же самом объекте модуля</strong>. Namespace не пересоздаётся, а переиспользуется: <code>reload</code> не «очищает» модуль, а дописывает поверх.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># cfg.py: VAL = 1</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">importlib</span>
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="kn">import</span> <span class="nn">cfg</span>
@@ -1820,7 +1820,7 @@
 </tbody>
 </table>
 <p>Двойная регистрация — самый болезненный пункт: reload декорированного/регистрирующегося кода исполняет декораторы и <code>__init_subclass__</code> заново. Если реестр — обычный список, вы получите два элемента; если <code>dict</code> по имени — новое затрёт старое, и это часто желаемое поведение. Именно поэтому «горячая перезагрузка» плагинов через reload требует либо реестров-словарей, либо явного hook'а «before/after reload».</p>
-<p>Когда это вообще нужно. Рабочая тройка: интерактивная разработка (REPL/Jupyter — «поменял модуль, не хочу перезапускать ядро с GPU-контекстом»), плагинные системы с перезагрузкой, тесты, которые правят конфиг-модули и перезагружают их (15.2). В проде reload — анти-паттерн: семантика «дописывания поверх» гарантирует, что долго живущий процесс после сотен reload'ов несёт в себе слоёный пирог старых объектов.</p>
+<p>Когда это вообще нужно. Рабочая тройка: интерактивная разработка (REPL/Jupyter — «поменял модуль, не хочу перезапускать ядро с GPU-контекстом»), плагинные системы с перезагрузкой, тесты, которые правят конфиг-модули и перезагружают их (13.2). В проде reload — анти-паттерн: семантика «дописывания поверх» гарантирует, что долго живущий процесс после сотен reload'ов несёт в себе слоёный пирог старых объектов.</p>
 <p>И последняя деталь конвейера: <code>importlib.invalidate_caches()</code>. FileFinder (16.3) кэширует листинг каталога и проверяет его по mtime каталога; на локальной ФС с наносекундным mtime новые файлы видны почти сразу, но на сетевых ФС, в контейнерах с огрубленным mtime и в тестах, которые создают файлы с подделанными временами, свежий модуль не находится — лечится ровно этим вызовом. Он же нужен после того, как вы вручную испортили <code>sys.path_importer_cache</code>.</p>
 <h2 id="16.9">16.9. Особые виды модулей: builtin, frozen, extension, zipimport<a class="headerlink" href="#16.9" title="Permanent link">#</a></h2>
 <p>Не всё, что импортируется, живёт в <code>.py</code>-файлах. Полная карта:</p>
@@ -1886,7 +1886,7 @@
 </span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">sys</span><span class="o">.</span><span class="n">_xoptions</span>                      <span class="c1"># {&#39;frozen_modules&#39;: &#39;off&#39;} — при -X frozen_modules=off</span>
 </span></code></pre></div>
 <p>Флаг влияет на frozen-модули stdlib; заморозить <strong>свой</strong> код (получить самодостаточный бинарник) — задача внешних инструментов (PyInstaller и компания), но механика та же: байт-код кладётся в таблицу FrozenImporter.</p>
-<p><strong>Extension</strong> — C-расширения: <code>ExtensionFileLoader</code> загружает динамическую библиотеку и ищет в ней точку входа <code>PyInit_&lt;имя модуля&gt;</code>; дальше весь импорт сводится к одному вызову в C. Суффиксы (<code>.cpython-312-x86_64-linux-gnu.so</code>, <code>.abi3.so</code>) кодируют ABI — отсюда привязка колёс к версии интерпретатора (14.1). Подробный разбор C-стороны — тема отдельной части (XVII); здесь важно, что для импорт-механики extension ничем не отличается от source: тот же PathFinder, тот же FileFinder, просто другой суффикс с высшим приоритетом (16.3).</p>
+<p><strong>Extension</strong> — C-расширения: <code>ExtensionFileLoader</code> загружает динамическую библиотеку и ищет в ней точку входа <code>PyInit_&lt;имя модуля&gt;</code>; дальше весь импорт сводится к одному вызову в C. Суффиксы (<code>.cpython-312-x86_64-linux-gnu.so</code>, <code>.abi3.so</code>) кодируют ABI — отсюда привязка колёс к версии интерпретатора (17.1). Подробный разбор C-стороны — тема отдельной части (XVIII); здесь важно, что для импорт-механики extension ничем не отличается от source: тот же PathFinder, тот же FileFinder, просто другой суффикс с высшим приоритетом (16.3).</p>
 <p><strong>zipimport</strong> — импорт прямо из zip-архива, без распаковки. Работает через path hook (16.3): элемент <code>sys.path</code>, указывающий на <code>.zip</code>, обслуживает <code>zipimporter</code>, который читает каталог архива и грузит модули оттуда:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">zmod</span>                  <span class="c1"># bundle.zip добавлен в sys.path</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">zmod</span><span class="o">.</span><span class="vm">__file__</span>                     <span class="c1"># &#39;…/bundle.zip/zmod.py&#39;  ← путь внутрь архива</span>
@@ -1934,7 +1934,7 @@
 <p>Так работают «импорт-политики»: тестовые гарды («никто не должен тянуть сеть в юнит-тестах»), песочницы, license-контроль. ⚠️ Исключение из <code>find_spec</code> <strong>не глушится</strong> — оно убивает импорт целиком, поэтому блокировщик и работает; но это же значит: хук с багом роняет импорт чего угодно. Держите хуки маленькими и без зависимостей. Родственный механизм с более формальным контрактом — audit hooks: событие <code>import</code> поднимается на уровне C API для каждого импорта (10.7), и его нельзя перехитрить сменой <code>sys.meta_path</code>.</p>
 <p>Почему логгер «видит» 23 имени, а не 23+1: хук добавлен <strong>после</strong> старта, и всё уже импортированное интерпретатором (<code>sys</code>, <code>os</code>, сам <code>sys.meta_path</code>…) идёт мимо кэша — для них <code>find_spec</code> не вызывается вовсе. Хук, вставленный до всего (из <code>sitecustomize</code>), увидит и стартовый слой.</p>
 <p><strong><code>sitecustomize</code> и <code>usercustomize</code>.</strong> Это <code>import</code>-строки <code>.pth</code>-механики из 16.2, доведённые до стандарта: модуль <code>sitecustomize</code> (обычно кладут в site-packages) и <code>usercustomize</code> (в user site) импортируются <code>site.py</code> при каждом старте — если найдены. Здесь включают <code>faulthandler</code> глобально (10.8), ставят audit hooks, добавляют корпоративные пути. Порядок: <code>sitecustomize</code> раньше <code>usercustomize</code>; отключить слой целиком можно <code>-S</code>/<code>-E</code>. Именно поэтому в <code>importtime</code>-трассе они висят под <code>site</code> (16.11) — и почему «у меня на машине работает» иногда означает «у меня в sitecustomize лежит магия».</p>
-<p>Реальная жизнь хуков, с которыми вы уже встречались в книге: pytest переписывает <code>assert</code> ваших тестов через импорт-хук (assertion rewriting, 15.6) — перехватывая загрузку тестового модуля и подсовывая переписанный байт-код; coverage.py ставит плагины на тот же механизм; виртуальные окружения работают через <code>sys.path</code>, собранный <code>site.py</code> (11.31). Импорт-система — самая легальная точка расширения Python: всё, что делают pytest и coverage, доступно и вам без единого форка интерпретатора.</p>
+<p>Реальная жизнь хуков, с которыми вы уже встречались в книге: pytest переписывает <code>assert</code> ваших тестов через импорт-хук (assertion rewriting, 13.6) — перехватывая загрузку тестового модуля и подсовывая переписанный байт-код; coverage.py ставит плагины на тот же механизм; виртуальные окружения работают через <code>sys.path</code>, собранный <code>site.py</code> (11.32). Импорт-система — самая легальная точка расширения Python: всё, что делают pytest и coverage, доступно и вам без единого форка интерпретатора.</p>
 <h2 id="16.11">16.11. Диагностика старта: <code>-X importtime</code><a class="headerlink" href="#16.11" title="Permanent link">#</a></h2>
 <p>Флаг <code>-X importtime</code> (3.7+) печатает в <strong>stderr</strong> дерево всех импортов с таймингами:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>$ python -X importtime -c &#39;import json&#39;          # PYTHONNOUSERSITE=1
@@ -2020,7 +2020,7 @@
 </tr>
 </tbody>
 </table>
-<p>Zip-импорт <strong>не медленнее</strong> обычного — если в архиве байт-код. Исходник в zip компилируется на каждый импорт (16.9), и это ×7. Укладывайте в архивы pyc — вопрос лишь соблюдения версий (magic number, 13.2).</p>
+<p>Zip-импорт <strong>не медленнее</strong> обычного — если в архиве байт-код. Исходник в zip компилируется на каждый импорт (16.9), и это ×7. Укладывайте в архивы pyc — вопрос лишь соблюдения версий (magic number, 15.2).</p>
 <p><strong>B5. Цена «импортируй сверху»:</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># импорт urllib.request + xml.etree.ElementTree + argparse + json «сверху»:</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="c1"># ≈ 15 мс на каждый запуск процесса (то же, что и в B2 минус база)</span>
