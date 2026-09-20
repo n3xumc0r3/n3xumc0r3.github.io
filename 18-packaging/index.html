@@ -1,0 +1,2085 @@
+<!--
+  Material for MkDocs — main.html override
+  Adds Open Graph / Twitter Card meta + JSON-LD structured data on every page.
+  Inherited from the base material theme; only the `htmltitle` and `extrahead`
+  blocks are customized.
+-->
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+      
+      
+        <meta name="author" content="@n3xumc0r3">
+      
+      
+        <link rel="canonical" href="https://n3xumc0r3.github.io/18-packaging/">
+      
+      
+        <link rel="prev" href="../17-c-api/">
+      
+      
+        <link rel="next" href="../appendix-a-plagiarism/">
+      
+      
+      <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Часть XVIII. Упаковка: от исходников до PyPI - Python под капотом</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Python под капотом">
+  <meta property="og:title" content="Часть XVIII. Упаковка: от исходников до PyPI — Python под капотом">
+  <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/18-packaging/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Часть XVIII. Упаковка: от исходников до PyPI — Python под капотом">
+  <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
+  <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Python под капотом",
+    "alternateName": "Python Under the Hood",
+    "description": "От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python и интерпретатора CPython.",
+    "inLanguage": "ru",
+    "url": "https://n3xumc0r3.github.io/",
+    "author": {
+      "@type": "Person",
+      "name": "n3xumc0r3",
+      "url": "https://github.com/n3xumc0r3"
+    },
+    "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "py-underhood",
+      "url": "https://github.com/n3xumc0r3/py-underhood"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Python (programming language)"},
+      {"@type": "Thing", "name": "CPython internals"},
+      {"@type": "Thing", "name": "Metaprogramming"},
+      {"@type": "Thing", "name": "Asynchronous programming"}
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xviii-pypi" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Python под капотом" class="md-header__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python под капотом
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Часть XVIII. Упаковка: от исходников до PyPI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="green"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-green"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Python под капотом" class="md-nav__button md-logo" aria-label="Python под капотом" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python под капотом
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Главная
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть I. Базовые скрытые особенности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-context-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть II. Контекстные менеджеры
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-generators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть III. Генераторы и итераторы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-async/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IV. Асинхронность
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть V. Классы и интерфейсы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-descriptors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VI. Дескрипторы и property
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-metaprogramming/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VII. Метапрограммирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-cpython-internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть VIII. Внутренности CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-encodings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть IX. Кодировки и кодеки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-introspection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть X. Интроспекция окружения
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-stdlib/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XI. Полезные модули stdlib
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-linters/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XII. Линтеры и директивы
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-bytecode-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIII. От .py к байт-коду: компиляция и виртуальная машина
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-implementations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XIV. Не только CPython: кто ещё исполняет Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XV. Тестирование: от assert до тестов самого CPython
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-import/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVI. Механика импорта: от import x до исполняемого модуля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-c-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVII. C-расширения и C API: из Python в C и обратно
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Часть XVIII. Упаковка: от исходников до PyPI
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVIII. Упаковка: от исходников до PyPI
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#18.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.1. Словарь упаковки и importlib.metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.2. Анатомия dist-info: паспорт установленного пакета
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2. Анатомия dist-info: паспорт установленного пакета">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18.2-net" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что dist-info не содержит
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.3. pyproject.toml: PEP 621
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.4. Build-бэкенды и PEP 517
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.5. sdist и wheel: два формата артефактов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.6. Анатомия wheel: имя как протокол
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.7. pip изнутри: что происходит при pip install
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.8. Editable-установка: .pth и finder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.9. Зависимости: PEP 508 и PEP 440
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.10. entry points: console-скрипты и плагины
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.11. Публикация: PyPI, twine и альтернативные формы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.11. Публикация: PyPI, twine и альтернативные формы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XVIII
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Приложения
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            Приложения
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    A. Системы обнаружения плагиата
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B. Взаимодействие с системами проверки кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-c-code-golf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    C. Code golf
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-d-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    D. Где почитать
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#18.1" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.1. Словарь упаковки и importlib.metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.2" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.2. Анатомия dist-info: паспорт установленного пакета
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.2. Анатомия dist-info: паспорт установленного пакета">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18.2-net" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что dist-info не содержит
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.3" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.3. pyproject.toml: PEP 621
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.4" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.4. Build-бэкенды и PEP 517
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.5" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.5. sdist и wheel: два формата артефактов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.6" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.6. Анатомия wheel: имя как протокол
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.7" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.7. pip изнутри: что происходит при pip install
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.8" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.8. Editable-установка: .pth и finder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.9" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.9. Зависимости: PEP 508 и PEP 440
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.10" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.10. entry points: console-скрипты и плагины
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18.11" class="md-nav__link">
+    <span class="md-ellipsis">
+      18.11. Публикация: PyPI, twine и альтернативные формы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18.11. Публикация: PyPI, twine и альтернативные формы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#18.11-benchmarki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Бенчмарки к Части XVIII
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="xviii-pypi">Часть XVIII. Упаковка: от исходников до PyPI<a class="headerlink" href="#xviii-pypi" title="Permanent link">#</a></h1>
+<p>Части XI (11.31) и XVI уже дали базу: <code>venv</code>/<code>pip</code>/<code>site</code> как пользовательский инструмент и импорт-механику, которая эти пакеты потом загружает. Здесь — то, что происходит <strong>между</strong> этими двумя точками: как проект превращается в дистрибуцию, как устроены <code>dist-info</code> и wheel, что именно делает pip при установке (и что пишет на диск), как работает editable-режим, на каком языке говорят зависимости (PEP 508/440) и как пакет доезжает до PyPI. Каждый формат в этой части вскрыт реальными прогонами: мы собрали демо-пакет setuptools'ом, разобрали wheel по косточкам, поставили его тремя способами и сняли тайминги — бенчмарки в конце части сняты на машине с 2 ядрами, CPython 3.12.14.</p>
+<h2 id="18.1">18.1. Словарь упаковки и <code>importlib.metadata</code><a class="headerlink" href="#18.1" title="Permanent link">#</a></h2>
+<p>Четыре слова, которые постоянно путают:</p>
+<table>
+<thead>
+<tr>
+<th>Термин</th>
+<th>Что это</th>
+<th>Пример</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>модуль</strong></td>
+<td>один <code>.py</code>-файл (16.1)</td>
+<td><code>demo_hood/cli.py</code></td>
+</tr>
+<tr>
+<td><strong>пакет</strong></td>
+<td>каталог с <code>__init__.py</code> (или namespace — 16.5)</td>
+<td>каталог <code>demo_hood/</code></td>
+</tr>
+<tr>
+<td><strong>дистрибуция</strong></td>
+<td>единица установки: то, что публикуется и ставится pip'ом</td>
+<td><code>demo-pkg-hood 0.1.0</code></td>
+</tr>
+<tr>
+<td><strong>wheel / sdist</strong></td>
+<td>два формата артефактов дистрибуции (18.5)</td>
+<td><code>demo_pkg_hood-0.1.0-py3-none-any.whl</code></td>
+</tr>
+</tbody>
+</table>
+<p>Заметьте несостыковку имён: дистрибуция <code>demo-pkg-hood</code> содержит пакет <code>demo_hood</code>. PyPI-имя живёт по правилам нормализации (PEP 503): <code>-</code>, <code>_</code>, <code>.</code> эквивалентны и сравниваются в нижнем регистре — <code>Demo_Pkg.Hood</code>, <code>demo-pkg-hood</code> и <code>DEMO_PKG_HOOD</code> для pip'а один и тот же проект.</p>
+<p>Окно в установленные дистрибуции — <code>importlib.metadata</code> (с 3.8):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">importlib.metadata</span> <span class="k">as</span> <span class="nn">im</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">im</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;packaging&quot;</span><span class="p">)</span>            <span class="c1"># &#39;26.0&#39;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">im</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="s2">&quot;packaging&quot;</span><span class="p">)[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span>   <span class="c1"># &#39;packaging&#39; (то же, что METADATA-файл)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">im</span><span class="o">.</span><span class="n">requires</span><span class="p">(</span><span class="s2">&quot;aiohttp&quot;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span>         <span class="c1"># [&#39;aiohappyeyeballs&gt;=2.5.0&#39;, &#39;aiosignal&gt;=1.4.0&#39;,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                                   <span class="c1">#  &#39;async-timeout&lt;6.0,&gt;=4.0; python_version &lt; &quot;3.11&quot;&#39;]</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">im</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;packaging&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>          <span class="c1"># [&#39;packaging-26.0.dist-info/INSTALLER&#39;, ...]</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">im</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;no-such-pkg&quot;</span><span class="p">)</span>          <span class="c1"># PackageNotFoundError — НЕ ImportError!</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># версия собственного пакета без ручного дублирования констант:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">__version__</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="n">__package__</span><span class="p">)</span>   <span class="c1"># внутри своего же модуля</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Вызов</th>
+<th>Возвращает</th>
+<th>Откуда читает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version(name)</code></td>
+<td>строка версии</td>
+<td><code>METADATA</code> или <code>PKG-INFO</code></td>
+</tr>
+<tr>
+<td><code>metadata(name)</code></td>
+<td>объект <code>email.message.Message</code></td>
+<td>тот же файл целиком</td>
+</tr>
+<tr>
+<td><code>requires(name)</code></td>
+<td>список строк-зависимостей (PEP 508, 18.9)</td>
+<td><code>Requires-Dist:</code> в METADATA</td>
+</tr>
+<tr>
+<td><code>files(name)</code></td>
+<td>список <code>PackagePath</code></td>
+<td><code>RECORD</code></td>
+</tr>
+<tr>
+<td><code>entry_points(group=...)</code></td>
+<td><code>EntryPoints</code></td>
+<td><code>entry_points.txt</code> (18.10)</td>
+</tr>
+<tr>
+<td><code>distribution(name)</code></td>
+<td>полный объект <code>Distribution</code></td>
+<td>каталог <code>*.dist-info</code></td>
+</tr>
+</tbody>
+</table>
+<p>✅ Отсутствие пакета — это <code>PackageNotFoundError</code> (наследник <code>ModuleNotFoundError</code> — факт из MRO), а не пустая строка: различайте «пакет есть, но версии нет» и «пакета нет». А если метаданных нет вообще (модуль просто лежит на <code>sys.path</code> без установки) — любая попытка уронится: метаданные — атрибут <strong>дистрибуции</strong>, не модуля. Как именно находятся эти <code>dist-info</code>-каталоги — см. 18.2.</p>
+<h2 id="18.2">18.2. Анатомия <code>dist-info</code>: паспорт установленного пакета<a class="headerlink" href="#18.2" title="Permanent link">#</a></h2>
+<p>Всё, что pip «знает» об установленной дистрибуции, лежит в каталоге <code>&lt;нормализованное_имя&gt;-&lt;версия&gt;.dist-info</code> рядом с кодом в <code>site-packages</code> (11.31). Реальный пример из живого окружения — <code>packaging-26.0.dist-info</code>, собранный бэкендом flit и установленный uv:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>packaging-26.0.dist-info/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── INSTALLER      # &#39;uv&#39; — кто ставил
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── METADATA       # паспорт: имя, версия, зависимости, описание
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>├── RECORD         # манифест: каждый файл + sha256 + размер
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>├── REQUESTED      # маркер «ставили явно, не как зависимость»
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├── WHEEL          # метаданные wheel-артефакта
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>└── licenses/      # тексты лицензий
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Файл</th>
+<th>Содержимое</th>
+<th>Кто читает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>METADATA</code></td>
+<td><code>Name:</code>, <code>Version:</code>, <code>Requires-Dist:</code>, <code>Requires-Python:</code>, описание</td>
+<td><code>importlib.metadata</code>, pip</td>
+</tr>
+<tr>
+<td><code>RECORD</code></td>
+<td><code>путь,sha256=&lt;b64&gt;,&lt;размер&gt;</code> на каждый файл</td>
+<td>pip uninstall, <code>files()</code></td>
+</tr>
+<tr>
+<td><code>WHEEL</code></td>
+<td><code>Wheel-Version</code>, <code>Generator: &lt;бэкенд&gt;</code>, <code>Tag:</code></td>
+<td>pip при установке</td>
+</tr>
+<tr>
+<td><code>INSTALLER</code></td>
+<td>имя инструмента установки: <code>pip</code>, <code>uv</code>, <code>conda</code>…</td>
+<td>диагностика, pip (предупреждения)</td>
+</tr>
+<tr>
+<td><code>REQUESTED</code></td>
+<td>пустой маркер, ставился ли пакет явно</td>
+<td>pip (resolution)</td>
+</tr>
+<tr>
+<td><code>direct_url.json</code></td>
+<td>откуда ставили: URL/архив + hash</td>
+<td>pip (audit, freeze)</td>
+</tr>
+<tr>
+<td><code>entry_points.txt</code></td>
+<td>INI-секции групп точек входа</td>
+<td><code>entry_points()</code> (18.10)</td>
+</tr>
+<tr>
+<td><code>top_level.txt</code></td>
+<td>корневые импорт-имена</td>
+<td>legacy-инструменты</td>
+</tr>
+</tbody>
+</table>
+<p>Формат <code>RECORD</code> — сердце безопасного удаления (внутри wheel того же демо, что соберём в 18.4):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>demo_hood/__init__.py,sha256=kUR5RAFc7HCeiqdlX36dZOHkUI5wI6V_43RpEcD8b-0,22
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>demo_hood/cli.py,sha256=gJ8p_hHJMK3tzViREpbHEt3irQk7edKcuiEk_-7bOx0,80
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>demo_pkg_hood-0.1.0.dist-info/METADATA,sha256=vfOdQp-LLCTwp2kdY1ENhCxsUcg7XS5F1FZ19XRFBqY,171
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>demo_pkg_hood-0.1.0.dist-info/RECORD,,
+</span></code></pre></div>
+<p>Каждая строка — «путь, хеш, размер». Две детали, которые важно видеть: <strong>сам RECORD записан с пустыми хешем и размером</strong> (он не может хешировать сам себя), а пути у файлов вне <code>site-packages</code> — <strong>относительные</strong> (18.7 покажет <code>../../bin/demo-hood</code>). <code>pip uninstall</code> просто читает этот список и удаляет файлы построчно — потому удаление не трогает ничего, чего нет в RECORD.</p>
+<p><code>direct_url.json</code> — единственное место, где остаётся память об источнике установки:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="nt">&quot;archive_info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256=67c376...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;hashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;67c376...&quot;</span><span class="p">}},</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w"> </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file:///home/z/.../dist/demo_pkg_hood-0.1.0-py3-none-any.whl&quot;</span><span class="p">}</span>
+</span></code></pre></div>
+<p>Появляется при установке <strong>не с индекса</strong> (локальный путь, git, прямой URL) — оттуда <code>pip freeze</code> рисует <code>file://</code>-ссылки, а аудит-инструменты сверяют хеш.</p>
+<h3 id="18.2-net">Что dist-info не содержит<a class="headerlink" href="#18.2-net" title="Permanent link">#</a></h3>
+<p>Кода. Каталог с <code>dist-info</code> — только паспорт; сам код лежит рядом отдельными пакетными каталогами. Отсюда следствия: два пакета, затирающие один и тот же <code>__init__.py</code>, останутся «успешно установленными» (RECORD второго перезапишет хеши первого — pip не проверяет коллизии содержимого), а ручное удаление каталога пакета оставит осиротевший <code>dist-info</code>, о котором pip всё ещё будет знать. Лечится переустановкой: <code>pip install --force-reinstall --no-deps &lt;pkg&gt;</code>.</p>
+<h2 id="18.3">18.3. <code>pyproject.toml</code>: PEP 621<a class="headerlink" href="#18.3" title="Permanent link">#</a></h2>
+<p>Один файл вместо ветки <code>setup.py</code>/<code>setup.cfg</code>/<code>MANIFEST.in</code>. Три обязательных смысла в нём: <strong>что собираем</strong> (<code>[project]</code>), <strong>чем собираем</strong> (<code>[build-system]</code>) и <strong>настройки конкретного инструмента</strong> (<code>[tool.*]</code> — ruff/pytest/mypy из Части XII живут здесь же).</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">[build-system]</span><span class="w">                       </span><span class="c1"># ЧЕМ собирать (PEP 518)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=61&quot;</span><span class="p">]</span><span class="w">        </span><span class="c1"># зависимости сборки (ставятся в изолированное окружение)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">[project]</span><span class="w">                            </span><span class="c1"># ЧТО собираем (PEP 621)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;demo-pkg-hood&quot;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Демо для Части XVIII&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.10&quot;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;MIT&quot;</span><span class="w">                      </span><span class="c1"># SPDX-выражение (PEP 639)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Author&quot;</span><span class="p">}]</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w">                     </span><span class="c1"># runtime-зависимости (PEP 508, см. 18.9)</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="s2">&quot;requests&gt;=2.25&quot;</span><span class="p">,</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="s1">&#39;pywin32==306; sys_platform == &quot;win32&quot;&#39;</span><span class="p">,</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="p">]</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="k">[project.optional-dependencies]</span><span class="w">      </span><span class="c1"># extras: pip install demo-pkg-hood[dev]</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pytest&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ruff&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;mypy&quot;</span><span class="p">]</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="n">docs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;sphinx&quot;</span><span class="p">]</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="k">[project.scripts]</span><span class="w">                    </span><span class="c1"># консольные команды (18.10)</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="n">demo-hood</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;demo_hood.cli:main&quot;</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="k">[project.entry-points.</span><span class="s2">&quot;demo_hood.plugins&quot;</span><span class="k">]</span><span class="w">   </span><span class="c1"># своя группа точек входа</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;demo_hood.cli:hello&quot;</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="k">[project.urls]</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/user/demo-pkg-hood&quot;</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="k">[tool.setuptools.packages.find]</span><span class="w">      </span><span class="c1"># настройки бэкенда: где искать пакеты</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="n">where</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;src&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Поле <code>[project]</code></th>
+<th>Тип</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>str</td>
+<td>PyPI-имя, нормализация PEP 503</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>str</td>
+<td>PEP 440 (18.9); можно вынести в <code>dynamic</code></td>
+</tr>
+<tr>
+<td><code>requires-python</code></td>
+<td>спека</td>
+<td>pip откажется ставить на неподходящий интерпретатор</td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td>список</td>
+<td>runtime-зависимости</td>
+</tr>
+<tr>
+<td><code>optional-dependencies</code></td>
+<td>таблица</td>
+<td>extras; имя extra тоже нормализуется</td>
+</tr>
+<tr>
+<td><code>scripts</code> / <code>gui-scripts</code></td>
+<td>таблица</td>
+<td>«команда = модуль:функция»</td>
+</tr>
+<tr>
+<td><code>entry-points</code></td>
+<td>таблица таблиц</td>
+<td>произвольные группы</td>
+</tr>
+<tr>
+<td><code>dynamic</code></td>
+<td>список</td>
+<td>поля, которые бэкенд вычислит сам: <code>["version", "readme"]</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>dynamic</code> — способ не дублировать версию: в <code>[project]</code> пишется <code>dynamic = ["version"]</code>, а бэкенду говорят, откуда её брать:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">[project]</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">[tool.setuptools.dynamic]</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">attr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;demo_hood.__version__&quot;</span><span class="p">}</span><span class="w">        </span><span class="c1"># читать атрибут (без импорта — AST&#39;ом)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># или из файла: version = {file = &quot;VERSION.txt&quot;}</span>
+</span></code></pre></div>
+<p>⚠️ <code>pyproject.toml</code> читает и pip (для <code>requires</code> из <code>[build-system]</code>), и бэкенд, и линтеры (Часть XII), но <strong>не Python</strong>: <code>import pyproject</code> невозможен, runtime-код не должен опираться на этот файл — версия живёт в метаданных (18.1), а не в исходниках.</p>
+<h2 id="18.4">18.4. Build-бэкенды и PEP 517<a class="headerlink" href="#18.4" title="Permanent link">#</a></h2>
+<p>Сборка отделена от установки стандартом PEP 517: pip не умеет собирать пакеты — он <strong>зовёт функции бэкенда</strong> в subprocess'е:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip install .
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>   │
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>   ├─ read [build-system] → создать ИЗОЛИРОВАННОЕ окружение сборки →
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   │    pip install setuptools&gt;=61  (только для сборки!)
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>   ├─ backend.get_requires_for_build_wheel()      → доустановить, если нужно
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>   ├─ backend.prepare_metadata_for_build_wheel()  → METADATA заранее (для резолвера)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>   └─ backend.build_wheel(outdir)                 → *.whl на диск
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>   │
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>   └─ установка полученного wheel (18.7)
+</span></code></pre></div>
+<p><code>[build-system] requires</code> — это не декорация: изолированное окружение сборки свежее, чем вы думаете. В нашем эксперименте <code>python3 -m venv</code> создал venv <strong>без setuptools вообще</strong> (с 3.12 ensurepip ставит только pip), и <code>pip install -e . --no-build-isolation</code> на таком venv падает, потому что вызывать <code>setuptools.build_meta</code> некому. С изоляцией тот же pip сам скачает setuptools с индекса — сборка работает везде, но требует сеть и занимает время (~1–2 с только на подготовку).</p>
+<table>
+<thead>
+<tr>
+<th>Бэкенд</th>
+<th><code>build-backend</code></th>
+<th>Когда выбирать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setuptools</code></td>
+<td><code>setuptools.build_meta</code></td>
+<td>дефолт и максимум совместимости, legacy-пакеты</td>
+</tr>
+<tr>
+<td><code>hatchling</code></td>
+<td><code>hatchling.build</code></td>
+<td>быстрый, строгие проверки, плагины</td>
+</tr>
+<tr>
+<td><code>flit-core</code></td>
+<td><code>flit_core.buildapi</code></td>
+<td>чистый Python, минимум конфигурации</td>
+</tr>
+<tr>
+<td><code>pdm-backend</code></td>
+<td><code>pdm.backend</code></td>
+<td>PDM-стек, динамические метаданные</td>
+</tr>
+<tr>
+<td><code>maturin</code></td>
+<td><code>maturin</code></td>
+<td>Rust-расширения (PyO3)</td>
+</tr>
+<tr>
+<td><code>scikit-build-core</code></td>
+<td><code>scikit_build_core.build</code></td>
+<td>C/C++ через CMake (17-я часть)</td>
+</tr>
+<tr>
+<td><code>uv_build</code></td>
+<td><code>uv_build</code></td>
+<td>uv-стек, очень быстрый (2025+)</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># штатная сборка (PEP 517 CLI): и sdist, и wheel</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>pip<span class="w"> </span>install<span class="w"> </span>build
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>python<span class="w"> </span>-m<span class="w"> </span>build<span class="w">                     </span><span class="c1"># → dist/*.tar.gz + dist/*.whl</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--sdist<span class="w">             </span><span class="c1"># только sdist</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># pip умеет и сам: собрать wheel без установки</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>wheel<span class="w"> </span>.<span class="w"> </span>--no-deps<span class="w"> </span>--no-build-isolation<span class="w"> </span>-w<span class="w"> </span>dist/
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># → demo_pkg_hood-0.1.0-py3-none-any.whl (в нашем прогоне: 1.72 c, см. бенчмарки)</span>
+</span></code></pre></div>
+<p>⚠️ <code>--no-build-isolation</code> — не «ускоритель», а способ использовать <strong>уже установленный</strong> setuptools (без сети). Требование <code>requires = ["setuptools&gt;=61"]</code> при этом никем не проверяется: если в окружении старый setuptools — сборка сломается с невнятной ошибкой глубоко в бэкенде.</p>
+<p>✅ Разделение «install-tool vs build-backend» делает сборку воспроизводимой: что бы ни было в вашем рабочем venv, пакет соберётся против зафиксированных <code>requires</code>. Платите изоляцией окружения и секундами на её наполнение (см. бенчмарки B3).</p>
+<h2 id="18.5">18.5. sdist и wheel: два формата артефактов<a class="headerlink" href="#18.5" title="Permanent link">#</a></h2>
+<p>Из бэкенда выходят два вида артефактов, и pip принимает оба:</p>
+<p><strong>sdist</strong> (source distribution) — tar.gz с исходниками (имя файла — по PEP 625: <code>name-1.0.tar.gz</code>). Вскрыли реальный <code>six-1.17.0.tar.gz</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>six-1.17.0/
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── PKG-INFO         # метаданные (предок METADATA — тот же формат email-заголовков)
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── setup.py         # код сборки (у legacy-пакетов вся конфигурация здесь)
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>├── setup.cfg
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>├── MANIFEST.in      # какие не-кодовые файлы включить
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>├── CHANGES, LICENSE, README.rst
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>└── documentation/   # …и вообще всё, что автор решил положить
+</span></code></pre></div>
+<p><strong>wheel</strong> (<code>.whl</code>) — уже <strong>готовый к установке</strong> zip-архив (анатомия — 18.6). Ключевое отличие: wheel строит <strong>автор пакета</strong> (или CI), а пользователю остаётся только распаковать. Ставить wheel — это не «быстрее sdist», это качественно другой сценарий: не нужен компилятор C, не запускается чужой код сборки (18.7 о границах этого обещания), не нужна сеть для зависимостей сборки.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>sdist</th>
+<th>wheel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Формат</td>
+<td><code>.tar.gz</code> (PEP 625)</td>
+<td>zip <code>.whl</code> со строгим именем (18.6)</td>
+</tr>
+<tr>
+<td>Метаданные</td>
+<td><code>PKG-INFO</code> в корне</td>
+<td><code>*.dist-info/METADATA</code> внутри</td>
+</tr>
+<tr>
+<td>Сборка у пользователя</td>
+<td>нужна (PEP 517, изоляция, сеть)</td>
+<td><strong>не нужна</strong></td>
+</tr>
+<tr>
+<td>Код сборки исполняется</td>
+<td>да, на машине пользователя</td>
+<td>нет</td>
+</tr>
+<tr>
+<td>Платформозависимость</td>
+<td>без тегов</td>
+<td>зашита в имя (теги)</td>
+</tr>
+<tr>
+<td>C-расширения</td>
+<td>собираются на месте</td>
+<td>уже внутри <code>.so</code>/<code>.dll</code> (17-я часть)</td>
+</tr>
+<tr>
+<td>Кто строит</td>
+<td>пользователь (косвенно)</td>
+<td>автор/CI один раз</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>six<span class="w">                          </span><span class="c1"># предпочтёт wheel, если есть</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>pip<span class="w"> </span>install<span class="w"> </span>--no-binary<span class="w"> </span>:all:<span class="w"> </span>six<span class="w">        </span><span class="c1"># заставить ставить из sdist (сборка на месте)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>pip<span class="w"> </span>install<span class="w"> </span>--prefer-binary<span class="w"> </span>pkg<span class="w">          </span><span class="c1"># старый wheel вместо новейшего sdist</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>pip<span class="w"> </span>download<span class="w"> </span>--no-deps<span class="w"> </span>--no-binary<span class="w"> </span>:all:<span class="w"> </span>six<span class="w">   </span><span class="c1"># скачать sdist руками</span>
+</span></code></pre></div>
+<p>✅ Практическое правило: sdist обязателен к публикации (некоторые упаковщики/линукс-дистрибутивы собирают только из него), но добрые пакеты публикуют и wheel для каждой платформы. Если пакет публикует <strong>только</strong> sdist с C-кодом — его установка потребует gcc у каждого пользователя (или см. 17.9 про stable ABI: один <code>cp312-abi3</code>-wheel покрывает 3.12+).</p>
+<h2 id="18.6">18.6. Анатомия wheel: имя как протокол<a class="headerlink" href="#18.6" title="Permanent link">#</a></h2>
+<p>Имя wheel-файла — не подпись, а <strong>машинночитаемый протокол совместимости</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>demo_pkg_hood-0.1.0-py3-none-any.whl
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>└name─────┘ └ver.┘ └py┘ └abi┘ └platform┘
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>numpy-2.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>pywin32-306-cp312-cp312-win_amd64.whl
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>mypy-1.11.0-cp312-cp312-musllinux_1_1_x86_64.whl
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Примеры</th>
+<th>Смысл</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>python-тег</td>
+<td><code>py3</code>, <code>py2.py3</code>, <code>cp312</code></td>
+<td>какой интерпретатор: <code>py3</code> — любой Python 3, <code>cp312</code> — только CPython 3.12</td>
+</tr>
+<tr>
+<td>abi-тег</td>
+<td><code>none</code>, <code>cp312</code>, <code>abi3</code></td>
+<td><code>none</code> — чистый Python; <code>cp312</code> — своя ABI; <code>abi3</code> — stable ABI (17.9)</td>
+</tr>
+<tr>
+<td>platform-тег</td>
+<td><code>any</code>, <code>manylinux_2_17_x86_64</code>, <code>win_amd64</code>, <code>macosx_11_0_arm64</code></td>
+<td>ОС/архитектура; <code>any</code> — везде</td>
+</tr>
+<tr>
+<td>build-тег (опц.)</td>
+<td><code>1-</code> перед python-тегом</td>
+<td>пересборка той же версии</td>
+</tr>
+</tbody>
+</table>
+<p>Теги читает <code>packaging.utils.parse_wheel_filename</code> — тот же код (в вендорнутой копии) живёт в pip'е: кандидаты, несовместимые с текущим интерпретатором, отсеиваются ещё на этапе разбора имени, до скачивания. Платформенные теги иерархичны: <code>manylinux2014</code> — псевдоним <code>manylinux_2_17</code>, а один wheel может носить несколько платформенных тегов сразу, перечисленных через точку — матчится любой из них, по порядку приоритета из <code>sys_tags()</code> (новейшая совместимая glibc — первой).</p>
+<p>Как много вариантов «подходит» даже на одной машине:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">tags</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">st</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">sys_tags</span><span class="p">())</span>      <span class="c1"># порядок приоритета для ЭТОГО интерпретатора</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>                         <span class="c1"># 1122 тега на CPython 3.12 / Linux x86_64 / glibc 2.41</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">st</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>                          <span class="c1"># cp312-cp312-manylinux_2_41_x86_64, ..._2_40...</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">st</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                          <span class="c1"># py30-none-any — самый «древний» совместимый</span>
+</span></code></pre></div>
+<p>Внутри wheel — zip с двумя частями: код и <code>dist-info</code> (всё это проверено на собранном демо):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>demo_pkg_hood-0.1.0-py3-none-any.whl
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>├── demo_hood/__init__.py            # код — как будет лежать в site-packages
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>├── demo_hood/cli.py
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>└── demo_pkg_hood-0.1.0.dist-info/
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    ├── METADATA                     # e-mail-заголовки PEP 621
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    ├── WHEEL                        # Wheel-Version: 1.0; Generator: setuptools (82.0.1);
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    │                                # Root-Is-Purelib: true; Tag: py3-none-any
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    ├── entry_points.txt             # [console_scripts] / [demo_hood.plugins]
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    ├── top_level.txt
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    └── RECORD                       # хеши всех файлов архива; pyc здесь ещё нет!
+</span></code></pre></div>
+<p>Детали, которые иначе не увидеть:</p>
+<ul>
+<li><strong><code>Root-Is-Purelib</code></strong> говорит, куда распаковывать: <code>true</code> — в <code>purelib</code> (site-packages), <code>false</code> — в <code>platlib</code> (у системного питона это разные каталоги; в venv совпадают). Platform-wheel'ы кладут <code>.so</code>-файлы рядом с кодом — вся платформенная специфика уже в имени.</li>
+<li><strong><code>RECORD</code> внутри wheel не содержит <code>.pyc</code></strong> — они ещё не существуют! pip при установке компилирует байт-код (13.2) и дописывает строки <code>demo_hood/__pycache__/cli.cpython-312.pyc,,</code> (без хеша — pyc воспроизводим из исходника) в RECORD <strong>установленной</strong> копии.</li>
+<li><strong><code>.data/</code>-каталог</strong>: файлы, которые должны попасть НЕ в site-packages (скрипты, данные, заголовки), пакуются как <code>demo.data/scripts/run.sh</code> и раскладываются pip'ом по схемам установки.</li>
+</ul>
+<p>⚠️ Wheel — не-installer: никаких скриптов постустановки. Всё, что делается при установке wheel'а — распаковка по схеме, компиляция pyc, генерация скриптов из <code>entry_points.txt</code> и запись dist-info. Если вы «установили пакет, а он требует ещё что-то скачать» — это делает импортируемый код, не wheel (и это основание не доверять таким пакетам, см. Приложение B).</p>
+<h2 id="18.7">18.7. pip изнутри: что происходит при <code>pip install</code><a class="headerlink" href="#18.7" title="Permanent link">#</a></h2>
+<p>Соберём весь путь (и проверим его на реальном пакете):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pip install demo-pkg-hood
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  1. RESOLVE   резолвер (resolvelib): собрать граф зависимостей,
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>               для каждого требования — список кандидатов с индекса,
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>               отсечь по тегам/Requires-Python/маркерам, выбрать версию
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  2. DOWNLOAD  скачать wheel (или sdist) в HTTP-кэш ~/.cache/pip
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  3. BUILD     если sdist — собрать wheel через PEP 517 (18.4); wheel кэшируется
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>  4. INSTALL   распаковка в site-packages → компиляция pyc (13.2) →
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>               генерация console-скриптов → запись dist-info (RECORD/INSTALLER/…)
+</span></code></pre></div>
+<p>Что реально оказывается на диске после <code>pip install demo_pkg_hood-0.1.0-py3-none-any.whl --target ...</code> (наш прогон):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>demo_hood/__init__.py
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>demo_hood/__pycache__/__init__.cpython-312.pyc     ← скомпилировано при установке
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>demo_hood/cli.py
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>demo_hood/__pycache__/cli.cpython-312.pyc
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>bin/demo-hood                                      ← скрипт из [project.scripts]
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>demo_pkg_hood-0.1.0.dist-info/INSTALLER            ← &#39;pip&#39;
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>demo_pkg_hood-0.1.0.dist-info/METADATA
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>demo_pkg_hood-0.1.0.dist-info/RECORD               ← теперь и с pyc, и с bin/-путём
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>demo_pkg_hood-0.1.0.dist-info/REQUESTED            ← ставили явно (не как зависимость)
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>demo_pkg_hood-0.1.0.dist-info/direct_url.json      ← ставили не с индекса
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>demo_pkg_hood-0.1.0.dist-info/WHEEL
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>demo_pkg_hood-0.1.0.dist-info/entry_points.txt
+</span></code></pre></div>
+<p>Сгенерированный <code>bin/demo-hood</code> — не копия чего-то из wheel, а <strong>код, который pip написал сам</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="ch">#!/home/z/.venv/bin/python3          # абсолютный shebang — на интерпретатор этого venv</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># -*- coding: utf-8 -*-</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="kn">import</span> <span class="nn">re</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="kn">from</span> <span class="nn">demo_hood.cli</span> <span class="kn">import</span> <span class="n">main</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(-script\.pyw|\.exe)?$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</span></code></pre></div>
+<p>Три следствия, объясняющие классические «а почему так»: (1) shebang абсолютный — скрипт, положенный в venv, останется работать только с ним; (2) пути в RECORD относительные (<code>../../bin/demo-hood</code>) — pip uninstall удалит скрипт даже из соседнего каталога; (3) <code>python -m pip</code> (11.31) надёжнее голого <code>pip</code> именно потому, что гарантирует «тот pip, что принадлежит этому интерпретатору», — <code>bin/pip</code> мог остаться от другого окружения.</p>
+<p>Кэши и переменные:</p>
+<table>
+<thead>
+<tr>
+<th>Механизм</th>
+<th>Путь / переменная</th>
+<th>Что кэширует</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP-кэш</td>
+<td><code>~/.cache/pip</code> (<code>PIP_CACHE_DIR</code>)</td>
+<td>скачанные файлы + ответы индекса</td>
+</tr>
+<tr>
+<td>wheel-кэш локальных сборок</td>
+<td>там же</td>
+<td>wheels, собранные из sdist ранее</td>
+</tr>
+<tr>
+<td><code>--find-links ./wheels/</code></td>
+<td>флаг</td>
+<td>корпоративные каталоги без индекса</td>
+</tr>
+<tr>
+<td><code>--no-index</code> + <code>--find-links</code></td>
+<td>флаги</td>
+<td>полностью офлайн-установка</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Переменная (10.3)</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PIP_INDEX_URL</code></td>
+<td>зеркало/приватный индекс вместо pypi.org</td>
+</tr>
+<tr>
+<td><code>PIP_BREAK_SYSTEM_PACKAGES=1</code></td>
+<td>разрешить ломать системный Python (Debian блокирует pip по умолчанию)</td>
+</tr>
+<tr>
+<td><code>PIP_REQUIRE_VIRTUALENV=1</code></td>
+<td>запретить pip'у работать вне venv — защита от «sudo pip»</td>
+</tr>
+<tr>
+<td><code>PIP_DISABLE_PIP_VERSION_CHECK=1</code></td>
+<td>тише и быстрее на CI</td>
+</tr>
+<tr>
+<td><code>PIP_TARGET</code></td>
+<td>каталог по умолчанию для <code>--target</code></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>Установка из sdist исполняет код бэкенда</strong> (а с legacy <code>setup.py</code> — и его) на вашей машине. Wheel безопаснее ровно в этом смысле. pip резолвер ставит wheel по умолчанию и предупреждает, когда вынужден собирать. Приложение B разбирает упаковку глазами нарушителя.</p>
+<p>✅ Ошибка резолвера <code>Cannot install X because these package versions have conflicting dependencies</code> — это работа step 1: резолвер честно перебирает граф и не ставит «что-нибудь». Фиксация версий целиком (<code>pip freeze</code>) или constraints-файл (<code>pip install -c constraints.txt</code>) дают воспроизводимость, но не отменяют конфликтов на стороне pip — их решает только автор графа.</p>
+<h2 id="18.8">18.8. Editable-установка: <code>.pth</code> и finder<a class="headerlink" href="#18.8" title="Permanent link">#</a></h2>
+<p><code>pip install -e .</code> не копирует код в site-packages — он делает так, чтобы <code>import</code> находил код <strong>в исходниках проекта</strong>. Механика не магическая и — что интереснее — у одного и того же setuptools их две; мы обе воспроизвели в чистом venv.</p>
+<p><strong>Случай 1: src-layout</strong> (код в <code>src/demo_hood/</code>) — простая <code>.pth</code>-ссылка:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>site-packages/
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>├── __editable__.demo_pkg_hood-0.1.0.pth     # СОДЕРЖИМОЕ — просто путь:
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>│                                            # /home/z/.../demo-pkg/src
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>└── demo_pkg_hood-0.1.0.dist-info/           # паспорт всё равно пишется целиком
+</span></code></pre></div>
+<p><code>site</code> (11.31) при старте читает <code>.pth</code> и добавляет путь в <code>sys.path</code> — дальше работает обычный PathFinder (16.3). Проверка подтверждает: <code>demo_hood.__file__</code> указывает в <code>.../demo-pkg/src/demo_hood/__init__.py</code>, правки в исходниках видны без переустановки.</p>
+<p><strong>Случай 2: flat-layout</strong> (пакет в корне проекта, рядом с <code>pyproject.toml</code>) — так просто нельзя: добавив корень проекта в <code>sys.path</code>, вы засорили бы его <code>pyproject.toml</code>-окрестностью, конфликтующими именами и самим пакетом (кстати, здесь же лежит каталог <code>tests/</code>). setuptools генерирует <strong>метапатч-finder</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>site-packages/
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>├── __editable__.demo_flat-0.2.0.pth            # исполняемая строка:
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>│                                               # import __editable___demo_flat_0_2_0_finder; ...install()
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>└── __editable___demo_flat_0_2_0_finder.py      # код-генерат:
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>                                                # MAPPING = {&#39;demo_flat&#39;: &#39;/…/demo-flat/demo_flat&#39;}
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>                                                # class _EditableFinder:  # MetaPathFinder
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>                                                #     def find_spec(cls, fullname, ...): ...
+</span></code></pre></div>
+<p><code>.pth</code>-строка здесь <strong>исполняет код при старте каждого Python</strong> (вот и живое применение «<code>.pth</code> может выполнять arbitrary code» из 11.31) — finder встраивается в <code>sys.meta_path</code> (16.3) и отдаёт spec'и по явной карте <code>имя_пакета → каталог</code>. Импорты идут мимо обычного PathFinder, ровно и без побочных путей.</p>
+<p>Что общего у обоих случаев — и что на удивление «настоящее»:</p>
+<ul>
+<li><strong>dist-info пишется полностью</strong>: <code>importlib.metadata.version("demo-pkg-hood")</code> в editable-режиме возвращает <code>0.1.0</code>, <code>entry_points()</code> видит <code>[project.scripts]</code>, а <code>files()</code> честно перечисляет <code>.pth</code> и <code>bin/demo-hood</code> — то есть <strong>console-скрипты в editable-режиме тоже создаются</strong> (с тем же shebang).</li>
+<li><strong><code>direct_url.json</code></strong> отмечает <code>dir_info: {"editable": true}</code> — <code>pip list</code> подсвечивает такие пакеты.</li>
+<li><strong>удаление</strong> <code>pip uninstall demo-pkg-hood</code> снимет и <code>.pth</code>, и finder, и dist-info — по RECORD.</li>
+</ul>
+<p>⚠️ Границы editable: версия в метаданных <strong>не обновится</strong>, если вы поменяли <code>version = "0.2.0"</code> в <code>pyproject.toml</code> (переустановите <code>-e .</code>); переименование пакетов/перенос файлов finder в src-layout отследит, а в flat — по MAPPING тоже, но кэш импортов (16.1) внутри одного процесса остаётся; и помните, что editable-пакет на проде — код, которого нет в целевой системе: в Docker-образы ставьте обычные wheels.</p>
+<p>Бэкенды различаются деталями: hatchling и flit в editable-режиме всегда пишут простой <code>.pth</code> на каталог <code>src/</code> (у них stricter-модель, генерировать finder не требуется), setuptools — как разобрано выше. Поведение заметно, когда ловят «а почему мой модуль импортируется из корня проекта» — это у вас flat-layout + простой <code>.pth</code>-инструмент: добавьте <code>src/</code>.</p>
+<h2 id="18.9">18.9. Зависимости: PEP 508 и PEP 440<a class="headerlink" href="#18.9" title="Permanent link">#</a></h2>
+<p>Строка зависимости — маленький DSL, который парсит <code>packaging.requirements.Requirement</code> (в pip'е — вендорнутая копия):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>celery[redis]==5.3.0; python_version &gt;= &quot;3.7&quot;
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>└─name─┘└extra┘└specifier┘└────marker────┘
+</span></code></pre></div>
+<p>Все три части проверены живыми прогонами; снаружи — это то, что лежит в <code>dependencies</code> (18.3) и <code>Requires-Dist:</code> в METADATA (18.2).</p>
+<p><strong>Операторы версий</strong> (PEP 440), поведение проверено:</p>
+<table>
+<thead>
+<tr>
+<th>Оператор</th>
+<th>Пример</th>
+<th><code>2.31.9</code>?</th>
+<th><code>2.32</code>?</th>
+<th><code>3.0</code>?</th>
+<th>Примечание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&gt;=2.31</code></td>
+<td>нижняя граница</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&lt;3.0</code></td>
+<td>верхняя граница</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td></td>
+</tr>
+<tr>
+<td><code>==2.31.0</code></td>
+<td>точное</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td></td>
+</tr>
+<tr>
+<td><code>==2.31.*</code></td>
+<td>wildcard</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>wildcard допустим ТОЛЬКО с <code>==</code></td>
+</tr>
+<tr>
+<td><code>!=2.32.*</code></td>
+<td>исключение</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+<td><code>!=1.5*</code> без точки — InvalidSpecifier</td>
+</tr>
+<tr>
+<td><code>~=2.31</code></td>
+<td>«совместимая»: <code>&gt;=2.31, ==2.*</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td><code>~=2.31.4</code> — уже <code>&gt;=2.31.4, ==2.31.*</code></td>
+</tr>
+<tr>
+<td><code>===1.0</code></td>
+<td>arbitrary equality</td>
+<td>только <code>1.0</code></td>
+<td></td>
+<td></td>
+<td>строковое сравнение, для экзотики</td>
+</tr>
+</tbody>
+</table>
+<p>Версия — тоже не строка, а структурированный объект: <code>Version("1.1rc1.post2.dev3+local")</code> разбирается на <code>release=(1, 1)</code>, <code>pre=('rc', 1)</code>, <code>post=2</code>, <code>dev=3</code>, <code>local='local'</code>; <code>public</code> отсекает <code>+local</code>, <code>base_version</code> — ещё и <code>pre/post/dev</code>. Сортировка определена спецификацией (проверено):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>1.0 &lt; 1.0.1 &lt; 1.1a1 &lt; 1.1b2 &lt; 1.1rc1 &lt; 1.1 &lt; 2.0.post1 &lt; 2023.10.15
+</span></code></pre></div>
+<p>Заметьте: <code>1.1rc1 &lt; 1.1</code> (пре-релизы идут <strong>до</strong> релиза), <code>1.0 == 1.0.0</code>, а CalVer (<code>2023.10.15</code>) — просто большой номер релиза.</p>
+<p><strong>Пре-релизы pip по умолчанию не ставит</strong> — но правило точнее, чем кажется: кандидат-пре-релиз рассматривается, если это единственный вариант, вы попросили <code>--pre</code>, или ваш собственный specifier сам называет пре-релиз: <code>Specifier("&gt;=2.0rc1").prereleases == True</code> (проверено) — с такой границей pip спокойно поставит <code>2.0rc2</code>.</p>
+<p><strong>Маркеры</strong> (PEP 508) вычисляются на машине пользователя и решают, относится ли зависимость к окружению вообще:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span> <span class="nn">packaging.markers</span> <span class="kn">import</span> <span class="n">Marker</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">from</span> <span class="nn">packaging.requirements</span> <span class="kn">import</span> <span class="n">Requirement</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;sys_platform == &quot;win32&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>         <span class="c1"># False на Linux</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;sys_platform == &quot;win32&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;sys_platform&quot;</span><span class="p">:</span> <span class="s2">&quot;win32&quot;</span><span class="p">})</span>   <span class="c1"># True</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;python_version &gt;= &quot;3.11&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>        <span class="c1"># True на 3.12</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;extra == &quot;dev&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>                  <span class="c1"># False — extra активен только при [dev]</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="n">Requirement</span><span class="p">(</span><span class="s1">&#39;pywin32==306; sys_platform == &quot;win32&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">marker</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>  <span class="c1"># False</span>
+</span></code></pre></div>
+<p>Отсюда разделение труда: <code>pyproject.toml</code> — декларация (диапазоны, маркеры, extras), <code>requirements.txt</code> — снимок окружения (по традиции жёстко закреплённые <code>==</code> версии; хеши — для репродьюсибл-установки, см. 11.31). Между ними стоит <strong>lock-файл</strong>: <code>pip freeze &gt; requirements.txt</code>, <code>pip-tools</code> (<code>pip-compile</code>: резолвит и фиксирует весь транзитивный граф), <code>uv lock</code> (быстрый резолвер + <code>uv.lock</code>). Все решают одну задачу — детерминированная установка того, что декларативно задано диапазонами.</p>
+<p>⚠️ <code>python_version</code> в маркере — <code>major.minor</code> (<code>3.12</code>), а <code>python_full_version</code> — с патчем (<code>3.12.14</code>). Ограничения вида <code>python_version &lt; "3.10"</code> для «не 3.9» ломаются на будущих 3.10-х патчах, а вот <code>python_full_version &lt; "3.10"</code> — нет. Учитывайте, что именно вы фиксируете.</p>
+<h2 id="18.10">18.10. entry points: console-скрипты и плагины<a class="headerlink" href="#18.10" title="Permanent link">#</a></h2>
+<p><code>entry_points.txt</code> внутри dist-info — INI-секции с парами «имя = модуль:объект»:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">[console_scripts]</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="na">demo-hood</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">demo_hood.cli:main</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">[demo_hood.plugins]</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="na">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">demo_hood.cli:hello</span>
+</span></code></pre></div>
+<p>Секция <code>console_scripts</code> обрабатывается pip'ом при установке особым образом: для каждой записи пишется исполняемый файл в <code>bin/</code> (код обёртки — в 18.7). Функция <strong>не импортируется до запуска команды</strong> — обёртка делает <code>from demo_hood.cli import main</code> в момент вызова. Поэтому <code>pip install</code> быстрый, а первая команда ещё платит за импорт пакета (16.11 покажет его цену через <code>-X importtime</code>).</p>
+<p>Все остальные группы — универсальный <strong>реестр плагинов</strong>: любое приложение может объявить группу и в рантайме найти её в установленных пакетах:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span> <span class="nn">importlib.metadata</span> <span class="k">as</span> <span class="nn">im</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">im</span><span class="o">.</span><span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;console_scripts&quot;</span><span class="p">)</span>          <span class="c1"># все консольные команды окружения</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="n">im</span><span class="o">.</span><span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;console_scripts&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="c1"># [EntryPoints(name=&#39;pip&#39;, value=&#39;pip._internal.cli.main:main&#39;, group=&#39;console_scripts&#39;)]</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="n">ep</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;console_scripts&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pip&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">ep</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>          <span class="c1"># &lt;function main at ...&gt; — РЕАЛЬНЫЙ импорт цели</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="n">im</span><span class="o">.</span><span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;demo_hood.plugins&quot;</span><span class="p">)</span>   <span class="c1"># наша группа из 18.3</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1"># pytest ищет group=&#39;pytest11&#39;, ruff/flake8 — свои; ровно так строятся плагин-системы</span>
+</span></code></pre></div>
+<p><code>ep.load()</code> — это <code>importlib.import_module</code> по части до <code>:</code> плюс <code>getattr</code>. Отсюда практическое следствие: плагин, сломанный при импорте, роняет не установку, а <strong>первый вызов <code>load()</code></strong> у приложения — на которые у зрелых фреймворков стоят try/except с предупреждением.</p>
+<p>Цена вопроса измерена (бенчмарки B4): скан всех dist-info окружения занимает ~15 мс на 430 каталогах — поэтому зрелые приложения (pytest) кэшируют результат поиска плагинов на процесс, а горячие пути (каждый запрос, каждый вызов) не опрашивают entry points в принципе. Точечный запрос <code>im.version()</code> — ~0.3 мс: чтение одного маленького файла.</p>
+<table>
+<thead>
+<tr>
+<th>Группа</th>
+<th>Кто объявляет</th>
+<th>Кто читает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>console_scripts</code></td>
+<td><code>[project.scripts]</code></td>
+<td>pip (генерирует bin)</td>
+</tr>
+<tr>
+<td><code>pytest11</code></td>
+<td>плагины pytest</td>
+<td>pytest при старте</td>
+</tr>
+<tr>
+<td><code>distutils.commands</code></td>
+<td>доп. команды сборки</td>
+<td>setuptools</td>
+</tr>
+<tr>
+<td>любая своя</td>
+<td><code>[project.entry-points."x.y"]</code></td>
+<td>ваш код через <code>entry_points(group="x.y")</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="18.11">18.11. Публикация: PyPI, twine и альтернативные формы<a class="headerlink" href="#18.11" title="Permanent link">#</a></h2>
+<p>Канонический путь на индекс:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>pip<span class="w"> </span>install<span class="w"> </span>build<span class="w"> </span>twine
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>python<span class="w"> </span>-m<span class="w"> </span>build<span class="w">                         </span><span class="c1"># dist/demo_pkg_hood-0.1.0.tar.gz + .whl</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>twine<span class="w"> </span>check<span class="w"> </span>dist/*<span class="w">                      </span><span class="c1"># валидация метаданных (README-разметка и пр.)</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>twine<span class="w"> </span>upload<span class="w"> </span>--repository<span class="w"> </span>testpypi<span class="w"> </span>dist/*<span class="w">   </span><span class="c1"># репетиция на test.pypi.org</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>twine<span class="w"> </span>upload<span class="w"> </span>dist/*<span class="w">                     </span><span class="c1"># публикация</span>
+</span></code></pre></div>
+<p>Аутентификация за последние годы сменила модель: API-токены с ограниченным скоупом вытеснили пароли, а <strong>trusted publishing</strong> (OIDC) убрал токены вовсе — CI-работа GitHub Actions публикует по короткоживущей подписи идентичности репозитория, никакие секреты не хранятся. Загруженные файлы <strong>неизменяемы</strong>: перезалить ту же версию нельзя — только выложить новую или <strong>yank</strong>нуть (открепить от новых резолвов, не удаляя: сломанный релиз перестаёт отдаваться свежим установкам, но старые <code>==</code>-пины продолжают работать).</p>
+<p>Дистрибуция не всегда «в PyPI и только там»:</p>
+<table>
+<thead>
+<tr>
+<th>Форма</th>
+<th>Инструмент</th>
+<th>Когда</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Приватный индекс</td>
+<td><code>PIP_INDEX_URL</code>, devpi, Artifactory</td>
+<td>корпоративные пакеты, закрытые зависимости</td>
+</tr>
+<tr>
+<td>Каталог wheels без индекса</td>
+<td><code>pip install --no-index --find-links wheels/</code></td>
+<td>офлайн-инсталляции, air-gapped</td>
+</tr>
+<tr>
+<td>Исполняемый zip</td>
+<td><code>python -m zipapp</code> → <code>.pyz</code></td>
+<td>скрипт-приложение одним файлом</td>
+</tr>
+<tr>
+<td>Замороженный бинарник</td>
+<td>PyInstaller, Nuitka</td>
+<td>пользователям без Python</td>
+</tr>
+<tr>
+<td>Контейнер</td>
+<td>Docker + обычный pip install</td>
+<td>сервисы</td>
+</tr>
+</tbody>
+</table>
+<p><code>zipapp</code> — самый недооценённый: папка с кодом + <code>__main__.py</code> превращается в один <code>.pyz</code>, который запускается напрямую (исполняемый zip — это тот же механизм zipimport из 16.9, смонтированный на сам файл):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>$<span class="w"> </span>mkdir<span class="w"> </span>myapp/libdir
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>$<span class="w"> </span>cat<span class="w"> </span>&gt;<span class="w"> </span>myapp/libdir/tool.py<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="s">name = &#39;tool-v1&#39;</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="s">def run():</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="s">    print(&#39;pyz run:&#39;, name)</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="s">EOF</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;from libdir import tool</span>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="s2">print(&#39;pyz (A, __main__.py):&#39;, tool.name)&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>myapp/__main__.py
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>zipapp<span class="w"> </span>myapp<span class="w"> </span>-o<span class="w"> </span>myappA.pyz<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/usr/bin/env python3&quot;</span>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>$<span class="w"> </span>./myappA.pyz
+</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>pyz<span class="w"> </span><span class="o">(</span>A,<span class="w"> </span>__main__.py<span class="o">)</span>:<span class="w"> </span>tool-v1
+</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>
+</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="c1"># вариант Б: точка входа флагом -m вместо __main__.py</span>
+</span><span id="__span-24-15"><a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a>$<span class="w"> </span>rm<span class="w"> </span>myapp/__main__.py
+</span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>zipapp<span class="w"> </span>myapp<span class="w"> </span>-o<span class="w"> </span>myappB.pyz<span class="w"> </span>-m<span class="w"> </span>libdir.tool:run<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/usr/bin/env python3&quot;</span>
+</span><span id="__span-24-17"><a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>$<span class="w"> </span>./myappB.pyz
+</span><span id="__span-24-18"><a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a>pyz<span class="w"> </span>run:<span class="w"> </span>tool-v1
+</span></code></pre></div>
+<p>Внутри <code>.pyz</code> — обычный zip с шебангом первой строкой; <code>-m</code> сгенерировал <code>__main__.py</code> из <code>модуль:функция</code>. Оба варианта взаимоисключающие — zipapp откажется: <code>ZipAppError: Cannot specify entry point if the source has __main__.py</code> (проверено). Зависимости можно вшить внутрь каталога (<code>pip install --target myapp/ requests</code>) — и <code>.pyz</code> станет самодостаточным, без venv.</p>
+<p>⚠️ <code>.pyz</code> — не безопасность, а удобство: код читается как zip, подписи у него нет, «вирусный вектор» он ничем не лучше скрипта. Для распространения среди «своих» — идеально; в публичный доступ — только wheel.</p>
+<p>PEP 723 (2024) — «inline script metadata»: шапка вида <code># /// script</code> прямо в одном <code>.py</code>-файле, по которой <code>uv run</code>/<code>pipx</code> поднимают окружение с зависимостями. Тот же PEP 508-синтаксис, но носитель — сам скрипт. Идейно это zipapp наоборот: не «приложение без зависимостей», а «скрипт со своими».</p>
+<h3 id="18.11-benchmarki">Бенчмарки к Части XVIII<a class="headerlink" href="#18.11-benchmarki" title="Permanent link">#</a></h3>
+<p>Машина: 2 ядра, CPython 3.12.14, pip 25.0.1, uv 0.12.15. Один и тот же пакет <code>requests</code> (2.34.2) у обоих инструментов; тёплый кэш у каждого своего.</p>
+<p><strong>B1. Установка <code>requests</code> + 4 зависимостей, тёплый кэш:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th style="text-align: right;">Время</th>
+<th style="text-align: right;">×</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pip install requests --target …</code></td>
+<td style="text-align: right;">1.53 с</td>
+<td style="text-align: right;">1.0×</td>
+</tr>
+<tr>
+<td><code>uv pip install requests --target …</code></td>
+<td style="text-align: right;">0.02 с</td>
+<td style="text-align: right;">67.5×</td>
+</tr>
+</tbody>
+</table>
+<p>Разрыв — не «питон медленный», а архитектура: uv (Rust) держит глобальный кэш распакованных wheels и связывает файлы в целевое окружение hardlink'ами — ни распаковки, ни компиляции pyc (uv, в отличие от pip, не компилирует байт-код по умолчанию); pip каждый раз распаковывает и компилирует. Для CI и Docker-слоёв перевод на uv — самые дешёвые минуты в жизни проекта.</p>
+<p><strong>B2. Создание окружения:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th style="text-align: right;">Время</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>python3 -m venv .venv</code></td>
+<td style="text-align: right;">2.11 с</td>
+</tr>
+<tr>
+<td><code>uv venv .venv</code></td>
+<td style="text-align: right;">0.06 с (~35×)</td>
+</tr>
+</tbody>
+</table>
+<p><code>python -m venv</code> грузит pip внутрь (ensurepip); uv venv создаёт только каталоги и симлинк на интерпретатор — pip туда приносит сами инструменты (<code>uv pip install</code>).</p>
+<p><strong>B3. Сборка wheel демо-проекта</strong> (<code>pip wheel . --no-build-isolation</code>, setuptools 82): 1.72 с. В изоляции добавляется скачивание setuptools в окружение сборки — на холодном кэше +2–4 с. Это цена, которую платит каждый пользователь, ставящий sdist без wheel'а: вот почему авторам стоит выкладывать wheels (18.5).</p>
+<p><strong>B4. <code>importlib.metadata</code>:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Операция</th>
+<th style="text-align: right;">Время</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>im.version("aiohttp")</code></td>
+<td style="text-align: right;">299 мкс</td>
+</tr>
+<tr>
+<td><code>im.metadata("aiohttp")</code></td>
+<td style="text-align: right;">299 мкс</td>
+</tr>
+<tr>
+<td><code>im.entry_points(group="console_scripts")</code> — скан 430 dist-info</td>
+<td style="text-align: right;">15.3 мс</td>
+</tr>
+</tbody>
+</table>
+<p>Вывод для плагинных систем: точечный запрос — микро-цена, полный скан — миллисекунды; кэшируйте <code>entry_points()</code> на процесс и не дёргайте его в горячих путях (18.10).</p>
+<p><strong>B5. Бюрократия конвейера</strong> (то же демо, те же прогоны): <code>pip install</code> из готового wheel — доли секунды, из sdist — секунды на сборку (B3). Резолвер и скачивание доминируют на малых пакетах; на больших (numpy/scipy) разница wheel/sdist — уже минуты и компилятор.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/n3xumc0r3/py-underhood" target="_blank" rel="noopener" title="GitHub репозиторий" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.prev_next", "navigation.top", "navigation.tracking", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

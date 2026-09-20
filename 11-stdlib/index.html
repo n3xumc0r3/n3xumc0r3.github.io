@@ -1363,6 +1363,66 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11.32" class="md-nav__link">
+    <span class="md-ellipsis">
+      11.32. zoneinfo — часовые пояса IANA: PEP 615, fold и данные
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.32. zoneinfo — часовые пояса IANA: PEP 615, fold и данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11.32-baza" class="md-nav__link">
+    <span class="md-ellipsis">
+      База: aware-datetime с зоной из базы IANA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-fold" class="md-nav__link">
+    <span class="md-ellipsis">
+      fold (PEP 495): несуществующие и двоякие времена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-arifmetika" class="md-nav__link">
+    <span class="md-ellipsis">
+      Арифметика aware-дат: wall clock против абсолютного времени
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-dannye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Откуда берутся данные: TZPATH и пакет tzdata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-oshibki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ошибки, UTC и шпаргалка
+    </span>
+  </a>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#11.31-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1511,6 +1571,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../18-packaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Часть XVIII. Упаковка: от исходников до PyPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -1529,10 +1609,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1543,8 +1623,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             Приложения
           </label>
@@ -2470,6 +2550,66 @@
   <a href="#11.31-svodnaya" class="md-nav__link">
     <span class="md-ellipsis">
       Сводная таблица: флаги запуска Python
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11.32" class="md-nav__link">
+    <span class="md-ellipsis">
+      11.32. zoneinfo — часовые пояса IANA: PEP 615, fold и данные
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.32. zoneinfo — часовые пояса IANA: PEP 615, fold и данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11.32-baza" class="md-nav__link">
+    <span class="md-ellipsis">
+      База: aware-datetime с зоной из базы IANA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-fold" class="md-nav__link">
+    <span class="md-ellipsis">
+      fold (PEP 495): несуществующие и двоякие времена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-arifmetika" class="md-nav__link">
+    <span class="md-ellipsis">
+      Арифметика aware-дат: wall clock против абсолютного времени
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-dannye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Откуда берутся данные: TZPATH и пакет tzdata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11.32-oshibki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ошибки, UTC и шпаргалка
     </span>
   </a>
   
@@ -4962,101 +5102,278 @@
 </tr>
 </tbody>
 </table>
+<h2 id="11.32">11.32. <code>zoneinfo</code> — часовые пояса IANA: PEP 615, fold и данные<a class="headerlink" href="#11.32" title="Permanent link">#</a></h2>
+<p><code>datetime.timezone</code> умеет только фиксированный сдвиг от UTC. Но у реальных зон сдвиг меняется: летом и зимой (DST), а то и по указу правительства. Вся эта история хранится в базе часовых поясов IANA (tzdata), а <code>zoneinfo</code> (PEP 615, с 3.9) — её Python-интерфейс. До 3.9 всё держалось на стороннем <code>pytz</code> со своей (неудобной) моделью — с 3.9 стандартная библиотека работает с зонами напрямую.</p>
+<h3 id="11.32-baza">База: aware-datetime с зоной из базы IANA<a class="headerlink" href="#11.32-baza" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-125-1"><a id="__codelineno-125-1" name="__codelineno-125-1" href="#__codelineno-125-1"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span id="__span-125-2"><a id="__codelineno-125-2" name="__codelineno-125-2" href="#__codelineno-125-2"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-125-3"><a id="__codelineno-125-3" name="__codelineno-125-3" href="#__codelineno-125-3"></a>
+</span><span id="__span-125-4"><a id="__codelineno-125-4" name="__codelineno-125-4" href="#__codelineno-125-4"></a><span class="n">msk</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>          <span class="c1"># ключ IANA: Area/Location</span>
+</span><span id="__span-125-5"><a id="__codelineno-125-5" name="__codelineno-125-5" href="#__codelineno-125-5"></a><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span>
+</span><span id="__span-125-6"><a id="__codelineno-125-6" name="__codelineno-125-6" href="#__codelineno-125-6"></a><span class="n">dt</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(),</span> <span class="n">dt</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span>              <span class="c1"># (timedelta(hours=3), &#39;MSK&#39;)</span>
+</span><span id="__span-125-7"><a id="__codelineno-125-7" name="__codelineno-125-7" href="#__codelineno-125-7"></a>
+</span><span id="__span-125-8"><a id="__codelineno-125-8" name="__codelineno-125-8" href="#__codelineno-125-8"></a><span class="c1"># перевод момента времени между зонами — astimezone:</span>
+</span><span id="__span-125-9"><a id="__codelineno-125-9" name="__codelineno-125-9" href="#__codelineno-125-9"></a><span class="n">ny</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/New_York&quot;</span><span class="p">)</span>
+</span><span id="__span-125-10"><a id="__codelineno-125-10" name="__codelineno-125-10" href="#__codelineno-125-10"></a><span class="n">dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ny</span><span class="p">)</span>        <span class="c1"># 2025-06-01 05:00:00-04:00 — тот же момент, другое время на стене</span>
+</span><span id="__span-125-11"><a id="__codelineno-125-11" name="__codelineno-125-11" href="#__codelineno-125-11"></a><span class="n">dt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">)</span>    <span class="c1"># 2025-06-01 12:00:00-04:00 — те же ЧАСЫ, но другой момент!</span>
+</span><span id="__span-125-12"><a id="__codelineno-125-12" name="__codelineno-125-12" href="#__codelineno-125-12"></a><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">)</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ny</span><span class="p">))</span>   <span class="c1"># timedelta(hours=7) — ловушка на 7 часов</span>
+</span></code></pre></div>
+<p>⚠️ <strong><code>astimezone</code> меняет точку зрения на момент времени, <code>replace(tzinfo=...)</code> — перепрошивает ярлык</strong>, оставив настенные часы на месте. Почти всегда нужен <code>astimezone</code>; <code>replace</code> — когда вы точно знаете, что наивное время выражено в другой зоне.</p>
+<p>Сила IANA-данных — история: один и тот же ключ <code>Europe/Moscow</code> даёт правильные сдвиги для любых дат прошлого:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-126-1"><a id="__codelineno-126-1" name="__codelineno-126-1" href="#__codelineno-126-1"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+</span><span id="__span-126-2"><a id="__codelineno-126-2" name="__codelineno-126-2" href="#__codelineno-126-2"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-126-3"><a id="__codelineno-126-3" name="__codelineno-126-3" href="#__codelineno-126-3"></a>
+</span><span id="__span-126-4"><a id="__codelineno-126-4" name="__codelineno-126-4" href="#__codelineno-126-4"></a><span class="n">msk</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>
+</span><span id="__span-126-5"><a id="__codelineno-126-5" name="__codelineno-126-5" href="#__codelineno-126-5"></a><span class="c1"># реальные данные базы IANA (проверено на tzdata 2026a):</span>
+</span><span id="__span-126-6"><a id="__codelineno-126-6" name="__codelineno-126-6" href="#__codelineno-126-6"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># 3:00 (MSK, зима)</span>
+</span><span id="__span-126-7"><a id="__codelineno-126-7" name="__codelineno-126-7" href="#__codelineno-126-7"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># 4:00 (MSD, летнее время действовало)</span>
+</span><span id="__span-126-8"><a id="__codelineno-126-8" name="__codelineno-126-8" href="#__codelineno-126-8"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># 4:00 (MSK! — указ 2011: постоянное «лето»)</span>
+</span><span id="__span-126-9"><a id="__codelineno-126-9" name="__codelineno-126-9" href="#__codelineno-126-9"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># 4:00 (ещё постоянное лето)</span>
+</span><span id="__span-126-10"><a id="__codelineno-126-10" name="__codelineno-126-10" href="#__codelineno-126-10"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">msk</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># 3:00 (с октября 2014 — постоянная зима)</span>
+</span></code></pre></div>
+<p><code>datetime.timezone</code> такое не умеет в принципе — у него одна фикс-величина на все времена.</p>
+<h3 id="11.32-fold"><code>fold</code> (PEP 495): несуществующие и двоякие времена<a class="headerlink" href="#11.32-fold" title="Permanent link">#</a></h3>
+<p>При переводе стрелок час на стене случается дважды или ни разу. Атрибут <code>fold</code> (0 или 1) объясняет, какое из двух возможных состояний вы имеете в виду. По умолчанию <code>fold=0</code> — «раньше».</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-127-1"><a id="__codelineno-127-1" name="__codelineno-127-1" href="#__codelineno-127-1"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+</span><span id="__span-127-2"><a id="__codelineno-127-2" name="__codelineno-127-2" href="#__codelineno-127-2"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-127-3"><a id="__codelineno-127-3" name="__codelineno-127-3" href="#__codelineno-127-3"></a>
+</span><span id="__span-127-4"><a id="__codelineno-127-4" name="__codelineno-127-4" href="#__codelineno-127-4"></a><span class="n">ny</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/New_York&quot;</span><span class="p">)</span>
+</span><span id="__span-127-5"><a id="__codelineno-127-5" name="__codelineno-127-5" href="#__codelineno-127-5"></a><span class="c1"># Осень 2024: 3 ноября в 02:00 EDT стрелки назад на 01:00 EST.</span>
+</span><span id="__span-127-6"><a id="__codelineno-127-6" name="__codelineno-127-6" href="#__codelineno-127-6"></a><span class="c1"># 01:30 на стене существует ДВАЖДЫ:</span>
+</span><span id="__span-127-7"><a id="__codelineno-127-7" name="__codelineno-127-7" href="#__codelineno-127-7"></a><span class="n">amb0</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-127-8"><a id="__codelineno-127-8" name="__codelineno-127-8" href="#__codelineno-127-8"></a><span class="n">amb1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-127-9"><a id="__codelineno-127-9" name="__codelineno-127-9" href="#__codelineno-127-9"></a><span class="n">amb0</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># -1 day, 20:00:00  (EDT, -4)</span>
+</span><span id="__span-127-10"><a id="__codelineno-127-10" name="__codelineno-127-10" href="#__codelineno-127-10"></a><span class="n">amb1</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>   <span class="c1"># -1 day, 19:00:00  (EST, -5)</span>
+</span><span id="__span-127-11"><a id="__codelineno-127-11" name="__codelineno-127-11" href="#__codelineno-127-11"></a><span class="n">amb0</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>   <span class="c1"># 2024-11-03T05:30:00+00:00</span>
+</span><span id="__span-127-12"><a id="__codelineno-127-12" name="__codelineno-127-12" href="#__codelineno-127-12"></a><span class="n">amb1</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>   <span class="c1"># 2024-11-03T06:30:00+00:00 — час спустя!</span>
+</span><span id="__span-127-13"><a id="__codelineno-127-13" name="__codelineno-127-13" href="#__codelineno-127-13"></a>
+</span><span id="__span-127-14"><a id="__codelineno-127-14" name="__codelineno-127-14" href="#__codelineno-127-14"></a><span class="c1"># Весна 2024: 10 марта в 02:00 EST стрелки вперёд на 03:00 EDT.</span>
+</span><span id="__span-127-15"><a id="__codelineno-127-15" name="__codelineno-127-15" href="#__codelineno-127-15"></a><span class="c1"># 02:30 НЕ существует, но объект datetime его «проживёт» — просто выберет интерпретацию:</span>
+</span><span id="__span-127-16"><a id="__codelineno-127-16" name="__codelineno-127-16" href="#__codelineno-127-16"></a><span class="n">nx0</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># трактуется как EST (-5)</span>
+</span><span id="__span-127-17"><a id="__codelineno-127-17" name="__codelineno-127-17" href="#__codelineno-127-17"></a><span class="n">nx1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># трактуется как EDT (-4)</span>
+</span><span id="__span-127-18"><a id="__codelineno-127-18" name="__codelineno-127-18" href="#__codelineno-127-18"></a><span class="n">nx0</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>   <span class="c1"># 2024-03-10T07:30:00+00:00</span>
+</span><span id="__span-127-19"><a id="__codelineno-127-19" name="__codelineno-127-19" href="#__codelineno-127-19"></a><span class="n">nx1</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>   <span class="c1"># 2024-03-10T06:30:00+00:00</span>
+</span></code></pre></div>
+<p>❌ Классическая ошибка — расписание типа «01:30 ночи каждый день»: в осенний переход оно произойдёт дважды (cron и таймеры разъезжаются с календарём), а в весенний — ни разу. Если приложение чувствительно — нормализуйте через UTC или явно работайте с <code>fold</code>.</p>
+<p>Экзотика, доказывающая, что <code>fold</code> — не теория: на острове Лорд-Хау DST сдвигает часы на <strong>30 минут</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-128-1"><a id="__codelineno-128-1" name="__codelineno-128-1" href="#__codelineno-128-1"></a><span class="n">lh</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Australia/Lord_Howe&quot;</span><span class="p">)</span>
+</span><span id="__span-128-2"><a id="__codelineno-128-2" name="__codelineno-128-2" href="#__codelineno-128-2"></a><span class="n">d0</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">lh</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># +11:00</span>
+</span><span id="__span-128-3"><a id="__codelineno-128-3" name="__codelineno-128-3" href="#__codelineno-128-3"></a><span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">lh</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># +10:30 — разница 30 минут</span>
+</span></code></pre></div>
+<h3 id="11.32-arifmetika">Арифметика aware-дат: wall clock против абсолютного времени<a class="headerlink" href="#11.32-arifmetika" title="Permanent link">#</a></h3>
+<p>Самая коварная часть модели. Датetime-объекты с <strong>одним и тем же</strong> объектом <code>tzinfo</code> вычитаются как наивные (wall clock), даже если между ними был переход DST:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-129-1"><a id="__codelineno-129-1" name="__codelineno-129-1" href="#__codelineno-129-1"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span id="__span-129-2"><a id="__codelineno-129-2" name="__codelineno-129-2" href="#__codelineno-129-2"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-129-3"><a id="__codelineno-129-3" name="__codelineno-129-3" href="#__codelineno-129-3"></a>
+</span><span id="__span-129-4"><a id="__codelineno-129-4" name="__codelineno-129-4" href="#__codelineno-129-4"></a><span class="n">ny</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/New_York&quot;</span><span class="p">)</span>
+</span><span id="__span-129-5"><a id="__codelineno-129-5" name="__codelineno-129-5" href="#__codelineno-129-5"></a><span class="n">t1</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">)</span>     <span class="c1"># EST (-5)</span>
+</span><span id="__span-129-6"><a id="__codelineno-129-6" name="__codelineno-129-6" href="#__codelineno-129-6"></a><span class="n">t2</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">ny</span><span class="p">)</span>    <span class="c1"># EDT (-4), между ними переход</span>
+</span><span id="__span-129-7"><a id="__codelineno-129-7" name="__codelineno-129-7" href="#__codelineno-129-7"></a><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>                        <span class="c1"># 2 days, 0:00:00 — wall clock!</span>
+</span><span id="__span-129-8"><a id="__codelineno-129-8" name="__codelineno-129-8" href="#__codelineno-129-8"></a><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">-</span> <span class="n">t1</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>   <span class="c1"># 1 day, 23:00:00 — абсолют</span>
+</span><span id="__span-129-9"><a id="__codelineno-129-9" name="__codelineno-129-9" href="#__codelineno-129-9"></a>
+</span><span id="__span-129-10"><a id="__codelineno-129-10" name="__codelineno-129-10" href="#__codelineno-129-10"></a><span class="c1"># +24 часа «по стене» против +24 часа абсолютных:</span>
+</span><span id="__span-129-11"><a id="__codelineno-129-11" name="__codelineno-129-11" href="#__codelineno-129-11"></a><span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>          <span class="c1"># 2024-03-10T12:00:00-04:00 — 12:00 на стене</span>
+</span><span id="__span-129-12"><a id="__codelineno-129-12" name="__codelineno-129-12" href="#__codelineno-129-12"></a><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">))</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ny</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</span><span id="__span-129-13"><a id="__codelineno-129-13" name="__codelineno-129-13" href="#__codelineno-129-13"></a>                                              <span class="c1"># 2024-03-10T13:00:00-04:00 — 13:00 на стене</span>
+</span></code></pre></div>
+<p>✅ Правило: <code>timedelta</code> прибавляется к <strong>наивной части</strong>, зона не пересчитывается. Для «завтра в это же время» этого обычно и хотят; для «ровно через 24 часа абсолютных» — ходите через UTC. И да: <code>amb1 - amb0</code> из примера выше даст <code>0:00:00</code> — потому что <code>tzinfo</code> у обоих один и тот же объект.</p>
+<h3 id="11.32-dannye">Откуда берутся данные: TZPATH и пакет tzdata<a class="headerlink" href="#11.32-dannye" title="Permanent link">#</a></h3>
+<p>При загрузке зоны <code>zoneinfo</code> ищет данные в строгом порядке (это видно прямо в <code>_zoneinfo.py</code>):</p>
+<ol>
+<li><strong>Системные файлы</strong> по путям <code>zoneinfo.TZPATH</code> — на Linux это <code>/usr/share/zoneinfo</code> (+ ещё 3 запасных каталога);</li>
+<li><strong>Пакет <code>tzdata</code></strong> из PyPI (<code>importlib.resources</code> по пакету <code>tzdata.zoneinfo</code>) — если системных файлов не нашлось.</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-130-1"><a id="__codelineno-130-1" name="__codelineno-130-1" href="#__codelineno-130-1"></a><span class="kn">import</span> <span class="nn">zoneinfo</span>
+</span><span id="__span-130-2"><a id="__codelineno-130-2" name="__codelineno-130-2" href="#__codelineno-130-2"></a><span class="n">zoneinfo</span><span class="o">.</span><span class="n">TZPATH</span>
+</span><span id="__span-130-3"><a id="__codelineno-130-3" name="__codelineno-130-3" href="#__codelineno-130-3"></a><span class="c1"># (&#39;/usr/share/zoneinfo&#39;, &#39;/usr/lib/zoneinfo&#39;, &#39;/usr/share/lib/zoneinfo&#39;, &#39;/etc/zoneinfo&#39;)</span>
+</span><span id="__span-130-4"><a id="__codelineno-130-4" name="__codelineno-130-4" href="#__codelineno-130-4"></a>
+</span><span id="__span-130-5"><a id="__codelineno-130-5" name="__codelineno-130-5" href="#__codelineno-130-5"></a><span class="nb">len</span><span class="p">(</span><span class="n">zoneinfo</span><span class="o">.</span><span class="n">available_timezones</span><span class="p">())</span>   <span class="c1"># 599 ключей на tzdata 2026a (число растёт с релизами базы)</span>
+</span><span id="__span-130-6"><a id="__codelineno-130-6" name="__codelineno-130-6" href="#__codelineno-130-6"></a><span class="s2">&quot;UTC&quot;</span> <span class="ow">in</span> <span class="n">zoneinfo</span><span class="o">.</span><span class="n">available_timezones</span><span class="p">()</span>   <span class="c1"># True</span>
+</span><span id="__span-130-7"><a id="__codelineno-130-7" name="__codelineno-130-7" href="#__codelineno-130-7"></a>
+</span><span id="__span-130-8"><a id="__codelineno-130-8" name="__codelineno-130-8" href="#__codelineno-130-8"></a><span class="c1"># свой источник: файл TZif вручную (например, из другого набора данных)</span>
+</span><span id="__span-130-9"><a id="__codelineno-130-9" name="__codelineno-130-9" href="#__codelineno-130-9"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/usr/share/zoneinfo/Europe/Moscow&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-130-10"><a id="__codelineno-130-10" name="__codelineno-130-10" href="#__codelineno-130-10"></a>    <span class="n">z</span> <span class="o">=</span> <span class="n">zoneinfo</span><span class="o">.</span><span class="n">ZoneInfo</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>   <span class="c1"># ключ — только ярлык</span>
+</span></code></pre></div>
+<p>Порядок «сначала TZPATH, потом пакет» имеет практическое следствие: если в окружении стоит пакет <code>tzdata</code>, а системная база устарела — Python всё равно возьмёт <strong>системную</strong>. Обновлять tzdata лучше средствами ОС (<code>apt install tzdata</code>); пакет <code>tzdata</code> из PyPI — запас для Windows, альпийских образов и прочих сред без системной базы. Приоритет можно перевернуть, подменив <code>TZPATH</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-131-1"><a id="__codelineno-131-1" name="__codelineno-131-1" href="#__codelineno-131-1"></a><span class="c1"># переменная окружения: свой путь поиска (PEP 615)</span>
+</span><span id="__span-131-2"><a id="__codelineno-131-2" name="__codelineno-131-2" href="#__codelineno-131-2"></a><span class="nv">PYTHONTZPATH</span><span class="o">=</span>/opt/tzdata<span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import zoneinfo; print(zoneinfo.TZPATH)&quot;</span>
+</span><span id="__span-131-3"><a id="__codelineno-131-3" name="__codelineno-131-3" href="#__codelineno-131-3"></a><span class="c1"># → (&#39;/opt/tzdata&#39;,)</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-132-1"><a id="__codelineno-132-1" name="__codelineno-132-1" href="#__codelineno-132-1"></a><span class="kn">import</span> <span class="nn">zoneinfo</span>
+</span><span id="__span-132-2"><a id="__codelineno-132-2" name="__codelineno-132-2" href="#__codelineno-132-2"></a><span class="c1"># программно — точка входа для тестов и вендоринга:</span>
+</span><span id="__span-132-3"><a id="__codelineno-132-3" name="__codelineno-132-3" href="#__codelineno-132-3"></a><span class="n">zoneinfo</span><span class="o">.</span><span class="n">reset_tzpath</span><span class="p">((</span><span class="s2">&quot;/opt/tzdata&quot;</span><span class="p">,))</span>          <span class="c1"># сменить путь поиска на ходу</span>
+</span><span id="__span-132-4"><a id="__codelineno-132-4" name="__codelineno-132-4" href="#__codelineno-132-4"></a><span class="n">zoneinfo</span><span class="o">.</span><span class="n">ZoneInfo</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>                  <span class="c1"># СБРОСИТЬ КЭШ — classmethod у ZoneInfo!</span>
+</span></code></pre></div>
+<p>⚠️ <strong><code>clear_cache()</code> — метод класса <code>ZoneInfo</code>, а не функция модуля</strong>: <code>zoneinfo.clear_cache()</code> бросит <code>AttributeError</code>. И он существует не зря — зоны кэшируются:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-133-1"><a id="__codelineno-133-1" name="__codelineno-133-1" href="#__codelineno-133-1"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-133-2"><a id="__codelineno-133-2" name="__codelineno-133-2" href="#__codelineno-133-2"></a><span class="n">a</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>
+</span><span id="__span-133-3"><a id="__codelineno-133-3" name="__codelineno-133-3" href="#__codelineno-133-3"></a><span class="n">b</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>
+</span><span id="__span-133-4"><a id="__codelineno-133-4" name="__codelineno-133-4" href="#__codelineno-133-4"></a><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>              <span class="c1"># True — один и тот же объект из кэша</span>
+</span><span id="__span-133-5"><a id="__codelineno-133-5" name="__codelineno-133-5" href="#__codelineno-133-5"></a><span class="n">ZoneInfo</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+</span><span id="__span-133-6"><a id="__codelineno-133-6" name="__codelineno-133-6" href="#__codelineno-133-6"></a><span class="n">c</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;Europe/Moscow&quot;</span><span class="p">)</span>
+</span><span id="__span-133-7"><a id="__codelineno-133-7" name="__codelineno-133-7" href="#__codelineno-133-7"></a><span class="n">a</span> <span class="ow">is</span> <span class="n">c</span>              <span class="c1"># False — после сброса пересоздан</span>
+</span><span id="__span-133-8"><a id="__codelineno-133-8" name="__codelineno-133-8" href="#__codelineno-133-8"></a><span class="c1"># без кэша: ZoneInfo.no_cache(&quot;Europe/Moscow&quot;) — отдельный экземпляр</span>
+</span></code></pre></div>
+<h3 id="11.32-oshibki">Ошибки, UTC и шпаргалка<a class="headerlink" href="#11.32-oshibki" title="Permanent link">#</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-134-1"><a id="__codelineno-134-1" name="__codelineno-134-1" href="#__codelineno-134-1"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span>
+</span><span id="__span-134-2"><a id="__codelineno-134-2" name="__codelineno-134-2" href="#__codelineno-134-2"></a>
+</span><span id="__span-134-3"><a id="__codelineno-134-3" name="__codelineno-134-3" href="#__codelineno-134-3"></a><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;No/Such/Zone&quot;</span><span class="p">)</span>     <span class="c1"># ZoneInfoNotFoundError (наследник KeyError)</span>
+</span><span id="__span-134-4"><a id="__codelineno-134-4" name="__codelineno-134-4" href="#__codelineno-134-4"></a><span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;/abs/path&quot;</span><span class="p">)</span>        <span class="c1"># ValueError: ZoneInfo keys may not be absolute paths</span>
+</span><span id="__span-134-5"><a id="__codelineno-134-5" name="__codelineno-134-5" href="#__codelineno-134-5"></a>                             <span class="c1"># — ключ ≠ путь; абсолютный путь только через from_file()</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-135-1"><a id="__codelineno-135-1" name="__codelineno-135-1" href="#__codelineno-135-1"></a><span class="c1"># ZoneInfo(&#39;UTC&#39;) против datetime.timezone.utc — похожи, но не равны:</span>
+</span><span id="__span-135-2"><a id="__codelineno-135-2" name="__codelineno-135-2" href="#__codelineno-135-2"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span id="__span-135-3"><a id="__codelineno-135-3" name="__codelineno-135-3" href="#__codelineno-135-3"></a><span class="kn">from</span> <span class="nn">zoneinfo</span> <span class="kn">import</span> <span class="n">ZoneInfo</span>
+</span><span id="__span-135-4"><a id="__codelineno-135-4" name="__codelineno-135-4" href="#__codelineno-135-4"></a><span class="n">zu</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">)</span>
+</span><span id="__span-135-5"><a id="__codelineno-135-5" name="__codelineno-135-5" href="#__codelineno-135-5"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">zu</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span> <span class="o">==</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+</span><span id="__span-135-6"><a id="__codelineno-135-6" name="__codelineno-135-6" href="#__codelineno-135-6"></a><span class="c1"># True — сдвиг один</span>
+</span><span id="__span-135-7"><a id="__codelineno-135-7" name="__codelineno-135-7" href="#__codelineno-135-7"></a><span class="n">zu</span> <span class="o">==</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>             <span class="c1"># False — разные классы, сравнение не по сдвигу</span>
+</span><span id="__span-135-8"><a id="__codelineno-135-8" name="__codelineno-135-8" href="#__codelineno-135-8"></a><span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">zu</span><span class="p">)</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span> <span class="o">==</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span>
+</span><span id="__span-135-9"><a id="__codelineno-135-9" name="__codelineno-135-9" href="#__codelineno-135-9"></a><span class="c1"># True — оба зовутся &#39;UTC&#39;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Задача</th>
+<th>Инструмент</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aware-datetime в зоне IANA</td>
+<td><code>datetime(..., tzinfo=ZoneInfo("Europe/Moscow"))</code></td>
+</tr>
+<tr>
+<td>Перевести момент в другую зону</td>
+<td><code>dt.astimezone(ZoneInfo("Asia/Tokyo"))</code></td>
+</tr>
+<tr>
+<td>Часы «перепрыгнули»/задвоились</td>
+<td>поле <code>fold</code> (PEP 495)</td>
+</tr>
+<tr>
+<td>Список всех зон</td>
+<td><code>zoneinfo.available_timezones()</code></td>
+</tr>
+<tr>
+<td>Данные без системной базы</td>
+<td><code>pip install tzdata</code> (PyPI-пакет, запасной источник)</td>
+</tr>
+<tr>
+<td>Свой путь поиска данных</td>
+<td><code>PYTHONTZPATH</code> (10.3) или <code>zoneinfo.reset_tzpath()</code></td>
+</tr>
+<tr>
+<td>Сбросить кэш зон</td>
+<td><code>ZoneInfo.clear_cache()</code> — classmethod</td>
+</tr>
+<tr>
+<td>Зона из файла/архива</td>
+<td><code>ZoneInfo.from_file(open(path, "rb"), key="...")</code></td>
+</tr>
+<tr>
+<td>Наивное ↔ aware</td>
+<td><code>dt.replace(tzinfo=z)</code> ↔ <code>dt.astimezone(z)</code>; смесь в одной арифметике — <code>TypeError</code></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ Подмена системных данных через <code>PYTHONTZPATH</code>/<code>reset_tzpath</code> не аннулирует уже загруженные зоны — сначала <code>ZoneInfo.clear_cache()</code>. А <code>from_file</code> и <code>no_cache</code> минуют кэш по дизайну: два экземпляра одной зоны из файла не <code>is</code>-равны.</p>
+<p>Перекрёстные ссылки: подмена времени в тестах — 15.4; <code>sys.flags</code> и <code>-S</code>/<code>-E</code> не влияют на <code>zoneinfo</code>, но <code>PYTHONTZPATH</code> читается при старте и попадает в общую картину переменных окружения — 10.3; сериализация aware-datetime в JSON/базы — 11.19.</p>
 <h3 id="11.31-benchmarki">Бенчмарки к Части XI<a class="headerlink" href="#11.31-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. <code>lru_cache</code> vs <code>cache</code> (Python 3.9+) vs ручной <code>dict</code>.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-125-1"><a id="__codelineno-125-1" name="__codelineno-125-1" href="#__codelineno-125-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">cache</span>
-</span><span id="__span-125-2"><a id="__codelineno-125-2" name="__codelineno-125-2" href="#__codelineno-125-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-125-3"><a id="__codelineno-125-3" name="__codelineno-125-3" href="#__codelineno-125-3"></a>
-</span><span id="__span-125-4"><a id="__codelineno-125-4" name="__codelineno-125-4" href="#__codelineno-125-4"></a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
-</span><span id="__span-125-5"><a id="__codelineno-125-5" name="__codelineno-125-5" href="#__codelineno-125-5"></a><span class="k">def</span> <span class="nf">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-</span><span id="__span-125-6"><a id="__codelineno-125-6" name="__codelineno-125-6" href="#__codelineno-125-6"></a>
-</span><span id="__span-125-7"><a id="__codelineno-125-7" name="__codelineno-125-7" href="#__codelineno-125-7"></a><span class="nd">@cache</span>   <span class="c1"># эквивалент lru_cache(maxsize=None) — без eviction</span>
-</span><span id="__span-125-8"><a id="__codelineno-125-8" name="__codelineno-125-8" href="#__codelineno-125-8"></a><span class="k">def</span> <span class="nf">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-</span><span id="__span-125-9"><a id="__codelineno-125-9" name="__codelineno-125-9" href="#__codelineno-125-9"></a>
-</span><span id="__span-125-10"><a id="__codelineno-125-10" name="__codelineno-125-10" href="#__codelineno-125-10"></a><span class="n">_d</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="__span-125-11"><a id="__codelineno-125-11" name="__codelineno-125-11" href="#__codelineno-125-11"></a><span class="k">def</span> <span class="nf">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-</span><span id="__span-125-12"><a id="__codelineno-125-12" name="__codelineno-125-12" href="#__codelineno-125-12"></a>    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">_d</span><span class="p">:</span> <span class="k">return</span> <span class="n">_d</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-</span><span id="__span-125-13"><a id="__codelineno-125-13" name="__codelineno-125-13" href="#__codelineno-125-13"></a>    <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-</span><span id="__span-125-14"><a id="__codelineno-125-14" name="__codelineno-125-14" href="#__codelineno-125-14"></a>    <span class="n">_d</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
-</span><span id="__span-125-15"><a id="__codelineno-125-15" name="__codelineno-125-15" href="#__codelineno-125-15"></a>    <span class="k">return</span> <span class="n">r</span>
-</span><span id="__span-125-16"><a id="__codelineno-125-16" name="__codelineno-125-16" href="#__codelineno-125-16"></a>
-</span><span id="__span-125-17"><a id="__codelineno-125-17" name="__codelineno-125-17" href="#__codelineno-125-17"></a><span class="c1"># 1M вызовов fib(20) (кеш тёплый)</span>
-</span><span id="__span-125-18"><a id="__codelineno-125-18" name="__codelineno-125-18" href="#__codelineno-125-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_lru(20)&quot;</span><span class="p">,</span>    <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с</span>
-</span><span id="__span-125-19"><a id="__codelineno-125-19" name="__codelineno-125-19" href="#__codelineno-125-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_cache(20)&quot;</span><span class="p">,</span>  <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с</span>
-</span><span id="__span-125-20"><a id="__codelineno-125-20" name="__codelineno-125-20" href="#__codelineno-125-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_dict(20)&quot;</span><span class="p">,</span>   <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.18 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-136-1"><a id="__codelineno-136-1" name="__codelineno-136-1" href="#__codelineno-136-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">cache</span>
+</span><span id="__span-136-2"><a id="__codelineno-136-2" name="__codelineno-136-2" href="#__codelineno-136-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-136-3"><a id="__codelineno-136-3" name="__codelineno-136-3" href="#__codelineno-136-3"></a>
+</span><span id="__span-136-4"><a id="__codelineno-136-4" name="__codelineno-136-4" href="#__codelineno-136-4"></a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</span><span id="__span-136-5"><a id="__codelineno-136-5" name="__codelineno-136-5" href="#__codelineno-136-5"></a><span class="k">def</span> <span class="nf">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_lru</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-136-6"><a id="__codelineno-136-6" name="__codelineno-136-6" href="#__codelineno-136-6"></a>
+</span><span id="__span-136-7"><a id="__codelineno-136-7" name="__codelineno-136-7" href="#__codelineno-136-7"></a><span class="nd">@cache</span>   <span class="c1"># эквивалент lru_cache(maxsize=None) — без eviction</span>
+</span><span id="__span-136-8"><a id="__codelineno-136-8" name="__codelineno-136-8" href="#__codelineno-136-8"></a><span class="k">def</span> <span class="nf">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_cache</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-136-9"><a id="__codelineno-136-9" name="__codelineno-136-9" href="#__codelineno-136-9"></a>
+</span><span id="__span-136-10"><a id="__codelineno-136-10" name="__codelineno-136-10" href="#__codelineno-136-10"></a><span class="n">_d</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-136-11"><a id="__codelineno-136-11" name="__codelineno-136-11" href="#__codelineno-136-11"></a><span class="k">def</span> <span class="nf">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-136-12"><a id="__codelineno-136-12" name="__codelineno-136-12" href="#__codelineno-136-12"></a>    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">_d</span><span class="p">:</span> <span class="k">return</span> <span class="n">_d</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</span><span id="__span-136-13"><a id="__codelineno-136-13" name="__codelineno-136-13" href="#__codelineno-136-13"></a>    <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib_dict</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-136-14"><a id="__codelineno-136-14" name="__codelineno-136-14" href="#__codelineno-136-14"></a>    <span class="n">_d</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+</span><span id="__span-136-15"><a id="__codelineno-136-15" name="__codelineno-136-15" href="#__codelineno-136-15"></a>    <span class="k">return</span> <span class="n">r</span>
+</span><span id="__span-136-16"><a id="__codelineno-136-16" name="__codelineno-136-16" href="#__codelineno-136-16"></a>
+</span><span id="__span-136-17"><a id="__codelineno-136-17" name="__codelineno-136-17" href="#__codelineno-136-17"></a><span class="c1"># 1M вызовов fib(20) (кеш тёплый)</span>
+</span><span id="__span-136-18"><a id="__codelineno-136-18" name="__codelineno-136-18" href="#__codelineno-136-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_lru(20)&quot;</span><span class="p">,</span>    <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с</span>
+</span><span id="__span-136-19"><a id="__codelineno-136-19" name="__codelineno-136-19" href="#__codelineno-136-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_cache(20)&quot;</span><span class="p">,</span>  <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.07 с</span>
+</span><span id="__span-136-20"><a id="__codelineno-136-20" name="__codelineno-136-20" href="#__codelineno-136-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;fib_dict(20)&quot;</span><span class="p">,</span>   <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.18 с</span>
 </span></code></pre></div>
 На CPython 3.12+ <code>lru_cache</code> и <code>cache</code> <strong>идентичны по скорости</strong> (~0.07 с) и <strong>обгоняют ручной dict</strong> (~0.18 с) в ~2.5 раза. До 3.11 соотношение было другим. <code>cache</code> чуть проще (нет eviction), <code>lru_cache</code> — для случаев с лимитом размера. Ручной <code>dict</code> теперь имеет смысл только при очень специфических требованиях (напр., eviction по памяти, а не по количеству).</p>
 <p><strong>2. <code>functools.partial</code> vs <code>lambda</code> — замыкание аргументов.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-126-1"><a id="__codelineno-126-1" name="__codelineno-126-1" href="#__codelineno-126-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-</span><span id="__span-126-2"><a id="__codelineno-126-2" name="__codelineno-126-2" href="#__codelineno-126-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-126-3"><a id="__codelineno-126-3" name="__codelineno-126-3" href="#__codelineno-126-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
-</span><span id="__span-126-4"><a id="__codelineno-126-4" name="__codelineno-126-4" href="#__codelineno-126-4"></a><span class="n">p</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span id="__span-126-5"><a id="__codelineno-126-5" name="__codelineno-126-5" href="#__codelineno-126-5"></a><span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-</span><span id="__span-126-6"><a id="__codelineno-126-6" name="__codelineno-126-6" href="#__codelineno-126-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;p(3)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.14 с (зависит от CPU)</span>
-</span><span id="__span-126-7"><a id="__codelineno-126-7" name="__codelineno-126-7" href="#__codelineno-126-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;l(3)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="n">l</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.17 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-137-1"><a id="__codelineno-137-1" name="__codelineno-137-1" href="#__codelineno-137-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+</span><span id="__span-137-2"><a id="__codelineno-137-2" name="__codelineno-137-2" href="#__codelineno-137-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-137-3"><a id="__codelineno-137-3" name="__codelineno-137-3" href="#__codelineno-137-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
+</span><span id="__span-137-4"><a id="__codelineno-137-4" name="__codelineno-137-4" href="#__codelineno-137-4"></a><span class="n">p</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-137-5"><a id="__codelineno-137-5" name="__codelineno-137-5" href="#__codelineno-137-5"></a><span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+</span><span id="__span-137-6"><a id="__codelineno-137-6" name="__codelineno-137-6" href="#__codelineno-137-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;p(3)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.14 с (зависит от CPU)</span>
+</span><span id="__span-137-7"><a id="__codelineno-137-7" name="__codelineno-137-7" href="#__codelineno-137-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;l(3)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="n">l</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.17 с</span>
 </span></code></pre></div>
 <code>partial</code> <strong>на ~20% быстрее</strong> <code>lambda</code> — это C-уровневая обёртка, без
 Python-фрейма. На горячих путях (колбеки в event loop'ах, map/pool) — заметно.</p>
 <p><strong>3. <code>functools.singledispatch</code> vs <code>if/elif isinstance</code>.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-127-1"><a id="__codelineno-127-1" name="__codelineno-127-1" href="#__codelineno-127-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">singledispatch</span>
-</span><span id="__span-127-2"><a id="__codelineno-127-2" name="__codelineno-127-2" href="#__codelineno-127-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-127-3"><a id="__codelineno-127-3" name="__codelineno-127-3" href="#__codelineno-127-3"></a>
-</span><span id="__span-127-4"><a id="__codelineno-127-4" name="__codelineno-127-4" href="#__codelineno-127-4"></a><span class="nd">@singledispatch</span>
-</span><span id="__span-127-5"><a id="__codelineno-127-5" name="__codelineno-127-5" href="#__codelineno-127-5"></a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unsupported </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-127-6"><a id="__codelineno-127-6" name="__codelineno-127-6" href="#__codelineno-127-6"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
-</span><span id="__span-127-7"><a id="__codelineno-127-7" name="__codelineno-127-7" href="#__codelineno-127-7"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>   <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
-</span><span id="__span-127-8"><a id="__codelineno-127-8" name="__codelineno-127-8" href="#__codelineno-127-8"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
-</span><span id="__span-127-9"><a id="__codelineno-127-9" name="__codelineno-127-9" href="#__codelineno-127-9"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>   <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-</span><span id="__span-127-10"><a id="__codelineno-127-10" name="__codelineno-127-10" href="#__codelineno-127-10"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
-</span><span id="__span-127-11"><a id="__codelineno-127-11" name="__codelineno-127-11" href="#__codelineno-127-11"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>  <span class="k">return</span> <span class="p">[</span><span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-</span><span id="__span-127-12"><a id="__codelineno-127-12" name="__codelineno-127-12" href="#__codelineno-127-12"></a>
-</span><span id="__span-127-13"><a id="__codelineno-127-13" name="__codelineno-127-13" href="#__codelineno-127-13"></a><span class="k">def</span> <span class="nf">process_if</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-</span><span id="__span-127-14"><a id="__codelineno-127-14" name="__codelineno-127-14" href="#__codelineno-127-14"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>  <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
-</span><span id="__span-127-15"><a id="__codelineno-127-15" name="__codelineno-127-15" href="#__codelineno-127-15"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-</span><span id="__span-127-16"><a id="__codelineno-127-16" name="__codelineno-127-16" href="#__codelineno-127-16"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">process_if</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-</span><span id="__span-127-17"><a id="__codelineno-127-17" name="__codelineno-127-17" href="#__codelineno-127-17"></a>    <span class="k">raise</span> <span class="ne">TypeError</span>
-</span><span id="__span-127-18"><a id="__codelineno-127-18" name="__codelineno-127-18" href="#__codelineno-127-18"></a>
-</span><span id="__span-127-19"><a id="__codelineno-127-19" name="__codelineno-127-19" href="#__codelineno-127-19"></a><span class="c1"># 1M вызовов process(42)</span>
-</span><span id="__span-127-20"><a id="__codelineno-127-20" name="__codelineno-127-20" href="#__codelineno-127-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">process</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span>    <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.38 с (зависит от CPU)</span>
-</span><span id="__span-127-21"><a id="__codelineno-127-21" name="__codelineno-127-21" href="#__codelineno-127-21"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">process_if</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.09 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-138-1"><a id="__codelineno-138-1" name="__codelineno-138-1" href="#__codelineno-138-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">singledispatch</span>
+</span><span id="__span-138-2"><a id="__codelineno-138-2" name="__codelineno-138-2" href="#__codelineno-138-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-138-3"><a id="__codelineno-138-3" name="__codelineno-138-3" href="#__codelineno-138-3"></a>
+</span><span id="__span-138-4"><a id="__codelineno-138-4" name="__codelineno-138-4" href="#__codelineno-138-4"></a><span class="nd">@singledispatch</span>
+</span><span id="__span-138-5"><a id="__codelineno-138-5" name="__codelineno-138-5" href="#__codelineno-138-5"></a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unsupported </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-138-6"><a id="__codelineno-138-6" name="__codelineno-138-6" href="#__codelineno-138-6"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
+</span><span id="__span-138-7"><a id="__codelineno-138-7" name="__codelineno-138-7" href="#__codelineno-138-7"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>   <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-138-8"><a id="__codelineno-138-8" name="__codelineno-138-8" href="#__codelineno-138-8"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
+</span><span id="__span-138-9"><a id="__codelineno-138-9" name="__codelineno-138-9" href="#__codelineno-138-9"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>   <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</span><span id="__span-138-10"><a id="__codelineno-138-10" name="__codelineno-138-10" href="#__codelineno-138-10"></a><span class="nd">@process</span><span class="o">.</span><span class="n">register</span>
+</span><span id="__span-138-11"><a id="__codelineno-138-11" name="__codelineno-138-11" href="#__codelineno-138-11"></a><span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>  <span class="k">return</span> <span class="p">[</span><span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+</span><span id="__span-138-12"><a id="__codelineno-138-12" name="__codelineno-138-12" href="#__codelineno-138-12"></a>
+</span><span id="__span-138-13"><a id="__codelineno-138-13" name="__codelineno-138-13" href="#__codelineno-138-13"></a><span class="k">def</span> <span class="nf">process_if</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span id="__span-138-14"><a id="__codelineno-138-14" name="__codelineno-138-14" href="#__codelineno-138-14"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>  <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span id="__span-138-15"><a id="__codelineno-138-15" name="__codelineno-138-15" href="#__codelineno-138-15"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</span><span id="__span-138-16"><a id="__codelineno-138-16" name="__codelineno-138-16" href="#__codelineno-138-16"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">process_if</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+</span><span id="__span-138-17"><a id="__codelineno-138-17" name="__codelineno-138-17" href="#__codelineno-138-17"></a>    <span class="k">raise</span> <span class="ne">TypeError</span>
+</span><span id="__span-138-18"><a id="__codelineno-138-18" name="__codelineno-138-18" href="#__codelineno-138-18"></a>
+</span><span id="__span-138-19"><a id="__codelineno-138-19" name="__codelineno-138-19" href="#__codelineno-138-19"></a><span class="c1"># 1M вызовов process(42)</span>
+</span><span id="__span-138-20"><a id="__codelineno-138-20" name="__codelineno-138-20" href="#__codelineno-138-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">process</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span>    <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.38 с (зависит от CPU)</span>
+</span><span id="__span-138-21"><a id="__codelineno-138-21" name="__codelineno-138-21" href="#__codelineno-138-21"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">process_if</span><span class="p">(</span><span class="mi">42</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>   <span class="c1"># ≈ 0.09 с</span>
 </span></code></pre></div>
 <code>singledispatch</code> <strong>в ~4× медленнее</strong> — lookup по типу в <code>dict</code> + вызов обёртки.
 Берите его для <strong>расширяемости</strong> (сторонние модули могут зарегистрировать
 свой обработчик), не для скорости.</p>
 <p><strong>4. <code>heapq.nlargest</code> vs <code>sorted(...)[:N]</code>.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-128-1"><a id="__codelineno-128-1" name="__codelineno-128-1" href="#__codelineno-128-1"></a><span class="kn">import</span> <span class="nn">heapq</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">timeit</span>
-</span><span id="__span-128-2"><a id="__codelineno-128-2" name="__codelineno-128-2" href="#__codelineno-128-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)]</span>
-</span><span id="__span-128-3"><a id="__codelineno-128-3" name="__codelineno-128-3" href="#__codelineno-128-3"></a><span class="c1"># N = 10</span>
-</span><span id="__span-128-4"><a id="__codelineno-128-4" name="__codelineno-128-4" href="#__codelineno-128-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 0.3 с</span>
-</span><span id="__span-128-5"><a id="__codelineno-128-5" name="__codelineno-128-5" href="#__codelineno-128-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">10</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 2.2 с</span>
-</span><span id="__span-128-6"><a id="__codelineno-128-6" name="__codelineno-128-6" href="#__codelineno-128-6"></a><span class="c1"># N = 100_000 (len/10)</span>
-</span><span id="__span-128-7"><a id="__codelineno-128-7" name="__codelineno-128-7" href="#__codelineno-128-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 2.0 с</span>
-</span><span id="__span-128-8"><a id="__codelineno-128-8" name="__codelineno-128-8" href="#__codelineno-128-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">100_000</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 1.1 с — sorted уже быстрее</span>
-</span><span id="__span-128-9"><a id="__codelineno-128-9" name="__codelineno-128-9" href="#__codelineno-128-9"></a><span class="c1"># N = 500_000 (половина)</span>
-</span><span id="__span-128-10"><a id="__codelineno-128-10" name="__codelineno-128-10" href="#__codelineno-128-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 6.4 с</span>
-</span><span id="__span-128-11"><a id="__codelineno-128-11" name="__codelineno-128-11" href="#__codelineno-128-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">500_000</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 1.1 с</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-139-1"><a id="__codelineno-139-1" name="__codelineno-139-1" href="#__codelineno-139-1"></a><span class="kn">import</span> <span class="nn">heapq</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">timeit</span>
+</span><span id="__span-139-2"><a id="__codelineno-139-2" name="__codelineno-139-2" href="#__codelineno-139-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)]</span>
+</span><span id="__span-139-3"><a id="__codelineno-139-3" name="__codelineno-139-3" href="#__codelineno-139-3"></a><span class="c1"># N = 10</span>
+</span><span id="__span-139-4"><a id="__codelineno-139-4" name="__codelineno-139-4" href="#__codelineno-139-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 0.3 с</span>
+</span><span id="__span-139-5"><a id="__codelineno-139-5" name="__codelineno-139-5" href="#__codelineno-139-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">10</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>   <span class="c1"># ≈ 2.2 с</span>
+</span><span id="__span-139-6"><a id="__codelineno-139-6" name="__codelineno-139-6" href="#__codelineno-139-6"></a><span class="c1"># N = 100_000 (len/10)</span>
+</span><span id="__span-139-7"><a id="__codelineno-139-7" name="__codelineno-139-7" href="#__codelineno-139-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 2.0 с</span>
+</span><span id="__span-139-8"><a id="__codelineno-139-8" name="__codelineno-139-8" href="#__codelineno-139-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">100_000</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 1.1 с — sorted уже быстрее</span>
+</span><span id="__span-139-9"><a id="__codelineno-139-9" name="__codelineno-139-9" href="#__codelineno-139-9"></a><span class="c1"># N = 500_000 (половина)</span>
+</span><span id="__span-139-10"><a id="__codelineno-139-10" name="__codelineno-139-10" href="#__codelineno-139-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>  <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 6.4 с</span>
+</span><span id="__span-139-11"><a id="__codelineno-139-11" name="__codelineno-139-11" href="#__codelineno-139-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">500_000</span><span class="p">],</span>         <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 1.1 с</span>
 </span></code></pre></div>
 <code>heapq.nlargest</code> <strong>выигрывает на маленьком N</strong> (в ~7× для N=10) — сложность
 <code>O(N log k)</code>. Кроссовер — между <code>len/100</code> и <code>len/10</code>: уже при <code>N = len/10</code>
 <code>sorted</code> выигрывает (один проход vs k-heap с перестройками).
 Правило: <code>nlargest</code> если <code>N ≲ len/100</code>.</p>
 <p><strong>5. <code>ProcessPoolExecutor</code> vs <code>ThreadPoolExecutor</code> на CPU-bound.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-129-1"><a id="__codelineno-129-1" name="__codelineno-129-1" href="#__codelineno-129-1"></a><span class="kn">import</span> <span class="nn">time</span>
-</span><span id="__span-129-2"><a id="__codelineno-129-2" name="__codelineno-129-2" href="#__codelineno-129-2"></a><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
-</span><span id="__span-129-3"><a id="__codelineno-129-3" name="__codelineno-129-3" href="#__codelineno-129-3"></a><span class="k">def</span> <span class="nf">cpu_burn</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-</span><span id="__span-129-4"><a id="__codelineno-129-4" name="__codelineno-129-4" href="#__codelineno-129-4"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-</span><span id="__span-129-5"><a id="__codelineno-129-5" name="__codelineno-129-5" href="#__codelineno-129-5"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">5_000_000</span>
-</span><span id="__span-129-6"><a id="__codelineno-129-6" name="__codelineno-129-6" href="#__codelineno-129-6"></a><span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>   <span class="c1"># 4 задачи по 5M итераций</span>
-</span><span id="__span-129-7"><a id="__codelineno-129-7" name="__codelineno-129-7" href="#__codelineno-129-7"></a><span class="c1"># Threads</span>
-</span><span id="__span-129-8"><a id="__codelineno-129-8" name="__codelineno-129-8" href="#__codelineno-129-8"></a><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-</span><span id="__span-129-9"><a id="__codelineno-129-9" name="__codelineno-129-9" href="#__codelineno-129-9"></a><span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-</span><span id="__span-129-10"><a id="__codelineno-129-10" name="__codelineno-129-10" href="#__codelineno-129-10"></a>    <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">cpu_burn</span><span class="p">,</span> <span class="n">chunks</span><span class="p">))</span>
-</span><span id="__span-129-11"><a id="__codelineno-129-11" name="__codelineno-129-11" href="#__codelineno-129-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Threads: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>   <span class="c1"># ≈ 4× время одной задачи (GIL: почти последовательно)</span>
-</span><span id="__span-129-12"><a id="__codelineno-129-12" name="__codelineno-129-12" href="#__codelineno-129-12"></a><span class="c1"># Processes</span>
-</span><span id="__span-129-13"><a id="__codelineno-129-13" name="__codelineno-129-13" href="#__codelineno-129-13"></a><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-</span><span id="__span-129-14"><a id="__codelineno-129-14" name="__codelineno-129-14" href="#__codelineno-129-14"></a><span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-</span><span id="__span-129-15"><a id="__codelineno-129-15" name="__codelineno-129-15" href="#__codelineno-129-15"></a>    <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">cpu_burn</span><span class="p">,</span> <span class="n">chunks</span><span class="p">))</span>
-</span><span id="__span-129-16"><a id="__codelineno-129-16" name="__codelineno-129-16" href="#__codelineno-129-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processes: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>  <span class="c1"># ≈ время одной задачи (~3.5× к threads на 4 ядрах)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-140-1"><a id="__codelineno-140-1" name="__codelineno-140-1" href="#__codelineno-140-1"></a><span class="kn">import</span> <span class="nn">time</span>
+</span><span id="__span-140-2"><a id="__codelineno-140-2" name="__codelineno-140-2" href="#__codelineno-140-2"></a><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
+</span><span id="__span-140-3"><a id="__codelineno-140-3" name="__codelineno-140-3" href="#__codelineno-140-3"></a><span class="k">def</span> <span class="nf">cpu_burn</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span id="__span-140-4"><a id="__codelineno-140-4" name="__codelineno-140-4" href="#__codelineno-140-4"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</span><span id="__span-140-5"><a id="__codelineno-140-5" name="__codelineno-140-5" href="#__codelineno-140-5"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">5_000_000</span>
+</span><span id="__span-140-6"><a id="__codelineno-140-6" name="__codelineno-140-6" href="#__codelineno-140-6"></a><span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>   <span class="c1"># 4 задачи по 5M итераций</span>
+</span><span id="__span-140-7"><a id="__codelineno-140-7" name="__codelineno-140-7" href="#__codelineno-140-7"></a><span class="c1"># Threads</span>
+</span><span id="__span-140-8"><a id="__codelineno-140-8" name="__codelineno-140-8" href="#__codelineno-140-8"></a><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+</span><span id="__span-140-9"><a id="__codelineno-140-9" name="__codelineno-140-9" href="#__codelineno-140-9"></a><span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+</span><span id="__span-140-10"><a id="__codelineno-140-10" name="__codelineno-140-10" href="#__codelineno-140-10"></a>    <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">cpu_burn</span><span class="p">,</span> <span class="n">chunks</span><span class="p">))</span>
+</span><span id="__span-140-11"><a id="__codelineno-140-11" name="__codelineno-140-11" href="#__codelineno-140-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Threads: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>   <span class="c1"># ≈ 4× время одной задачи (GIL: почти последовательно)</span>
+</span><span id="__span-140-12"><a id="__codelineno-140-12" name="__codelineno-140-12" href="#__codelineno-140-12"></a><span class="c1"># Processes</span>
+</span><span id="__span-140-13"><a id="__codelineno-140-13" name="__codelineno-140-13" href="#__codelineno-140-13"></a><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+</span><span id="__span-140-14"><a id="__codelineno-140-14" name="__codelineno-140-14" href="#__codelineno-140-14"></a><span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+</span><span id="__span-140-15"><a id="__codelineno-140-15" name="__codelineno-140-15" href="#__codelineno-140-15"></a>    <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">cpu_burn</span><span class="p">,</span> <span class="n">chunks</span><span class="p">))</span>
+</span><span id="__span-140-16"><a id="__codelineno-140-16" name="__codelineno-140-16" href="#__codelineno-140-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processes: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>  <span class="c1"># ≈ время одной задачи (~3.5× к threads на 4 ядрах)</span>
 </span></code></pre></div>
 Для CPU-bound задач <strong>threads не дают ускорения</strong> в CPython из-за GIL — четыре задачи идут почти последовательно.
 <code>ProcessPoolExecutor</code> даёт ~3.5× на 4 ядрах (меньше 4× из-за IPC + fork).
