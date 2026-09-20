@@ -4005,6 +4005,7 @@
 </span><span id="__span-76-11"><a id="__codelineno-76-11" name="__codelineno-76-11" href="#__codelineno-76-11"></a><span class="n">mv</span> <span class="o">=</span> <span class="nb">memoryview</span><span class="p">(</span><span class="n">mm</span><span class="p">)</span>
 </span><span id="__span-76-12"><a id="__codelineno-76-12" name="__codelineno-76-12" href="#__codelineno-76-12"></a><span class="n">chunk</span> <span class="o">=</span> <span class="n">mv</span><span class="p">[</span><span class="mi">100_000_000</span><span class="p">:</span><span class="mi">100_004_096</span><span class="p">]</span>   <span class="c1"># не копирует, пока не понадобится</span>
 </span></code></pre></div>
+<p>⚠️ <strong><code>BufferError: cannot close exported pointers exist</code></strong>: пока на mmap живёт <code>memoryview</code>, <code>mm.close()</code> упадёт — нельзя закрыть буфер, у которого «на руках» экспортированные указатели. Это самая частая авария zero-copy-работы: сначала <code>mv.release()</code> (или <code>del mv</code>), потом <code>close()</code>; либо держите memoryview внутри <code>with</code>-блока mmap. Срезы (способ 2) так не страдают — их копия <code>bytes</code> от mmap не зависит.</p>
 <h3 id="11.21-mapshared"><code>MAP_SHARED</code> — разделяемая память между процессами<a class="headerlink" href="#11.21-mapshared" title="Permanent link">#</a></h3>
 <p>Когда несколько процессов должны работать с одним и тем же регионом памяти, <code>mmap</code> с <code>MAP_SHARED</code> даёт дешёвый IPC — без pickle, без очередей, без sockets. Изменения, сделанные одним процессом, <strong>сразу</strong> видны другим:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="kn">import</span> <span class="nn">mmap</span><span class="o">,</span> <span class="nn">os</span>
@@ -4065,7 +4066,7 @@
 </ul>
 <p>Минусы:</p>
 <ul>
-<li><strong>Синхронизация на тебе</strong> — <code>multiprocessing.Lock</code> или <code>mmap</code>+атомики. Без этого — race conditions.</li>
+<li><strong>Синхронизация на вас</strong> — <code>multiprocessing.Lock</code> или <code>mmap</code>+атомики. Без этого — race conditions.</li>
 <li><strong>Размер фиксирован</strong> при создании; для динамических данных — <code>multiprocessing.Array</code> или <code>queue.Queue</code>.</li>
 </ul>
 <h3 id="11.21-access"><code>access=</code> — режимы доступа<a class="headerlink" href="#11.21-access" title="Permanent link">#</a></h3>
@@ -4118,7 +4119,7 @@
 </tr>
 <tr>
 <td><strong>macOS</strong></td>
-<td>То же, что Linux, но <code>/dev/shm</code> нет — используй <code>tempfile</code> или <code>multiprocessing.shared_memory</code>.</td>
+<td>То же, что Linux, но <code>/dev/shm</code> нет — используйте <code>tempfile</code> или <code>multiprocessing.shared_memory</code>.</td>
 </tr>
 <tr>
 <td><strong>Windows</strong></td>
@@ -4126,7 +4127,7 @@
 </tr>
 </tbody>
 </table>
-<p>Универсальный совет: если нужен IPC между процессами — используй <code>multiprocessing.shared_memory</code> (Python 3.8+), он скрывает платформенные различия. Чистый <code>mmap</code> — для работы с большими файлами в одном процессе.</p>
+<p>Универсальный совет: если нужен IPC между процессами — используйте <code>multiprocessing.shared_memory</code> (Python 3.8+), он скрывает платформенные различия. Чистый <code>mmap</code> — для работы с большими файлами в одном процессе.</p>
 <blockquote>
 <p><strong>→ см. также:</strong> Часть IV (4.11) — <code>multiprocessing</code> для CPU-bound параллелизма; <code>multiprocessing.shared_memory</code> — логичное расширение mmap для межпроцессного обмена.</p>
 </blockquote>
@@ -4661,7 +4662,7 @@
 </span></code></pre></div>
 <p>⚠️ <code>shell=True</code> с пользовательским вводом — <strong>command injection</strong>. Всегда передавайте список аргументов, не строку.</p>
 <h3 id="11.30-shelltrue"><code>shell=True</code> — почему это опасно<a class="headerlink" href="#11.30-shelltrue" title="Permanent link">#</a></h3>
-<p>Когда передаёшь <strong>строку</strong> с <code>shell=True</code>, Python вызывает <code>/bin/sh -c "твоя строка"</code>. Shell парсит строку по своим правилам — метасимволы <code>;</code>, <code>|</code>, <code>&amp;</code>, <code>`</code>, <code>$()</code>, <code>&gt;</code>, <code>&lt;</code> интерпретируются. Если в строке есть данные от пользователя — он может «дописать» команду:</p>
+<p>Когда передаёте <strong>строку</strong> с <code>shell=True</code>, Python вызывает <code>/bin/sh -c "ваша строка"</code>. Shell парсит строку по своим правилам — метасимволы <code>;</code>, <code>|</code>, <code>&amp;</code>, <code>`</code>, <code>$()</code>, <code>&gt;</code>, <code>&lt;</code> интерпретируются. Если в строке есть данные от пользователя — он может «дописать» команду:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-108-1"><a id="__codelineno-108-1" name="__codelineno-108-1" href="#__codelineno-108-1"></a><span class="kn">import</span> <span class="nn">subprocess</span>
 </span><span id="__span-108-2"><a id="__codelineno-108-2" name="__codelineno-108-2" href="#__codelineno-108-2"></a>
 </span><span id="__span-108-3"><a id="__codelineno-108-3" name="__codelineno-108-3" href="#__codelineno-108-3"></a><span class="c1"># ❌ ОПАСНО — command injection</span>
@@ -4724,7 +4725,7 @@
 <li><strong>shell-встроенные</strong>: <code>cd /tmp &amp;&amp; ls</code> (хотя обычно лучше сделать <code>os.chdir</code> в Python).</li>
 <li><strong>Сложные команды с <code>&amp;&amp;</code>, <code>||</code>, <code>;</code></strong>: <code>make &amp;&amp; make test || echo fail</code>.</li>
 </ul>
-<p>Если <code>shell=True</code> неизбежен — <strong>всегда</strong> используй <code>shlex.quote()</code> для пользовательских данных:</p>
+<p>Если <code>shell=True</code> неизбежен — <strong>всегда</strong> используйте <code>shlex.quote()</code> для пользовательских данных:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-109-1"><a id="__codelineno-109-1" name="__codelineno-109-1" href="#__codelineno-109-1"></a><span class="kn">import</span> <span class="nn">shlex</span>
 </span><span id="__span-109-2"><a id="__codelineno-109-2" name="__codelineno-109-2" href="#__codelineno-109-2"></a><span class="n">user_input</span> <span class="o">=</span> <span class="s2">&quot;x; echo hacked&quot;</span>
 </span><span id="__span-109-3"><a id="__codelineno-109-3" name="__codelineno-109-3" href="#__codelineno-109-3"></a><span class="n">safe</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>   <span class="c1"># &quot;&#39;x; echo hacked&#39;&quot; — экранировано</span>
@@ -4754,7 +4755,7 @@
 </tr>
 <tr>
 <td><code>subprocess.Popen(...)</code></td>
-<td>интерактивный процесс: пишешь в stdin, читаешь stdout построчно, общаешься с долгоживущим процессом.</td>
+<td>интерактивный процесс: пишете в stdin, читаете stdout построчно, общаетесь с долгоживущим процессом.</td>
 </tr>
 <tr>
 <td><code>os.system(cmd)</code></td>
@@ -4762,7 +4763,7 @@
 </tr>
 <tr>
 <td><code>os.popen(cmd)</code></td>
-<td>❌ устаревший. Используй <code>subprocess.Popen</code> с <code>PIPE</code>.</td>
+<td>❌ устаревший. Используйте <code>subprocess.Popen</code> с <code>PIPE</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -4802,12 +4803,12 @@
 </ul>
 <p>⚠️ <strong>Тонкости</strong>:</p>
 <ul>
-<li><code>setup</code> выполняется один раз, не входит в замер. Используй для импортов и подготовки данных.</li>
+<li><code>setup</code> выполняется один раз, не входит в замер. Используйте для импортов и подготовки данных.</li>
 <li><code>globals={'x': x}</code> позволяет передать локальные переменные в <code>stmt</code> (Python 3.5+). Без этого — stmt выполняется в изолированном namespace.</li>
-<li><code>timeit</code> <strong>отключает GC</strong> на время замера (<code>gc.disable()</code>/<code>gc.enable()</code>). Если твой код создаёт циклы — это искажает реальную картину. Для реалистичной картины — включай обратно руками.</li>
+<li><code>timeit</code> <strong>отключает GC</strong> на время замера (<code>gc.disable()</code>/<code>gc.enable()</code>). Если ваш код создаёт циклы — это искажает реальную картину. Для реалистичной картины — включайте обратно руками.</li>
 </ul>
 <h3 id="11.31-bdb"><code>bdb</code> — базовый класс для отладчиков<a class="headerlink" href="#11.31-bdb" title="Permanent link">#</a></h3>
-<p><code>bdb</code> (базовый дебаггер) — это <strong>фреймворк для написания своего отладчика</strong>. На нём построены <code>pdb</code> (стандартный) и <code>ipdb</code> (ipython-версия); <code>debugpy</code> (VS Code) построен на pydevd — свой механизм трейсинга, но идея та же. Не отладчик сам по себе — каркас с хуками <code>break()</code>, <code>user_line()</code>, <code>user_return()</code>, <code>user_exception()</code>, которые ты переопределяешь.</p>
+<p><code>bdb</code> (базовый дебаггер) — это <strong>фреймворк для написания своего отладчика</strong>. На нём построены <code>pdb</code> (стандартный) и <code>ipdb</code> (ipython-версия); <code>debugpy</code> (VS Code) построен на pydevd — свой механизм трейсинга, но идея та же. Не отладчик сам по себе — каркас с хуками <code>break()</code>, <code>user_line()</code>, <code>user_return()</code>, <code>user_exception()</code>, которые вы переопределяете.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-112-1"><a id="__codelineno-112-1" name="__codelineno-112-1" href="#__codelineno-112-1"></a><span class="kn">import</span> <span class="nn">bdb</span>
 </span><span id="__span-112-2"><a id="__codelineno-112-2" name="__codelineno-112-2" href="#__codelineno-112-2"></a>
 </span><span id="__span-112-3"><a id="__codelineno-112-3" name="__codelineno-112-3" href="#__codelineno-112-3"></a><span class="k">class</span> <span class="nc">MyTracer</span><span class="p">(</span><span class="n">bdb</span><span class="o">.</span><span class="n">Bdb</span><span class="p">):</span>
@@ -4862,10 +4863,10 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-114-1"><a id="__codelineno-114-1" name="__codelineno-114-1" href="#__codelineno-114-1"></a>python<span class="w"> </span>-m<span class="w"> </span>cProfile<span class="w"> </span>-o<span class="w"> </span>profile.prof<span class="w"> </span>script.py<span class="w">       </span><span class="c1"># сохранить профиль</span>
 </span><span id="__span-114-2"><a id="__codelineno-114-2" name="__codelineno-114-2" href="#__codelineno-114-2"></a>python<span class="w"> </span>-m<span class="w"> </span>cProfile<span class="w"> </span>-s<span class="w"> </span>cumulative<span class="w"> </span>script.py<span class="w">         </span><span class="c1"># сразу вывести в stdout</span>
 </span></code></pre></div></p>
-<p>⚠️ <strong><code>profile</code> vs <code>cProfile</code></strong>: всегда используй <code>cProfile</code>, если нет специфических причин. <code>profile</code> — чистый Python, в нём накладные расходы на каждый вызов ~10× больше, чем измеряемая функция. <code>cProfile</code> на C, почти не влияет на скорость.</p>
+<p>⚠️ <strong><code>profile</code> vs <code>cProfile</code></strong>: всегда используйте <code>cProfile</code>, если нет специфических причин. <code>profile</code> — чистый Python, в нём накладные расходы на каждый вызов ~10× больше, чем измеряемая функция. <code>cProfile</code> на C, почти не влияет на скорость.</p>
 <p><code>profile.Profile</code> можно инстанцировать программно и точечно — <code>enable()</code>/<code>disable()</code> вокруг критического участка. Так делают Django/Flask-профайлеры в middleware.</p>
 <h3 id="11.31-code"><code>code</code> и <code>codeop</code> — движок интерактивной консоли<a class="headerlink" href="#11.31-code" title="Permanent link">#</a></h3>
-<p><code>code</code> — модуль для создания <strong>своих интерактивных REPL</strong>. На нём построены <code>code.interact</code>/<code>InteractiveConsole</code>, <code>python -m code</code> и многие встраиваемые консоли; сам <code>python -i</code> (C-уровневый REPL) и <code>IPython</code> (prompt_toolkit) — не на нём. Если ты делаешь песочницу или встраиваемую консоль — это твой фундамент.</p>
+<p><code>code</code> — модуль для создания <strong>своих интерактивных REPL</strong>. На нём построены <code>code.interact</code>/<code>InteractiveConsole</code>, <code>python -m code</code> и многие встраиваемые консоли; сам <code>python -i</code> (C-уровневый REPL) и <code>IPython</code> (prompt_toolkit) — не на нём. Если вы делаете песочницу или встраиваемую консоль — это ваш фундамент.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-115-1"><a id="__codelineno-115-1" name="__codelineno-115-1" href="#__codelineno-115-1"></a><span class="kn">import</span> <span class="nn">code</span>
 </span><span id="__span-115-2"><a id="__codelineno-115-2" name="__codelineno-115-2" href="#__codelineno-115-2"></a>
 </span><span id="__span-115-3"><a id="__codelineno-115-3" name="__codelineno-115-3" href="#__codelineno-115-3"></a><span class="c1"># Простой REPL с заданным globals</span>
@@ -4903,10 +4904,10 @@
 </span><span id="__span-116-12"><a id="__codelineno-116-12" name="__codelineno-116-12" href="#__codelineno-116-12"></a><span class="c1"># Возвращает None — команда не завершена, жди следующую строку</span>
 </span></code></pre></div>
 <h3 id="11.31-pochemu">Почему эти модули важны для песочниц<a class="headerlink" href="#11.31-pochemu" title="Permanent link">#</a></h3>
-<p>Все четыре (<code>timeit</code>, <code>bdb</code>, <code>profile</code>/<code>cProfile</code>, <code>code</code>/<code>codeop</code>) — это <strong>готовые движки выполнения Python-кода</strong>. Если ты пишешь песочницу:</p>
+<p>Все четыре (<code>timeit</code>, <code>bdb</code>, <code>profile</code>/<code>cProfile</code>, <code>code</code>/<code>codeop</code>) — это <strong>готовые движки выполнения Python-кода</strong>. Если вы пишете песочницу:</p>
 <ol>
 <li><strong><code>timeit</code></strong> — выполняет произвольный <code>stmt</code> через <code>compile()</code> + <code>exec()</code>, игнорируя многие ограничения. Если он доступен — песочница обойдётся: <code>timeit.timeit("__import__('os').system('ls')", number=1)</code>.</li>
-<li><strong><code>bdb</code></strong> — через <code>set_trace()</code> ставит хук на <strong>каждую</strong> строку. Злоумышленник может прочитать локальные переменные, изменить их, пропустить проверку. Запрети <code>sys.settrace</code> и <code>breakpoint</code> в песочнице.</li>
+<li><strong><code>bdb</code></strong> — через <code>set_trace()</code> ставит хук на <strong>каждую</strong> строку. Злоумышленник может прочитать локальные переменные, изменить их, пропустить проверку. Запретите <code>sys.settrace</code> и <code>breakpoint</code> в песочнице.</li>
 <li><strong><code>profile</code>/<code>cProfile</code></strong> — используют <code>sys.setprofile</code>, который похож на <code>settrace</code>, но вызывается на enter/exit функций. Тоже вектор обхода.</li>
 <li><strong><code>code</code>/<code>codeop</code></strong> — если доступен, позволяет злоумышленнику поднять <strong>свой REPL</strong> внутри песочницы и интерактивно исследовать окружение, даже если исходная программа не была интерактивной.</li>
 </ol>
@@ -4973,7 +4974,7 @@
 </span><span id="__span-121-6"><a id="__codelineno-121-6" name="__codelineno-121-6" href="#__codelineno-121-6"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span>--copies<span class="w">                 </span><span class="c1"># копии вместо симлинков (для portability)</span>
 </span></code></pre></div>
 <p>⚠️ <strong><code>venv</code> ≠ <code>virtualenv</code></strong>. <code>virtualenv</code> — сторонний пакет (<code>pip install virtualenv</code>), быстрее, больше фич (можно выбрать любую версию Python). <code>venv</code> — встроенный (с 3.3), медленнее, но всегда доступен. Для нового кода — <code>venv</code>, если не нужна специфика <code>virtualenv</code>.</p>
-<p>⚠️ <strong>venv и системные пакеты</strong>: <code>--system-site-packages</code> — <strong>не рекомендуется</strong>. Если системный <code>requests</code> обновится, твой код сломается без предупреждения. Изолируй полностью.</p>
+<p>⚠️ <strong>venv и системные пакеты</strong>: <code>--system-site-packages</code> — <strong>не рекомендуется</strong>. Если системный <code>requests</code> обновится, ваш код сломается без предупреждения. Изолируйте полностью.</p>
 <h3 id="11.32-pip"><code>pip</code> — менеджер пакетов<a class="headerlink" href="#11.32-pip" title="Permanent link">#</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-122-1"><a id="__codelineno-122-1" name="__codelineno-122-1" href="#__codelineno-122-1"></a><span class="c1"># Базовые операции:</span>
 </span><span id="__span-122-2"><a id="__codelineno-122-2" name="__codelineno-122-2" href="#__codelineno-122-2"></a>pip<span class="w"> </span>install<span class="w"> </span>requests<span class="w">               </span><span class="c1"># установить пакет</span>
@@ -5054,8 +5055,8 @@
 </span><span id="__span-126-6"><a id="__codelineno-126-6" name="__codelineno-126-6" href="#__codelineno-126-6"></a>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://pypi.org/simple/<span class="w"> </span>requests
 </span><span id="__span-126-7"><a id="__codelineno-126-7" name="__codelineno-126-7" href="#__codelineno-126-7"></a>pip<span class="w"> </span>install<span class="w"> </span>--no-index<span class="w"> </span>--find-links<span class="w"> </span>./wheels/<span class="w"> </span>requests<span class="w">  </span><span class="c1"># только локальные wheels</span>
 </span></code></pre></div>
-<p>⚠️ <strong>Никогда не запускай <code>pip</code> с <code>sudo</code></strong> — это сломает системный Python. Всегда в <code>venv</code>.</p>
-<p>⚠️ <strong><code>pip install</code> выполняет код build-backend</strong> (а при наличии <code>setup.py</code> — и его) — пакет может запустить arbitrary code при установке. Ставь только доверенные пакеты.</p>
+<p>⚠️ <strong>Никогда не запускайте <code>pip</code> с <code>sudo</code></strong> — это сломает системный Python. Всегда в <code>venv</code>.</p>
+<p>⚠️ <strong><code>pip install</code> выполняет код build-backend</strong> (а при наличии <code>setup.py</code> — и его) — пакет может запустить arbitrary code при установке. Ставьте только доверенные пакеты.</p>
 <h3 id="11.32-site"><code>site</code> модуль — что происходит при старте Python<a class="headerlink" href="#11.32-site" title="Permanent link">#</a></h3>
 <p>При запуске <code>python3</code> (без <code>-S</code>) автоматически выполняется модуль <code>site</code>. Он:</p>
 <ol>

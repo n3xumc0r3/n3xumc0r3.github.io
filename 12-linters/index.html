@@ -1222,8 +1222,8 @@
 <p>В больших проектах линтеры настраиваются в <code>pyproject.toml</code> или <code>.flake8</code> через <code>ignore = ["E501", "F401"]</code>. Если конфига нет — точечное <code># noqa: [код]</code> в строке.</p>
 <h3 id="12.5-gruppa">Группа F (Pyflakes) — логические аномалии<a class="headerlink" href="#12.5-gruppa" title="Permanent link">#</a></h3>
 <ul>
-<li><strong>F401 — Module imported but unused</strong>: <code>python import os, math, sys, json  # noqa: F401</code></li>
-<li><strong>F841 — Local variable is assigned to but never used</strong>: <code>python unused_hash_buffer = (x * 42) // 3  # noqa: F841</code></li>
+<li><strong>F401 — Module imported but unused</strong>: <code>import os, math, sys, json  # noqa: F401</code></li>
+<li><strong>F841 — Local variable is assigned to but never used</strong>: <code>unused_hash_buffer = (x * 42) // 3  # noqa: F841</code></li>
 <li><strong>F811 — Redefinition of unused name</strong> — повторное определение, которое перекрывает предыдущее.</li>
 <li><strong>F541 — f-string without placeholders</strong> — <code>f"hello"</code> без <code>{}</code>.</li>
 <li><strong>F821 — Undefined name</strong> — использование неопределённой переменной.</li>
@@ -1232,7 +1232,7 @@
 <h3 id="12.5-gruppa-ew">Группа E и W (pycodestyle / PEP 8)<a class="headerlink" href="#12.5-gruppa-ew" title="Permanent link">#</a></h3>
 <ul>
 <li><strong>E501 — Line too long (&gt;79 characters)</strong> — самое знаменитое правило PEP 8.</li>
-<li><strong>E203 — Whitespace before <code>:</code></strong>: <code>python a[x : y]   # вместо a[x:y]</code></li>
+<li><strong>E203 — Whitespace before <code>:</code></strong>: <code>a[x : y]  # вместо a[x:y]</code></li>
 <li><strong>E302, E303, E305</strong> — правила пустых строк:</li>
 <li>E302: между импортами и функцией должно быть 2 пустые строки.</li>
 <li>E303: срабатывает на 3+ пустых строках подряд (допустимо максимум 2).</li>

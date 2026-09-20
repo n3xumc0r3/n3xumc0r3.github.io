@@ -1694,7 +1694,7 @@
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">)</span>    <span class="c1"># {&#39;x&#39;: 10}</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>  <span class="c1"># 10</span>
 </span></code></pre></div>
-<p>В функциях — то же самое:</p>
+<p>В функциях — то же самое, но с сюрпризом: <strong>следующий код упадёт с <code>KeyError: 'result'</code></strong> — это демонстрация ловушки, а не рабочий пример:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span> <span class="nf">calculate_something</span><span class="p">():</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">result</span><span class="p">:</span> <span class="mi">42</span>       <span class="c1"># аннотация без присваивания — и она НЕ СОХРАНЯЕТСЯ (PEP 526)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">my_number</span> <span class="o">=</span> <span class="n">calculate_something</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span>
@@ -2688,11 +2688,11 @@
 <p><code>dir()</code> без аргументов возвращает имена в <strong>текущей локальной области</strong>. В REPL это все переменные сессии; внутри функции — локальные имена; на уровне модуля — то же, что <code>globals().keys()</code>, но отсортированно.</p>
 <p>⚠️ <strong>Ограничения <code>dir()</code></strong>:</p>
 <ul>
-<li>Возвращает <strong>имена</strong>, не значения. Для значений используй <code>getattr(obj, name)</code> в цикле или <code>inspect.getmembers()</code>.</li>
+<li>Возвращает <strong>имена</strong>, не значения. Для значений используйте <code>getattr(obj, name)</code> в цикле или <code>inspect.getmembers()</code>.</li>
 <li>Не показывает атрибуты, реализованные через <code>__getattr__</code> (динамические). Если у класса есть хитрый <code>__getattr__</code>, который создаёт атрибут на лету — <code>dir()</code> его не увидит, если только <code>__dir__</code> не переопределён.</li>
 <li>В REPL срабатывает на <strong>любой</strong> объект, включая модули, функции, классы, экземпляры, исключения. Универсальный разведчик.</li>
 </ul>
-<p><code>dir()</code> — это самый быстрый способ понять, <strong>что вообще умеет объект</strong>. Запомни: увидел новый класс — первым делом <code>dir(obj)</code>, потом уже читай <code>help(obj.method)</code> или доку.</p>
+<p><code>dir()</code> — это самый быстрый способ понять, <strong>что вообще умеет объект</strong>. Запомните: увидели новый класс — первым делом <code>dir(obj)</code>, потом уже читайте <code>help(obj.method)</code> или доку.</p>
 <h3 id="7.14-benchmarki">Бенчмарки к Части VII<a class="headerlink" href="#7.14-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. <code>functools.wraps</code> — цена «правильного» декоратора.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kn">import</span> <span class="nn">timeit</span><span class="o">,</span> <span class="nn">functools</span>

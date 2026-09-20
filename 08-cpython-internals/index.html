@@ -1601,7 +1601,7 @@
 <li>Аргумент, переданный в <code>getrefcount</code>, временно добавляет ссылку.</li>
 <li>Строки и числа могут интернироваться / кэшироваться — общий счётчик.</li>
 </ol>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># 4294967295 на Python 3.12+ (immortal objects, PEP 683); ~300 на 3.11 и ниже</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># 4294967295 на 3.12+ 64-bit (immortal objects, PEP 683); на 32-bit сборках 1073741823; ~300 на 3.11 и ниже</span>
 </span></code></pre></div>
 <p><strong>Использование как флаг</strong> — трюк, который выглядит заманчиво, но на практике <strong>ненадёжен</strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
@@ -1613,7 +1613,7 @@
 <p>⚠️ <strong>Скрытые проблемы</strong>: refcount зависит от множества факторов, которые от вас не зависят:</p>
 <ul>
 <li><strong>Временные ссылки</strong> при вызове функций (<code>getrefcount(x)</code> сам добавляет +1 к ожидаемому числу).</li>
-<li><strong>Интернирование строк</strong> и <strong>кэш малых чисел</strong> — для маленьких объектов refcount всегда аномально высок (<code>sys.getrefcount(1)</code> возвращает 4294967295 на Python 3.12+ из-за PEP 683 Immortal Objects, или ~300 на 3.11 и ниже).</li>
+<li><strong>Интернирование строк</strong> и <strong>кэш малых чисел</strong> — для маленьких объектов refcount всегда аномально высок (<code>sys.getrefcount(1)</code> возвращает 4294967295 на Python 3.12+ из-за PEP 683 Immortal Objects — константа <code>_Py_IMMORTAL_REFCNT</code>, равная <code>UINT_MAX</code> на 64-битных сборках и <code>UINT_MAX &gt;&gt; 2</code> на 32-битных, поэтому число зависит от битности платформы; или ~300 на 3.11 и ниже).</li>
 <li><strong>Constant folding</strong> компилятора держит литералы, которые вы считаете «вашими».</li>
 <li><strong>Оптимизации в разных версиях CPython</strong> — на 3.11+ из-за адаптивной интерпретации и specializing interpreter счётчики могут вести себя иначе, чем на 3.9.</li>
 <li><strong>Слабые ссылки</strong> не учитываются в refcount, но влияют на логику.</li>

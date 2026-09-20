@@ -1785,7 +1785,7 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">exec</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">__main__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;_payload&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 </span></code></pre></div>
 <p>AST видит: <code>AnnAssign</code> + <code>Import</code> + <code>Call</code> (специального узла <code>ast.Exec</code> в Python 3 нет — <code>exec(...)</code> это обычный вызов функции). Что реально выполняется — не видно без запуска.</p>
-<p>⚠️ <strong>Все архитектурные приёмы детектируются динамическим анализом</strong> (A.7): запусти код, собери trace, сравни поведение. Но динамический анализ дорог и редко используется в тестирующих системах.</p>
+<p>⚠️ <strong>Все архитектурные приёмы детектируются динамическим анализом</strong> (A.7): запустите код, соберите trace, сравните поведение. Но динамический анализ дорог и редко используется в тестирующих системах.</p>
 <h2 id="B.3">B.3. Перехват аргументов через фреймы и ctypes<a class="headerlink" href="#B.3" title="Permanent link">#</a></h2>
 <p>Самые «хакерские» приёмы — работа с internals CPython для чтения/изменения состояния вызывающего кода.</p>
 <h3 id="sysgetframe"><code>sys._getframe</code> — чтение локальных переменных вызывающего<a class="headerlink" href="#sysgetframe" title="Permanent link">#</a></h3>
