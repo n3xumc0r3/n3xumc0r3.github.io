@@ -1056,6 +1056,8 @@
       
         
       
+        
+      
     
     
     
@@ -1154,11 +1156,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-references/" class="md-nav__link">
+      <a href="../appendix-d-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Где почитать
+    D. Анатомия случайности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-e-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E. Где почитать
   </span>
   
 
@@ -2415,14 +2438,15 @@ CPU-работа — через чистый Python-цикл.</p>
 <p><strong>1. <code>gather</code> vs последовательный await — реальный прирост конкурентности.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="kn">import</span> <span class="nn">asyncio</span><span class="o">,</span> <span class="nn">time</span>
 </span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>   <span class="c1"># имитация I/O</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>   <span class="c1"># имитация I/O</span>
 </span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>    <span class="k">return</span> <span class="n">i</span>
 </span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">sequential</span><span class="p">():</span>
-</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>    <span class="k">return</span> <span class="p">[</span><span class="k">await</span> <span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
+</span><span id="__span-47-6"><a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>    <span class="k">return</span> <span class="p">[</span><span class="k">await</span> <span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
 </span><span id="__span-47-7"><a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">concurrent</span><span class="p">():</span>
-</span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)))</span>
-</span><span id="__span-47-9"><a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="c1"># sequential: ≈ 2.00 с (20 × 0.1 с)</span>
-</span><span id="__span-47-10"><a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a><span class="c1"># concurrent:  ≈ 0.10 с (20× ускорение)</span>
+</span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span>
+</span><span id="__span-47-9"><a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="c1"># Замер на CPython 3.12.14, 50 прогонов:</span>
+</span><span id="__span-47-10"><a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a><span class="c1"># sequential: ≈ 5.42 с (100 × ~10 мс каждый await)</span>
+</span><span id="__span-47-11"><a id="__codelineno-47-11" name="__codelineno-47-11" href="#__codelineno-47-11"></a><span class="c1"># concurrent: ≈ 0.10 с — **~54× ускорение** (event loop держит все 100 параллельно)</span>
 </span></code></pre></div>
 Если все задачи I/O-связаны — <code>gather</code> даёт <strong>почти линейное</strong> ускорение по числу задач
 (event loop спокойно держит десятки тысяч параллельных корутин — сами по себе они стоят сотни байт).</p>
@@ -2433,10 +2457,11 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TaskGroup</span><span class="p">()</span> <span class="k">as</span> <span class="n">tg</span><span class="p">:</span>
 </span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
 </span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">]</span>
-</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># via_gather:     ≈ 0.115 с</span>
-</span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="c1"># via_taskgroup:  ≈ 0.120 с</span>
+</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Замер на CPython 3.12.14, 1000 прогонов:</span>
+</span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="c1"># via_gather:     ≈ 2.02 с</span>
+</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="c1"># via_taskgroup:  ≈ 2.26 с — на ~12% медленнее (create_task overhead)</span>
 </span></code></pre></div>
-Разница в пределах <strong>3–5%</strong> — <code>TaskGroup</code> добавляет минимальные накладные расходы,
+<code>TaskGroup</code> добавляет ~10–15% накладных расходов из-за <code>create_task</code> + учёт задач в группе,
 но даёт автоматическую отмену при ошибке и <code>ExceptionGroup</code>. На новом коде —
 предпочтителен (см. 4.13).</p>
 <p><strong>3. <code>as_completed</code> vs <code>gather</code> — когда важен порядок прихода.</strong>
@@ -2479,12 +2504,20 @@ CPU-работа — через чистый Python-цикл.</p>
 медленнее из-за накладных расходов. <code>ProcessPoolExecutor</code> даёт реальное
 ускорение на нескольких ядрах (замер на 2-ядерной машине: 0.73 → 0.50 с; на 4+ ядрах — больше).
 Важно: функция для ProcessPool должна быть импортируемой уровня модуля — lambda не пиклится.</p>
-<p><strong>5. I/O-bound задача: threads vs asyncio.</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="c1"># 100 HTTP-запросов по 50 мс каждый</span>
-</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="c1"># Sync-requests:    ≈ 5.0 с</span>
-</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="c1"># ThreadPool(10):   ≈ 0.55 с  (9× ускорение)</span>
-</span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1"># ThreadPool(100):  ≈ 0.20 с  (25× ускорение, но упираемся в лимиты ОС)</span>
-</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="c1"># asyncio + httpx:  ≈ 0.08 с  (60× ускорение, минимум накладных расходов)</span>
+<p><strong>5. <code>asyncio.run</code> overhead — создание event loop на каждый вызов.</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kn">import</span> <span class="nn">asyncio</span><span class="o">,</span> <span class="nn">time</span>
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">noop</span><span class="p">():</span> <span class="k">return</span> <span class="mi">42</span>
+</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="c1"># Замер на CPython 3.12.14, 1000 прогонов asyncio.run(noop()):</span>
+</span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1"># ≈ 0.069 с, per call ≈ 0.07 мс — пренебрежимо мало для долгоживущих программ,</span>
+</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="c1"># но в hot loop из 100k корутин `asyncio.run` на каждый вызов обойдётся в ~7 c</span>
+</span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="c1"># overhead. Поэтому event loop держат один на процесс, а внутри используют gather.</span>
+</span></code></pre></div></p>
+<p><strong>6. I/O-bound задача: threads vs asyncio (теоретические замеры).</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="c1"># 100 HTTP-запросов по 50 мс каждый</span>
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="c1"># Sync-requests:    ≈ 5.0 с</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="c1"># ThreadPool(10):   ≈ 0.55 с  (9× ускорение)</span>
+</span><span id="__span-52-4"><a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="c1"># ThreadPool(100):  ≈ 0.20 с  (25× ускорение, но упираемся в лимиты ОС)</span>
+</span><span id="__span-52-5"><a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="c1"># asyncio + httpx:  ≈ 0.08 с  (60× ускорение, минимум накладных расходов)</span>
 </span></code></pre></div>
 Для I/O asyncio <strong>масштабируется лучше</strong> потоков: корутины дешевле
 (~2 КБ на корутину против ~8 МБ стека на поток), нет переключения контекста ядром.</p>

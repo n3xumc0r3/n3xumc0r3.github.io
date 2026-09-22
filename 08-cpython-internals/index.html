@@ -981,6 +981,8 @@
       
         
       
+        
+      
     
     
     
@@ -1079,11 +1081,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-references/" class="md-nav__link">
+      <a href="../appendix-d-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Где почитать
+    D. Анатомия случайности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-e-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E. Где почитать
   </span>
   
 
@@ -2296,6 +2319,33 @@ WeakValueDictionary <strong>в ~2–3× медленнее</strong> на дос�
 Для сравнения, <code>functools.lru_cache</code> (C-реализация) — того же порядка, но с готовой политикой вытеснения.
 На горячих путях берите <code>lru_cache</code>; кастомный LRU через <code>OrderedDict</code> —
 когда нужен кастомный eviction policy или ограничения не по размеру, а по памяти.</p>
+<p><strong>6. <code>sys.getrefcount</code> — цена интроспекции.</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="kn">import</span> <span class="nn">timeit</span><span class="o">,</span> <span class="nn">sys</span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="n">obj</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="c1"># Замер на CPython 3.12.14, 1M вызовов:</span>
+</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s1">&#39;sys.getrefcount(obj)&#39;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sys&#39;</span><span class="p">:</span> <span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">))</span>
+</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="c1"># ≈ 0.043 с → ~43 наносекунды на вызов</span>
+</span></code></pre></div>
+<code>sys.getrefcount</code> — очень дешёвый C-вызов (~43 нс на 3.12.14). На горячих путях его можно не кешировать.</p>
+<p><strong>7. Small ints cache — <code>==</code> vs <code>is</code> для разных чисел.</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="c1"># Замер на CPython 3.12.14, 5M вызовов:</span>
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;a == b&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">5_000_000</span><span class="p">))</span>      <span class="c1"># ≈ 0.079 с — быстрый путь</span>
+</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;a == b&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">5_000_000</span><span class="p">))</span> <span class="c1"># ≈ 0.153 с — на ~94% медленнее</span>
+</span></code></pre></div>
+<code>5 == 5</code> идёт по fast-path (одинаковые объекты из кэша — <code>is</code>-сравнение внутри <code>__eq__</code>), а <code>1000 == 1000</code> — через полноценное <code>int.__eq__</code>. Разница в 2× на чистом сравнении. Для арифметики разницы нет.</p>
+<p><strong>8. <code>dis.dis</code> overhead — цена дизассемблирования.</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="kn">import</span> <span class="nn">timeit</span><span class="o">,</span> <span class="nn">dis</span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="k">def</span> <span class="nf">run_dis</span><span class="p">():</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>    <span class="n">out</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+</span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a>    <span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+</span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a>
+</span><span id="__span-50-8"><a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a><span class="c1"># Замер на CPython 3.12.14, 1000 вызовов:</span>
+</span><span id="__span-50-9"><a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">run_dis</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1000</span><span class="p">))</span>   <span class="c1"># ≈ 0.022 с → ~22 мкс на dis.dis(f)</span>
+</span></code></pre></div>
+Дизассемблирование — дешёвая операция (22 мкс на функцию из 4 инструкций), его можно использовать в debug-логах без опасений.</p>
 
 
 

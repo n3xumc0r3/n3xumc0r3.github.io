@@ -682,6 +682,8 @@
       
         
       
+        
+      
     
     
     
@@ -1180,11 +1182,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-references/" class="md-nav__link">
+      <a href="../appendix-d-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Где почитать
+    D. Анатомия случайности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-e-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E. Где почитать
   </span>
   
 
@@ -1960,7 +1983,7 @@
 <li><strong>Хуки не наследуются</strong> дочерними процессами — subprocess-песочница настраивает свои.</li>
 <li><strong>Событие не означает блокировку по умолчанию</strong> — хук только наблюдение, пока не поднято исключение.</li>
 </ul>
-<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — выступление Ned Batchelder «Tarpit» (PyCon 2012), разборы побегов из pyjails — в D.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
+<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — выступление Ned Batchelder «Tarpit» (PyCon 2012), разборы побегов из pyjails — в E.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
 <h3 id="kod-vozvrata">Код возврата как канал данных: 8 бит да/нет<a class="headerlink" href="#kod-vozvrata" title="Permanent link">#</a></h3>
 <p>Когда stdout занят выводом, stderr — диагностикой, а файлы и переменные окружения проверяющий не читает, у программы остаётся один свободный канал — код возврата. На POSIX это ровно 8 бит, целое 0–255: всё за пределами усекается по модулю 256 (<code>sys.exit(300)</code> вернёт <code>44</code>, <code>sys.exit(256)</code> — <code>0</code>, <code>sys.exit(-1)</code> — <code>255</code>). Восемь бит — это восемь независимых ответов да/нет, и никто не мешает упаковать в них результаты проверок:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># checker.py: сообщает, какие из восьми проверок провалил решение</span>

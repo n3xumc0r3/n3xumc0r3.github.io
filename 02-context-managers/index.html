@@ -834,6 +834,8 @@
       
         
       
+        
+      
     
     
     
@@ -932,11 +934,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-references/" class="md-nav__link">
+      <a href="../appendix-d-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Где почитать
+    D. Анатомия случайности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-e-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E. Где почитать
   </span>
   
 
@@ -1374,9 +1397,9 @@
 </blockquote>
 <hr />
 <h3 id="2.8-benchmarki">Бенчмарки к Части II<a class="headerlink" href="#2.8-benchmarki" title="Permanent link">#</a></h3>
-<p><strong>1. Класс-менеджер vs <code>@contextmanager</code> vs <code>contextlib.suppress</code>.</strong>
+<p><strong>1. Класс-менеджер vs <code>@contextmanager</code> vs <code>ExitStack</code>.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">suppress</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">suppress</span><span class="p">,</span> <span class="n">ExitStack</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="k">class</span> <span class="nc">CtxClass</span><span class="p">:</span>
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="fm">__enter__</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span>
@@ -1390,18 +1413,18 @@
 </span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="k">with</span> <span class="n">CtxClass</span><span class="p">():</span> <span class="k">pass</span>
 </span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="k">def</span> <span class="nf">use_dec</span><span class="p">():</span>
 </span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="k">with</span> <span class="n">ctx_dec</span><span class="p">():</span> <span class="k">pass</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="k">def</span> <span class="nf">use_suppress</span><span class="p">():</span>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>    <span class="k">with</span> <span class="n">suppress</span><span class="p">():</span> <span class="k">pass</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span><span class="n">use_class</span><span class="p">,</span> <span class="n">use_dec</span><span class="p">,</span> <span class="n">use_suppress</span><span class="p">):</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">))</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="c1"># use_class   ≈ 0.06 с  ← быстрее всего: прямые вызовы методов (зависит от CPU)</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># use_dec     ≈ 0.21 с  ← накладные расходы на генератор</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_suppress≈ 0.06 с  ← suppress без исключений почти равен классу</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="k">def</span> <span class="nf">use_exitstack</span><span class="p">():</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>    <span class="k">with</span> <span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>        <span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">CtxClass</span><span class="p">())</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="c1"># Замер на CPython 3.12.14, 1M вызовов:</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="c1"># use_class:     ≈ 0.284 с  ← быстрее всего: прямые вызовы методов</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># use_dec:       ≈ 1.034 с  ← ~3.6× медленнее (генератор + _GeneratorContextManager)</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_exitstack: ≈ 1.326 с  ← самый медленный (поиск callback в стеке)</span>
 </span></code></pre></div>
 Декоратор <code>@contextmanager</code> <strong>в ~3.5–4 раза медленнее</strong> класса-менеджера, потому что
 строит генератор + прокси-обёртку <code>_GeneratorContextManager</code> на каждый вызов;
-<code>suppress</code> без исключений почти равен классу. На горячих путях (открытие файлов в цикле) — заметно.</p>
+<code>ExitStack</code> ещё медленнее из-за списка callback'ов. На горячих путях (открытие файлов в цикле) — заметно.</p>
 <p><strong>2. Несколько менеджеров в одном <code>with</code> vs вложенные.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Вложенно</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">as</span> <span class="n">fa</span><span class="p">:</span>
@@ -1441,10 +1464,11 @@
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="k">pass</span>
 </span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="k">def</span> <span class="nf">use_suppress</span><span class="p">():</span>
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">):</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># try_except  ≈ 0.046 с / 1M вызовов (зависит от CPU)</span>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># use_suppress≈ 0.116 с / 1M вызовов</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># Замер на CPython 3.12.14, 1M вызовов:</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># try_except:  ≈ 0.185 с</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># use_suppress:≈ 0.532 с — в ~2.9× медленнее</span>
 </span></code></pre></div>
-<code>suppress</code> в ~2–2.5 раза медленнее из-за накладных расходов на контекстный менеджер.
+<code>suppress</code> в ~2.9–3× медленнее из-за накладных расходов на контекстный менеджер.
 Берите его для <strong>читаемости</strong>, а не для скорости</p>
 
 

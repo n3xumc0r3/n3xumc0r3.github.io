@@ -951,6 +951,8 @@
       
         
       
+        
+      
     
     
     
@@ -1049,11 +1051,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-references/" class="md-nav__link">
+      <a href="../appendix-d-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Где почитать
+    D. Анатомия случайности
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-e-references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    E. Где почитать
   </span>
   
 
@@ -1995,34 +2018,32 @@
 <p><strong>2. <code>sum(genexpr)</code> vs <code>sum(listcomp)</code> — скорость.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum(x**2 for x in range(1_000_000))&quot;</span><span class="p">,</span>     <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.68 с — генератор</span>
-</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum([x**2 for x in range(1_000_000)])&quot;</span><span class="p">,</span>   <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.80 с — listcomp</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;sum([x**2 for x in range(1_000_000)])&quot;</span><span class="p">,</span>   <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>  <span class="c1"># ≈ 0.78 с — listcomp</span>
 </span></code></pre></div>
-На CPython 3.12+ генератор <strong>на ~5–17% быстрее</strong> listcomp в <code>sum()</code> (зависит от CPU и минорной версии Python) — это переворачивает старую рекомендацию (раньше listcomp был быстрее). Причина: специализирующий адаптивный интерпретатор (PEP 659; PEP 657 — это трейсбеки, к скорости отношения не имеет) снизил накладные расходы генератора. Генератор также <strong>экономит память</strong> — не аллоцирует список.</p>
+Замер на CPython 3.12.14: генератор <strong>на ~13% быстрее</strong> listcomp в <code>sum()</code> — это переворачивает старую рекомендацию (раньше listcomp был быстрее). Причина: специализирующий адаптивный интерпретатор (PEP 659; PEP 657 — это трейсбеки, к скорости отношения не имеет) снизил накладные расходы генератора. Генератор также <strong>экономит память</strong> — не аллоцирует список.</p>
 <p><strong>3. <code>itertools.batched</code> (3.12+) vs ручной <code>iter</code>+<code>tuple</code>.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">batched</span><span class="p">,</span> <span class="n">islice</span>
 </span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">))</span>
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="k">def</span> <span class="nf">via_batched</span><span class="p">():</span>
-</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">batched</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
-</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="k">def</span> <span class="nf">via_manual</span><span class="p">():</span>
-</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">64</span>
-</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_batched</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.17 с (зависит от CPU)</span>
-</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_manual</span><span class="p">,</span>  <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>   <span class="c1"># ≈ 0.22 с</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">))</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="k">def</span> <span class="nf">manual_batched</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>    <span class="k">while</span> <span class="n">batch</span> <span class="o">:=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">n</span><span class="p">)):</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>        <span class="k">yield</span> <span class="n">batch</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="c1"># Замер на CPython 3.12.14, 10k прогонов по 10k элементов:</span>
+</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;list(batched(data, 8))&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;batched&quot;</span><span class="p">:</span> <span class="n">batched</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>         <span class="c1"># ≈ 1.09 с</span>
+</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;list(manual_batched(data, 8))&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;manual_batched&quot;</span><span class="p">:</span> <span class="n">manual_batched</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>  <span class="c1"># ≈ 3.79 с</span>
 </span></code></pre></div>
-<code>batched</code> быстрее в ~1.3× (замер: 0.166 vs 0.222 с на 20 прогонов, зависит от CPU) и не теряет «хвост» длиной ≠ N: zip-трюк выше использует strict=True и на некратных данных падает с <code>ValueError: zip() argument is shorter</code>, а zip БЕЗ strict молча теряет хвост.</p>
+<code>batched</code> быстрее в <strong>~3.5×</strong> (3.79 / 1.09) — реализован на C, не вызывает <code>islice</code> на каждой итерации. И не теряет «хвост» длиной ≠ N: zip-трюк с <code>strict=True</code> на некратных данных падает, без strict — молча теряет.</p>
 <p><strong>4. <code>itertools.pairwise</code> vs ручной сдвиг.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">pairwise</span>
 </span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100_000</span><span class="p">))</span>
-</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="k">def</span> <span class="nf">via_pairwise</span><span class="p">():</span>
-</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
-</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="k">def</span> <span class="nf">via_index</span><span class="p">():</span>
-</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
-</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_pairwise</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.45 с (зависит от CPU)</span>
-</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="n">via_index</span><span class="p">,</span>    <span class="n">number</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>  <span class="c1"># ≈ 0.45 с — разница в пределах шума</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">))</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="c1"># Замер на CPython 3.12.14, 10k прогонов:</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;list(pairwise(data))&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pairwise&quot;</span><span class="p">:</span> <span class="n">pairwise</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>   <span class="c1"># ≈ 6.29 с</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s2">&quot;list(zip(data, data[1:]))&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">number</span><span class="o">=</span><span class="mi">10_000</span><span class="p">))</span>                    <span class="c1"># ≈ 6.73 с</span>
 </span></code></pre></div>
-На 3.12 разрыв почти исчез (listcomp-версия ускорена специализациями PEP 659: разница 1–3% между прогонами) — выбирайте <code>pairwise</code> за ленивость и работу с итераторами без <code>len()</code>.</p>
+<code>pairwise</code> быстрее на ~6–7% — реализован на C и не создаёт копию через slice <code>data[1:]</code>. На длинных списках также экономит память (slice аллоцирует новый список).</p>
 <p><strong>5. Ленивые вычисления — реальная экономия на раннем выходе.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="c1"># Найти первое число &gt; 100 в последовательности из 10M элементов</span>
 </span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">10_000_000</span>
