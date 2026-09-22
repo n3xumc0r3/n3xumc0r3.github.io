@@ -1595,7 +1595,7 @@
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">print</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">_testMethodName</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">suite</span><span class="p">])</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># [&#39;test_a&#39;, &#39;test_b&#39;, &#39;test_c&#39;]  — не порядок объявления!</span>
 </span></code></pre></div>
-<p>Следствие для практики: <code>test_1</code>…<code>test_10</code> упорядочатся как <code>test_1, test_10, test_2, …</code> — если порядок важен, тесты делают <strong>зависимыми от данных, а не от имён</strong>, либо используют <code>subTest</code>. Присвоить <code>sortTestMethodsUsing = None</code> можно (порядок станет порядком обнаружения), но полагаться на это — значит строить тесты на хрупком крючке.</p>
+<p>Следствие для практики: <code>test_1</code>…<code>test_10</code> упорядочатся как <code>test_1, test_10, test_2, …</code> — если порядок важен, тесты делают <strong>зависимыми от данных, а не от имён</strong>, либо используют <code>subTest</code>. Присвоить <code>sortTestMethodsUsing = None</code> формально можно, но фактически порядок останется алфавитным — <code>dir()</code> возвращает имена отсортированными; полагаться на это — значит строить тесты на хрупком крючке.</p>
 <p><code>discover</code> ищет файлы по шаблону <code>test*.py</code> (настраивается) и — важный момент — собирает <strong>только <code>TestCase</code>-подклассы</strong> и модули с <code>load_tests</code>. Голая функция <code>def test_ok(): ...</code> для unittest не существует:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># pkg/test_x.py</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span> <span class="nn">unittest</span>
@@ -1667,7 +1667,12 @@
 </span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">call_args</span> <span class="o">==</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>   <span class="c1"># True</span>
 </span></code></pre></div>
 <p>Обращение к любому атрибуту мока возвращает (и запоминает) новый <code>Mock</code> — поэтому цепочки <code>m.anything.deeper</code> работают без подготовки. Запись вызовов — список <code>_mock_call_args_list</code>; методы <code>assert_called_with</code>/<code>assert_called_once_with</code> — просто сравнения с этим списком, поэтому их «умение» не выходит за рамки <code>==</code> на <code>call(...)</code>.</p>
-<p><code>side_effect</code> даёт три поведения сразу (проверяются в порядке: исключение → iterable → значение):</p>
+<p><code>side_effect</code> имеет три варианта поведения (проверяются в указанном порядке):</p>
+<ul>
+<li><strong>Функция</strong> → вызывается, результат используется как возвращаемое значение (если не <code>DEFAULT</code>, иначе берётся <code>return_value</code>).</li>
+<li><strong>Исключение</strong> (класс или инстанс) → поднимается.</li>
+<li><strong>Iterable</strong> → каждый вызов берёт следующий элемент; если элемент — исключение, оно поднимается, иначе возвращается.</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">m_err</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;бум&quot;</span><span class="p">))</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">m_err</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                       <span class="c1"># ValueError: бум — исключение бросается</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
@@ -1782,7 +1787,7 @@
 </span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="c1"># 2</span>
 </span></code></pre></div>
 <p>Три детали механики, которые объясняют почти все «почему» doctest'а.</p>
-<p><strong>Сравнение — посимвольное сравнение строк stdout с ожидаемым текстом.</strong> Никакого repr-протокола: если функция печатает <code>'abab'</code> с кавычками, ожидание должно быть <code>'abab'</code>, а если бы вывод шёл через <code>print</code> — без кавычек. Отсюда же требование «пустая строка в ожидаемом выводе = конец примера»: парсер просто не знает, где вывод заканчивается.</p>
+<p><strong>Сравнение — посимвольное сравнение строк вывода (включая REPL-echo через <code>repr</code> для выражений без <code>print</code>) с ожидаемым текстом.</strong> Если функция печатает <code>'abab'</code> через <code>print</code>, ожидание должно быть <code>abab</code> (без кавычек); если же это просто значение выражения в REPL — <code>'abab'</code> с кавычками (как <code>repr</code> вернёт). Отсюда же требование «пустая строка в ожидаемом выводе = конец примера»: парсер просто не знает, где вывод заканчивается.</p>
 <p><strong>Пространство имён примера — globals модуля (копия).</strong> Примеры из docstring'а функции исполняются в её модуле, поэтому <code>double</code> в примере выше видна без импортов. Нюанс уровня исходников: <code>DocTestFinder</code> привязывает docstring к модулю проверкой <code>module.__dict__ is func.__globals__</code> — функция, созданная в одном пространстве имён и вставленная в другой (как в паттерне <code>exec</code> выше, где важно исполнить код именно в <code>fm.__dict__</code>), examples теряет.</p>
 <p><strong>Код возврата и CLI.</strong> <code>doctest.testmod()</code> возвращает именованный кортеж <code>TestResults(failed, attempted)</code>, а <code>python -m doctest file.py</code> выходит с кодом 1 при провале — удобно для CI:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$ python -m doctest dt_fail2.py ; echo $?
@@ -1948,7 +1953,7 @@
 <p>Ключевая таблица — <code>line_bits</code>: номера исполненных строк, упакованные в блобы схемой RLE (пары «сколько строк пропустить — сколько закрасить»); при <code>--branch</code> рядом лежит <code>arc</code> — пары переходов. <code>context</code> хранит контексты (<code>coverage run --context=название</code> — размечать замеры, например по тест-группам), <code>meta</code> — версию формата. <code>coverage combine</code> сливает параллельные <code>.coverage.&lt;хост&gt;.&lt;pid&gt;</code>-файлы в один — потому CI-джобы пишут в отдельные файлы, а не в общий.</p>
 <p>Движки трассировки переключаются переменной окружения <code>COVERAGE_CORE</code>:</p>
 <ul>
-<li><code>ctrace</code> (по умолчанию на 3.12) — C-трассировщик <code>CTracer</code>, собственной механикой повторяющий <code>sys.settrace</code> (13.8), но целиком в C: события line/call/return снимаются с минимальной питоновской обвязки;</li>
+<li><code>ctrace</code> (по умолчанию на 3.12, начиная с coverage.py 7.10) — C-трассировщик <code>CTracer</code>, собственной механикой повторяющий <code>sys.settrace</code> (13.8), но целиком в C: события line/call/return снимаются с минимальной питоновской обвязки;</li>
 <li><code>sysmon</code> — <code>sys.monitoring</code> (PEP 669, 13.9): <code>COVERAGE_CORE=sysmon coverage run …</code>; неверное значение бракуется сразу: <code>Unknown core value: 'bogus'</code>.</li>
 </ul>
 <p>⚠️ Движки дают одинаковые данные, но не идентичную скорость: на нашем workload'е ctrace замедлил запуск в 4.3 раза, sysmon — в 3.4 (бенчмарк в конце части). Порог перехода на sysmon — 3.12+ и тип нагрузки: чем больше line-событий, тем заметнее преимущество monitoring-механики.</p>
@@ -1996,7 +2001,7 @@
 </tr>
 </tbody>
 </table>
-<p>Ключевая слово — <strong>двухуровневость</strong>: глобальный трейсер получает только <code>call</code> и своим <strong>возвращаемым значением</strong> назначает локальный трейсер для кадра:</p>
+<p>Ключевое слово — <strong>двухуровневость</strong>: глобальный трейсер получает только <code>call</code> и своим <strong>возвращаемым значением</strong> назначает локальный трейсер для кадра:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">import</span> <span class="nn">sys</span>
 </span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
 </span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2187,8 +2192,8 @@
 <td>какие <strong>ресурсы</strong> разрешить: сеть, аудио, большие файлы; по умолчанию часть выключена</td>
 </tr>
 <tr>
-<td><code>-r</code>, <code>--randseed=N</code></td>
-<td>случайный порядок тестов (ловля скрытых зависимостей между тестами)</td>
+<td><code>-r</code> (<code>--randomize</code>) + <code>--randseed=N</code></td>
+<td>рандомизация порядка тестов (ловля скрытых зависимостей между тестами); <code>--randseed</code> фиксирует зерно для воспроизводимости</td>
 </tr>
 <tr>
 <td><code>--list-tests</code></td>

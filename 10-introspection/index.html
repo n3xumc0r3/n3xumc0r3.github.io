@@ -1122,7 +1122,7 @@
 <tr>
 <td><code>isolated</code></td>
 <td><code>-I</code></td>
-<td><code>-E + -s + no user site</code>. Максимальная изоляция.</td>
+<td><code>-E + -s + -P</code> (no user site, no script dir в <code>sys.path</code>, ignore <code>PYTHON*</code>). Максимальная изоляция.</td>
 </tr>
 <tr>
 <td><code>verbose</code></td>
@@ -1217,7 +1217,7 @@
 <li><code>-X disable_remote_debug</code> — выключить remote-отладку PEP 768 (подключение кода к работающему процессу) (3.14+, env <code>PYTHON_DISABLE_REMOTE_DEBUG</code>)</li>
 <li>3.14+: <code>-X thread_inherit_context=0/1</code>, <code>-X context_aware_warnings=0/1</code>, <code>-X tlbc=0/1</code> — наследование contextvars в потоках, предупреждения с учётом контекста, счётчики tier-2 байт-кода (экспериментальные)</li>
 <li>историческое: <code>-X showalloccount</code> удалена в 3.9, <code>-X oldparser</code> — в 3.10 (сейчас просто игнорируются)</li>
-<li>неизвестные <code>-X</code> игнорируются молча (<code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code>)</li>
+<li>неизвестные <code>-X</code> не интерпретируются CPython, но сохраняются в <code>sys._xoptions</code> (как <code>True</code> или строка после <code>=</code>); <code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code></li>
 </ul>
 <h2 id="10.3">10.3. <code>os.environ</code> и <code>PYTHON*</code> переменные<a class="headerlink" href="#10.3" title="Permanent link">#</a></h2>
 <p>⚠️ <strong>Переменные <code>PYTHON*</code> читаются ТОЛЬКО при старте CPython.</strong> Изменение <code>os.environ['PYTHONUNBUFFERED'] = '1'</code> внутри работающего скрипта <strong>не повлияет на текущий процесс</strong> — только на дочерние процессы (запущенные через <code>subprocess</code>). Все <code>PYTHON*</code> должны быть выставлены <strong>до</strong> запуска <code>python</code>.</p>
@@ -1402,7 +1402,7 @@
 </span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="c1"># Что в корне (часто бывает .dockerenv)</span>
 </span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;/.dockerenv&#39;</span><span class="p">))</span>  <span class="c1"># True для Docker</span>
 </span></code></pre></div>
-<p><code>/proc/self/environ</code> часто <strong>полезнее</strong>, чем <code>os.environ</code> — даёт вообще всё окружение, не отфильтрованное.</p>
+<p><code>/proc/self/environ</code> — снимок окружения <strong>на момент старта процесса</strong>: не реагирует на изменения <code>os.environ[...] = ...</code> (в отличие от <code>os.environ</code>, который синхронизирован с C-level <code>environ</code>), полезен для аудита «что было в env при запуске».</p>
 <h2 id="10.7">10.7. Audit hooks (PEP 578, Python 3.8+)<a class="headerlink" href="#10.7" title="Permanent link">#</a></h2>
 <p><code>sys.addaudithook(hook)</code> ставит <strong>глобальный перехватчик</strong> для всех «интересных» событий: <code>import</code>, <code>exec</code> (порождается и <code>exec()</code>, и <code>eval()</code>), <code>open</code>, <code>socket.*</code>, <code>subprocess.Popen</code>, <code>compile</code>, <code>code.__new__</code>, и т.д. Полный список событий в <a href="https://peps.python.org/pep-0578/">PEP 578</a>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">sys</span>

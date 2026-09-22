@@ -941,11 +941,11 @@
         <li class="md-nav__item">
   <a href="#18.9" class="md-nav__link">
     <span class="md-ellipsis">
-      18.9. Stable ABI и сборки без GIL
+      18.9. Stable ABI (PEP 384) и сборки без GIL (PEP 703 / PEP 779)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="18.9. Stable ABI и сборки без GIL">
+    <nav class="md-nav" aria-label="18.9. Stable ABI (PEP 384) и сборки без GIL (PEP 703 / PEP 779)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1435,11 +1435,11 @@
         <li class="md-nav__item">
   <a href="#18.9" class="md-nav__link">
     <span class="md-ellipsis">
-      18.9. Stable ABI и сборки без GIL
+      18.9. Stable ABI (PEP 384) и сборки без GIL (PEP 703 / PEP 779)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="18.9. Stable ABI и сборки без GIL">
+    <nav class="md-nav" aria-label="18.9. Stable ABI (PEP 384) и сборки без GIL (PEP 703 / PEP 779)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1786,7 +1786,7 @@
 <p>API-режим собирает C-файл, в котором ваши Python-вызовы <code>C.add2(...)</code> превращаются в прямые вызовы C с проверкой типов на этапе <strong>компиляции</strong> — граница FFI исчезает, остаётся обычный вызов функции расширения (18.11: на одном порядке с METH_*). Именно поэтому у <code>cryptography</code> нет бинарных проблем «ctypes-строка не совпала с реальной сигнатурой».</p>
 <p>✅ PyPy-симметрия (17.2): на PyPy <code>cffi</code>-модули исполняются <strong>нативно</strong> JIT'ом (cffi — часть его stdlib), а C-расширения через мост <code>cpyext</code> теряют скорость на каждой границе. Если библиотеку планируется гонять на нескольких реализациях Python — API-режим cffi безопаснее C API.</p>
 <h2 id="18.4">18.4. <code>PyObject</code> и подсчёт ссылок<a class="headerlink" href="#18.4" title="Permanent link">#</a></h2>
-<p>Каждый объект CPython начинается с одного и того же заголовка. Это не упрощение — дословно <code>object.h</code> из CPython 3.12:</p>
+<p>Каждый объект CPython начинается с одного и того же заголовка. Упрощённо (без <code>_PyObject_HEAD_EXTRA</code>, пустого в release-сборках, но непустого в debug с <code>Py_TRACE_REFS</code>), базируется на <code>object.h</code> из CPython 3.12:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">_object</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="k">union</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">       </span><span class="n">Py_ssize_t</span><span class="w"> </span><span class="n">ob_refcnt</span><span class="p">;</span><span class="w">             </span><span class="cm">/* счётчик ссылок */</span>
@@ -2374,10 +2374,10 @@
 </span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Противоположность — <code>PyDLL</code> из ctypes (18.2): он <strong>не</strong> освобождает GIL при вызове, потому что его функции вправе звать Python C API. Проверка на живой машине — тот же эксперимент, что выше: <code>CDLL</code>-сон не мешает главному циклу (3 017 607 итераций за секунду), <code>PyDLL</code>-сон блокирует всё (15 064).</p>
-<p>Устаревший сахар: <code>PyEval_InitThreads()</code>/<code>PyEval_ThreadsInitialized()</code> deprecated с 3.9, удалены в 3.13 — GIL инициализируется всегда, звать ничего не нужно.</p>
-<h2 id="18.9">18.9. Stable ABI и сборки без GIL<a class="headerlink" href="#18.9" title="Permanent link">#</a></h2>
+<p>Устаревший сахар: <code>PyEval_InitThreads()</code>/<code>PyEval_ThreadsInitialized()</code> deprecated с 3.9, удалены в 3.13 (см. changelog 3.13 и PEP 684 про per-interpreter GIL) — GIL инициализируется всегда, звать ничего не нужно.</p>
+<h2 id="18.9">18.9. Stable ABI (PEP 384) и сборки без GIL (PEP 703 / PEP 779)<a class="headerlink" href="#18.9" title="Permanent link">#</a></h2>
 <h3 id="18.9-limited">Ограниченный C API: один <code>.so</code> на все версии<a class="headerlink" href="#18.9-limited" title="Permanent link">#</a></h3>
-<p>Обычное расширение слинковано с внутренностями конкретной версии: заголовок 3.12 описывает поля структур, которые в 3.13 изменились. Определение <code>Py_LIMITED_API</code> перед <code>Python.h</code> отрезает всё нестабильное:</p>
+<p>Обычное расширение слинковано с внутренностями конкретной версии: заголовок 3.12 описывает поля структур, которые в 3.13 изменились. Определение <code>Py_LIMITED_API</code> перед <code>Python.h</code> (механика стандартизована PEP 384, 3.2+) отрезает всё нестабильное:</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="cp">#define Py_LIMITED_API 0x030A0000   </span><span class="cm">/* «мне достаточно API версии 3.10+» */</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Python.h&gt;</span>
 </span></code></pre></div>
@@ -2489,7 +2489,7 @@
 <p>Каждый шаг с комментарием «новая ссылка» — owned: забытый <code>Py_DECREF</code> здесь не GC догонит, а утёчка на каждый вызов. <code>PyUnicode_AsUTF8</code> возвращает указатель на внутренний буфер строки (borrowed) — строку нельзя DECREF-нуть до окончания использования буфера.</p>
 <p>⚠️ Жизненный цикл жёстче, чем кажется: после <code>Py_FinalizeEx</code> повторная инициализация в том же процессе <strong>не поддерживается</strong>; из-за бессмертных объектов (18.4) часть памяти не возвращается ОС в принципе. Утилизаторам памяти стоит мерить «до finalize», а не RSS после выхода.</p>
 <h3 id="18.10-subinterps">Суб-интерпретаторы<a class="headerlink" href="#18.10-subinterps" title="Permanent link">#</a></h3>
-<p>В одном процессе можно держать несколько изолированных интерпретаторов — <code>Py_NewInterpreter()</code>/<code>Py_EndInterpreter()</code>, модуль-обёртка <code>_interpreters</code> (экспериментальный). Каждый суб-интерпретатор имеет собственные <code>sys.modules</code> и поток-стейты; с 3.12 (PEP 684) каждый может получить и <strong>свой GIL</strong> — это фундамент будущего параллелизма внутри одного процесса. Условие из 18.5 всплывает здесь же: модуль с <code>m_size = -1</code> суб-интерпретаторы ломает, и при импорте в новый интерпретатор такие модули переинициализируются с нуля. Для честной изоляции модули должны хранить состояние в самом объекте модуля, а не в C-статике.</p>
+<p>В одном процессе можно держать несколько изолированных интерпретаторов — <code>Py_NewInterpreter()</code>/<code>Py_EndInterpreter()</code>, в 3.13 появился публичный модуль <code>interpreters</code> (PEP 734, всё ещё provisional); ранее доступ был только через <code>_interpreters</code>. Каждый суб-интерпретатор имеет собственные <code>sys.modules</code> и поток-стейты; с 3.12 (PEP 684) каждый может получить и <strong>свой GIL</strong> — это фундамент будущего параллелизма внутри одного процесса. Условие из 18.5 всплывает здесь же: модуль с <code>m_size = -1</code> суб-интерпретаторы ломает, и при импорте в новый интерпретатор такие модули переинициализируются с нуля. Для честной изоляции модули должны хранить состояние в самом объекте модуля, а не в C-статике.</p>
 <p>Практическая альтернатива, покрывающая 90% хотелок «встроить Python» — отдельный процесс: <code>subprocess</code> (11.30) или сокет к обычному интерпретатору; встраивание оправдано, когда нужен именно in-process вызов с нулевой задержкой границы.</p>
 <h2 id="18.11">18.11. Отладка C-расширений<a class="headerlink" href="#18.11" title="Permanent link">#</a></h2>
 <p>Расширение падает иначе, чем Python-код: сегфолт вместо исключения, порча памяти вместо <code>TypeError</code>, утечка вместо молчания. Набор инструментов:</p>

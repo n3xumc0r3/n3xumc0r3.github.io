@@ -700,7 +700,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#12.6-benchmarki" class="md-nav__link">
+  <a href="#12.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части XII
     </span>
@@ -1128,7 +1128,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#12.6-benchmarki" class="md-nav__link">
+  <a href="#12.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части XII
     </span>
@@ -1157,7 +1157,7 @@
 
 
 <h1 id="xii">Часть XII. Линтеры и директивы в комментариях<a class="headerlink" href="#xii" title="Permanent link">#</a></h1>
-<p>Комментарий в Python — не всегда просто комментарий: некоторые строки парсер читает сам (<code># -*- coding -*-</code>, PEP 263), некоторые обрабатывают линтеры и тайпчекеры (<code># noqa</code>, <code># type: ignore</code>), некоторые — doctest. Часть разбирает каждую директиву и инструменты, которые её потребляют: ruff (12.7), гранулярные подавления (12.8–12.9), pre-commit (12.10) и <code>pyproject.toml</code> (12.6).</p>
+<p>Комментарий в Python — не всегда просто комментарий: некоторые строки парсер читает сам (<code># -*- coding: utf-8 -*-</code>, PEP 263), некоторые обрабатывают линтеры и тайпчекеры (<code># noqa</code>, <code># type: ignore</code>), некоторые — doctest. Часть разбирает каждую директиву и инструменты, которые её потребляют: ruff (12.7), гранулярные подавления (12.8–12.9), pre-commit (12.10) и <code>pyproject.toml</code> (12.6).</p>
 <h2 id="12.1">12.1. <code># -*- coding: ... -*-</code> (PEP 263)<a class="headerlink" href="#12.1" title="Permanent link">#</a></h2>
 <blockquote>
 <p><strong>→ см. также:</strong> Часть IX (9.1–9.6) — полный разбор работы с кодировками исходных файлов и собственными кодеками.</p>
@@ -1174,7 +1174,7 @@
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  <span class="c1"># type: (int) -&gt; str</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Для коллекций</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Для коллекций (в эпоху type comments писали List[int] из typing; современный list[int] — PEP 585, 3.9+)</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: list[int]</span>
 </span></code></pre></div>
 <p><code>mypy</code> и другие тайп-чекеры читают эти комментарии и проверяют типы. CPython сам ничего с ними не делает — только сохраняет в AST.</p>
@@ -1381,7 +1381,7 @@
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">[tool.ruff.lint.per-file-ignores]</span>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="s2">&quot;tests/*&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;S101&quot;</span><span class="p">]</span>
 </span></code></pre></div>
-<p><code>target-version = "py312"</code> — ключевой параметр для группы <code>UP</code>: при <code>py39</code> ruff предложит <code>from __future__ import annotations</code>, при <code>py312</code> — <code>type</code>-алиасы и другие новинки. Без этой настройки <code>UP</code> работает по консервативному минимуму.</p>
+<p><code>target-version = "py312"</code> — ключевой параметр для группы <code>UP</code>: при <code>py&lt;3.10</code> может советовать <code>from __future__ import annotations</code> (UP037), при <code>py312+</code> — разрешает PEP 695 <code>type X = ...</code> и убирает ставшие ненужными <code>from __future__ import annotations</code>. Без этой настройки <code>UP</code> работает по консервативному минимуму.</p>
 <p><strong>Что мигрирует болезненно:</strong></p>
 <ul>
 <li><strong>Кастомные flake8-плагины</strong> — если в проекте свой плагин, ruff его не запустит (расширение через плагины ruff на Rust не появилось). Кастомные проверки выносят в отдельный скрипт или в pylint.</li>
@@ -1595,7 +1595,7 @@
 <p>Что остаётся за кадром: pre-commit защищает <strong>коммиты</strong>, но не историю — хук можно обойти <code>git commit --no-verify</code>. Для гарантий CI-прогон обязателен: хуки ускоряют обратную связь, CI — единственный источник истины.</p>
 <p>→ <strong>см. также:</strong> 12.7 — конфиг ruff; 12.9 — коды mypy; 12.6 — общий <code>pyproject.toml</code>.</p>
 <hr />
-<h3 id="12.6-benchmarki">Бенчмарки к Части XII<a class="headerlink" href="#12.6-benchmarki" title="Permanent link">#</a></h3>
+<h3 id="12.11-benchmarki">Бенчмарки к Части XII<a class="headerlink" href="#12.11-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. <code>ruff</code> vs <code>flake8</code> vs <code>pylint</code> — скорость проверки.</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># На репозитории ~500 .py файлов, ~100K строк:</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># flake8:    ≈ 8.5 с</span>
@@ -1611,7 +1611,6 @@ Pylint медленнее, но ловит больше семантически
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># На ~500 файлов:</span>
 </span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># mypy:                  ≈ 12 с</span>
 </span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="c1"># mypy --strict:         ≈ 14 с   (+17%)</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># mypy --strict --fast:  ≈ 13 с</span>
 </span></code></pre></div>
 <code>--strict</code> добавляет ~15–20% к времени проверки, но ловит на ~30% больше
 проблем на этапе разработки (а не в рантайме). На CI — обязательно.</p>
@@ -1634,7 +1633,7 @@ Pylint медленнее, но ловит больше семантически
 </span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># Сравнение с обычным unit-тестом:</span>
 </span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/<span class="w">   </span><span class="c1"># 100 тестов            # ≈ 1.2 с</span>
 </span></code></pre></div>
-doctest <strong>быстрее</strong> unit-тестов (~3× на тест) — нет фикстур, setup/teardown.
+doctest <strong>быстрее</strong> unit-тестов (~4× на тест: 0.3 с / 100 = 0.003 с против 1.2 с / 100 = 0.012 с) — нет фикстур, setup/teardown.
 Но он <strong>не заменяет</strong> полноценные тесты: нет параметризации, нет <code>setUp</code>/<code>tearDown</code>,
 сложно тестировать исключения и побочные эффекты. Идеален для проверки
 <strong>примеров в docstring</strong> — и только.</p>

@@ -580,7 +580,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#6.5-benchmarki" class="md-nav__link">
+  <a href="#6.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части VI
     </span>
@@ -1128,7 +1128,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#6.5-benchmarki" class="md-nav__link">
+  <a href="#6.11-benchmarki" class="md-nav__link">
     <span class="md-ellipsis">
       Бенчмарки к Части VI
     </span>
@@ -1183,8 +1183,8 @@
 </span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="k">del</span> <span class="n">instance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">name</span> <span class="o">=</span> <span class="n">TypedField</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">age</span> <span class="o">=</span> <span class="n">TypedField</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">name</span> <span class="o">=</span> <span class="n">TypedField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>   <span class="c1"># name будет перезаписан в __set_name__</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">age</span> <span class="o">=</span> <span class="n">TypedField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="n">u</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Alice&quot;</span>
@@ -1331,7 +1331,7 @@
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">**</span> <span class="mi">2</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">c</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="mi">100</span>   <span class="c1"># AttributeError: property &#39;area&#39; of &#39;Circle&#39; object has no setter (текст на 3.12)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">c</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="mi">100</span>   <span class="c1"># AttributeError: property &#39;area&#39; of &#39;Circle&#39; object has no setter</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Property не должно быть тяжёлым</strong> — пользователь ожидает мгновенного доступа. Не делайте в <code>@property</code> HTTP-запросы или чтение файлов.</p>
 <h2 id="6.5">6.5. <code>__getattr__</code> vs <code>__getattribute__</code> vs <code>__setattr__</code><a class="headerlink" href="#6.5" title="Permanent link">#</a></h2>
@@ -1908,7 +1908,7 @@
 <p>Правило выбора: один-два дорогих значения — выделенный слот + <code>@property</code>; много ленивых полей или класс генерируется динамически — <code>SlotCached</code>; кэш по аргументам (не только по self) — <code>lru_cache</code> с осознанием удержания объектов.</p>
 <p>→ <strong>см. также:</strong> 6.6 — механика cached_property; 5.8 — <code>__slots__</code> целиком; 6.9 — почему методы слотам не мешают.</p>
 <hr />
-<h3 id="6.5-benchmarki">Бенчмарки к Части VI<a class="headerlink" href="#6.5-benchmarki" title="Permanent link">#</a></h3>
+<h3 id="6.11-benchmarki">Бенчмарки к Части VI<a class="headerlink" href="#6.11-benchmarki" title="Permanent link">#</a></h3>
 <p><strong>1. <code>@property</code> vs прямой атрибут vs дескриптор.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>

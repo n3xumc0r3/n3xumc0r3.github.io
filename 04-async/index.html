@@ -1580,7 +1580,7 @@
 </span></code></pre></div>
 <p>Асинхронность = <strong>конкурентность в одном потоке</strong>. Не параллелизм (CPU не используется одновременно), а конкурентность по I/O (пока одна задача ждёт ответа — другая работает).</p>
 <p>⚠️ <strong>Кооперативная многозадачность</strong>: в <code>asyncio</code> задача выполняется до тех пор, пока сама добровольно не отдаст управление через <code>await</code>. Если внутри корутины вызвать синхронную операцию (<code>time.sleep(5)</code>, <code>requests.get()</code>, долгий CPU-расчёт), она <strong>блокирует поток event loop</strong>: ни одна другая готовая корутина не получит управления, пока синхронный вызов не завершится, — для остальных задач цикл «замер», хотя формально ничего не сломалось.</p>
-<p>⚠️ <strong>Физика event loop</strong>: цикл не опрашивает сокеты непрерывно. Через модуль <code>selectors</code> он делегирует наблюдение системным мультиплексорам I/O — <code>epoll</code> (Linux), <code>kqueue</code> (macOS/BSD), <code>IOCP</code> (Windows). Когда все корутины ждут I/O, поток засыпает в <code>epoll_wait()</code> с <strong>0% CPU</strong>.</p>
+<p>⚠️ <strong>Физика event loop</strong>: цикл не опрашивает сокеты непрерывно. Через модуль <code>selectors</code> он делегирует наблюдение системным мультиплексорам I/O — <code>epoll</code> (Linux), <code>kqueue</code> (macOS/BSD), <code>IOCP</code> (Windows). Когда все корутины ждут I/O, поток засыпает в мультиплексоре I/O (<code>epoll_wait</code> на Linux и его аналогах на других платформах) с <strong>0% CPU</strong>.</p>
 <h2 id="4.2">4.2. <code>async def</code>, <code>await</code> — синтаксис и семантика<a class="headerlink" href="#4.2" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># корутина — функция с async def</span>
@@ -1611,8 +1611,8 @@
 </span></code></pre></div>
 <p><code>asyncio.run</code> (Python 3.7+) — стандартный способ запустить asyncio-программу. Создаёт новый event loop, выполняет корутину, <strong>принудительно отменяет</strong> (<code>cancel()</code>) все оставшиеся фоновые задачи, закрывает async-генераторы и пул потоков, затем закрывает loop.</p>
 <p>⚠️ <strong>Нельзя вызывать <code>asyncio.run</code> внутри уже запущенного event loop</strong> — будет <code>RuntimeError</code>. Если вы внутри Jupyter или уже в asyncio — используйте <code>await main()</code> напрямую.</p>
-<p>Старый API (не рекомендуется):
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<p>Старый API (deprecated с 3.10, в будущем удалится; в 3.12 при отсутствии запущенного loop выдаёт <code>DeprecationWarning: There is no current event loop</code>):
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>       <span class="c1"># ⚠️ deprecated</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></code></pre></div></p>
@@ -1957,7 +1957,7 @@
 <tr>
 <td>WebSocket-сервер на 10000 подключений</td>
 <td><code>asyncio</code> (websockets/aiohttp)</td>
-<td>потоки не масштабируются до 10k (stack ~8MB × 10k = 80GB)</td>
+<td>потоки не масштабируются до 10k (8 MB виртуального стека на поток × 10k = 80 GB <strong>виртуального</strong> адресного пространства + ~1–2 GB реальной RAM на kernel-структуры; asyncio уходит в десятки МБ)</td>
 </tr>
 <tr>
 <td>Долгий background-task в sync-приложении</td>
@@ -2084,7 +2084,7 @@
 </tr>
 <tr>
 <td>2022</td>
-<td><strong>asyncio.TaskGroup</strong> (3.11) — прямой порт nursery в стандартную библиотеку; <code>ExceptionGroup</code>/<code>except*</code> — порт <code>MultiError</code></td>
+<td><strong>asyncio.TaskGroup</strong> (3.11) — прямой порт nursery в стандартную библиотеку; <code>ExceptionGroup</code>/<code>except*</code> (PEP 654, Python 3.11) — вдохновлены <code>MultiError</code> из trio, но реализованы на уровне языка</td>
 <td>CPython</td>
 </tr>
 </tbody>
@@ -2122,7 +2122,7 @@
 <tr>
 <td>Запуск с подтверждением готовности</td>
 <td><code>nursery.start()</code></td>
-<td>в TaskGroup прямого аналога нет (<code>create_task</code> + <code>await</code> — не то же самое)</td>
+<td>в TaskGroup на 3.12 прямого аналога нет (<code>create_task</code> + <code>await</code> — не то же самое); в 3.13 добавлен <code>TaskGroup.start(coro)</code></td>
 </tr>
 </tbody>
 </table>

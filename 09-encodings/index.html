@@ -1050,7 +1050,7 @@
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SyntaxError: encoding problem: rot_13
 </span></code></pre></div>
-<p>Причина: <code>rot_13</code> — <strong>текст-в-текст</strong> кодек. Парсер CPython требует, чтобы <code>StreamReader</code> кодека принимал на вход <strong>байты</strong> и отдавал <strong>текст</strong> (str). <code>rot_13</code> принимает str и отдаёт str → парсер не может его использовать для исходного файла.</p>
+<p>Причина: <code>rot_13</code> — <strong>текст-в-текст</strong> кодек. Для чтения исходника CPython использует функцию <code>decode</code> из <code>CodecInfo</code> (а не <code>StreamReader</code> напрямую) — <code>decode</code> должен принимать <strong>байты</strong> и возвращать <strong>str</strong>. <code>rot_13</code> принимает str и отдаёт str → парсер не может его использовать для исходного файла (<code>codecs.lookup('rot_13').decode</code> ожидает str).</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span> <span class="nn">codecs</span><span class="o">,</span> <span class="nn">io</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">info</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;rot_13&#39;</span><span class="p">)</span>
@@ -1157,7 +1157,7 @@
 <li><strong>Кэш-lookup</strong>: <code>_cache.get(encoding, _unknown)</code>.</li>
 <li><strong>Нормализация имени</strong>: <code>normalize_encoding(encoding)</code> — заменяет все не-alphanumeric символы на <code>_</code>.</li>
 <li><strong>Поиск алиаса</strong> в <code>_aliases</code> (<code>encodings.aliases</code>).</li>
-<li><strong>Импорт модуля</strong>: <code>__import__('encodings.' + modname, fromlist=_import_tail, level=0)</code>.</li>
+<li><strong>Импорт модуля</strong>: <code>__import__('encodings.' + modname, fromlist=['getregentry'], level=0)</code> — в <code>fromlist</code> указано имя функции, которую ищут в модуле (<code>getregentry()</code> возвращает <code>CodecInfo</code>).</li>
 <li><strong>Получение CodecInfo</strong>: <code>mod.getregentry()</code> — должна вернуть <code>codecs.CodecInfo</code>.</li>
 <li><strong>Валидация</strong>: проверка, что у <code>CodecInfo</code> есть callable <code>encode</code>, <code>decode</code> (и опционально <code>streamreader</code>, <code>streamwriter</code>).</li>
 <li><strong>Кэширование</strong> и возврат.</li>
