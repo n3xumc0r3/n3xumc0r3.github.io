@@ -1245,7 +1245,7 @@
 <ul>
 <li><strong><code>pylint: disable=broad-except</code> (W0703)</strong> — перехват всех ошибок через <code>except Exception:</code>.</li>
 <li><strong><code>pylint: disable=too-many-arguments</code> (R0913)</strong> — слишком много аргументов (&gt;5).</li>
-<li><strong><code>pylint: disable=missing-module-docstring</code>/<code>-class-docstring</code>/<code>-function-docstring</code> (C0114/C0115/C0116)</strong> — нет docstring (старый код C0111 устарел с pylint 2.0).</li>
+<li><strong><code>pylint: disable=missing-module-docstring</code>/<code>-class-docstring</code>/<code>-function-docstring</code> (C0114/C0115/C0116)</strong> — нет docstring (старый код C0111 был разделён на C0114/C0115/C0116 в pylint 2.6, август 2020).</li>
 <li><strong><code>pylint: disable=eval-used</code> (W0122)</strong> — использование <code>eval</code>.</li>
 <li><strong><code>pylint: disable=too-few-public-methods</code> (R0903)</strong> — слишком мало публичных методов.</li>
 <li><strong><code>pylint: disable=import-outside-toplevel</code> (C0415)</strong> — импорт вне верхнего уровня.</li>
@@ -1515,7 +1515,7 @@
 <li>mypy <strong>не понимает</strong> <code># pyright: ignore</code> — для него это просто хвост комментария, ошибка mypy останется.</li>
 <li>pyright <strong>понимает</strong> <code># type: ignore</code>, но <strong>список кодов в квадратных скобках игнорирует</strong>: <code># type: ignore[union-attr]</code> для pyright эквивалентен голому игнору — подавятся все ошибки строки, не только <code>union-attr</code>.</li>
 <li>Если код проверяется обоими, на одной строке собирается зоопарк: <code>x  # type: ignore[union-attr]  # pyright: ignore[reportOptionalMemberAccess]</code>. Это некрасиво, но это честная цена двойного статического анализа — или аргумент выбрать один чекер.</li>
-<li>Опцию pyright <code>enableTypeIgnoreComments</code> (почтение <code># type: ignore</code>) пометили устаревшей — для pyright предпочтителен собственный <code># pyright: ignore</code>.</li>
+<li>У pyright есть опция <code>enableTypeIgnoreComments</code> для управления почтением <code># type: ignore</code>; для более гранулярных подавлений pyright предпочитает собственный синтаксис <code># pyright: ignore[reportOptionalMemberAccess]</code>.</li>
 </ul>
 <p><strong>ty (Astral, 2025).</strong> Молодой тайпчекер от авторов ruff идёт тем же путём: <code># ty: ignore[unresolved-attribute]</code> — подавление по имени правила; для совместимости понимает и <code># type: ignore</code>. Экосистема кодов ещё нестабильна — в прод включать с осторожностью.</p>
 <p>Сводная таблица:</p>

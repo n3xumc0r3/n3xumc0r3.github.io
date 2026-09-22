@@ -1080,7 +1080,7 @@
 <h2 id="A.2">A.2. MOSS, JPlag, Dolos, Codequiry<a class="headerlink" href="#A.2" title="Permanent link">#</a></h2>
 <p><strong>MOSS</strong> (Measure of Software Similarity, Stanford, Aiken) — для текста работает по классическому Winnowing. <strong>Для кода</strong> сначала превращает исходник в цепочку <strong>токенов</strong> (не букв). Поэтому <code>x = 10</code> и <code>my_super_variable = 10</code> для MOSS идентичны — оба имени становятся токеном <code>IDENTIFIER</code>. <code>0x3</code> и <code>3</code> — тоже одинаковый токен <code>NUMBER</code>.</p>
 <p><strong>JPlag</strong> (KIT) — главный аналог MOSS. Подробно разбирает токенизацию и AST-сравнение. Статья: Prechelt et al., <em>Finding Plagiarisms among a Set of Programs with JPlag.</em> JUCS 2002. https://www.jucs.org/jucs_8_11/finding_plagiarisms_among_a</p>
-<p><strong>Dolos</strong> (KU Leuven) — современный инструмент, использует token + AST-гибрид. https://dolos.ugent.be/. Статья: Maertens et al., <em>Dolos: Language-agnostic Plagiarism Detection in Source Code.</em> 2022.</p>
+<p><strong>Dolos</strong> (Ghent University / UGent) — современный инструмент, использует token + AST-гибрид. https://dolos.ugent.be/. Статья: Maertens et al., <em>Dolos: Language-agnostic Plagiarism Detection in Source Code.</em> 2022.</p>
 <p><strong>Codequiry</strong> — коммерческий MOSS-replacement, проверяет против GitHub и веба. Помимо плагиата — детектор AI-кода (см. A.6).</p>
 <h2 id="A.3">A.3. Метрики Хальстеда<a class="headerlink" href="#A.3" title="Permanent link">#</a></h2>
 <p>«Математический паспорт кода». Считает уникальность, не имена.</p>

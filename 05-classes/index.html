@@ -752,7 +752,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal-alias" class="md-nav__link">
+  <a href="#5.12-literal" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -1926,7 +1926,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal-alias" class="md-nav__link">
+  <a href="#5.12-literal" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -2424,7 +2424,7 @@
 <tr>
 <td><code>frozen</code></td>
 <td><code>False</code></td>
-<td>Immutable — присваивание полей запрещено, генерирует <code>__hash__</code></td>
+<td>Immutable — присваивание полей запрещено, генерирует <code>__hash__</code> (при <code>eq=True</code> по умолчанию)</td>
 </tr>
 <tr>
 <td><code>slots</code></td>
@@ -2503,16 +2503,24 @@
 </span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Shape with area=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">()</span><span class="si">}</span><span class="s2">, perimeter=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">perimeter</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 </span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># shape = Shape()          # TypeError: Can&#39;t instantiate abstract class</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># shape = Circle(5)        # TypeError: не реализован perimeter</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1"># Класс, который реализовал только area, но забыл perimeter:</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="k">class</span> <span class="nc">HalfCircle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">**</span> <span class="mi">2</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="k">def</span> <span class="nf">perimeter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mf">1.57</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">**</span> <span class="mi">2</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="c1"># perimeter не реализован → TypeError при инстанцировании</span>
 </span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>   <span class="c1"># работает</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="c1"># HalfCircle(5)             # TypeError: Can&#39;t instantiate abstract class HalfCircle without an implementation for abstract method &#39;perimeter&#39;</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">**</span> <span class="mi">2</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>    <span class="k">def</span> <span class="nf">perimeter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>   <span class="c1"># работает</span>
 </span></code></pre></div>
 <p><strong>Абстрактные свойства/классовые методы:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span> <span class="nc">Plugin</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
@@ -2576,7 +2584,7 @@
 </span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
 </span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">()</span><span class="o">.</span><span class="n">f</span><span class="p">())</span>   <span class="c1"># &quot;B&quot; — D не имеет f, ищем в B — есть</span>
 </span></code></pre></div>
-<p>Порядок: <code>D → B → C → A → object</code> (проверьте: <code>print(D.__mro__)</code> — ровно как в примере выше; C3 вытягивает <code>A</code> наверх только после того, как решён порядок между <code>B</code> и <code>C</code>).</p>
+<p>Порядок: <code>D → B → C → A → object</code> (проверьте: <code>print(D.__mro__)</code> — ровно как в примере выше; C3 ставит <code>A</code> <strong>последним</strong> (после <code>B</code> и <code>C</code>), потому что <code>A</code> находится в хвосте MRO и <code>B</code>, и <code>C</code> — его нельзя поставить, пока не размещены оба наследника).</p>
 <p>⚠️ <strong>C3-линеаризация — это НЕ поиск в ширину</strong> (BFS). Распространённое заблуждение: «сначала все прямые родители, потом их предки». На самом деле алгоритм C3 гарантирует:</p>
 <ol>
 <li><strong>Локальный приоритет</strong>: если <code>class D(B, C)</code> — то <code>B</code> всегда раньше <code>C</code>.</li>
@@ -2684,7 +2692,7 @@
 </span></code></pre></div>
 <h2 id="5.7">5.7. <code>super()</code> — подробно<a class="headerlink" href="#5.7" title="Permanent link">#</a></h2>
 <p><code>super()</code> без аргументов внутри метода эквивалентен <code>super(CurrentClass, self)</code>. Возвращает прокси, который вызывает метод следующего класса в MRO.</p>
-<p>⚠️ <strong><code>super()</code> без аргументов использует скрытую closure-ячейку <code>__class__</code></strong> (PEP 3135). Компилятор автоматически внедряет её при обнаружении <code>super()</code> в теле метода. Если скопировать метод из одного класса в другой (<code>B.f = A.f</code>), <code>__class__</code> всё равно будет указывать на <code>A</code> — MRO будет рассчитан относительно <code>A</code>, а не <code>B</code>.</p>
+<p>⚠️ <strong><code>super()</code> без аргументов использует скрытую closure-ячейку <code>__class__</code></strong> (PEP 3135). Компилятор автоматически внедряет её при обнаружении <code>super()</code> в теле метода. Если скопировать метод из одного класса в другой (<code>C.f = B.f</code>, где <code>B</code> наследует <code>A</code>), <code>__class__</code> всё равно будет указывать на <code>B</code> — и при вызове <code>super()</code> Python попытается вычислить MRO относительно <code>B</code>. Но <code>self</code> (экземпляр <code>C</code>) не является экземпляром <code>B</code> — вызов упадёт с <code>TypeError: super(type, obj): obj must be an instance or subtype of type</code>.</p>
 <p>⚠️ <strong><code>super()</code> в <code>@staticmethod</code> без аргументов запрещён</strong> — <code>RuntimeError: super(): no arguments</code>. В статическом методе нет <code>self</code>/<code>cls</code>. Используйте <code>super(CurrentClass, target).method()</code> явно.</p>
 <p>⚠️ <strong><code>super()</code> в <code>@classmethod</code> работает</strong> — интерпретатор видит <code>cls</code> и компилирует как <code>super(CurrentClass, cls)</code>.</p>
 <p>⚠️ <strong>Связка <code>@classmethod @property</code> удалена в Python 3.13</strong> (deprecated с 3.11): на 3.12 <code>MyClass.name</code> ещё возвращает значение свойства (<code>'Python'</code>), но в 3.13 chained classmethod-дескрипторы больше не поддерживаются — паттерн не работает вовсе. Для свойств уровня класса используйте <code>@property</code> в <strong>метаклассе</strong>:
@@ -2755,7 +2763,7 @@
 </span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="n">p</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">3</span>                       <span class="c1"># AttributeError — &#39;Point&#39; object has no attribute &#39;z&#39;</span>
 </span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>             <span class="c1"># AttributeError — у Point нет __dict__!</span>
 </span></code></pre></div>
-<p><strong>Экономия</strong>: ~40-50% на экземпляр при миллионах объектов. Дополнительно: доступ к слотовым атрибутам быстрее, чем к <code>__dict__</code>.</p>
+<p><strong>Экономия</strong>: ~40-50% на экземпляр при миллионах объектов. Дополнительно: на Python ≤3.11 доступ к слотовым атрибутам быстрее, чем к <code>__dict__</code> (на 3.12+ специализированные <code>LOAD_ATTR</code> сравняли их скорость — главный выигрыш slots теперь в памяти, не в скорости, см. бенчмарки в §5.17).</p>
 <p><strong>Нюансы:</strong></p>
 <ul>
 <li>Наследники не наследуют <code>__slots__</code> автоматически — каждый подкласс должен объявить свой <code>__slots__ = ()</code> (пустой, если новых атрибутов нет).</li>
@@ -3011,14 +3019,14 @@
 </span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="n">perm</span> <span class="o">=</span> <span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">W</span>
 </span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>              <span class="c1"># 6 — с 3.11 str(IntFlag) числовой; repr: &lt;Permission.R|W: 6&gt;</span>
 </span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="ow">in</span> <span class="n">perm</span><span class="p">)</span>   <span class="c1"># True — проверка</span>
-</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span> <span class="o">&amp;</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>   <span class="c1"># 0 — нет X (int-результат)</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">perm</span> <span class="o">&amp;</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>   <span class="c1"># 0 — нет X (результат — IntFlag с нулевым значением; в 3.10 был int)</span>
 </span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>
 </span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="c1"># Итерация по флагам</span>
 </span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Permission</span><span class="o">.</span><span class="n">R</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">W</span> <span class="o">|</span> <span class="n">Permission</span><span class="o">.</span><span class="n">X</span><span class="p">:</span>
 </span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="c1"># Permission.R</span>
-</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="c1"># Permission.W</span>
-</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="c1"># Permission.X</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="c1"># 4     ← Permission.R (с 3.11 str(IntFlag) возвращает число, repr сохраняет имя)</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="c1"># 2     ← Permission.W</span>
+</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="c1"># 1     ← Permission.X</span>
 </span></code></pre></div>
 <p>⚠️ <code>IntFlag</code> — это <code>int</code>, можно передавать в системные вызовы (<code>os.open(path, Permission.R | Permission.W)</code>).</p>
 <p><strong><code>Flag</code> — то же, но без int:</strong></p>
@@ -3150,7 +3158,7 @@
 </span><span id="__span-44-8"><a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">first</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>         <span class="c1"># int → возвращает int</span>
 </span><span id="__span-44-9"><a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">first</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]))</span>        <span class="c1"># str → возвращает str</span>
 </span><span id="__span-44-10"><a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>
-</span><span id="__span-44-11"><a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="c1"># С ограничением (bound)</span>
+</span><span id="__span-44-11"><a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="c1"># С ограничением (constraints) — тип должен быть ровно int или float, не подтип</span>
 </span><span id="__span-44-12"><a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a><span class="n">Number</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>   <span class="c1"># только числа (constraints — тело проверяется mypy)</span>
 </span><span id="__span-44-13"><a id="__codelineno-44-13" name="__codelineno-44-13" href="#__codelineno-44-13"></a>
 </span><span id="__span-44-14"><a id="__codelineno-44-14" name="__codelineno-44-14" href="#__codelineno-44-14"></a><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span><span class="p">:</span>
@@ -3238,7 +3246,7 @@
 </span><span id="__span-48-27"><a id="__codelineno-48-27" name="__codelineno-48-27" href="#__codelineno-48-27"></a>    <span class="k">elif</span> <span class="n">e</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;keypress&quot;</span><span class="p">:</span>
 </span><span id="__span-48-28"><a id="__codelineno-48-28" name="__codelineno-48-28" href="#__codelineno-48-28"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">])</span>
 </span></code></pre></div>
-<p>⚠️ В <code>Union</code> нельзя передавать <strong>значения</strong> — только типы: <code>Union[1, 2]</code> — синтаксическая ошибка для type checker'а; для «типа-значения» существует ровно один инструмент — <code>Literal[1, 2]</code>. (<code>Union[dict, dict]</code> при этом валиден — дубликаты типов в <code>Union</code> дедуплицируются до одного.) Discriminated unions в Python строятся
+<p>⚠️ В <code>Union</code> нельзя передавать <strong>значения</strong> — только типы: <code>Union[1, 2]</code> — type-error у mypy/pyright (в runtime <code>Union[1, 2]</code> молча создаёт нерабочий объект <code>typing.Union[1, 2]</code>); для «типа-значения» существует ровно один инструмент — <code>Literal[1, 2]</code>. (<code>Union[dict, dict]</code> при этом валиден — дубликаты типов в <code>Union</code> дедуплицируются до одного.) Discriminated unions в Python строятся
 tолько через <code>TypedDict</code> + <code>Literal</code>-поле-дискриминатор.</p>
 <h3 id="5.12-final"><code>@final</code> — нельзя наследовать/переопределять<a class="headerlink" href="#5.12-final" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">final</span>
@@ -3323,7 +3331,7 @@ tолько через <code>TypedDict</code> + <code>Literal</code>-поле-д
 </span><span id="__span-52-13"><a id="__codelineno-52-13" name="__codelineno-52-13" href="#__codelineno-52-13"></a><span class="n">first</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>   <span class="c1"># OK</span>
 </span></code></pre></div>
 <h3 id="5.12-annotated"><code>Annotated</code> (PEP 593) — аннотация с метаданными<a class="headerlink" href="#5.12-annotated" title="Permanent link">#</a></h3>
-<p><code>Annotated[T, *metadata]</code> — тип <code>T</code> с дополнительными метаданными для фреймворков. В runtime = <code>T</code>, но фреймворки (Pydantic, FastAPI, SQLAlchemy) читают метаданные.</p>
+<p><code>Annotated[T, *metadata]</code> — тип <code>T</code> с дополнительными метаданными для фреймворков. Для type-checker'а ведёт себя как <code>T</code>, но в runtime это отдельный объект <code>_AnnotatedAlias</code> (не равен <code>T</code>: <code>Annotated[int, 'x'] == int</code> → <code>False</code>). Фреймворки (Pydantic, FastAPI, SQLAlchemy) читают метаданные через <code>get_type_hints(..., include_extras=True)</code>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
 </span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>
 </span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="c1"># Pydantic-стиль: валидация + метаданные</span>
@@ -3354,7 +3362,7 @@ tолько через <code>TypedDict</code> + <code>Literal</code>-поле-д
 </span><span id="__span-53-28"><a id="__codelineno-53-28" name="__codelineno-53-28" href="#__codelineno-53-28"></a>    <span class="c1"># Mapped[int] = Annotated[int, ...] — встроенная в SQLAlchemy обёртка</span>
 </span></code></pre></div>
 <p><code>Annotated</code> позволяет third-party фреймворкам расширять систему типов без модификации самого Python.</p>
-<p>⚠️ В runtime <code>Annotated[int, "label"]</code> — это <code>int</code> для аннотаций (<code>get_type_hints</code> вернёт <code>Annotated[...]</code>, метаданные читают фреймворки), но сам <code>Annotated[int, "label"]</code> в <code>isinstance</code> использовать нельзя — <code>TypeError: Subscripted generics cannot be used with class and instance checks</code>.</p>
+<p>⚠️ В runtime <code>Annotated[int, "label"]</code> — это отдельный объект <code>_AnnotatedAlias</code> (а не <code>int</code>). <code>get_type_hints(f)</code> по умолчанию <strong>стрипает</strong> метаданные и возвращает <code>int</code>; чтобы получить <code>Annotated[...]</code>, передайте <code>include_extras=True</code>. Сам <code>Annotated[int, "label"]</code> в <code>isinstance</code> использовать нельзя — <code>TypeError: Subscripted generics cannot be used with class and instance checks</code>.</p>
 <h3 id="5.12-self"><code>Self</code> (PEP 673, Python 3.11+)<a class="headerlink" href="#5.12-self" title="Permanent link">#</a></h3>
 <p>Тип «этот же класс», для методов, возвращающих экземпляр своего класса. Заменяет необходимость писать <code>"MyClass"</code> в строковом виде:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Self</span>
@@ -3404,8 +3412,8 @@ tолько через <code>TypedDict</code> + <code>Literal</code>-поле-д
 </span><span id="__span-56-5"><a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># mypy ошибётся, в runtime — спокойно</span>
 </span></code></pre></div>
 <p>Также как <code>@final</code> декоратор (см. §5.12 выше).</p>
-<h3 id="5.12-literal-alias"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal-alias" title="Permanent link">#</a></h3>
-<p>Альтернативная точка входа: полный разбор <code>Literal</code> — выше, в §5.12 (раздел «<code>Literal</code> — конкретное значение как тип»). Раздел оставлен для навигации: <code>Literal["fast", "slow"]</code> ограничивает значение набором констант и служит дискриминатором в <code>TypedDict</code>-union (см. пример выше).</p>
+<h3 id="5.12-literal"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal" title="Permanent link">#</a></h3>
+<p>Полный разбор <code>Literal</code> — выше, в разделе «<code>Literal</code> — конкретное значение как тип». <code>Literal["fast", "slow"]</code> ограничивает значение набором констант и служит дискриминатором в <code>TypedDict</code>-union (см. пример выше).</p>
 <h3 id="5.12-never"><code>Never</code> и <code>NoReturn</code> — недостижимый код<a class="headerlink" href="#5.12-never" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Never</span><span class="p">,</span> <span class="n">NoReturn</span>
 </span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>
@@ -3704,7 +3712,7 @@ tолько через <code>TypedDict</code> + <code>Literal</code>-поле-д
 </span></code></pre></div>
 <p><code>KW_ONLY</code> — это просто объект-маркер. Нельзя обращаться к нему как к значению (это не <code>None</code> и не <code>False</code>), но <code>dataclass</code>-декоратор распознаёт его как границу.</p>
 <h3 id="5.13-field"><code>field(metadata=...)</code> — аннотации для third-party<a class="headerlink" href="#5.13-field" title="Permanent link">#</a></h3>
-<p>(См. §5.11 metadata.)</p>
+<p>Полный разбор <code>field(metadata=...)</code> — в §5.11, раздел <code>metadata=</code>.</p>
 <h3 id="5.13-dataclass"><code>@dataclass(match_args=True)</code> (Python 3.10+)<a class="headerlink" href="#5.13-dataclass" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">match_args</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-79-2"><a id="__codelineno-79-2" name="__codelineno-79-2" href="#__codelineno-79-2"></a><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>

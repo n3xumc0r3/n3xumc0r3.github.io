@@ -1702,9 +1702,10 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">calculate_something</span><span class="p">())</span>   <span class="c1"># KeyError: &#39;result&#39; — а не 42!</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Локальные аннотации интерпретатор только проверяет синтаксически и выбрасывает:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># __annotations__ у функции пуст ({}), в нём живут только аннотации параметров</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># и return. Сохраняются лишь аннотации уровня модуля/класса (как в примере выше).</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Локальные аннотации переменных внутри функции интерпретатор только проверяет</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># синтаксически и выбрасывает: в func.__annotations__ их нет. В func.__annotations__</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># живут только аннотации параметров и return. Аннотации переменных сохраняются</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># лишь на уровне модуля/класса (как в примере выше) — в mod.__annotations__ / cls.__annotations__.</span>
 </span></code></pre></div>
 <p>Что видит интерпретатор:</p>
 <ul>
@@ -1712,7 +1713,7 @@
 <li><code>result = 42</code> → <code>[IDENTIFIER, ASSIGN, NUMBER]</code>.</li>
 </ul>
 <p><code>.__annotations__['result']</code> → <code>[IDENTIFIER, DOT, IDENTIFIER, LBRACKET, STRING, RBRACKET]</code> — выглядит как обычное чтение словаря.</p>
-<p>⚠️ <strong>Получение аннотаций в Python 3.10+</strong>: <code>typing.get_type_hints(func)</code> делает правильный резолв строковых аннотаций (PEP 563, <code>from __future__ import annotations</code>), но для функции из примера выше вернёт <code>{}</code> — локальная аннотация <code>result: 42</code> не сохраняется вообще (PEP 526).</p>
+<p>⚠️ <strong>Получение аннотаций</strong>: <code>typing.get_type_hints(func)</code> (доступна с Python 3.5) делает правильный резолв строковых аннотаций (PEP 563, <code>from __future__ import annotations</code> — опционально с 3.7), но для функции из примера выше вернёт <code>{}</code> — локальная аннотация <code>result: 42</code> не сохраняется вообще (PEP 526).</p>
 <h2 id="7.2">7.2. <code>setattr</code>/<code>getattr</code>/<code>delattr</code><a class="headerlink" href="#7.2" title="Permanent link">#</a></h2>
 <p>Три функции для динамической работы с атрибутами:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Динамически получить атрибут объекта</span>
@@ -1731,7 +1732,7 @@
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># если obj.missing_key нет — возвращается &quot;default&quot;</span>
 </span></code></pre></div>
 <p>Главный кейс — работа с атрибутами, имя которых вычисляется в рантайме (например, из конфигурации, JSON-ключей, или при обходе полей ORM-модели).</p>
-<p>⚠️ <code>setattr/getattr</code> могут не вызвать <code>@property</code> и дескрипторы — обычно вызывают, но через <code>__getattr__</code>/<code>__getattribute__</code> тоже идут. <code>__dict__</code>-обход этого не делает.</p>
+<p>⚠️ <code>getattr</code>/<code>setattr</code>/<code>delattr</code> проходят через протокол дескрипторов (включая <code>@property</code>) так же, как обычный точечный доступ <code>obj.name</code>. Только прямой доступ к <code>__dict__</code> минует дескрипторы — поэтому <code>obj.__dict__['x']</code> не вызовет <code>@property</code>.</p>
 <h2 id="7.3">7.3. Декораторы (параметризованные, классовые)<a class="headerlink" href="#7.3" title="Permanent link">#</a></h2>
 <p><strong>Простой декоратор:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">log_calls</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -1968,7 +1969,7 @@
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Злоумышленник всё равно обойдёт через __subclasses__ (см. Приложение B.5):</span>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># ().__class__.__base__.__subclasses__()  ← не требует builtins</span>
 </span></code></pre></div>
-<p><strong>Правильная альтернатива</strong> для вычисления математики от пользователя — <code>ast.literal_eval</code> (только литералы: числа, строки, кортежи, списки, dict) или специализированные парсеры:</p>
+<p><strong>Правильная альтернатива</strong> — специализированный AST-walker (пример <code>safe_eval_math</code> выше), который сам решает, какие узлы разрешить. Для разбора <strong>только литералов</strong> (без арифметики и вызовов) — <code>ast.literal_eval</code> (числа, строки, кортежи, списки, dict):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">import</span> <span class="nn">ast</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Только литералы — безопасно:</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s2">&quot;[1, 2, 3]&quot;</span><span class="p">)</span>           <span class="c1"># [1, 2, 3]</span>
@@ -2239,7 +2240,7 @@
 </span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>           <span class="c1"># {&#39;x&#39;: 1, &#39;y&#39;: 10}</span>
 </span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>         <span class="c1"># {&#39;x&#39;: 1, &#39;y&#39;: 2}</span>
 </span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getcallargs</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>          <span class="c1"># {&#39;x&#39;: 5, &#39;y&#39;: 10}</span>
-</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># (Формально deprecated с 3.5 — современная альтернатива: Signature.bind, см. выше.)</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c1"># (Устаревший API — не рекомендуется, не имеет DeprecationWarning, но заменён на Signature.bind, см. выше.)</span>
 </span></code></pre></div>
 <p>Используется в тестах и в mock-фреймворках (например, <code>unittest.mock</code>).</p>
 <h3 id="7.11-inspectisgenerator"><code>inspect.isgenerator</code>, <code>iscoroutine</code>, <code>isawaitable</code><a class="headerlink" href="#7.11-inspectisgenerator" title="Permanent link">#</a></h3>

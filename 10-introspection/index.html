@@ -1209,7 +1209,7 @@
 <li><code>-X warn_default_encoding</code> — <code>EncodingWarning</code> на каждый <code>open()</code> без явного <code>encoding</code> (PEP 597, эквивалент <code>PYTHONWARNDEFAULTENCODING</code>)</li>
 <li><code>-X perf</code> — поддержка Linux perf-профайлера (3.12+, <code>PYTHONPERFSUPPORT</code>)</li>
 <li><code>-X perf_jit</code> — то же + DWARF-аннотации, чтобы perf показывал Python-вызовы через JIT (3.13+, <code>PYTHON_PERF_JIT_SUPPORT</code>)</li>
-<li><code>-X importtime=2</code> — дополнительно помечать уже загруженные модули словом <code>cached</code> в логе импортов (3.13+)</li>
+<li><code>-X importtime</code> — в 3.13+ дополнительно помечает уже загруженные модули словом <code>cached</code> в логе импортов</li>
 <li><code>-X cpu_count=N</code> — подменить <code>os.cpu_count()</code> / <code>os.process_cpu_count()</code> / <code>multiprocessing.cpu_count()</code> (3.13+, эквивалент <code>PYTHON_CPU_COUNT</code>)</li>
 <li><code>-X gil=0/1</code> — принудительно включить/выключить GIL в free-threaded сборках (3.13+; env <code>PYTHON_GIL</code>)</li>
 <li><code>-X presite=package.module</code> — импортировать модуль до <code>site</code> и до появления <code>__main__</code> (3.13+, env <code>PYTHON_PRESITE</code>)</li>
@@ -1483,9 +1483,9 @@
 <td><code>(depth,)</code></td>
 </tr>
 <tr>
-<td><code>pickle.load</code></td>
-<td>десериализация</td>
-<td><code>(file,)</code></td>
+<td><code>pickle.find_class</code></td>
+<td>десериализация объектов по ссылке на класс</td>
+<td><code>(module, name)</code></td>
 </tr>
 <tr>
 <td><code>sys.addaudithook</code></td>
@@ -1617,7 +1617,7 @@
 </span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="n">sys</span><span class="o">.</span><span class="n">addaudithook</span><span class="p">(</span><span class="n">logging_hook</span><span class="p">)</span>
 </span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="c1"># Замедление ещё в 3–5× (зависит от логирования)</span>
 </span></code></pre></div>
-Audit hook'и добавляют <strong>~30%</strong> к стоимости <code>exec</code>/<code>import</code>/<code>open</code>.
+Audit hook'и добавляют <strong>~5–10%</strong> к стоимости <code>exec</code>/<code>import</code> (больше — на <code>open</code>, меньше на syscall-доминированных операциях).
 На горячих путях I/O — накладные расходы минимальны (событий меньше).
 Используйте их только для аудита/безопасности, не для трассировки
 производительности — берите <code>sys.settrace</code> или <code>cProfile</code>.</p>

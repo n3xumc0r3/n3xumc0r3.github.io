@@ -1717,7 +1717,7 @@
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># `a and b` → `not (not a or not b)`  — De Morgan</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># `x &gt; 5` → `not (x &lt;= 5)`           — инверсия</span>
 </span></code></pre></div>
-<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code>. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для них <code>1+1+1</code> и <code>3</code> — разные токены.</p>
+<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code> в байт-коде. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для классического Winnowing без normalisation-слоя (A.1) <code>1+1+1</code> и <code>3</code> — разные токены. Современные системы (A.8) перед сравнением запускают собственные оптимизации и могут различать их только если folding отключён — это вопрос конфигурации конкретного инструмента.</p>
 <h2 id="B.2">B.2. Архитектурные приёмы — перенос логики в рантайм<a class="headerlink" href="#B.2" title="Permanent link">#</a></h2>
 <p>Архитектурные приёмы переносят логику <strong>из статического кода в динамическую память</strong> — в аннотации, в <code>__dict__</code>, в <code>exec</code>-строки. Это намного сложнее детектировать, потому что AST-анализатор видит «пустышку», а реальный код появляется только при выполнении.</p>
 <h3 id="annotatsii">Аннотации как данные<a class="headerlink" href="#annotatsii" title="Permanent link">#</a></h3>
