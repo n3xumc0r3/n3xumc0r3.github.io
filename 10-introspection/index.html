@@ -1096,7 +1096,9 @@
 
 
 <h1 id="x">Часть X. Интроспекция окружения<a class="headerlink" href="#x" title="Permanent link">#</a></h1>
+<blockquote>
 <p>Эта часть — про то, как узнать, <strong>как именно</strong> запущен интерпретатор и что происходит в процессе: <code>sys.flags</code> и <code>sys._xoptions</code> (10.1–10.2), <code>PYTHON*</code>-переменные (10.3), лимиты ресурсов и <code>/proc</code> (10.5–10.6), audit hooks (10.7) и faulthandler (10.8). Отсюда же растут CLI-темы 11.32 и диагностические режимы Части XIII.</p>
+</blockquote>
 <h2 id="10.1">10.1. <code>sys.flags</code> — флаги командной строки Python<a class="headerlink" href="#10.1" title="Permanent link">#</a></h2>
 <p><code>sys.flags</code> — именованный кортеж с полным набором флагов <code>python</code>. Самый точный способ узнать, <strong>как именно Python был запущен</strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">sys</span>

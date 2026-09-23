@@ -1552,7 +1552,9 @@
 
 
 <h1 id="xviii-c-c-api-python-c">Часть XVIII. C-расширения и C API: из Python в C и обратно<a class="headerlink" href="#xviii-c-c-api-python-c" title="Permanent link">#</a></h1>
+<blockquote>
 <p>Часть XVI показывала, что для импорт-механики C-расширение не отличается от обычного модуля — тот же PathFinder, просто суффикс <code>.cpython-312-x86_64-linux-gnu.so</code> с высшим приоритетом (16.3) и точка входа <code>PyInit_&lt;имя&gt;</code> (16.9). Здесь — сама C-сторона: как вызвать C из Python без компиляции (<code>ctypes</code>), через библиотеку объявлений (<code>cffi</code>) и на полном C API; как устроен <code>PyObject</code> и подсчёт ссылок (8.5 — продолжение темы); как писать свой модуль и свой тип; как обходиться с GIL из C; и как встроить интерпретатор в чужую C-программу. Каждый пример в этой части собран и прогнан реальным компилятором на CPython 3.12 — числа из бенчмарков в конце части сняты на машине с 2 ядрами.</p>
+</blockquote>
 <h2 id="18.1">18.1. Три пути в C: <code>ctypes</code>, <code>cffi</code>, C API<a class="headerlink" href="#18.1" title="Permanent link">#</a></h2>
 <p>Python-программа может добраться до нативного кода тремя дорогами разной глубины:</p>
 <table>

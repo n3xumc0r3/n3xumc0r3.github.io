@@ -1306,7 +1306,9 @@
 
 
 <h1 id="xvi-import-x">Часть XVI. Механика импорта: от <code>import x</code> до исполняемого модуля<a class="headerlink" href="#xvi-import-x" title="Permanent link">#</a></h1>
+<blockquote>
 <p>Уровень API уже разобран: <code>sys.modules</code> и <code>__import__</code> (7.9), программный <code>importlib</code> (7.12), формат <code>.pyc</code> (15.2), импорт-режимы pytest (13.6). Здесь — сам конвейер: как стейтмент превращается в байт-код, где живёт кэш модулей, кто и в каком порядке собирает <code>sys.path</code>, как устроены finders, specs и loaders, чем namespace-пакет отличается от обычного, почему возникают круговые импорты, как работает ленивая загрузка и <code>reload</code>, какие бывают виды модулей, как писать свои импорт-хуки и как диагностировать медленный старт процесса. Разделы идут по ходу движения модуля: от стейтмента — через поиск и загрузку — к кухне диагностики. Все примеры проверены на CPython 3.12; версионные оговорки — по месту.</p>
+</blockquote>
 <h2 id="16.1">16.1. Полный путь стейтмента: от IMPORT_NAME до sys.modules<a class="headerlink" href="#16.1" title="Permanent link">#</a></h2>
 <p><code>import</code> — обычная инструкция языка, и у неё есть байт-код. Компилятор переводит стейтмент в <code>IMPORT_NAME</code>, который вызывает встроенную <code>__import__</code> (7.9):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">dis</span>

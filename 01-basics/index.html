@@ -3532,7 +3532,9 @@
 
 
 <h1 id="i">Часть I. Базовые скрытые особенности языка<a class="headerlink" href="#i" title="Permanent link">#</a></h1>
+<blockquote>
 <p>Эта часть — про мелочи, которые выглядят как опечатки или магия, а являются документированными фичами: усечённые числовые литералы, неявное склеивание строковых литералов, <code>else</code> у циклов, моржовый оператор, цепочки сравнений, пасхалки. Каждый раздел — минимальный пример плюс объяснение того, что при этом делает интерпретатор. Заучивать ничего не нужно — но, встретив такое в чужом коде, вы больше не примете это за баг.</p>
+</blockquote>
 <h2 id="1.1">1.1. Числовые литералы: <code>.9</code>, <code>1.</code>, underscores, hex/oct/bin, экспонента <code>1e3</code>, комплексные <code>1j</code><a class="headerlink" href="#1.1" title="Permanent link">#</a></h2>
 <p>В Python валидны «усечённые» записи float — без ведущего нуля или без дробной части:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">.9</span>
@@ -3746,7 +3748,7 @@
 <p><strong><code>math.modf()</code> и <code>math.frexp()</code> — разложение float:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">import</span> <span class="nn">math</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">math</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="mf">3.75</span><span class="p">)</span>     <span class="c1"># (0.75, 3.0) — дробная и целая части (со знаком числа)</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">math</span><span class="o">.</span><span class="n">frexp</span><span class="p">(</span><span class="mf">8.0</span><span class="p">)</span>     <span class="c1"># (0.5, 4) — мантисса и порядок: 0.5 * 2^4 = 8.0</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">math</span><span class="o">.</span><span class="n">frexp</span><span class="p">(</span><span class="mf">8.0</span><span class="p">)</span>     <span class="c1"># (0.5, 4) — мантисса и порядок: 0.5 * 2**4 = 8.0</span>
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">math</span><span class="o">.</span><span class="n">ldexp</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># 8.0 — обратная к frexp</span>
 </span></code></pre></div>
 <p>Для совсем точной арифметики — <code>decimal.Decimal</code> (Часть XI, 11.23) или <code>fractions.Fraction</code>.</p>

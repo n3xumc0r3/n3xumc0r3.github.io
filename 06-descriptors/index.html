@@ -1180,7 +1180,9 @@
 
 
 <h1 id="vi-property">Часть VI. Дескрипторы и property<a class="headerlink" href="#vi-property" title="Permanent link">#</a></h1>
+<blockquote>
 <p>Дескриптор — это крючок, срабатывающий при обращении к атрибуту класса. На нём стоят <code>property</code>, обычные методы, <code>classmethod</code>/<code>staticmethod</code>, <code>cached_property</code>, ORM-поля и валидация — всё это один и тот же протокол с разными обёртками (6.9 показывает, что «просто метод» — тоже дескриптор). Разбор нужен перед Частью VII: без него метаклассы и <code>__init_subclass__</code> выглядят магией, с ним — сантехникой.</p>
+</blockquote>
 <h2 id="6.1">6.1. <code>__get__</code>/<code>__set__</code>/<code>__delete__</code> — протокол дескрипторов<a class="headerlink" href="#6.1" title="Permanent link">#</a></h2>
 <p><strong>Дескриптор</strong> — это объект, который реализует один или несколько из методов <code>__get__</code>, <code>__set__</code>, <code>__delete__</code>. Когда такой объект используется как атрибут класса, Python <strong>перехватывает</strong> доступ и вызывает эти методы.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">TypedField</span><span class="p">:</span>

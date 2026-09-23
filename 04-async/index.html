@@ -1576,7 +1576,9 @@
 
 
 <h1 id="iv">Часть IV. Асинхронность<a class="headerlink" href="#iv" title="Permanent link">#</a></h1>
+<blockquote>
 <p><code>async def</code> выглядит как обычная функция с лишним ключевым словом, но под капотом это генератор (Часть III) плюс цикл событий — один поток, который гоняет тысячи задач по очереди, пока те ждут I/O. Часть разбирает event loop руками (4.1), потом API asyncio — от <code>run</code> и <code>gather</code> до <code>TaskGroup</code>, отмен и таймаутов — и заканчивает выбором между threads, asyncio и multiprocessing (4.11), включая debug-режим asyncio (4.3).</p>
+</blockquote>
 <h2 id="4.1">4.1. Что такое event loop<a class="headerlink" href="#4.1" title="Permanent link">#</a></h2>
 <p><strong>Event loop (цикл событий)</strong> — это единый поток, который:</p>
 <ol>

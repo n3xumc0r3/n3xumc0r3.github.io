@@ -1498,7 +1498,9 @@
 
 
 <h1 id="xiii-assert-cpython">Часть XIII. Тестирование: от assert до тестов самого CPython<a class="headerlink" href="#xiii-assert-cpython" title="Permanent link">#</a></h1>
+<blockquote>
 <p>До сих пор тесты в этой книге мелькали только мимоходом — как источник примеров или сосед по CLI. Эта часть смотрит на тестирование так, как смотрит вся книга: что происходит под капотом. Каждый тестовый инструмент сидит на конкретном крючке интерпретатора: <code>assert</code> — это скомпилированный байт-код с отдельным <code>LOAD_ASSERTION_ERROR</code>; <code>unittest.mock</code> — дисциплина над <code>setattr</code>/<code>__getattribute__</code>; <code>coverage.py</code> — счётчики на line-событиях трейсера; отладчики и профайлеры в 3.12+ — уже не <code>sys.settrace</code>, а новый API <code>sys.monitoring</code> (PEP 669). А «тесты самого CPython» — это вообще исполняемая спецификация языка (17.1). Разделы идут от простого к сложному: сначала то, что есть в любом тесте (<code>assert</code>, <code>unittest</code>, mock), затем фреймворки (<code>doctest</code>, <code>pytest</code>, coverage), затем интерпретаторная кухня (трассировка, monitoring, regrtest, диагностические режимы).</p>
+</blockquote>
 <h2 id="13.1">13.1. <code>assert</code> под капотом: байт-код, <code>-O</code> и тонкие локации ошибок<a class="headerlink" href="#13.1" title="Permanent link">#</a></h2>
 <p>Базовая единица любого теста — <code>assert</code>. В 1.15 разобраны ловушки синтаксиса и флаг <code>-O</code>; здесь — как assert живёт в байт-коде и почему трейсбеки в 3.11+ стали такими точными.</p>
 <p>Компиляция <code>assert x &gt; 0, "bad"</code> на 3.12 (8.9):</p>
