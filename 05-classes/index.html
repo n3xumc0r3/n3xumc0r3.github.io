@@ -1501,11 +1501,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -1522,11 +1522,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -1543,11 +1543,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -1564,11 +1564,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -1585,11 +1585,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -2960,7 +2960,7 @@
 </span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="n">cart1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
 </span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">cart2</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>   <span class="c1"># [] ← корректно, cart2 пуст</span>
 </span></code></pre></div>
-<p>Это та же ловушка, что <code>a = b = []</code> (см. 1.12) и <code>def f(x=[])</code> (default arguments — см. Приложение B). Правило: <strong>mutable объекты на уровне класса — всегда баг</strong>, если только вы не хотите shared state (что редко).</p>
+<p>Это та же ловушка, что <code>a = b = []</code> (см. 1.12) и <code>def f(x=[])</code> (default arguments — см. Приложение C). Правило: <strong>mutable объекты на уровне класса — всегда баг</strong>, если только вы не хотите shared state (что редко).</p>
 <p>⚠️ <code>__slots__</code> сам по себе <strong>не</strong> защищает от этой ловушки: имя вне slots можно объявить классовым атрибутом (<code>class Cart: __slots__ = ('n',); items = []</code>) — получите тот же shared mutable. Защита лишь косвенная: классовую переменную с именем ИЗ slots объявить нельзя (<code>ValueError</code> при создании класса). А <code>__slots__</code> с mutable default — другая история (нужен <code>field(default_factory=list)</code> в dataclass).</p>
 <h2 id="5.10">5.10. <code>enum</code> — Enum, IntEnum, IntFlag, auto<a class="headerlink" href="#5.10" title="Permanent link">#</a></h2>
 <p><code>enum</code> модуль — для перечислений. Заменяет константы вида <code>RED = 1</code>, <code>GREEN = 2</code>.</p>

@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-c-code-golf/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-d-code-golf/">
       
       
-        <link rel="prev" href="../appendix-b-code-checkers/">
+        <link rel="prev" href="../appendix-c-code-checkers/">
       
       
-        <link rel="next" href="../appendix-d-randomness/">
+        <link rel="next" href="../appendix-e-randomness/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>C. Code golf - Python под капотом</title>
+        <title>D. Code golf - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="C. Code golf — Python под капотом">
+  <meta property="og:title" content="D. Code golf — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-c-code-golf/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-d-code-golf/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="C. Code golf — Python под капотом">
+  <meta name="twitter:title" content="D. Code golf — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#c-code-golf-python" class="md-skip">
+        <a href="#d-code-golf-python" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              C. Code golf
+              D. Code golf
             
           </span>
         </div>
@@ -719,11 +719,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -740,11 +740,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -774,7 +774,7 @@
           
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -785,7 +785,7 @@
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -807,13 +807,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#C.1" class="md-nav__link">
+  <a href="#D.1" class="md-nav__link">
     <span class="md-ellipsis">
-      C.1. Базовые приёмы сжатия
+      D.1. Базовые приёмы сжатия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.1. Базовые приёмы сжатия">
+    <nav class="md-nav" aria-label="D.1. Базовые приёмы сжатия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -858,31 +858,31 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.2" class="md-nav__link">
+  <a href="#D.2" class="md-nav__link">
     <span class="md-ellipsis">
-      C.2. «Комментарии» в одну строку через "" — для стиля, не для счёта
+      D.2. «Комментарии» в одну строку через "" — для стиля, не для счёта
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.3" class="md-nav__link">
+  <a href="#D.3" class="md-nav__link">
     <span class="md-ellipsis">
-      C.3. Использование bool как int
+      D.3. Использование bool как int
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.4" class="md-nav__link">
+  <a href="#D.4" class="md-nav__link">
     <span class="md-ellipsis">
-      C.4. Тернарный оператор vs индексация по bool
+      D.4. Тернарный оператор vs индексация по bool
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.4. Тернарный оператор vs индексация по bool">
+    <nav class="md-nav" aria-label="D.4. Тернарный оператор vs индексация по bool">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -918,13 +918,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.5" class="md-nav__link">
+  <a href="#D.5" class="md-nav__link">
     <span class="md-ellipsis">
-      C.5. unpack в print и в *args
+      D.5. unpack в print и в *args
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.5. unpack в print и в *args">
+    <nav class="md-nav" aria-label="D.5. unpack в print и в *args">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -969,13 +969,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.6" class="md-nav__link">
+  <a href="#D.6" class="md-nav__link">
     <span class="md-ellipsis">
-      C.6. Срезы вместо вызовов
+      D.6. Срезы вместо вызовов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.6. Срезы вместо вызовов">
+    <nav class="md-nav" aria-label="D.6. Срезы вместо вызовов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -993,40 +993,40 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.7" class="md-nav__link">
+  <a href="#D.7" class="md-nav__link">
     <span class="md-ellipsis">
-      C.7. Short-circuit evaluation вместо if
+      D.7. Short-circuit evaluation вместо if
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.8" class="md-nav__link">
+  <a href="#D.8" class="md-nav__link">
     <span class="md-ellipsis">
-      C.8. walrus (:=) для экономии повторов
+      D.8. walrus (:=) для экономии повторов
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.9" class="md-nav__link">
+  <a href="#D.9" class="md-nav__link">
     <span class="md-ellipsis">
-      C.9. __import__ вместо import
+      D.9. __import__ вместо import
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.10" class="md-nav__link">
+  <a href="#D.10" class="md-nav__link">
     <span class="md-ellipsis">
-      C.10. Битовые операции вместо арифметики
+      D.10. Битовые операции вместо арифметики
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.10. Битовые операции вместо арифметики">
+    <nav class="md-nav" aria-label="D.10. Битовые операции вместо арифметики">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1098,22 +1098,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.11" class="md-nav__link">
+  <a href="#D.11" class="md-nav__link">
     <span class="md-ellipsis">
-      C.11. lambda вместо def для коротких функций
+      D.11. lambda вместо def для коротких функций
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.12" class="md-nav__link">
+  <a href="#D.12" class="md-nav__link">
     <span class="md-ellipsis">
-      C.12. __builtins__-трюки
+      D.12. __builtins__-трюки
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.12. __builtins__-трюки">
+    <nav class="md-nav" aria-label="D.12. __builtins__-трюки">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1131,13 +1131,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.13" class="md-nav__link">
+  <a href="#D.13" class="md-nav__link">
     <span class="md-ellipsis">
-      C.13. Строковые методы vs регулярки
+      D.13. Строковые методы vs регулярки
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.13. Строковые методы vs регулярки">
+    <nav class="md-nav" aria-label="D.13. Строковые методы vs регулярки">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1164,13 +1164,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.14" class="md-nav__link">
+  <a href="#D.14" class="md-nav__link">
     <span class="md-ellipsis">
-      C.14. Числа: произвольная длина и сжатие констант
+      D.14. Числа: произвольная длина и сжатие констант
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.14. Числа: произвольная длина и сжатие констант">
+    <nav class="md-nav" aria-label="D.14. Числа: произвольная длина и сжатие констант">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1224,22 +1224,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.15" class="md-nav__link">
+  <a href="#D.15" class="md-nav__link">
     <span class="md-ellipsis">
-      C.15. Выход из программы: exit(), sys.exit(), raise SystemExit — и 1/0
+      D.15. Выход из программы: exit(), sys.exit(), raise SystemExit — и 1/0
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.16" class="md-nav__link">
+  <a href="#D.16" class="md-nav__link">
     <span class="md-ellipsis">
-      C.16. Продвинутые приёмы — I/O, матрицы, исключения, eval
+      D.16. Продвинутые приёмы — I/O, матрицы, исключения, eval
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.16. Продвинутые приёмы — I/O, матрицы, исключения, eval">
+    <nav class="md-nav" aria-label="D.16. Продвинутые приёмы — I/O, матрицы, исключения, eval">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1320,13 +1320,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.17" class="md-nav__link">
+  <a href="#D.17" class="md-nav__link">
     <span class="md-ellipsis">
-      C.17. Продвинутые трюки из реального code golf
+      D.17. Продвинутые трюки из реального code golf
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.17. Продвинутые трюки из реального code golf">
+    <nav class="md-nav" aria-label="D.17. Продвинутые трюки из реального code golf">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1380,13 +1380,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.18" class="md-nav__link">
+  <a href="#D.18" class="md-nav__link">
     <span class="md-ellipsis">
-      C.18. Канонические задачи — эталонные решения
+      D.18. Канонические задачи — эталонные решения
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.18. Канонические задачи — эталонные решения">
+    <nav class="md-nav" aria-label="D.18. Канонические задачи — эталонные решения">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1476,27 +1476,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.19" class="md-nav__link">
+  <a href="#D.19" class="md-nav__link">
     <span class="md-ellipsis">
-      C.19. Сводная шпаргалка по code golf
+      D.19. Сводная шпаргалка по code golf
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.20" class="md-nav__link">
+  <a href="#D.20" class="md-nav__link">
     <span class="md-ellipsis">
-      C.20. Антипаттерны code golf — что НЕ переносить в продакшен
+      D.20. Антипаттерны code golf — что НЕ переносить в продакшен
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.21" class="md-nav__link">
+  <a href="#D.21" class="md-nav__link">
     <span class="md-ellipsis">
-      C.21. Полезные ссылки
+      D.21. Полезные ссылки
     </span>
   </a>
   
@@ -1518,11 +1518,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -1539,11 +1539,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -1587,13 +1587,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#C.1" class="md-nav__link">
+  <a href="#D.1" class="md-nav__link">
     <span class="md-ellipsis">
-      C.1. Базовые приёмы сжатия
+      D.1. Базовые приёмы сжатия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.1. Базовые приёмы сжатия">
+    <nav class="md-nav" aria-label="D.1. Базовые приёмы сжатия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1638,31 +1638,31 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.2" class="md-nav__link">
+  <a href="#D.2" class="md-nav__link">
     <span class="md-ellipsis">
-      C.2. «Комментарии» в одну строку через "" — для стиля, не для счёта
+      D.2. «Комментарии» в одну строку через "" — для стиля, не для счёта
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.3" class="md-nav__link">
+  <a href="#D.3" class="md-nav__link">
     <span class="md-ellipsis">
-      C.3. Использование bool как int
+      D.3. Использование bool как int
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.4" class="md-nav__link">
+  <a href="#D.4" class="md-nav__link">
     <span class="md-ellipsis">
-      C.4. Тернарный оператор vs индексация по bool
+      D.4. Тернарный оператор vs индексация по bool
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.4. Тернарный оператор vs индексация по bool">
+    <nav class="md-nav" aria-label="D.4. Тернарный оператор vs индексация по bool">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1698,13 +1698,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.5" class="md-nav__link">
+  <a href="#D.5" class="md-nav__link">
     <span class="md-ellipsis">
-      C.5. unpack в print и в *args
+      D.5. unpack в print и в *args
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.5. unpack в print и в *args">
+    <nav class="md-nav" aria-label="D.5. unpack в print и в *args">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1749,13 +1749,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.6" class="md-nav__link">
+  <a href="#D.6" class="md-nav__link">
     <span class="md-ellipsis">
-      C.6. Срезы вместо вызовов
+      D.6. Срезы вместо вызовов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.6. Срезы вместо вызовов">
+    <nav class="md-nav" aria-label="D.6. Срезы вместо вызовов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1773,40 +1773,40 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.7" class="md-nav__link">
+  <a href="#D.7" class="md-nav__link">
     <span class="md-ellipsis">
-      C.7. Short-circuit evaluation вместо if
+      D.7. Short-circuit evaluation вместо if
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.8" class="md-nav__link">
+  <a href="#D.8" class="md-nav__link">
     <span class="md-ellipsis">
-      C.8. walrus (:=) для экономии повторов
+      D.8. walrus (:=) для экономии повторов
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.9" class="md-nav__link">
+  <a href="#D.9" class="md-nav__link">
     <span class="md-ellipsis">
-      C.9. __import__ вместо import
+      D.9. __import__ вместо import
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.10" class="md-nav__link">
+  <a href="#D.10" class="md-nav__link">
     <span class="md-ellipsis">
-      C.10. Битовые операции вместо арифметики
+      D.10. Битовые операции вместо арифметики
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.10. Битовые операции вместо арифметики">
+    <nav class="md-nav" aria-label="D.10. Битовые операции вместо арифметики">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1878,22 +1878,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.11" class="md-nav__link">
+  <a href="#D.11" class="md-nav__link">
     <span class="md-ellipsis">
-      C.11. lambda вместо def для коротких функций
+      D.11. lambda вместо def для коротких функций
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.12" class="md-nav__link">
+  <a href="#D.12" class="md-nav__link">
     <span class="md-ellipsis">
-      C.12. __builtins__-трюки
+      D.12. __builtins__-трюки
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.12. __builtins__-трюки">
+    <nav class="md-nav" aria-label="D.12. __builtins__-трюки">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1911,13 +1911,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.13" class="md-nav__link">
+  <a href="#D.13" class="md-nav__link">
     <span class="md-ellipsis">
-      C.13. Строковые методы vs регулярки
+      D.13. Строковые методы vs регулярки
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.13. Строковые методы vs регулярки">
+    <nav class="md-nav" aria-label="D.13. Строковые методы vs регулярки">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1944,13 +1944,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.14" class="md-nav__link">
+  <a href="#D.14" class="md-nav__link">
     <span class="md-ellipsis">
-      C.14. Числа: произвольная длина и сжатие констант
+      D.14. Числа: произвольная длина и сжатие констант
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.14. Числа: произвольная длина и сжатие констант">
+    <nav class="md-nav" aria-label="D.14. Числа: произвольная длина и сжатие констант">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2004,22 +2004,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.15" class="md-nav__link">
+  <a href="#D.15" class="md-nav__link">
     <span class="md-ellipsis">
-      C.15. Выход из программы: exit(), sys.exit(), raise SystemExit — и 1/0
+      D.15. Выход из программы: exit(), sys.exit(), raise SystemExit — и 1/0
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.16" class="md-nav__link">
+  <a href="#D.16" class="md-nav__link">
     <span class="md-ellipsis">
-      C.16. Продвинутые приёмы — I/O, матрицы, исключения, eval
+      D.16. Продвинутые приёмы — I/O, матрицы, исключения, eval
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.16. Продвинутые приёмы — I/O, матрицы, исключения, eval">
+    <nav class="md-nav" aria-label="D.16. Продвинутые приёмы — I/O, матрицы, исключения, eval">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2100,13 +2100,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.17" class="md-nav__link">
+  <a href="#D.17" class="md-nav__link">
     <span class="md-ellipsis">
-      C.17. Продвинутые трюки из реального code golf
+      D.17. Продвинутые трюки из реального code golf
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.17. Продвинутые трюки из реального code golf">
+    <nav class="md-nav" aria-label="D.17. Продвинутые трюки из реального code golf">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2160,13 +2160,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.18" class="md-nav__link">
+  <a href="#D.18" class="md-nav__link">
     <span class="md-ellipsis">
-      C.18. Канонические задачи — эталонные решения
+      D.18. Канонические задачи — эталонные решения
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="C.18. Канонические задачи — эталонные решения">
+    <nav class="md-nav" aria-label="D.18. Канонические задачи — эталонные решения">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2256,27 +2256,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.19" class="md-nav__link">
+  <a href="#D.19" class="md-nav__link">
     <span class="md-ellipsis">
-      C.19. Сводная шпаргалка по code golf
+      D.19. Сводная шпаргалка по code golf
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.20" class="md-nav__link">
+  <a href="#D.20" class="md-nav__link">
     <span class="md-ellipsis">
-      C.20. Антипаттерны code golf — что НЕ переносить в продакшен
+      D.20. Антипаттерны code golf — что НЕ переносить в продакшен
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#C.21" class="md-nav__link">
+  <a href="#D.21" class="md-nav__link">
     <span class="md-ellipsis">
-      C.21. Полезные ссылки
+      D.21. Полезные ссылки
     </span>
   </a>
   
@@ -2297,11 +2297,11 @@
                   
 
 
-<h1 id="c-code-golf-python">Приложение C. Code golf — Python на минималках<a class="headerlink" href="#c-code-golf-python" title="Permanent link">#</a></h1>
+<h1 id="d-code-golf-python">Приложение D. Code golf — Python на минималках<a class="headerlink" href="#d-code-golf-python" title="Permanent link">#</a></h1>
 <blockquote>
 <p><strong>Code golf</strong> — соревновательное программирование, где побеждает код с <strong>наименьшим числом символов</strong> (или байт). На Python активно проводятся турниры: <a href="https://code.golf">code.golf</a> (с мировыми таблицами лидеров), <a href="http://golf.shinh.org">anarchy golf</a>, Advent of Code имеет неофициальный golf-дивизион. Это приложение — обзор идиом, которые помогают ужать Python-код без потери работоспособности.</p>
 </blockquote>
-<h2 id="C.1">C.1. Базовые приёмы сжатия<a class="headerlink" href="#C.1" title="Permanent link">#</a></h2>
+<h2 id="D.1">D.1. Базовые приёмы сжатия<a class="headerlink" href="#D.1" title="Permanent link">#</a></h2>
 <h3 id="ubrat">Убрать всё лишнее<a class="headerlink" href="#ubrat" title="Permanent link">#</a></h3>
 <p>Самый важный приём code golf — <strong>убрать пробелы везде, где их не требует синтаксис</strong>. CPython лексер падок до пробелов только в нескольких местах: между ключевым словом и идентификатором (<code>for i</code>, <code>in range</code>, <code>def f</code>, <code>return x</code>), после запятой в коллекциях (но не всегда — <code>[1,2,3]</code> валидно, как и <code>[1,2,3,]</code>), между оператором и операндом в редких случаях двусмысленности. Везде [в] остальном пробелы <strong>опциональны</strong>, и каждый пробел — это <strong>+1 символ в счётчике</strong>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Длинно — 32 символа (с учётом \n и отступа):</span>
@@ -2419,7 +2419,7 @@
 </span></code></pre></div>
 <p><code>exec</code> понимает <code>\n</code> в строке как перевод строки — можно писать «многострочный» код в одной физической строке. Минус — кавычки внутри <code>exec</code> требуют экранирования или других кавычек снаружи.</p>
 <p>⚠️ <code>exec</code> <strong>часто проигрывает</strong> обычному коду по длине, потому что добавляет <code>exec("")</code> + экранирование. Используйте его, только когда без многострочности никак (сложный <code>for</code> с <code>if/else</code> внутри, определение функции и т.п.).</p>
-<h2 id="C.2">C.2. «Комментарии» в одну строку через <code>""</code> — для стиля, не для счёта<a class="headerlink" href="#C.2" title="Permanent link">#</a></h2>
+<h2 id="D.2">D.2. «Комментарии» в одну строку через <code>""</code> — для стиля, не для счёта<a class="headerlink" href="#D.2" title="Permanent link">#</a></h2>
 <p><code>#</code>-комментарий заканчивает физическую строку — в code golf (где вся программа на одной строке) это нельзя использовать. Эксцентричный трюк — <strong>строковый литерал как expression-statement</strong>: он вычисляется и <strong>выбрасывается</strong>, как комментарий:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="s2">&quot;Тут текст&quot;</span><span class="p">;</span><span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Выведет:</span>
@@ -2462,7 +2462,7 @@
 <li><strong>Demo на конференции</strong> — показать, что код работает, с пояснением, не разбивая на строки.</li>
 </ul>
 <p>В реальном code golf — <strong>забудьте про этот трюк</strong>. Если пишете комментарии, вы не играете в golf.</p>
-<h2 id="C.3">C.3. Использование <code>bool</code> как <code>int</code><a class="headerlink" href="#C.3" title="Permanent link">#</a></h2>
+<h2 id="D.3">D.3. Использование <code>bool</code> как <code>int</code><a class="headerlink" href="#D.3" title="Permanent link">#</a></h2>
 <p><code>True == 1</code>, <code>False == 0</code> — это позволяет экономить в нескольких местах, но <strong>не везде</strong>. Где работает, а где нет:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 1. Подсчёт True в фильтре — bool экономит сравнение с 0/1:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">))</span>   <span class="c1"># True считаются как 1, короче чем sum(1 for x in lst if ...)</span>
@@ -2475,7 +2475,7 @@
 </span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># 3. Логические операции с числами — `True+True` = 2, короче писать `1+1` (3 vs 6).</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Главный подводный камень</strong>: <code>True</code>/<code>False</code> длиннее <code>1</code>/<code>0</code> (4/5 символов против 1). Использовать их как <code>int</code> в code golf уместно только когда <strong>они уже получились из булевого выражения</strong> — <code>sum(x&gt;5 for x in lst)</code> короче и идиоматичнее, чем <code>sum(1 for x in lst if x&gt;5)</code>. Если же нужно конкретное число — пишите <code>1</code>, не <code>True</code>.</p>
-<h2 id="C.4">C.4. Тернарный оператор vs индексация по <code>bool</code><a class="headerlink" href="#C.4" title="Permanent link">#</a></h2>
+<h2 id="D.4">D.4. Тернарный оператор vs индексация по <code>bool</code><a class="headerlink" href="#D.4" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Длинно (33 символа с `result = `, или 24 без):</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;yes&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;no&quot;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -2515,7 +2515,7 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="kc">True</span> <span class="o">*</span> <span class="s2">&quot;yes&quot;</span> <span class="ow">or</span> <span class="s2">&quot;no&quot;</span>    <span class="c1"># &#39;yes&#39; (1 * &quot;yes&quot; = &quot;yes&quot;, truthy → or не срабатывает)</span>
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="kc">False</span> <span class="o">*</span> <span class="s2">&quot;yes&quot;</span> <span class="ow">or</span> <span class="s2">&quot;no&quot;</span>   <span class="c1"># &#39;no&#39;  (0 * &quot;yes&quot; = &quot;&quot;, falsy → or срабатывает)</span>
 </span></code></pre></div>
-<h2 id="C.5">C.5. <code>unpack</code> в <code>print</code> и в <code>*args</code><a class="headerlink" href="#C.5" title="Permanent link">#</a></h2>
+<h2 id="D.5">D.5. <code>unpack</code> в <code>print</code> и в <code>*args</code><a class="headerlink" href="#D.5" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Печать чисел от 0 до 9 через пробел (17 символов):</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
@@ -2601,7 +2601,7 @@
 <li>Если в коде есть и <code>input()</code>, и <code>open(0)</code> — они могут «драться» за буфер fd 0. Выбирайте что-то одно.</li>
 <li>В интерактивном REPL <code>open(0)</code> читает с клавиатуры — может зависнуть, если нет EOF (Ctrl+D).</li>
 </ul>
-<h2 id="C.6">C.6. Срезы вместо вызовов<a class="headerlink" href="#C.6" title="Permanent link">#</a></h2>
+<h2 id="D.6">D.6. Срезы вместо вызовов<a class="headerlink" href="#D.6" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Реверс строки:</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>   <span class="c1"># 20 символов</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                <span class="c1"># 7 символов — короче</span>
@@ -2646,7 +2646,7 @@
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nb">max</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>   <span class="c1"># 32 символа — короче на 1</span>
 </span></code></pre></div>
 <p><code>key=bool</code> превращает каждый элемент в его «истинность», <code>max</code> возвращает первый элемент с максимальным значением (то есть первый truthy — при равенстве <code>max</code> берёт первого встретившегося), а <code>default=None</code> страхует пустой список. ⚠️ Если <strong>все</strong> элементы falsy (например, <code>[0, '', None]</code>), <code>max</code> с <code>key=bool</code> вернёт первый элемент (все «равны» в ключе <code>False</code>), то есть <code>0</code>, а не <code>None</code> — <code>default=None</code> страхует только пустой список, но не all-falsy.</p>
-<h2 id="C.7">C.7. Short-circuit evaluation вместо <code>if</code><a class="headerlink" href="#C.7" title="Permanent link">#</a></h2>
+<h2 id="D.7">D.7. Short-circuit evaluation вместо <code>if</code><a class="headerlink" href="#D.7" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Через if (22 символа):</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
@@ -2666,7 +2666,7 @@
 </span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="n">x</span> <span class="o">=</span> <span class="n">maybe_none</span> <span class="ow">or</span> <span class="s2">&quot;default&quot;</span>     <span class="c1"># короче</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Подводный камень</strong>: <code>or</code> возвращает <strong>первое truthy</strong> или <strong>последнее falsy</strong>. <code>0 or "default"</code> → <code>"default"</code> (потому что <code>0</code> falsy), но если <code>0</code> — валидное значение, это баг. Для строгой проверки <code>is None</code> — <code>:=</code> или явный <code>if</code>.</p>
-<h2 id="C.8">C.8. <code>walrus</code> (<code>:=</code>) для экономии повторов<a class="headerlink" href="#C.8" title="Permanent link">#</a></h2>
+<h2 id="D.8">D.8. <code>walrus</code> (<code>:=</code>) для экономии повторов<a class="headerlink" href="#D.8" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Длинно (две строки, 49 символов с \\n):</span>
 </span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 </span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="k">if</span> <span class="n">m</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
@@ -2683,7 +2683,7 @@
 </span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="c1"># Без := пришлось бы дважды вызывать transform(x) — или Materialize в список заранее.</span>
 </span></code></pre></div>
 <p>⚠️ На голом <code>if m: print(...)</code> walrus <strong>почти не экономит</strong> символы — он скорее про однострочность и устранение отдельного присваивания. Реальная экономия — в comprehensions (1 вызов функции вместо 2) и в <code>while</code>-циклах с sentinel'ом.</p>
-<h2 id="C.9">C.9. <code>__import__</code> вместо <code>import</code><a class="headerlink" href="#C.9" title="Permanent link">#</a></h2>
+<h2 id="D.9">D.9. <code>__import__</code> вместо <code>import</code><a class="headerlink" href="#D.9" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Длинно (36 символов, две строки):</span>
 </span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="kn">import</span> <span class="nn">math</span>
 </span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
@@ -2698,7 +2698,7 @@
 <li><strong>Когда в соревнованиях запрещены переводы строк</strong> (некоторые judge'и требуют всё в одной физической строке).</li>
 </ul>
 <p>В большинстве случаев <code>import math;math.factorial(5)</code> (через <code>;</code>) <strong>короче</strong> — <code>__import__</code> берут ради <strong>однострочности</strong>, не ради длины.</p>
-<h2 id="C.10">C.10. Битовые операции вместо арифметики<a class="headerlink" href="#C.10" title="Permanent link">#</a></h2>
+<h2 id="D.10">D.10. Битовые операции вместо арифметики<a class="headerlink" href="#D.10" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Степени двойки (оба варианта по 7 символов с пробелами, 5 без):</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="mi">2</span> <span class="o">**</span> <span class="mi">10</span>   <span class="c1"># 1024</span>
 </span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span>   <span class="c1"># 1024</span>
@@ -2853,7 +2853,7 @@ XOR остаётся <code>!=</code>:</p>
 <code>x &gt; (0^y) &gt; 0</code>. Но и <code>!=</code> — это сравнение: <code>x&gt;0 != y&gt;0</code> разворачивается в
 <code>(x&gt;0) and (0!=y) and (y&gt;0)</code>, а не в XOR. Пишите <code>(x&gt;0)^(y&gt;0)</code> или
 <code>(x&gt;0)!=(y&gt;0)</code>.</p>
-<h2 id="C.11">C.11. <code>lambda</code> вместо <code>def</code> для коротких функций<a class="headerlink" href="#C.11" title="Permanent link">#</a></h2>
+<h2 id="D.11">D.11. <code>lambda</code> вместо <code>def</code> для коротких функций<a class="headerlink" href="#D.11" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="c1"># Через def (22 символа):</span>
 </span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 </span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>
@@ -2870,7 +2870,7 @@ XOR остаётся <code>!=</code>:</p>
 <li>Нужна именованная функция для повторного использования.</li>
 <li>Функция передаётся как callback (например, <code>key=lambda x: x[1]</code>).</li>
 </ul>
-<h2 id="C.12">C.12. <code>__builtins__</code>-трюки<a class="headerlink" href="#C.12" title="Permanent link">#</a></h2>
+<h2 id="D.12">D.12. <code>__builtins__</code>-трюки<a class="headerlink" href="#D.12" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># В __main__ (главный скрипт, REPL):</span>
 </span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="n">__builtins__</span>   <span class="c1"># это модуль builtins (type: module)</span>
 </span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>
@@ -2979,7 +2979,7 @@ XOR остаётся <code>!=</code>:</p>
 </tbody>
 </table>
 <p>⚠️ <strong>Алиасы ломают читаемость и IDE-поддержку</strong>: mypy/pyright теряют информацию о типе, автодополнение не работает, traceback'и становятся менее понятными (<code>p</code> вместо <code>print</code> в stack trace). В реальном коде алиасы — антипаттерн; в golf — стандарт.</p>
-<h2 id="C.13">C.13. Строковые методы vs регулярки<a class="headerlink" href="#C.13" title="Permanent link">#</a></h2>
+<h2 id="D.13">D.13. Строковые методы vs регулярки<a class="headerlink" href="#D.13" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># Разбить строку по разделителю:</span>
 </span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>                    <span class="c1"># 12 символов</span>
 </span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
@@ -3008,8 +3008,8 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="n">x</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Полная карта соответствий: <code>f"{x:^10}"</code> ↔ <code>str(x).center(10)</code>, <code>f"{x:&lt;10}"</code> ↔ <code>str(x).ljust(10)</code>, <code>f"{x:&gt;10}"</code> ↔ <code>str(x).rjust(10)</code>, <code>f"{x:03d}"</code> ↔ <code>str(x).zfill(3)</code> (лидирующие нули — см. C.10).</p>
-<h2 id="C.14">C.14. Числа: произвольная длина и сжатие констант<a class="headerlink" href="#C.14" title="Permanent link">#</a></h2>
+<p>Полная карта соответствий: <code>f"{x:^10}"</code> ↔ <code>str(x).center(10)</code>, <code>f"{x:&lt;10}"</code> ↔ <code>str(x).ljust(10)</code>, <code>f"{x:&gt;10}"</code> ↔ <code>str(x).rjust(10)</code>, <code>f"{x:03d}"</code> ↔ <code>str(x).zfill(3)</code> (лидирующие нули — см. D.10).</p>
+<h2 id="D.14">D.14. Числа: произвольная длина и сжатие констант<a class="headerlink" href="#D.14" title="Permanent link">#</a></h2>
 <p>Python <code>int</code> не ограничен 64 битами, поэтому <strong>любые большие числа</strong> считаются точно без импорта. А сами числа — частый источник «лишних» байтов в golf: ниже — как выбрать между десятичной записью, <code>hex</code>, экспонентой, степенями и системами счисления с большим основанием.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">1000</span><span class="p">)</span>   <span class="c1"># 302 цифры, точный результат</span>
 </span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="nb">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="mi">100</span><span class="p">)</span>   <span class="c1"># гугол</span>
@@ -3139,7 +3139,7 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;ffff&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>       <span class="c1"># 65535 — то же, что 0xffff, но иногда удобнее</span>
 </span></code></pre></div>
 <p>⚠️ Выгодно только если <strong>строка уже есть в коде</strong> или её можно сгенерить короче, чем десятичное число. <code>int('zzz',36)</code> (12 символов) длиннее, чем <code>46655</code> (5 символов) — экономит только на числах, где десятичная запись длиннее <code>(base-словарь) + 8 символов на int(...)</code>.</p>
-<h2 id="C.15">C.15. Выход из программы: <code>exit()</code>, <code>sys.exit()</code>, <code>raise SystemExit</code> — и <code>1/0</code><a class="headerlink" href="#C.15" title="Permanent link">#</a></h2>
+<h2 id="D.15">D.15. Выход из программы: <code>exit()</code>, <code>sys.exit()</code>, <code>raise SystemExit</code> — и <code>1/0</code><a class="headerlink" href="#D.15" title="Permanent link">#</a></h2>
 <p>Задача «завершить программу» в golf распадается на две: выйти <strong>с кодом 0</strong> (успех) и выйти <strong>с
 ненулевым кодом</strong> (авария). Для второй есть приём, о котором часто забывают: <strong>любое
 неперехваченное исключение завершает процесс с кодом 1</strong> — и это самый короткий выход вообще.</p>
@@ -3177,7 +3177,7 @@ XOR остаётся <code>!=</code>:</p>
 только stdout — это легальный кратчайший аварийный выход; если проверяет stderr или конкретный
 код возврата — <code>1/0</code> не пройдёт, берите <code>raise SystemExit(1)</code>. Перед использованием посмотрите
 правила конкретного judge'я (code.golf, anarchy golf, Advent of Code).</p>
-<h2 id="C.16">C.16. Продвинутые приёмы — I/O, матрицы, исключения, eval<a class="headerlink" href="#C.16" title="Permanent link">#</a></h2>
+<h2 id="D.16">D.16. Продвинутые приёмы — I/O, матрицы, исключения, eval<a class="headerlink" href="#D.16" title="Permanent link">#</a></h2>
 <p>Дальше — приёмы посерьёзнее: тонкости I/O, матричная алгебра через <code>zip</code>, исключения как <code>goto</code>, <code>exec</code>/<code>eval</code> для генерации кода.</p>
 <h3 id="udalenie">Удаление пробелов после ключевых слов (No-Space Hacks)<a class="headerlink" href="#udalenie" title="Permanent link">#</a></h3>
 <p>Пробел после ключевых слов (<code>if</code>, <code>for</code>, <code>in</code>, <code>return</code>, <code>yield</code>, <code>not</code>, <code>and</code>, <code>or</code>) <strong>не нужен</strong>, если дальше идёт скобка, кавычка или унарный оператор:</p>
@@ -3313,7 +3313,7 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-62-8"><a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;p(s((</span><span class="si">%s</span><span class="s2">)//</span><span class="si">%d</span><span class="s2">**k</span><span class="si">%%%d</span><span class="s2">&gt;9for k in r(</span><span class="si">%d</span><span class="s2">)));&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="o">...</span><span class="p">))</span>
 </span></code></pre></div>
 <p>⚠️ <code>exec</code> добавляет 8 символов накладных (<code>exec('')</code>), плюс кавычки. Выгоден, когда повторяемый код длиннее 7-10 символов или когда нужно сгенерить N строк с переменными подстановками.</p>
-<h2 id="C.17">C.17. Продвинутые трюки из реального code golf<a class="headerlink" href="#C.17" title="Permanent link">#</a></h2>
+<h2 id="D.17">D.17. Продвинутые трюки из реального code golf<a class="headerlink" href="#D.17" title="Permanent link">#</a></h2>
 <p>Четыре приёма, выкристаллизованные из реальных соревновательных решений. Не привязаны к конкретной задаче — каждая идиома самостоятельна.</p>
 <h3 id="tryuk">Трюк 1: <code>*T</code> в lambda — переменное число positional args<a class="headerlink" href="#tryuk" title="Permanent link">#</a></h3>
 <p>Вместо передачи кортежа как одного аргумента, <code>*T</code> собирает все остальные positional в tuple прямо внутри lambda:</p>
@@ -3369,7 +3369,7 @@ keyword-only (<code>lambda b, *T, d:</code> — валидно, проверен
 <li><strong><code>~-b</code> вместо <code>b-1</code></strong> — в выражениях типа <code>n // (b-1)</code> избавляет от скобок: <code>n // ~-b</code>.</li>
 <li><strong>walrus <code>:=</code></strong> внутри генератора — считает выражение один раз, переиспользует в условии <code>if</code>.</li>
 </ol>
-<h2 id="C.18">C.18. Канонические задачи — эталонные решения<a class="headerlink" href="#C.18" title="Permanent link">#</a></h2>
+<h2 id="D.18">D.18. Канонические задачи — эталонные решения<a class="headerlink" href="#D.18" title="Permanent link">#</a></h2>
 <p>В code golf есть набор классических задач («Code Golf Classics»). Для них выработаны шаблоны, считающиеся эталонами краткости. Разбор этих шаблонов важнее самих решений — они учат <strong>идиомам</strong>, которые переносятся на любые другие задачи.</p>
 <h3 id="fizzbuzz">FizzBuzz (1..100)<a class="headerlink" href="#fizzbuzz" title="Permanent link">#</a></h3>
 <p>Вывести числа от 1 до 100, заменяя кратные 3 на <code>Fizz</code>, кратные 5 на <code>Buzz</code>, кратные 15 на <code>FizzBuzz</code>.</p>
@@ -3516,7 +3516,7 @@ keyword-only (<code>lambda b, *T, d:</code> — валидно, проверен
 </tr>
 </tbody>
 </table>
-<h2 id="C.19">C.19. Сводная шпаргалка по code golf<a class="headerlink" href="#C.19" title="Permanent link">#</a></h2>
+<h2 id="D.19">D.19. Сводная шпаргалка по code golf<a class="headerlink" href="#D.19" title="Permanent link">#</a></h2>
 <p>Всё приложение на одном экране. Пробегитесь по нему перед сдачей решения — как по контрольному списку: не применим ли где-то ещё один приём.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="c1"># === АРИФМЕТИКА ===</span>
 </span><span id="__span-76-2"><a id="__codelineno-76-2" name="__codelineno-76-2" href="#__codelineno-76-2"></a><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>            <span class="err">→</span>  <span class="o">~-</span><span class="n">x</span>           <span class="c1"># экономит скобки: ~-n*2 vs (n-1)*2</span>
@@ -3530,8 +3530,8 @@ keyword-only (<code>lambda b, *T, d:</code> — валидно, проверен
 </span><span id="__span-76-10"><a id="__codelineno-76-10" name="__codelineno-76-10" href="#__codelineno-76-10"></a>
 </span><span id="__span-76-11"><a id="__codelineno-76-11" name="__codelineno-76-11" href="#__codelineno-76-11"></a><span class="c1"># === БИТОВЫЕ ТРЮКИ ===</span>
 </span><span id="__span-76-12"><a id="__codelineno-76-12" name="__codelineno-76-12" href="#__codelineno-76-12"></a><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span>            <span class="err">→</span>  <span class="n">x</span> <span class="o">&amp;</span> <span class="mi">1</span>
-</span><span id="__span-76-13"><a id="__codelineno-76-13" name="__codelineno-76-13" href="#__codelineno-76-13"></a><span class="n">x</span> <span class="o">//</span> <span class="mi">2</span>           <span class="err">→</span>  <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>        <span class="c1"># для любых int (floor-семантика, см. C.10)</span>
-</span><span id="__span-76-14"><a id="__codelineno-76-14" name="__codelineno-76-14" href="#__codelineno-76-14"></a><span class="n">x</span> <span class="o">%</span> <span class="mi">8</span>            <span class="err">→</span>  <span class="n">x</span> <span class="o">&amp;</span> <span class="mi">7</span>         <span class="c1"># для любых int (floor-семантика, см. C.10)</span>
+</span><span id="__span-76-13"><a id="__codelineno-76-13" name="__codelineno-76-13" href="#__codelineno-76-13"></a><span class="n">x</span> <span class="o">//</span> <span class="mi">2</span>           <span class="err">→</span>  <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>        <span class="c1"># для любых int (floor-семантика, см. D.10)</span>
+</span><span id="__span-76-14"><a id="__codelineno-76-14" name="__codelineno-76-14" href="#__codelineno-76-14"></a><span class="n">x</span> <span class="o">%</span> <span class="mi">8</span>            <span class="err">→</span>  <span class="n">x</span> <span class="o">&amp;</span> <span class="mi">7</span>         <span class="c1"># для любых int (floor-семантика, см. D.10)</span>
 </span><span id="__span-76-15"><a id="__codelineno-76-15" name="__codelineno-76-15" href="#__codelineno-76-15"></a><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>      <span class="err">→</span>  <span class="n">n</span> <span class="o">%</span> <span class="mi">1000</span>      <span class="c1"># 11→8, для неотрицательных n; последние k цифр = n % q**k</span>
 </span><span id="__span-76-16"><a id="__codelineno-76-16" name="__codelineno-76-16" href="#__codelineno-76-16"></a><span class="mi">2</span> <span class="o">**</span> <span class="mi">10</span>          <span class="err">→</span>  <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span>
 </span><span id="__span-76-17"><a id="__codelineno-76-17" name="__codelineno-76-17" href="#__codelineno-76-17"></a><span class="ow">not</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="mi">1</span>                       <span class="c1"># чётность</span>
@@ -3595,19 +3595,19 @@ keyword-only (<code>lambda b, *T, d:</code> — валидно, проверен
 </span><span id="__span-76-75"><a id="__codelineno-76-75" name="__codelineno-76-75" href="#__codelineno-76-75"></a><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="err">→</span>  <span class="o">-~</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span>
 </span><span id="__span-76-76"><a id="__codelineno-76-76" name="__codelineno-76-76" href="#__codelineno-76-76"></a><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="mi">10</span> <span class="err">→</span>  <span class="o">-~</span><span class="n">n</span><span class="o">%</span><span class="mi">10</span>
 </span></code></pre></div>
-<h2 id="C.20">C.20. Антипаттерны code golf — что НЕ переносить в продакшен<a class="headerlink" href="#C.20" title="Permanent link">#</a></h2>
+<h2 id="D.20">D.20. Антипаттерны code golf — что НЕ переносить в продакшен<a class="headerlink" href="#D.20" title="Permanent link">#</a></h2>
 <p>Code golf намеренно использует приёмы, которые в обычном коде считаются плохими:</p>
 <ul>
 <li>❌ <strong>Listcomp ради побочного эффекта</strong> (<code>[print(x) for x in lst]</code>) — в проде: <code>for x in lst: print(x)</code>.</li>
 <li>❌ <strong><code>exec</code> для многострочников</strong> — потеря debug'а, статического анализа, security risk.</li>
 <li>❌ <strong>Short-circuit <code>and</code>/<code>or</code> вместо <code>if</code></strong> — нечитаемо, ломается на falsy-значениях.</li>
-<li>❌ <strong>Битовые операции для деления/остатка</strong> (<code>x&gt;&gt;1</code>, <code>x&amp;7</code>) — математически эквивалентны <code>//</code>/<code>%</code> даже для отрицательных чисел (см. C.10), но нечитаемы без комментария.</li>
+<li>❌ <strong>Битовые операции для деления/остатка</strong> (<code>x&gt;&gt;1</code>, <code>x&amp;7</code>) — математически эквивалентны <code>//</code>/<code>%</code> даже для отрицательных чисел (см. D.10), но нечитаемы без комментария.</li>
 <li>❌ <strong>Имена из 1 буквы</strong> (<code>a</code>, <code>b</code>, <code>x</code>) — нормально в math-формулах, ужасно в бизнес-логике.</li>
 <li>❌ <strong>Магические индексы</strong> <code>("no", "yes")[cond]</code> — тернарный оператор всегда читаемее.</li>
 <li>❌ <strong><code>__import__</code> вместо <code>import</code></strong> — потеря возможности IDE делать автодополнение.</li>
 </ul>
 <p>Code golf — это <strong>отдельный жанр</strong>, со своими правилами. Не переносите его приёмы в production-код, но <strong>изучайте их</strong> — они отлично тренируют понимание Python и часто подсказывают нестандартные решения.</p>
-<h2 id="C.21">C.21. Полезные ссылки<a class="headerlink" href="#C.21" title="Permanent link">#</a></h2>
+<h2 id="D.21">D.21. Полезные ссылки<a class="headerlink" href="#D.21" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="https://code.golf">code.golf</a> — основной сайт с задачами и таблицей лидеров, поддерживает Python 3.</li>
 <li><a href="http://golf.shinh.org">anarchy golf</a> — старейший архив задач, менее активен.</li>

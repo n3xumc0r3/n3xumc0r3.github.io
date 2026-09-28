@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-d-randomness/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-e-randomness/">
       
       
-        <link rel="prev" href="../appendix-c-code-golf/">
+        <link rel="prev" href="../appendix-d-code-golf/">
       
       
-        <link rel="next" href="../appendix-e-references/">
+        <link rel="next" href="../appendix-a-references/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>D. Анатомия случайности - Python под капотом</title>
+        <title>E. Анатомия случайности - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="D. Анатомия случайности — Python под капотом">
+  <meta property="og:title" content="E. Анатомия случайности — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-d-randomness/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-e-randomness/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="D. Анатомия случайности — Python под капотом">
+  <meta name="twitter:title" content="E. Анатомия случайности — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#d" class="md-skip">
+        <a href="#e" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              D. Анатомия случайности
+              E. Анатомия случайности
             
           </span>
         </div>
@@ -719,11 +719,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -740,11 +740,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -761,11 +761,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -795,7 +795,7 @@
           
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -806,7 +806,7 @@
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -837,13 +837,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.1" class="md-nav__link">
+  <a href="#E.1" class="md-nav__link">
     <span class="md-ellipsis">
-      D.1. Что значит «случайный»
+      E.1. Что значит «случайный»
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.1. Что значит «случайный»">
+    <nav class="md-nav" aria-label="E.1. Что значит «случайный»">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -888,13 +888,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.2" class="md-nav__link">
+  <a href="#E.2" class="md-nav__link">
     <span class="md-ellipsis">
-      D.2. Таксономия генераторов
+      E.2. Таксономия генераторов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.2. Таксономия генераторов">
+    <nav class="md-nav" aria-label="E.2. Таксономия генераторов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -939,13 +939,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.3" class="md-nav__link">
+  <a href="#E.3" class="md-nav__link">
     <span class="md-ellipsis">
-      D.3. LCG — Linear Congruential Generator
+      E.3. LCG — Linear Congruential Generator
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.3. LCG — Linear Congruential Generator">
+    <nav class="md-nav" aria-label="E.3. LCG — Linear Congruential Generator">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -972,13 +972,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.4" class="md-nav__link">
+  <a href="#E.4" class="md-nav__link">
     <span class="md-ellipsis">
-      D.4. Атака на LCG: восстановление параметров
+      E.4. Атака на LCG: восстановление параметров
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.4. Атака на LCG: восстановление параметров">
+    <nav class="md-nav" aria-label="E.4. Атака на LCG: восстановление параметров">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -996,13 +996,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.5" class="md-nav__link">
+  <a href="#E.5" class="md-nav__link">
     <span class="md-ellipsis">
-      D.5. Регистровые PRNG: xorshift и PCG
+      E.5. Регистровые PRNG: xorshift и PCG
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.5. Регистровые PRNG: xorshift и PCG">
+    <nav class="md-nav" aria-label="E.5. Регистровые PRNG: xorshift и PCG">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1047,13 +1047,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.6" class="md-nav__link">
+  <a href="#E.6" class="md-nav__link">
     <span class="md-ellipsis">
-      D.6. Вихрь Мерсенна MT19937 — анатомия
+      E.6. Вихрь Мерсенна MT19937 — анатомия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.6. Вихрь Мерсенна MT19937 — анатомия">
+    <nav class="md-nav" aria-label="E.6. Вихрь Мерсенна MT19937 — анатомия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1116,13 +1116,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.7" class="md-nav__link">
+  <a href="#E.7" class="md-nav__link">
     <span class="md-ellipsis">
-      D.7. Свой MT19937 на Python
+      E.7. Свой MT19937 на Python
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.7. Свой MT19937 на Python">
+    <nav class="md-nav" aria-label="E.7. Свой MT19937 на Python">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1140,13 +1140,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.8" class="md-nav__link">
+  <a href="#E.8" class="md-nav__link">
     <span class="md-ellipsis">
-      D.8. Атака untempering на MT19937
+      E.8. Атака untempering на MT19937
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.8. Атака untempering на MT19937">
+    <nav class="md-nav" aria-label="E.8. Атака untempering на MT19937">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1191,13 +1191,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.9" class="md-nav__link">
+  <a href="#E.9" class="md-nav__link">
     <span class="md-ellipsis">
-      D.9. Полная атака: восстановление state MT19937
+      E.9. Полная атака: восстановление state MT19937
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.9. Полная атака: восстановление state MT19937">
+    <nav class="md-nav" aria-label="E.9. Полная атака: восстановление state MT19937">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1215,13 +1215,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.10" class="md-nav__link">
+  <a href="#E.10" class="md-nav__link">
     <span class="md-ellipsis">
-      D.10. Практический сценарий: предсказание токена
+      E.10. Практический сценарий: предсказание токена
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.10. Практический сценарий: предсказание токена">
+    <nav class="md-nav" aria-label="E.10. Практический сценарий: предсказание токена">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1248,13 +1248,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.11" class="md-nav__link">
+  <a href="#E.11" class="md-nav__link">
     <span class="md-ellipsis">
-      D.11. CSPRNG: требования и NIST SP 800-90A
+      E.11. CSPRNG: требования и NIST SP 800-90A
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.11. CSPRNG: требования и NIST SP 800-90A">
+    <nav class="md-nav" aria-label="E.11. CSPRNG: требования и NIST SP 800-90A">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1299,13 +1299,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.12" class="md-nav__link">
+  <a href="#E.12" class="md-nav__link">
     <span class="md-ellipsis">
-      D.12. Fortuna: 32 пула entropy и reseed-стратегия
+      E.12. Fortuna: 32 пула entropy и reseed-стратегия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.12. Fortuna: 32 пула entropy и reseed-стратегия">
+    <nav class="md-nav" aria-label="E.12. Fortuna: 32 пула entropy и reseed-стратегия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1350,13 +1350,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.13" class="md-nav__link">
+  <a href="#E.13" class="md-nav__link">
     <span class="md-ellipsis">
-      D.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)
+      E.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)">
+    <nav class="md-nav" aria-label="E.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1419,13 +1419,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.14" class="md-nav__link">
+  <a href="#E.14" class="md-nav__link">
     <span class="md-ellipsis">
-      D.14. Python stdlib: random, SystemRandom, secrets
+      E.14. Python stdlib: random, SystemRandom, secrets
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.14. Python stdlib: random, SystemRandom, secrets">
+    <nav class="md-nav" aria-label="E.14. Python stdlib: random, SystemRandom, secrets">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1479,13 +1479,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.15" class="md-nav__link">
+  <a href="#E.15" class="md-nav__link">
     <span class="md-ellipsis">
-      D.15. Когда какой генератор использовать
+      E.15. Когда какой генератор использовать
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.15. Когда какой генератор использовать">
+    <nav class="md-nav" aria-label="E.15. Когда какой генератор использовать">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1512,13 +1512,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.16" class="md-nav__link">
+  <a href="#E.16" class="md-nav__link">
     <span class="md-ellipsis">
-      D.16. Бенчмарки PRNG vs CSPRNG
+      E.16. Бенчмарки PRNG vs CSPRNG
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.16. Бенчмарки PRNG vs CSPRNG">
+    <nav class="md-nav" aria-label="E.16. Бенчмарки PRNG vs CSPRNG">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1596,11 +1596,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -1653,13 +1653,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.1" class="md-nav__link">
+  <a href="#E.1" class="md-nav__link">
     <span class="md-ellipsis">
-      D.1. Что значит «случайный»
+      E.1. Что значит «случайный»
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.1. Что значит «случайный»">
+    <nav class="md-nav" aria-label="E.1. Что значит «случайный»">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1704,13 +1704,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.2" class="md-nav__link">
+  <a href="#E.2" class="md-nav__link">
     <span class="md-ellipsis">
-      D.2. Таксономия генераторов
+      E.2. Таксономия генераторов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.2. Таксономия генераторов">
+    <nav class="md-nav" aria-label="E.2. Таксономия генераторов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1755,13 +1755,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.3" class="md-nav__link">
+  <a href="#E.3" class="md-nav__link">
     <span class="md-ellipsis">
-      D.3. LCG — Linear Congruential Generator
+      E.3. LCG — Linear Congruential Generator
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.3. LCG — Linear Congruential Generator">
+    <nav class="md-nav" aria-label="E.3. LCG — Linear Congruential Generator">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1788,13 +1788,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.4" class="md-nav__link">
+  <a href="#E.4" class="md-nav__link">
     <span class="md-ellipsis">
-      D.4. Атака на LCG: восстановление параметров
+      E.4. Атака на LCG: восстановление параметров
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.4. Атака на LCG: восстановление параметров">
+    <nav class="md-nav" aria-label="E.4. Атака на LCG: восстановление параметров">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1812,13 +1812,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.5" class="md-nav__link">
+  <a href="#E.5" class="md-nav__link">
     <span class="md-ellipsis">
-      D.5. Регистровые PRNG: xorshift и PCG
+      E.5. Регистровые PRNG: xorshift и PCG
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.5. Регистровые PRNG: xorshift и PCG">
+    <nav class="md-nav" aria-label="E.5. Регистровые PRNG: xorshift и PCG">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1863,13 +1863,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.6" class="md-nav__link">
+  <a href="#E.6" class="md-nav__link">
     <span class="md-ellipsis">
-      D.6. Вихрь Мерсенна MT19937 — анатомия
+      E.6. Вихрь Мерсенна MT19937 — анатомия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.6. Вихрь Мерсенна MT19937 — анатомия">
+    <nav class="md-nav" aria-label="E.6. Вихрь Мерсенна MT19937 — анатомия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1932,13 +1932,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.7" class="md-nav__link">
+  <a href="#E.7" class="md-nav__link">
     <span class="md-ellipsis">
-      D.7. Свой MT19937 на Python
+      E.7. Свой MT19937 на Python
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.7. Свой MT19937 на Python">
+    <nav class="md-nav" aria-label="E.7. Свой MT19937 на Python">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1956,13 +1956,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.8" class="md-nav__link">
+  <a href="#E.8" class="md-nav__link">
     <span class="md-ellipsis">
-      D.8. Атака untempering на MT19937
+      E.8. Атака untempering на MT19937
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.8. Атака untempering на MT19937">
+    <nav class="md-nav" aria-label="E.8. Атака untempering на MT19937">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2007,13 +2007,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.9" class="md-nav__link">
+  <a href="#E.9" class="md-nav__link">
     <span class="md-ellipsis">
-      D.9. Полная атака: восстановление state MT19937
+      E.9. Полная атака: восстановление state MT19937
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.9. Полная атака: восстановление state MT19937">
+    <nav class="md-nav" aria-label="E.9. Полная атака: восстановление state MT19937">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2031,13 +2031,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.10" class="md-nav__link">
+  <a href="#E.10" class="md-nav__link">
     <span class="md-ellipsis">
-      D.10. Практический сценарий: предсказание токена
+      E.10. Практический сценарий: предсказание токена
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.10. Практический сценарий: предсказание токена">
+    <nav class="md-nav" aria-label="E.10. Практический сценарий: предсказание токена">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2064,13 +2064,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.11" class="md-nav__link">
+  <a href="#E.11" class="md-nav__link">
     <span class="md-ellipsis">
-      D.11. CSPRNG: требования и NIST SP 800-90A
+      E.11. CSPRNG: требования и NIST SP 800-90A
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.11. CSPRNG: требования и NIST SP 800-90A">
+    <nav class="md-nav" aria-label="E.11. CSPRNG: требования и NIST SP 800-90A">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2115,13 +2115,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.12" class="md-nav__link">
+  <a href="#E.12" class="md-nav__link">
     <span class="md-ellipsis">
-      D.12. Fortuna: 32 пула entropy и reseed-стратегия
+      E.12. Fortuna: 32 пула entropy и reseed-стратегия
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.12. Fortuna: 32 пула entropy и reseed-стратегия">
+    <nav class="md-nav" aria-label="E.12. Fortuna: 32 пула entropy и reseed-стратегия">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2166,13 +2166,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.13" class="md-nav__link">
+  <a href="#E.13" class="md-nav__link">
     <span class="md-ellipsis">
-      D.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)
+      E.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)">
+    <nav class="md-nav" aria-label="E.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2235,13 +2235,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.14" class="md-nav__link">
+  <a href="#E.14" class="md-nav__link">
     <span class="md-ellipsis">
-      D.14. Python stdlib: random, SystemRandom, secrets
+      E.14. Python stdlib: random, SystemRandom, secrets
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.14. Python stdlib: random, SystemRandom, secrets">
+    <nav class="md-nav" aria-label="E.14. Python stdlib: random, SystemRandom, secrets">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2295,13 +2295,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.15" class="md-nav__link">
+  <a href="#E.15" class="md-nav__link">
     <span class="md-ellipsis">
-      D.15. Когда какой генератор использовать
+      E.15. Когда какой генератор использовать
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.15. Когда какой генератор использовать">
+    <nav class="md-nav" aria-label="E.15. Когда какой генератор использовать">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2328,13 +2328,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#D.16" class="md-nav__link">
+  <a href="#E.16" class="md-nav__link">
     <span class="md-ellipsis">
-      D.16. Бенчмарки PRNG vs CSPRNG
+      E.16. Бенчмарки PRNG vs CSPRNG
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D.16. Бенчмарки PRNG vs CSPRNG">
+    <nav class="md-nav" aria-label="E.16. Бенчмарки PRNG vs CSPRNG">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2411,7 +2411,7 @@
                   
 
 
-<h1 id="d">Приложение D. Анатомия случайности<a class="headerlink" href="#d" title="Permanent link">#</a></h1>
+<h1 id="e">Приложение E. Анатомия случайности<a class="headerlink" href="#e" title="Permanent link">#</a></h1>
 <blockquote>
 <p><strong>От Вихря Мерсенна до <code>/dev/urandom</code></strong> — приложение разбирает, как именно компьютер делает «случайные» числа, чем PRNG отличается от CSPRNG, и почему <code>random</code> из stdlib нельзя ставить на stream crypto. Материал построен вокруг одной конкретной атаки: 624 выхода <code>random.getrandbits(32)</code> полностью раскрывают внутреннее состояние MT19937 — и следующий выход можно предсказать байт в байт. Это приложение — технический ответ на «не используйте <code>random</code> для безопасности», который часто дают без объяснения «почему».</p>
 </blockquote>
@@ -2419,15 +2419,15 @@
 <p>Случайность — фундаментальная потребность: тесты требуют разных данных, монте-карло — равномерности, криптография — непредсказуемости. Все три задачи в компьютере решает <strong>одна и та же физика</strong>: детерминированная машина, у которой нет настоящего источника случайности в opcode-наборе. Поэтому «случайное число» в программе — это всегда результат алгоритма, и этот алгоритм либо <strong>хороший</strong> (статистически неотличим от случайного), либо <strong>криптостойкий</strong> (даже при полном знании алгоритма следующий выход нельзя предсказать без знания секрета). Это разные свойства — и путать их опасно.</p>
 <p>Приложение построено по нарастающей сложности:</p>
 <ul>
-<li><strong>D.1–D.2</strong>: что вообще значит «случайный», какие бывают генераторы.</li>
-<li><strong>D.3–D.5</strong>: PRNG — <code>LCG</code>, <code>xorshift</code>, <code>PCG</code>. Как работают, какие проваливают тесты.</li>
-<li><strong>D.6–D.10</strong>: Вихрь Мерсенна MT19937 — анатомия, собственная реализация, атака <code>untempering</code>, восстановление состояния Python <code>random</code> по 624 выходам, предсказание токенов.</li>
-<li><strong>D.11–D.14</strong>: CSPRNG — Fortuna, kernel RNG, <code>/dev/urandom</code>, <code>secrets</code>.</li>
-<li><strong>D.15–D.16</strong>: что когда использовать, бенчмарки.</li>
+<li><strong>E.1–E.2</strong>: что вообще значит «случайный», какие бывают генераторы.</li>
+<li><strong>E.3–E.5</strong>: PRNG — <code>LCG</code>, <code>xorshift</code>, <code>PCG</code>. Как работают, какие проваливают тесты.</li>
+<li><strong>E.6–E.10</strong>: Вихрь Мерсенна MT19937 — анатомия, собственная реализация, атака <code>untempering</code>, восстановление состояния Python <code>random</code> по 624 выходам, предсказание токенов.</li>
+<li><strong>E.11–E.14</strong>: CSPRNG — Fortuna, kernel RNG, <code>/dev/urandom</code>, <code>secrets</code>.</li>
+<li><strong>E.15–E.16</strong>: что когда использовать, бенчмарки.</li>
 </ul>
 <p>Все замеры — CPython <strong>3.12.14</strong> на x86_64 Linux. Цифры — ориентировочные, важен порядок величин.</p>
 <hr />
-<h2 id="D.1">D.1. Что значит «случайный»<a class="headerlink" href="#D.1" title="Permanent link">#</a></h2>
+<h2 id="E.1">E.1. Что значит «случайный»<a class="headerlink" href="#E.1" title="Permanent link">#</a></h2>
 <p>Прежде чем разбирать алгоритмы — что мы вообще хотим от генератора? Три разных требования, и путать их нельзя.</p>
 <h3 id="1">1. Статистическая случайность<a class="headerlink" href="#1" title="Permanent link">#</a></h3>
 <p>Последовательность выглядит случайной: числа распределены равномерно, нет видимых паттернов, нет коротких периодов. <strong>Минимальное требование</strong> для большинства применений: каждый бит имеет шанс 50/50, нет корреляций между соседними значениями, длинные серии «1» или «0» встречаются с ожидаемой частотой.</p>
@@ -2435,7 +2435,7 @@
 <p><strong>Почему это не значит «криптостойкий»</strong>: простейший счётчик <code>0, 1, 2, 3, ...</code> пройдёт <code>chi-square</code> на длинной дистанции (равномерное распределение) — но это не случайность. И наоборот: генератор, идеально проходящий все статистические тесты, может оказаться <strong>полностью предсказуемым</strong>, если его внутреннее состояние можно восстановить по выходам. Именно так устроен Вихрь Мерсенна: прекрасная статистика, нулевая криптостойкость.</p>
 <h3 id="2">2. Вычислительная непредсказуемость<a class="headerlink" href="#2" title="Permanent link">#</a></h3>
 <p>Даже зная алгоритм и <strong>N предыдущих выходов</strong>, нельзя предсказать следующий выход быстрее, чем за <code>2**k</code> операций, где <code>k</code> — размер секрета (seed или внутреннее состояние). Это уже криптографическое свойство: при <code>k = 256</code> бит даже государство с суперкомпьютером не сможет угадать следующее число.</p>
-<p>Именно это свойство отличает <strong>CSPRNG</strong> (Cryptographically Secure PRNG) от обычного <strong>PRNG</strong>. Вихрь Мерсенна — PRNG: 624 выхода <code>getrandbits(32)</code> полностью раскрывают его состояние (см. D.8). <code>/dev/urandom</code> — CSPRNG: даже если злоумышленник увидит миллиарды байт выхода, следующий бит останется непредсказуемым без знания внутреннего состояния ядра.</p>
+<p>Именно это свойство отличает <strong>CSPRNG</strong> (Cryptographically Secure PRNG) от обычного <strong>PRNG</strong>. Вихрь Мерсенна — PRNG: 624 выхода <code>getrandbits(32)</code> полностью раскрывают его состояние (см. E.8). <code>/dev/urandom</code> — CSPRNG: даже если злоумышленник увидит миллиарды байт выхода, следующий бит останется непредсказуемым без знания внутреннего состояния ядра.</p>
 <h3 id="3">3. Источниковая энтропия<a class="headerlink" href="#3" title="Permanent link">#</a></h3>
 <p>Откуда берётся первичная случайность? Из физических процессов, которые машина <strong>не может</strong> смоделировать детерминированно:</p>
 <ul>
@@ -2474,7 +2474,7 @@
 </table>
 <p><strong>Главное правило</strong>: «случайность» — это не свойство последовательности байт, а свойство <strong>генератора + наблюдателя</strong>. Один и тот же выход <code>0x4F2A8B...</code> от MT19937 — статистически случаен, но предсказуем. Тот же выход от <code>/dev/urandom</code> — и статистически случаен, и непредсказуем. Байты неразличимы, безопасность — нет.</p>
 <hr />
-<h2 id="D.2">D.2. Таксономия генераторов<a class="headerlink" href="#D.2" title="Permanent link">#</a></h2>
+<h2 id="E.2">E.2. Таксономия генераторов<a class="headerlink" href="#E.2" title="Permanent link">#</a></h2>
 <p>Все генераторы случайных чисел делятся на три слоя.</p>
 <h3 id="1-hardware-rng">1. Hardware RNG — физические источники<a class="headerlink" href="#1-hardware-rng" title="Permanent link">#</a></h3>
 <p>Превращают физический шум в биты: <code>RDRAND</code>/<code>RDSEED</code> (Intel/AMD, тепловой шум в кремнии), внешний <code>/dev/hwrng</code> (TPM, специализированные платы), квантовые генераторы (счёт фотонов). Используются в основном как один из источников entropy для следующего слоя, а не напрямую.</p>
@@ -2550,7 +2550,7 @@
 </table>
 <p>Таблица иллюстрирует главное: <strong>PRNG — для скорости, CSPRNG — для безопасности</strong>. Критерий выбора один: является ли выход <strong>секретом</strong>. Если да — только CSPRNG.</p>
 <hr />
-<h2 id="D.3">D.3. LCG — Linear Congruential Generator<a class="headerlink" href="#D.3" title="Permanent link">#</a></h2>
+<h2 id="E.3">E.3. LCG — Linear Congruential Generator<a class="headerlink" href="#E.3" title="Permanent link">#</a></h2>
 <p>Самый старый (Lehmer, 1951) и самый распространённый алгоритм PRNG в мире — потому что его реализация занимает пять строчек и работает за <code>O(1)</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">lcg</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1103515245</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12345</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">31</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Xn+1 = (a * Xn + c) mod m  —  классический LCG (параметры glibc).&quot;&quot;&quot;</span>
@@ -2572,7 +2572,7 @@
 <p><strong>Младшие биты не случайны.</strong> Последний бит LCG — это простая альтернирующая последовательность <code>0,1,0,1,0,1...</code> (когда <code>c</code> нечётное). Предпоследний — цикл длины 4, и т.д. Поэтому <code>rand() % 100</code> в <code>glibc</code> — <strong>очень</strong> неравномерно.</p>
 </li>
 <li>
-<p><strong>Полная обратимость.</strong> Зная <code>a</code>, <code>c</code>, <code>m</code> и один выход <code>x_n</code>, можно восстановить <code>x_{n+1}</code> и <code>x_{n-1}</code> — LCG не имеет «секрета», кроме seed, и seed восстанавливается из любого выхода (см. D.4).</p>
+<p><strong>Полная обратимость.</strong> Зная <code>a</code>, <code>c</code>, <code>m</code> и один выход <code>x_n</code>, можно восстановить <code>x_{n+1}</code> и <code>x_{n-1}</code> — LCG не имеет «секрета», кроме seed, и seed восстанавливается из любого выхода (см. E.4).</p>
 </li>
 </ol>
 <h3 id="lcg_1">Когда LCG ещё встречается<a class="headerlink" href="#lcg_1" title="Permanent link">#</a></h3>
@@ -2584,7 +2584,7 @@
 </ul>
 <p>В новом коде LCG <strong>не используют</strong> — даже если криптостойкость не нужна, есть <code>PCG</code> и <code>xorshift</code> того же порядка сложности, но лучшего качества.</p>
 <hr />
-<h2 id="D.4">D.4. Атака на LCG: восстановление параметров<a class="headerlink" href="#D.4" title="Permanent link">#</a></h2>
+<h2 id="E.4">E.4. Атака на LCG: восстановление параметров<a class="headerlink" href="#E.4" title="Permanent link">#</a></h2>
 <p>Если в программе используется LCG и атакующий видит несколько подряд идущих выходов <code>x_0, x_1, x_2, ...</code>, он может <strong>полностью восстановить</strong> параметры <code>a</code>, <code>c</code>, <code>m</code> — даже если они секретные.</p>
 <p>Идея такая. По определению:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>x_1 = (a * x_0 + c) mod m
@@ -2687,7 +2687,7 @@
 <p><strong>6 выходов — и полное восстановление.</strong> Никакой криптостойкости у LCG нет и быть не может: алгоритм — линейное уравнение, а 6 выходов дают 6 уравнений с 3 неизвестными (<code>a</code>, <code>c</code>, <code>m</code>).</p>
 <p>Это была классическая проблема в ранних веб-сервисах: <code>PHP 4</code>/<code>5</code> использовал LCG для генерации session-id, и атакующий, увидев несколько session-id, мог восстановить seed и угадывать чужие сессии. Аналогично — ранние версии <code>Netscape SSL</code> (Goldberg &amp; Wagner, <em>Randomness and the Netscape Browser</em>, 1995): 30-битный seed LCG перебирался полностью за минуты.</p>
 <hr />
-<h2 id="D.5">D.5. Регистровые PRNG: xorshift и PCG<a class="headerlink" href="#D.5" title="Permanent link">#</a></h2>
+<h2 id="E.5">E.5. Регистровые PRNG: xorshift и PCG<a class="headerlink" href="#E.5" title="Permanent link">#</a></h2>
 <p>Линейные генераторы с состоянием в регистре фиксированной длины — следующий шаг после LCG. Вместо одного числа <code>X_n</code> храним несколько, и каждое обновление — это несколько <code>XOR</code> + <code>SHIFT</code> операций.</p>
 <h3 id="xorshift-marsaglia-2003">xorshift (Marsaglia, 2003)<a class="headerlink" href="#xorshift-marsaglia-2003" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span> <span class="nf">xorshift128</span><span class="p">():</span>
@@ -2730,7 +2730,7 @@
 <p>Несмотря на хорошую статистику, любой из них <strong>обратим</strong>: достаточно нескольких выходов (4 для xorshift128, 4 для PCG32), чтобы восстановить внутреннее состояние. Линейная структура — и <code>XOR</code>-операции — оставляют математический след, который можно «обратить» системой уравнений над GF(2).</p>
 <p>Поэтому в крипто-контекстах они <strong>никогда</strong> не используются. Их место — там, где нужна скорость и воспроизводимость, но не безопасность: тесты, симуляции, игры.</p>
 <hr />
-<h2 id="D.6">D.6. Вихрь Мерсенна MT19937 — анатомия<a class="headerlink" href="#D.6" title="Permanent link">#</a></h2>
+<h2 id="E.6">E.6. Вихрь Мерсенна MT19937 — анатомия<a class="headerlink" href="#E.6" title="Permanent link">#</a></h2>
 <p>Вихрь Мерсенна (Mersenne Twister, Matsumoto &amp; Nishimura, 1997) — генератор общего назначения, который с 2007 года используется в CPython <code>random</code>. Не самый быстрый, не самый качественный, не самый компактный — но <strong>достаточно хороший</strong> для большинства задач и при этом воспроизводимый через seed. Идеальный компромисс для стандартной библиотеки.</p>
 <h3 id="_5">Параметры<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>w = 32        # размер слова (бит)
@@ -2776,7 +2776,7 @@
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">y</span> <span class="o">^=</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">18</span><span class="p">)</span>              <span class="c1"># l</span>
 </span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div>
-<p>Temper — это «косметика»: он делает выходы <strong>более равномерно распределёнными</strong> статистически (улучшает распределение бит). Без temper MT19937 всё ещё работает, но проваливает часть тестов TestU01. <strong>Главная для нас деталь</strong>: temper <strong>обратим</strong>. Это и есть та дверь, через которую проходит атака в D.8.</p>
+<p>Temper — это «косметика»: он делает выходы <strong>более равномерно распределёнными</strong> статистически (улучшает распределение бит). Без temper MT19937 всё ещё работает, но проваливает часть тестов TestU01. <strong>Главная для нас деталь</strong>: temper <strong>обратим</strong>. Это и есть та дверь, через которую проходит атака в E.8.</p>
 <h3 id="mt19937-pipeline">Поток данных MT19937<a class="headerlink" href="#mt19937-pipeline" title="Permanent link">#</a></h3>
 <p>Каждый выход MT19937 — результат трёхэтапного конвейера:</p>
 <ol>
@@ -2788,15 +2788,15 @@
 <h3 id="cpython">Что использует CPython<a class="headerlink" href="#cpython" title="Permanent link">#</a></h3>
 <p><code>random.Random</code> — это обёртка над MT19937. Реализация на C (<code>Modules/_randommodule.c</code>) делает ровно то, что описано выше: <code>init_by_array</code>, <code>genrand_int32</code>, <code>genrand_uint32</code>. Python-интерфейс:</p>
 <ul>
-<li><code>random.seed(x)</code> → вызывает <code>init_by_array</code> (см. D.7) с разбиением <code>x</code> на 32-битные слова.</li>
+<li><code>random.seed(x)</code> → вызывает <code>init_by_array</code> (см. E.7) с разбиением <code>x</code> на 32-битные слова.</li>
 <li><code>random.getrandbits(32)</code> → выдаёт один <code>temper(MT[index++])</code>.</li>
-<li><code>random.random()</code> → берёт <strong>два</strong> выхода <code>MT</code> и склеивает в 53-битный float (см. D.10).</li>
+<li><code>random.random()</code> → берёт <strong>два</strong> выхода <code>MT</code> и склеивает в 53-битный float (см. E.10).</li>
 <li><code>random.getstate()</code> → возвращает кортеж <code>(3, MT[0..623] + [index], gauss_next)</code>.</li>
 <li><code>random.setstate(state)</code> → восстанавливает состояние.</li>
 </ul>
 <p>Число <code>3</code> в начале state — это версия протокола (CPython 2.x использовал <code>2</code>). Сам массив — 625 элементов: 624 слова MT + индекс. Это и есть <strong>всё</strong> состояние — никакого другого секрета нет.</p>
 <hr />
-<h2 id="D.7">D.7. Свой MT19937 на Python<a class="headerlink" href="#D.7" title="Permanent link">#</a></h2>
+<h2 id="E.7">E.7. Свой MT19937 на Python<a class="headerlink" href="#E.7" title="Permanent link">#</a></h2>
 <p>Чтобы доказать, что в MT19937 нет чёрных ящиков — собственная реализация. ~150 строк, без зависимостей, идентичная CPython по выходам.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">class</span> <span class="nc">MT19937</span><span class="p">:</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;MT19937 — полная реализация, совместимая с CPython random.Random.&quot;&quot;&quot;</span>
@@ -2961,7 +2961,7 @@
 </span></code></pre></div>
 <p>CPython-реализация в ~16× быстрее нашей — это цена за чистый Python против C. Алгоритм идентичен, разница только в скорости.</p>
 <hr />
-<h2 id="D.8">D.8. Атака untempering на MT19937<a class="headerlink" href="#D.8" title="Permanent link">#</a></h2>
+<h2 id="E.8">E.8. Атака untempering на MT19937<a class="headerlink" href="#E.8" title="Permanent link">#</a></h2>
 <p>Вот здесь начинается то, ради чего написано это приложение. <strong>MT19937 — криптографически нестойкий</strong>, и это можно продемонстрировать в 80 строк кода.</p>
 <h3 id="temper_1">Главная уязвимость: temper обратим<a class="headerlink" href="#temper_1" title="Permanent link">#</a></h3>
 <p><code>temper(y)</code> — это композиция четырёх операций:</p>
@@ -3002,7 +3002,7 @@
 </span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="k">return</span> <span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
 </span></code></pre></div>
 <p>Проверка:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># На выходах из D.7:</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># На выходах из E.7:</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2098821113</span><span class="p">,</span> <span class="mi">3360323079</span><span class="p">,</span> <span class="mi">4244398187</span><span class="p">]:</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">raw</span> <span class="o">=</span> <span class="n">untemper</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">re_tempered</span> <span class="o">=</span> <span class="n">MT19937</span><span class="o">.</span><span class="n">_temper</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -3018,7 +3018,7 @@
 <p><code>MT[0..623]</code> — 624 слова по 32 бита. Если атакующий наблюдает <strong>ровно 624</strong> последовательных выхода <code>getrandbits(32)</code>, он получает 624 значения <code>temper(MT[i])</code>, применяет <code>untemper</code> к каждому — и восстанавливает весь массив <code>MT[0..623]</code>. После этого он знает состояние генератора целиком: и прошлое (через обращение twist), и будущее (через продолжение).</p>
 <p>На практике часто хватает <strong>меньше</strong>: если между наблюдениями было меньше 624 вызовов, можно пропустить неизвестные позиции и вычислить их через twist-структуру. Но 624 — гарантированный предел для полной реконструкции.</p>
 <hr />
-<h2 id="D.9">D.9. Полная атака: восстановление state MT19937<a class="headerlink" href="#D.9" title="Permanent link">#</a></h2>
+<h2 id="E.9">E.9. Полная атака: восстановление state MT19937<a class="headerlink" href="#E.9" title="Permanent link">#</a></h2>
 <p>Соберём всё вместе: атакующий видит 624 выхода <code>random.getrandbits(32)</code> из CPython-программы, восстанавливает состояние и предсказывает следующие N выходов байт в байт.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span> <span class="nn">random</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -3114,7 +3114,7 @@
 <p>Это не делает атаку невозможной — её просто нужно делать <strong>с перебором</strong>: для каждой пары выходов восстановить 2048 гипотез, проверить, какие из них согласуются с известной структурой MT19937, и оставить только валидные. Это делается за разумное время (несколько секунд на современных CPU).</p>
 <p>Полная реализация такой атаки описана в статье Schutzwerk <a href="https://www.schutzwerk.com/en/43/blog/cracking-random-number-generators-using-machine-learning/">«How to crack MT19937 with Z3 SMT solver»</a> и в десятках публичных CTF-writeup'ов (поиск «MT19937 state recovery» в CTFtime даёт примеры с разными упрощениями — от перебора до SMT-солверов). Для простоты мы в этом приложении используем <code>getrandbits(32)</code> — но в реальной программе, где вы видите только <code>random.random()</code>, атака тоже работает, просто медленнее.</p>
 <hr />
-<h2 id="D.10">D.10. Практический сценарий: предсказание токена<a class="headerlink" href="#D.10" title="Permanent link">#</a></h2>
+<h2 id="E.10">E.10. Практический сценарий: предсказание токена<a class="headerlink" href="#E.10" title="Permanent link">#</a></h2>
 <p>Соберём всё в боевой сценарий. Представьте веб-сервис, который выдаёт session-token:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># VICTIM SERVICE — уязвимый код</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="kn">import</span> <span class="nn">random</span>
@@ -3199,7 +3199,7 @@
 </ul>
 <p>Везде, где есть <code>random</code> в security-контексте — уязвимость. Не «потому что <code>random</code> плохой», а <strong>потому что для этого он не предназначен</strong>.</p>
 <hr />
-<h2 id="D.11">D.11. CSPRNG: требования и NIST SP 800-90A<a class="headerlink" href="#D.11" title="Permanent link">#</a></h2>
+<h2 id="E.11">E.11. CSPRNG: требования и NIST SP 800-90A<a class="headerlink" href="#E.11" title="Permanent link">#</a></h2>
 <p>Если PRNG (вроде MT19937) оптимизирован под скорость и статистическое качество, то <strong>CSPRNG</strong> оптимизирован под непредсказуемость. Скорость — вторична.</p>
 <h3 id="csprng">Три ключевых свойства CSPRNG<a class="headerlink" href="#csprng" title="Permanent link">#</a></h3>
 <ol>
@@ -3252,7 +3252,7 @@
 <p>NIST SP 800-90A изначально включал четвёртый алгоритм — <strong>Dual_EC_DRBG</strong> (на эллиптических кривых). В 2007 году Дэн Шумов и его студенты показали, что алгоритм содержит <strong>backdoor</strong>: в стандарте были зафиксированы две точки эллиптической кривой <code>P, Q</code>, и тот, кто знал связь между ними (закрытый ключ), мог по 32 байтам выхода восстановить состояние. В 2013 году публикации на основе утечек Snowden подтвердили: NSA знало эту связь и лоббировало стандарт. В 2014 NIST убрал Dual_EC_DRBG из стандарта.</p>
 <p>Урок: даже криптостойкий алгоритм может быть уязвим при определённых параметрах. Сам по себе Dual_EC_DRBG корректен — обратная уязвимость возникает только если точки <code>P</code> и <code>Q</code> связаны известным злоумышленнику соотношением. Большинство криптоалгоритмов содержат константы (S-box в AES, начальные значения SHA-256, точки кривых в ECDSA), и в открыто опубликованных стандартах эти константы обычно проверяются сообществом на отсутствие подобной структуры. Опасность возникает, когда константы «магические» — то есть не объяснены ничем, кроме «так выбрано», и не поддаются независимому анализу.</p>
 <hr />
-<h2 id="D.12">D.12. Fortuna: 32 пула entropy и reseed-стратегия<a class="headerlink" href="#D.12" title="Permanent link">#</a></h2>
+<h2 id="E.12">E.12. Fortuna: 32 пула entropy и reseed-стратегия<a class="headerlink" href="#E.12" title="Permanent link">#</a></h2>
 <p>Fortuna — CSPRNG, предложенный Брюсом Шнайером и Нильсом Фергюсоном в книге <em>Practical Cryptography</em> (2003). Это <strong>алгоритмическая надстройка</strong> над AES-256-CTR (или любым блочным шифром): идея в том, чтобы аккуратно собирать entropy из множества источников и <strong>автоматически восстанавливаться</strong> даже после компрометации части источников.</p>
 <h3 id="fortuna-architecture">Архитектура<a class="headerlink" href="#fortuna-architecture" title="Permanent link">#</a></h3>
 <p>Fortuna состоит из трёх компонент, связанных однонаправленным потоком данных: entropy accumulator → generator → выходы, с обратной связью от accumulator к generator при reseed.</p>
@@ -3281,7 +3281,7 @@
 </ul>
 <p>Apple в iOS/macOS явно называет свой RNG «Fortuna-derived».</p>
 <hr />
-<h2 id="D.13">D.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)<a class="headerlink" href="#D.13" title="Permanent link">#</a></h2>
+<h2 id="E.13">E.13. Kernel RNG: /dev/urandom, /dev/random, getrandom(2)<a class="headerlink" href="#E.13" title="Permanent link">#</a></h2>
 <p>В Linux kernel RNG — это подсистема <code>drivers/char/random.c</code>, которая собирает entropy из нескольких источников и питает CSPRNG. Пользовательский интерфейс — три узла:</p>
 <h3 id="entropy-linux-kernel">Источники entropy в Linux kernel<a class="headerlink" href="#entropy-linux-kernel" title="Permanent link">#</a></h3>
 <table>
@@ -3379,7 +3379,7 @@
 </ul>
 <p>Все три — CSPRNG. Между ними нет разницы по качеству, только по API.</p>
 <hr />
-<h2 id="D.14">D.14. Python stdlib: random, SystemRandom, secrets<a class="headerlink" href="#D.14" title="Permanent link">#</a></h2>
+<h2 id="E.14">E.14. Python stdlib: random, SystemRandom, secrets<a class="headerlink" href="#E.14" title="Permanent link">#</a></h2>
 <p>Три модуля в stdlib, два RNG под капотом. Карта:</p>
 <table>
 <thead>
@@ -3465,7 +3465,7 @@
 </span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">genrand_int32</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span>  <span class="c1"># 26 бит</span>
 </span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="mf">67108864.0</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">9007199254740992.0</span><span class="p">)</span>  <span class="c1"># 2**53</span>
 </span></code></pre></div>
-<p>Каждый <code>random.random()</code> <strong>съедает два</strong> выхода MT19937, оставляя 53 бита из 64. Это и есть причина, по которой атака через <code>random.random()</code> сложнее (см. D.9): 5 + 6 = 11 бит каждого выходного блока теряются.</p>
+<p>Каждый <code>random.random()</code> <strong>съедает два</strong> выхода MT19937, оставляя 53 бита из 64. Это и есть причина, по которой атака через <code>random.random()</code> сложнее (см. E.9): 5 + 6 = 11 бит каждого выходного блока теряются.</p>
 <p><strong><code>random.gauss()</code></strong> — особый случай. Использует Box-Muller transform:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">def</span> <span class="nf">gauss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
 </span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    <span class="n">random</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span>
@@ -3582,7 +3582,7 @@
 </span></code></pre></div>
 <p>Тогда никакой внешний <code>random.seed()</code> не сломает вашу функцию.</p>
 <hr />
-<h2 id="D.15">D.15. Когда какой генератор использовать<a class="headerlink" href="#D.15" title="Permanent link">#</a></h2>
+<h2 id="E.15">E.15. Когда какой генератор использовать<a class="headerlink" href="#E.15" title="Permanent link">#</a></h2>
 <p>Карта принятия решений:</p>
 <ol>
 <li><strong>Нужно ли ВЫСОКОЕ качество случайности?</strong></li>
@@ -3714,12 +3714,12 @@
 </tr>
 <tr>
 <td>LCG для чего бы то ни было</td>
-<td>Уже показано в D.4 — ломается за 6 выходов</td>
+<td>Уже показано в E.4 — ломается за 6 выходов</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="D.16">D.16. Бенчмарки PRNG vs CSPRNG<a class="headerlink" href="#D.16" title="Permanent link">#</a></h2>
+<h2 id="E.16">E.16. Бенчмарки PRNG vs CSPRNG<a class="headerlink" href="#E.16" title="Permanent link">#</a></h2>
 <p>Все замеры на CPython 3.12.14, Linux 5.x, x86_64.</p>
 <h3 id="1-32-">1. Скорость генерации 32-битного числа<a class="headerlink" href="#1-32-" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">import</span> <span class="nn">timeit</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">secrets</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

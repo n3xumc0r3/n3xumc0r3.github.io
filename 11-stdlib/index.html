@@ -1639,11 +1639,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -1660,11 +1660,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -1681,11 +1681,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -1702,11 +1702,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -1723,11 +1723,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -5112,7 +5112,7 @@
 </span><span id="__span-129-2"><a id="__codelineno-129-2" name="__codelineno-129-2" href="#__codelineno-129-2"></a><span class="kn">import</span> <span class="nn">sys</span>
 </span><span id="__span-129-3"><a id="__codelineno-129-3" name="__codelineno-129-3" href="#__codelineno-129-3"></a><span class="n">sys</span><span class="o">.</span><span class="n">path</span>   <span class="c1"># [..., &#39;/usr/local/my/custom/path&#39;, &#39;/another/path/to/packages&#39;]  — пути добавляются в КОНЕЦ</span>
 </span></code></pre></div>
-<p>⚠️ <strong><code>.pth</code> файлы могут выполнять arbitrary code</strong>: если строка начинается с <code>import</code>, Python выполнит её. Это известный вектор атак (см. Приложение B — обход проверяющих систем).</p>
+<p>⚠️ <strong><code>.pth</code> файлы могут выполнять arbitrary code</strong>: если строка начинается с <code>import</code>, Python выполнит её. Это известный вектор атак (см. Приложение C — обход проверяющих систем).</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-130-1"><a id="__codelineno-130-1" name="__codelineno-130-1" href="#__codelineno-130-1"></a># malicious.pth:
 </span><span id="__span-130-2"><a id="__codelineno-130-2" name="__codelineno-130-2" href="#__codelineno-130-2"></a>import os; os.system(&quot;echo hacked&quot;)
 </span></code></pre></div>

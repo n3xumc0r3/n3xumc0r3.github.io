@@ -2071,11 +2071,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -2092,11 +2092,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -2113,11 +2113,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -2134,11 +2134,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -2155,11 +2155,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -3929,7 +3929,7 @@
 </span><span id="__span-25-29"><a id="__codelineno-25-29" name="__codelineno-25-29" href="#__codelineno-25-29"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xff\xff</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-25-30"><a id="__codelineno-25-30" name="__codelineno-25-30" href="#__codelineno-25-30"></a><span class="o">-</span><span class="mi">1</span>
 </span></code></pre></div>
-<p><code>int.from_bytes</code>/<code>to_bytes</code> удобнее <code>struct.pack</code>/<code>unpack</code>, когда работаете с отдельными целыми числами (не массивами). Применения: парсинг бинарных протоколов, хеширование, обфускация (см. Приложение B — спрятать число как байты).</p>
+<p><code>int.from_bytes</code>/<code>to_bytes</code> удобнее <code>struct.pack</code>/<code>unpack</code>, когда работаете с отдельными целыми числами (не массивами). Применения: парсинг бинарных протоколов, хеширование, обфускация (см. Приложение C — спрятать число как байты).</p>
 <p>⚠️ <code>to_bytes(length, ...)</code> требует <strong>явной длины</strong> и упадёт с <code>OverflowError</code>, если число не помещается: <code>(256).to_bytes(1, "big")</code> — <code>OverflowError</code>. Длину можно вычислить: <code>((n).bit_length() + 7) // 8 or 1</code>.</p>
 <p><strong>Python 3.11+:</strong> оба параметра стали опциональными — сигнатура <code>to_bytes(length=1, byteorder='big', *, signed=False)</code>. Но дефолтная длина — ровно <strong>1 байт</strong>: <code>(1024).to_bytes()</code> упадёт с <code>OverflowError: int too big to convert</code>. Автоподбора минимальной длины нет ни в одной версии — считайте сами: <code>(1024).to_bytes(((1024).bit_length() + 7) // 8 or 1)</code> → <code>b'\x04\x00'</code>.</p>
 <p><strong>Полный обзор числовых литералов:</strong></p>
@@ -4358,7 +4358,7 @@
 <ul>
 <li><strong>Крипто</strong>: хеши (<code>hashlib.sha256(...).hexdigest()</code> ↔ <code>bytes.fromhex</code>), HMAC, подписи.</li>
 <li><strong>Бинарные протоколы</strong>: MAC-адреса (<code>b'\x00\x1a\x2b\x3c\x4d\x5e'.hex(':')</code> → <code>'00:1a:2b:3c:4d:5e'</code>), UUID.</li>
-<li><strong>Обфускация</strong> (см. Приложение B): спрятать ASCII-строку как hex, развернуть в рантайме — <code>bytes.fromhex("48656c6c6f").decode()</code> → <code>'Hello'</code>.</li>
+<li><strong>Обфускация</strong> (см. Приложение C): спрятать ASCII-строку как hex, развернуть в рантайме — <code>bytes.fromhex("48656c6c6f").decode()</code> → <code>'Hello'</code>.</li>
 </ul>
 <p>⚠️ <strong><code>.hex()</code> vs <code>binascii.hexlify()</code></strong> — почти эквивалентны, но <code>.hex()</code> возвращает <code>str</code>, а <code>hexlify</code> — <code>bytes</code>. Современный код — <code>.hex()</code>, он короче.</p>
 <p>⚠️ <strong><code>.hex()</code> на <code>bytearray</code></strong> — тоже работает, возвращает <code>str</code>. Аналогично <code>bytes.hex()</code>.</p>
@@ -5377,7 +5377,7 @@
 </span><span id="__span-102-6"><a id="__codelineno-102-6" name="__codelineno-102-6" href="#__codelineno-102-6"></a><span class="c1"># Эквивалентно (но с or — только если candidates известны статически):</span>
 </span><span id="__span-102-7"><a id="__codelineno-102-7" name="__codelineno-102-7" href="#__codelineno-102-7"></a><span class="n">first_available</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span>
 </span></code></pre></div>
-<p>В обфускации (см. Приложение B) <code>and</code>/<code>or</code> удобны как замена <code>if</code> — особенно когда надо уложить логику в одну строку через <code>;</code> или в list comprehension.</p>
+<p>В обфускации (см. Приложение C) <code>and</code>/<code>or</code> удобны как замена <code>if</code> — особенно когда надо уложить логику в одну строку через <code>;</code> или в list comprehension.</p>
 <h3 id="1.8-truthiness">Truthiness — что считается falsy в Python<a class="headerlink" href="#1.8-truthiness" title="Permanent link">#</a></h3>
 <p>Python использует <strong>преобразование к bool</strong> в <code>if</code>/<code>while</code>/<code>and</code>/<code>or</code>/<code>filter</code>/<code>any</code>/<code>all</code>/etc. Полный список falsy значений:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-103-1"><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a><span class="c1"># Falsy (преобразуются в False):</span>
@@ -6466,7 +6466,7 @@
 <p><strong>Где это уместно и даже полезно</strong>:</p>
 <ul>
 <li><strong>REPL/notebook'ы</strong> — короткая отладка без необходимости писать 2 строки.</li>
-<li><strong>Code golf</strong> — соревнования на кратчайший код (см. <strong>Приложение C</strong>). <code>[print(i)for i in range(10)]</code> — 28 символов против 32 у <code>for i in range(10):\n    print(i)</code>; listcomp-with-side-effects там — стандартная идиома. Главный приём сжатия — <strong>убирание пробелов</strong> (после запятых, вокруг операторов, перед <code>:</code> в срезах) — каждый пробел = +1 символ, на типичной программе это 5–15% экономии бесплатно. В code golf также есть трюк с «комментариями через <code>""</code><strong> — <code>print(1);"Тут текст";print(1+1)</code>, но </strong>на реальных соревнованиях это пустая трата символов**: если пишете комментарии, вы не дожали решение. Подробнее — в Приложении C.</li>
+<li><strong>Code golf</strong> — соревнования на кратчайший код (см. <strong>Приложение D</strong>). <code>[print(i)for i in range(10)]</code> — 28 символов против 32 у <code>for i in range(10):\n    print(i)</code>; listcomp-with-side-effects там — стандартная идиома. Главный приём сжатия — <strong>убирание пробелов</strong> (после запятых, вокруг операторов, перед <code>:</code> в срезах) — каждый пробел = +1 символ, на типичной программе это 5–15% экономии бесплатно. В code golf также есть трюк с «комментариями через <code>""</code><strong> — <code>print(1);"Тут текст";print(1+1)</code>, но </strong>на реальных соревнованиях это пустая трата символов**: если пишете комментарии, вы не дожали решение. Подробнее — в Приложении C.</li>
 <li><strong>Когда результат действительно нужен</strong>:</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-171-1"><a id="__codelineno-171-1" name="__codelineno-171-1" href="#__codelineno-171-1"></a><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>           <span class="c1"># список нужен</span>
@@ -6591,9 +6591,9 @@
 <p><strong>Когда пробелы опциональны, но PEP 8 их требует</strong> — почти всегда. Игнорировать PEP 8 в продакшене — плохая идея, даже если код работает. Линтеры (<code>flake8</code>, <code>ruff</code>) будут ругаться.</p>
 <p><strong>Когда игнорирование PEP 8 оправдано:</strong></p>
 <ul>
-<li><strong>Code golf</strong> — соревнования по краткости кода (см. <strong>Приложение C</strong>).</li>
+<li><strong>Code golf</strong> — соревнования по краткости кода (см. <strong>Приложение D</strong>).</li>
 <li><strong>REPL</strong> — для быстрых проверок, особенно в скриптах-«однодневках».</li>
-<li><strong>Обфускация</strong> — намеренное усложнение чтения (см. Приложение B).</li>
+<li><strong>Обфускация</strong> — намеренное усложнение чтения (см. Приложение C).</li>
 <li><strong>Учебные примеры</strong> — когда хотите показать, что синтаксис гибче, чем кажется.</li>
 </ul>
 <h3 id="1.20-kogda">Когда стоит нарушать PEP 8<a class="headerlink" href="#1.20-kogda" title="Permanent link">#</a></h3>
@@ -7115,7 +7115,7 @@
 <ul>
 <li>REPL для быстрых проверок.</li>
 <li><code>python -c "..."</code> однострочниках.</li>
-<li>Code golf (см. Приложение C).</li>
+<li>Code golf (см. Приложение D).</li>
 <li>Configuration-скриптах в одну строку (<code>__init__.py</code> с <code>from .x import *; from .y import *</code>).</li>
 </ul>
 <p>В production-коде — почти всегда лучше перенести на отдельные строки.</p>

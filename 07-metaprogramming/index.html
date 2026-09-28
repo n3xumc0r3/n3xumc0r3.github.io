@@ -1159,11 +1159,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -1180,11 +1180,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -1201,11 +1201,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -1222,11 +1222,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -1243,11 +1243,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -1984,7 +1984,7 @@
 </span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># __import__(&#39;os&#39;).system(&#39;echo hacked&#39;)         ← выполнение произвольной команды</span>
 </span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1"># open(&#39;/etc/passwd&#39;).read()                  ← чтение системных файлов</span>
 </span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># __import__(&#39;subprocess&#39;).check_output(&#39;whoami&#39;, shell=True)</span>
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># ().__class__.__base__.__subclasses__()       ← обход песочницы через __subclasses__() (см. Приложение B.5)</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># ().__class__.__base__.__subclasses__()       ← обход песочницы через __subclasses__() (см. Приложение D.5)</span>
 </span></code></pre></div>
 <p><code>eval</code> исполняет <strong>любое</strong> Python-выражение, не только арифметику. Строка <code>__import__('os').system('...')</code> — это валидное Python-выражение, оно вычислится и вернёт код завершения процесса. <code>eval</code> не делает различия между <code>2 + 2</code> и <code>os.system('echo hacked')</code> — для него это оба «выражения».</p>
 <p><strong>Более того</strong>: <code>eval</code> с ограниченным <code>globals</code>/<code>locals</code> тоже <strong>не спасает</strong>:</p>
@@ -2522,7 +2522,7 @@
 </span><span id="__span-50-31"><a id="__codelineno-50-31" name="__codelineno-50-31" href="#__codelineno-50-31"></a><span class="c1"># def _0(_1, _2):</span>
 </span><span id="__span-50-32"><a id="__codelineno-50-32" name="__codelineno-50-32" href="#__codelineno-50-32"></a><span class="c1">#     return _1 * 10 + _2</span>
 </span></code></pre></div>
-<p>⚠️ Этот приём <strong>не отменяет</strong> плагиат-детекторы (см. Приложение A) — они тоже работают через AST-нормализацию, сливают <code>_0</code>, <code>_1</code> обратно в <code>IDENTIFIER</code>. Но он скрывает смысл от <strong>человека</strong>, читающего код.</p>
+<p>⚠️ Этот приём <strong>не отменяет</strong> плагиат-детекторы (см. Приложение B) — они тоже работают через AST-нормализацию, сливают <code>_0</code>, <code>_1</code> обратно в <code>IDENTIFIER</code>. Но он скрывает смысл от <strong>человека</strong>, читающего код.</p>
 <h3 id="7.13-polnyy-instrumentation">Полный пример: instrumentation — подсчёт вызовов функций<a class="headerlink" href="#7.13-polnyy-instrumentation" title="Permanent link">#</a></h3>
 <p>Вставляем <code>__count_X += 1</code> в начало каждой функции — типичная основа профайлеров и coverage-инструментов:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kn">import</span> <span class="nn">ast</span>
@@ -2561,7 +2561,7 @@
 </span><span id="__span-51-34"><a id="__codelineno-51-34" name="__codelineno-51-34" href="#__codelineno-51-34"></a><span class="c1">#     __count_g += 1</span>
 </span><span id="__span-51-35"><a id="__codelineno-51-35" name="__codelineno-51-35" href="#__codelineno-51-35"></a><span class="c1">#     return y + 1</span>
 </span></code></pre></div>
-<p>Применения <code>ast</code>: написание своих линтеров, форматеров (Black, autopep8), анализаторов зависимостей, обфускаторов, и — да — систем плагиата (см. Приложение A).</p>
+<p>Применения <code>ast</code>: написание своих линтеров, форматеров (Black, autopep8), анализаторов зависимостей, обфускаторов, и — да — систем плагиата (см. Приложение B).</p>
 <h2 id="7.14">7.14. <code>dir()</code> — самый быстрый способ исследования API<a class="headerlink" href="#7.14" title="Permanent link">#</a></h2>
 <p><code>dir()</code> — встроенная функция, возвращающая <strong>сортированный список имён атрибутов</strong> объекта. Это первая команда, которую пишут, когда встречают незнакомый объект: <code>dir(obj)</code> показывает всё, что у него есть.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>

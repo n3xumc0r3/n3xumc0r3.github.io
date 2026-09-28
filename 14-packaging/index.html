@@ -886,11 +886,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -907,11 +907,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-b-code-checkers/" class="md-nav__link">
+      <a href="../appendix-c-code-checkers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -928,11 +928,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -949,11 +949,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -970,11 +970,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -1623,7 +1623,7 @@
 <li><strong><code>RECORD</code> внутри wheel не содержит <code>.pyc</code></strong> — они ещё не существуют! pip при установке компилирует байт-код (15.2) и дописывает строки <code>demo_hood/__pycache__/cli.cpython-312.pyc,,</code> (без хеша — pyc воспроизводим из исходника) в RECORD <strong>установленной</strong> копии.</li>
 <li><strong><code>.data/</code>-каталог</strong>: файлы, которые должны попасть НЕ в site-packages (скрипты, данные, заголовки), пакуются как <code>demo.data/scripts/run.sh</code> и раскладываются pip'ом по схемам установки.</li>
 </ul>
-<p>⚠️ Wheel — не-installer: никаких скриптов постустановки. Всё, что делается при установке wheel'а — распаковка по схеме, компиляция pyc, генерация скриптов из <code>entry_points.txt</code> и запись dist-info. Если вы «установили пакет, а он требует ещё что-то скачать» — это делает импортируемый код, не wheel (и это основание не доверять таким пакетам, см. Приложение B).</p>
+<p>⚠️ Wheel — не-installer: никаких скриптов постустановки. Всё, что делается при установке wheel'а — распаковка по схеме, компиляция pyc, генерация скриптов из <code>entry_points.txt</code> и запись dist-info. Если вы «установили пакет, а он требует ещё что-то скачать» — это делает импортируемый код, не wheel (и это основание не доверять таким пакетам, см. Приложение C).</p>
 <h2 id="14.7">14.7. pip изнутри: что происходит при <code>pip install</code><a class="headerlink" href="#14.7" title="Permanent link">#</a></h2>
 <p>Соберём весь путь (и проверим его на реальном пакете):</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pip install demo-pkg-hood
@@ -1722,7 +1722,7 @@
 </tr>
 </tbody>
 </table>
-<p>⚠️ <strong>Установка из sdist исполняет код бэкенда</strong> (а с legacy <code>setup.py</code> — и его) на вашей машине. Wheel безопаснее ровно в этом смысле. pip резолвер ставит wheel по умолчанию и предупреждает, когда вынужден собирать. Приложение B разбирает упаковку глазами нарушителя.</p>
+<p>⚠️ <strong>Установка из sdist исполняет код бэкенда</strong> (а с legacy <code>setup.py</code> — и его) на вашей машине. Wheel безопаснее ровно в этом смысле. pip резолвер ставит wheel по умолчанию и предупреждает, когда вынужден собирать. Приложение C разбирает упаковку глазами нарушителя.</p>
 <p>✅ Ошибка резолвера <code>Cannot install X because these package versions have conflicting dependencies</code> — это работа step 1: резолвер честно перебирает граф и не ставит «что-нибудь». Фиксация версий целиком (<code>pip freeze</code>) или constraints-файл (<code>pip install -c constraints.txt</code>) дают воспроизводимость, но не отменяют конфликтов на стороне pip — их решает только автор графа.</p>
 <h2 id="14.8">14.8. Editable-установка: <code>.pth</code> и finder<a class="headerlink" href="#14.8" title="Permanent link">#</a></h2>
 <p><code>pip install -e .</code> не копирует код в site-packages — он делает так, чтобы <code>import</code> находил код <strong>в исходниках проекта</strong>. Механика не магическая и — что интереснее — у одного и того же setuptools их две; мы обе воспроизвели в чистом venv. Стандартизована editable-инсталляция в <strong>PEP 660</strong> (расширение PEP 517): бэкенд может предоставить hook <code>build_editable</code> рядом с <code>build_wheel</code>, и <code>pip</code> вызывает именно его для <code>pip install -e .</code>. До PEP 660 бэкенды решали задачу кто во что горазд — <code>setuptools</code> использовал <code>setup.py develop</code>, у других были свои трюки.</p>

@@ -18,13 +18,13 @@
         <meta name="author" content="@n3xumc0r3">
       
       
-        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-b-code-checkers/">
+        <link rel="canonical" href="https://n3xumc0r3.github.io/appendix-c-code-checkers/">
       
       
-        <link rel="prev" href="../appendix-a-plagiarism/">
+        <link rel="prev" href="../appendix-b-plagiarism/">
       
       
-        <link rel="next" href="../appendix-c-code-golf/">
+        <link rel="next" href="../appendix-d-code-golf/">
       
       
       <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctext%20y%3D%2218%22%20font-size%3D%2218%22%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E">
@@ -32,7 +32,7 @@
     
     
       
-        <title>B. Взаимодействие с системами проверки кода - Python под капотом</title>
+        <title>C. Взаимодействие с системами проверки кода - Python под капотом</title>
       
     
     
@@ -72,15 +72,15 @@
   
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Python под капотом">
-  <meta property="og:title" content="B. Взаимодействие с системами проверки кода — Python под капотом">
+  <meta property="og:title" content="C. Взаимодействие с системами проверки кода — Python под капотом">
   <meta property="og:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
-  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-b-code-checkers/">
+  <meta property="og:url" content="https://n3xumc0r3.github.io/appendix-c-code-checkers/">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="B. Взаимодействие с системами проверки кода — Python под капотом">
+  <meta name="twitter:title" content="C. Взаимодействие с системами проверки кода — Python под капотом">
   <meta name="twitter:description" content="От синтаксических трюков до internals CPython. Книга о редко используемых, скрытых и продвинутых возможностях Python.">
   <meta name="twitter:image" content="https://n3xumc0r3.github.io/assets/cover.png">
 
@@ -133,7 +133,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#b" class="md-skip">
+        <a href="#c" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              B. Взаимодействие с системами проверки кода
+              C. Взаимодействие с системами проверки кода
             
           </span>
         </div>
@@ -719,11 +719,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-a-plagiarism/" class="md-nav__link">
+      <a href="../appendix-b-plagiarism/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    A. Системы обнаружения плагиата
+    B. Системы обнаружения плагиата
   </span>
   
 
@@ -753,7 +753,7 @@
           
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -764,7 +764,7 @@
         
   
   <span class="md-ellipsis">
-    B. Взаимодействие с системами проверки кода
+    C. Взаимодействие с системами проверки кода
   </span>
   
 
@@ -786,13 +786,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#B.1" class="md-nav__link">
+  <a href="#C.1" class="md-nav__link">
     <span class="md-ellipsis">
-      B.1. Косметические приёмы — обман на уровне токенов
+      C.1. Косметические приёмы — обман на уровне токенов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.1. Косметические приёмы — обман на уровне токенов">
+    <nav class="md-nav" aria-label="C.1. Косметические приёмы — обман на уровне токенов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -864,13 +864,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.2" class="md-nav__link">
+  <a href="#C.2" class="md-nav__link">
     <span class="md-ellipsis">
-      B.2. Архитектурные приёмы — перенос логики в рантайм
+      C.2. Архитектурные приёмы — перенос логики в рантайм
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.2. Архитектурные приёмы — перенос логики в рантайм">
+    <nav class="md-nav" aria-label="C.2. Архитектурные приёмы — перенос логики в рантайм">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -933,13 +933,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.3" class="md-nav__link">
+  <a href="#C.3" class="md-nav__link">
     <span class="md-ellipsis">
-      B.3. Перехват аргументов через фреймы и ctypes
+      C.3. Перехват аргументов через фреймы и ctypes
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.3. Перехват аргументов через фреймы и ctypes">
+    <nav class="md-nav" aria-label="C.3. Перехват аргументов через фреймы и ctypes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -984,13 +984,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.4" class="md-nav__link">
+  <a href="#C.4" class="md-nav__link">
     <span class="md-ellipsis">
-      B.4. Интроспекция окружения тестирующих систем
+      C.4. Интроспекция окружения тестирующих систем
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.4. Интроспекция окружения тестирующих систем">
+    <nav class="md-nav" aria-label="C.4. Интроспекция окружения тестирующих систем">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1035,13 +1035,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.5" class="md-nav__link">
+  <a href="#C.5" class="md-nav__link">
     <span class="md-ellipsis">
-      B.5. Песочницы и обход через __subclasses__()
+      C.5. Песочницы и обход через __subclasses__()
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.5. Песочницы и обход через __subclasses__()">
+    <nav class="md-nav" aria-label="C.5. Песочницы и обход через __subclasses__()">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1104,13 +1104,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.6" class="md-nav__link">
+  <a href="#C.6" class="md-nav__link">
     <span class="md-ellipsis">
-      B.6. Что работает, а что нет — реалистичная оценка
+      C.6. Что работает, а что нет — реалистичная оценка
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.6. Что работает, а что нет — реалистичная оценка">
+    <nav class="md-nav" aria-label="C.6. Что работает, а что нет — реалистичная оценка">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1161,11 +1161,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-c-code-golf/" class="md-nav__link">
+      <a href="../appendix-d-code-golf/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    C. Code golf
+    D. Code golf
   </span>
   
 
@@ -1182,11 +1182,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-d-randomness/" class="md-nav__link">
+      <a href="../appendix-e-randomness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    D. Анатомия случайности
+    E. Анатомия случайности
   </span>
   
 
@@ -1203,11 +1203,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../appendix-e-references/" class="md-nav__link">
+      <a href="../appendix-a-references/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    E. Где почитать
+    A. Где почитать
   </span>
   
 
@@ -1251,13 +1251,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#B.1" class="md-nav__link">
+  <a href="#C.1" class="md-nav__link">
     <span class="md-ellipsis">
-      B.1. Косметические приёмы — обман на уровне токенов
+      C.1. Косметические приёмы — обман на уровне токенов
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.1. Косметические приёмы — обман на уровне токенов">
+    <nav class="md-nav" aria-label="C.1. Косметические приёмы — обман на уровне токенов">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1329,13 +1329,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.2" class="md-nav__link">
+  <a href="#C.2" class="md-nav__link">
     <span class="md-ellipsis">
-      B.2. Архитектурные приёмы — перенос логики в рантайм
+      C.2. Архитектурные приёмы — перенос логики в рантайм
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.2. Архитектурные приёмы — перенос логики в рантайм">
+    <nav class="md-nav" aria-label="C.2. Архитектурные приёмы — перенос логики в рантайм">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1398,13 +1398,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.3" class="md-nav__link">
+  <a href="#C.3" class="md-nav__link">
     <span class="md-ellipsis">
-      B.3. Перехват аргументов через фреймы и ctypes
+      C.3. Перехват аргументов через фреймы и ctypes
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.3. Перехват аргументов через фреймы и ctypes">
+    <nav class="md-nav" aria-label="C.3. Перехват аргументов через фреймы и ctypes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1449,13 +1449,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.4" class="md-nav__link">
+  <a href="#C.4" class="md-nav__link">
     <span class="md-ellipsis">
-      B.4. Интроспекция окружения тестирующих систем
+      C.4. Интроспекция окружения тестирующих систем
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.4. Интроспекция окружения тестирующих систем">
+    <nav class="md-nav" aria-label="C.4. Интроспекция окружения тестирующих систем">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1500,13 +1500,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.5" class="md-nav__link">
+  <a href="#C.5" class="md-nav__link">
     <span class="md-ellipsis">
-      B.5. Песочницы и обход через __subclasses__()
+      C.5. Песочницы и обход через __subclasses__()
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.5. Песочницы и обход через __subclasses__()">
+    <nav class="md-nav" aria-label="C.5. Песочницы и обход через __subclasses__()">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1569,13 +1569,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#B.6" class="md-nav__link">
+  <a href="#C.6" class="md-nav__link">
     <span class="md-ellipsis">
-      B.6. Что работает, а что нет — реалистичная оценка
+      C.6. Что работает, а что нет — реалистичная оценка
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="B.6. Что работает, а что нет — реалистичная оценка">
+    <nav class="md-nav" aria-label="C.6. Что работает, а что нет — реалистичная оценка">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1625,14 +1625,14 @@
                   
 
 
-<h1 id="b">Приложение B. Взаимодействие с системами проверки кода (контекст)<a class="headerlink" href="#b" title="Permanent link">#</a></h1>
+<h1 id="c">Приложение C. Взаимодействие с системами проверки кода (контекст)<a class="headerlink" href="#c" title="Permanent link">#</a></h1>
 <blockquote>
 <p>Это приложение — <strong>контекстное</strong>: приёмы, которые применяются к системам проверки кода (MOSS, JPlag, Dolos, Codequiry). Цель — не инструкция, а понимание того, <strong>что эти системы видят</strong> и <strong>что не видят</strong>. Основной фокус конспекта — на скрытых возможностях языка; системы проверки здесь — как прикладная область, где эти возможности становятся инструментами.</p>
 <p>⚠️ <strong>Не используйте эти приёмы в реальных тестирующих системах.</strong> Применение техник из этого раздела в учебных или соревновательных окружениях нарушает правила этих систем и может привести к дисциплинарным последствиям. Материал представлен исключительно для понимания механики работы систем проверки и проектирования защиты.</p>
-<p>Подробнее про механизмы детекции — см. <strong>Приложение A</strong>.</p>
+<p>Подробнее про механизмы детекции — см. <strong>Приложение B</strong>.</p>
 </blockquote>
-<h2 id="B.1">B.1. Косметические приёмы — обман на уровне токенов<a class="headerlink" href="#B.1" title="Permanent link">#</a></h2>
-<p>Косметические приёмы меняют <strong>внешний вид</strong> кода, не меняя логику. Они работают на уровне токенов и AST-узлов — ломают k-граммы и хеш-винновинг (см. A.1), но <strong>легко детектируются</strong> AST-нормализацией (A.5).</p>
+<h2 id="C.1">C.1. Косметические приёмы — обман на уровне токенов<a class="headerlink" href="#C.1" title="Permanent link">#</a></h2>
+<p>Косметические приёмы меняют <strong>внешний вид</strong> кода, не меняя логику. Они работают на уровне токенов и AST-узлов — ломают k-граммы и хеш-винновинг (см. B.1), но <strong>легко детектируются</strong> AST-нормализацией (B.5).</p>
 <h3 id="pereimenovanie">Переименование идентификаторов<a class="headerlink" href="#pereimenovanie" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Оригинал:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">calculate_total_price</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">discount</span><span class="p">):</span>
@@ -1693,7 +1693,7 @@
 </span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Эффективность</strong>: средняя. Меняет тип AST-узла (<code>For</code> → <code>While</code>, <code>For</code> → <code>ListComp</code>), но семантика та же. AST-нормализаторы (A.5) сводят все варианты к канонической форме.</p>
+<p><strong>Эффективность</strong>: средняя. Меняет тип AST-узла (<code>For</code> → <code>While</code>, <code>For</code> → <code>ListComp</code>), но семантика та же. AST-нормализаторы (B.5) сводят все варианты к канонической форме.</p>
 <h3 id="zamena">Замена типов данных<a class="headerlink" href="#zamena" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Оригинал — list:</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
@@ -1719,7 +1719,7 @@
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">_unused</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>  <span class="c1"># неиспользуемый результат</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
 </span></code></pre></div>
-<p><strong>Эффективность</strong>: низкая против современных систем. Dead code elimination (A.8) убирает неиспользуемые вычисления перед сравнением. Но против простых систем (Winnowing без нормализации) — работает.</p>
+<p><strong>Эффективность</strong>: низкая против современных систем. Dead code elimination (B.8) убирает неиспользуемые вычисления перед сравнением. Но против простых систем (Winnowing без нормализации) — работает.</p>
 <h3 id="zamena-2">Замена библиотек<a class="headerlink" href="#zamena-2" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># requests → httpx:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># import requests → import httpx</span>
@@ -1740,8 +1740,8 @@
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># `a and b` → `not (not a or not b)`  — De Morgan</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># `x &gt; 5` → `not (x &lt;= 5)`           — инверсия</span>
 </span></code></pre></div>
-<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code> в байт-коде. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для классического Winnowing без normalisation-слоя (A.1) <code>1+1+1</code> и <code>3</code> — разные токены. Современные системы (A.8) перед сравнением запускают собственные оптимизации и могут различать их только если folding отключён — это вопрос конфигурации конкретного инструмента.</p>
-<h2 id="B.2">B.2. Архитектурные приёмы — перенос логики в рантайм<a class="headerlink" href="#B.2" title="Permanent link">#</a></h2>
+<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code> в байт-коде. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для классического Winnowing без normalisation-слоя (B.1) <code>1+1+1</code> и <code>3</code> — разные токены. Современные системы (B.8) перед сравнением запускают собственные оптимизации и могут различать их только если folding отключён — это вопрос конфигурации конкретного инструмента.</p>
+<h2 id="C.2">C.2. Архитектурные приёмы — перенос логики в рантайм<a class="headerlink" href="#C.2" title="Permanent link">#</a></h2>
 <p>Архитектурные приёмы переносят логику <strong>из статического кода в динамическую память</strong> — в аннотации, в <code>__dict__</code>, в <code>exec</code>-строки. Это намного сложнее детектировать, потому что AST-анализатор видит «пустышку», а реальный код появляется только при выполнении.</p>
 <h3 id="annotatsii">Аннотации как данные<a class="headerlink" href="#annotatsii" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Вместо присваивания — аннотация:</span>
@@ -1790,7 +1790,7 @@
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">new_code</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">co_name</span><span class="o">=</span><span class="s2">&quot;obfuscated&quot;</span><span class="p">)</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">new_func</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span><span class="n">new_code</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;obfuscated&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Это <strong>самый глубокий</strong> приём — функция существует только как объект в рантайме, в исходнике нет ни <code>def</code>, ни <code>lambda</code>. Детектируется только динамическим анализом (A.7) или audit hooks (PEP 578).</p>
+<p>Это <strong>самый глубокий</strong> приём — функция существует только как объект в рантайме, в исходнике нет ни <code>def</code>, ни <code>lambda</code>. Детектируется только динамическим анализом (B.7) или audit hooks (PEP 578).</p>
 <h3 id="type"><code>type()</code> — динамическое создание классов<a class="headerlink" href="#type" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Вместо:</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">class</span> <span class="nc">Handler</span><span class="p">:</span>
@@ -1808,8 +1808,8 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">exec</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">__main__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">[</span><span class="s2">&quot;_payload&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 </span></code></pre></div>
 <p>AST видит: <code>AnnAssign</code> + <code>Import</code> + <code>Call</code> (специального узла <code>ast.Exec</code> в Python 3 нет — <code>exec(...)</code> это обычный вызов функции). Что реально выполняется — не видно без запуска.</p>
-<p>⚠️ <strong>Все архитектурные приёмы детектируются динамическим анализом</strong> (A.7): запустите код, соберите trace, сравните поведение. Но динамический анализ дорог и редко используется в тестирующих системах.</p>
-<h2 id="B.3">B.3. Перехват аргументов через фреймы и ctypes<a class="headerlink" href="#B.3" title="Permanent link">#</a></h2>
+<p>⚠️ <strong>Все архитектурные приёмы детектируются динамическим анализом</strong> (B.7): запустите код, соберите trace, сравните поведение. Но динамический анализ дорог и редко используется в тестирующих системах.</p>
+<h2 id="C.3">C.3. Перехват аргументов через фреймы и ctypes<a class="headerlink" href="#C.3" title="Permanent link">#</a></h2>
 <p>Самые «хакерские» приёмы — работа с internals CPython для чтения/изменения состояния вызывающего кода.</p>
 <h3 id="sysgetframe"><code>sys._getframe</code> — чтение локальных переменных вызывающего<a class="headerlink" href="#sysgetframe" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span> <span class="nn">sys</span>
@@ -1878,7 +1878,7 @@
 </span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wrong&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>⚠️ Современные тестирующие системы изолируют student code через <code>exec(code, restricted_globals)</code> — <code>sys._getframe</code> возвращает фрейм <code>exec</code>, не тестирующего скрипта. Но если изоляция неполная — фрейм доступен.</p>
-<h2 id="B.4">B.4. Интроспекция окружения тестирующих систем<a class="headerlink" href="#B.4" title="Permanent link">#</a></h2>
+<h2 id="C.4">C.4. Интроспекция окружения тестирующих систем<a class="headerlink" href="#C.4" title="Permanent link">#</a></h2>
 <p>Интроспекция окружения — запустить код в тестирующей системе и собрать <strong>всю</strong> информацию об окружении через один <code>raise</code>. Результат попадает в stderr, который система обычно показывает при ошибке.</p>
 <h3 id="universalnyy">Универсальный «комбайн» — собрать всё в JSON<a class="headerlink" href="#universalnyy" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">platform</span>
@@ -1976,14 +1976,14 @@
 </span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="c1"># дальше — загрузка и запуск решения:</span>
 </span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="n">exec</span><span class="p">(</span><span class="n">student_code</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">:</span> <span class="n">__builtins__</span><span class="p">})</span>
 </span></code></pre></div>
-<p>Принципиальное отличие от <code>restricted_globals</code>: хук нельзя обойти через <code>__subclasses__()</code> (B.5) или вычитывание фреймов (B.3) — какой бы обходной путь ни привёл к <code>os.system(...)</code>, событие <code>os.system</code> всё равно возникнет, и исключение хука оборвёт операцию. Ограничения — честно:</p>
+<p>Принципиальное отличие от <code>restricted_globals</code>: хук нельзя обойти через <code>__subclasses__()</code> (C.5) или вычитывание фреймов (C.3) — какой бы обходной путь ни привёл к <code>os.system(...)</code>, событие <code>os.system</code> всё равно возникнет, и исключение хука оборвёт операцию. Ограничения — честно:</p>
 <ul>
 <li><strong><code>try/except</code> глотает отказ.</strong> Исключение хука перехватывается обычным <code>except</code> вокруг <code>open(...)</code> — операция сорвана, но исполнение продолжается. Гарантированное завершение делает второй хук: на первом нарушении он выставляет флаг, а wrapper-процесс убивает воркера.</li>
 <li><strong>ctypes идёт мимо событий</strong> (10.7, «чего hooks не дают») — <code>ctypes.CDLL("libc.so.6").system(...)</code> не породит <code>os.system</code>.</li>
 <li><strong>Хуки не наследуются</strong> дочерними процессами — subprocess-песочница настраивает свои.</li>
 <li><strong>Событие не означает блокировку по умолчанию</strong> — хук только наблюдение, пока не поднято исключение.</li>
 </ul>
-<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — выступление Ned Batchelder «Tarpit» (PyCon 2012), разборы побегов из pyjails — в E.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
+<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — выступление Ned Batchelder «Tarpit» (PyCon 2012), разборы побегов из pyjails — в A.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
 <h3 id="kod-vozvrata">Код возврата как канал данных: 8 бит да/нет<a class="headerlink" href="#kod-vozvrata" title="Permanent link">#</a></h3>
 <p>Когда stdout занят выводом, stderr — диагностикой, а файлы и переменные окружения проверяющий не читает, у программы остаётся один свободный канал — код возврата. На POSIX это ровно 8 бит, целое 0–255: всё за пределами усекается по модулю 256 (<code>sys.exit(300)</code> вернёт <code>44</code>, <code>sys.exit(256)</code> — <code>0</code>, <code>sys.exit(-1)</code> — <code>255</code>). Восемь бит — это восемь независимых ответов да/нет, и никто не мешает упаковать в них результаты проверок:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># checker.py: сообщает, какие из восьми проверок провалил решение</span>
@@ -2030,7 +2030,7 @@
 <li><strong>Читающие API различаются.</strong> <code>subprocess</code> возвращает честный код, а смерть от сигнала видна как <code>-9</code>; <code>os.system</code> — сырой 16-битный статус waitpid (<code>exit 5</code> придёт как <code>1280</code>), для этого трюка он непригоден.</li>
 <li><strong>Это POSIX-конвенция.</strong> На Windows коды возврата 32-битные — переносимый код не должен полагаться на усечение до 8 бит.</li>
 </ul>
-<h2 id="B.5">B.5. Песочницы и обход через <code>__subclasses__()</code><a class="headerlink" href="#B.5" title="Permanent link">#</a></h2>
+<h2 id="C.5">C.5. Песочницы и обход через <code>__subclasses__()</code><a class="headerlink" href="#C.5" title="Permanent link">#</a></h2>
 <p>Классический приём обхода песочниц, которые вычищают <code>__builtins__</code> и запрещают <code>import</code>. Идея: <strong>из любого объекта</strong> можно добраться до <code>object</code> (базового класса всех классов), а оттуда — до <strong>любого класса в интепретаторе</strong>, включая <code>os._wrap_close</code>, <code>warnings.catch_warnings</code> и другие, у которых есть доступ к <code>os</code>/<code>sys</code>.</p>
 <h3 id="tsepochka">Цепочка: <code>().__class__.__base__.__subclasses__()</code><a class="headerlink" href="#tsepochka" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Шаг 1: () — пустой кортеж. Его тип — tuple.</span>
@@ -2154,16 +2154,16 @@
 </span><span id="__span-26-36"><a id="__codelineno-26-36" name="__codelineno-26-36" href="#__codelineno-26-36"></a><span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="s2">&quot;&lt;sandbox&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;exec&quot;</span><span class="p">),</span> <span class="n">sandbox_globals</span><span class="p">)</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Реалистичная оценка</strong>: AST-фильтрация + ограниченный <code>__builtins__</code> защищают от 90% тривиальных обходов, но не от целенаправленной атаки. Для реальной изоляции — отдельный процесс (subprocess с <code>--no-site</code>, seccomp-фильтр, separate user namespace), либо отдельная VM. Python-уровневая песочница — это учебный пример, не production-защита.</p>
-<h2 id="B.6">B.6. Что работает, а что нет — реалистичная оценка<a class="headerlink" href="#B.6" title="Permanent link">#</a></h2>
+<h2 id="C.6">C.6. Что работает, а что нет — реалистичная оценка<a class="headerlink" href="#C.6" title="Permanent link">#</a></h2>
 <h3 id="effektivnost">Эффективность приёмов против разных систем<a class="headerlink" href="#effektivnost" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
 <th>Приём</th>
-<th>Winnowing (A.1)</th>
-<th>AST-нормализация (A.5)</th>
-<th>Динамический анализ (A.7)</th>
-<th>Стилометрия (A.6)</th>
+<th>Winnowing (B.1)</th>
+<th>AST-нормализация (B.5)</th>
+<th>Динамический анализ (B.7)</th>
+<th>Стилометрия (B.6)</th>
 </tr>
 </thead>
 <tbody>
@@ -2239,8 +2239,8 @@
 <li><strong><code>exec</code> в студенческом коде</strong> — мгновенно привлекает внимание преподавателя, даже если антиплагиат не сработал.</li>
 <li><strong><code>__subclasses__()</code> обход</strong> — работает только в sandboxed окружениях, в обычной тестирующей системе бесполезен.</li>
 <li><strong>Перехват фреймов</strong> — требует <code>sys._getframe</code>, который часто заблокирован.</li>
-<li><strong>Массовое переименование в <code>a</code>, <code>b</code>, <code>c</code></strong> — стилометрия (A.6) помечает как «стиль обфускатора».</li>
-<li><strong>Мёртвый код в больших количествах</strong> — цикломатическая сложность (A.4) растёт, метрики Хальстеда (A.3) аномальны.</li>
+<li><strong>Массовое переименование в <code>a</code>, <code>b</code>, <code>c</code></strong> — стилометрия (B.6) помечает как «стиль обфускатора».</li>
+<li><strong>Мёртвый код в больших количествах</strong> — цикломатическая сложность (B.4) растёт, метрики Хальстеда (B.3) аномальны.</li>
 </ul>
 <h3 id="zelenaya">Зелёная зона — что легально и эффективно<a class="headerlink" href="#zelenaya" title="Permanent link">#</a></h3>
 <p>Если задача — не «обойти систему проверки», а «написать код так, чтобы он был <strong>своим</strong>»:</p>
