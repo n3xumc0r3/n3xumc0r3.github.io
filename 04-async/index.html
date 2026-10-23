@@ -1577,7 +1577,7 @@
 
 <h1 id="iv">Часть IV. Асинхронность<a class="headerlink" href="#iv" title="Permanent link">#</a></h1>
 <blockquote>
-<p><code>async def</code> выглядит как обычная функция с лишним ключевым словом, но под капотом это генератор (Часть III) плюс цикл событий — один поток, который гоняет тысячи задач по очереди, пока те ждут I/O. Часть разбирает event loop руками (4.1), потом API asyncio — от <code>run</code> и <code>gather</code> до <code>TaskGroup</code>, отмен и таймаутов — и заканчивает выбором между threads, asyncio и multiprocessing (4.11), включая debug-режим asyncio (4.3).</p>
+<p><code>async def</code> выглядит как обычная функция с лишним ключевым словом, но под капотом это генератор (Часть III) плюс цикл событий — один поток, который выполняет тысячи задач по очереди, пока те ждут I/O. Часть разбирает устройство event loop (4.1), потом API asyncio — от <code>run</code> и <code>gather</code> до <code>TaskGroup</code>, отмен и таймаутов — и заканчивает выбором между threads, asyncio и multiprocessing (4.11), включая debug-режим asyncio (4.3).</p>
 </blockquote>
 <h2 id="4.1">4.1. Что такое event loop<a class="headerlink" href="#4.1" title="Permanent link">#</a></h2>
 <p><strong>Event loop (цикл событий)</strong> — это единый поток, который:</p>
@@ -1636,7 +1636,7 @@
 </span></code></pre></div>
 <p><code>asyncio.run</code> (Python 3.7+) — стандартный способ запустить asyncio-программу. Создаёт новый event loop, выполняет корутину, <strong>принудительно отменяет</strong> (<code>cancel()</code>) все оставшиеся фоновые задачи, закрывает async-генераторы и пул потоков, затем закрывает loop.</p>
 <p>⚠️ <strong>Нельзя вызывать <code>asyncio.run</code> внутри уже запущенного event loop</strong> — будет <code>RuntimeError</code>. Если вы внутри Jupyter или уже в asyncio — используйте <code>await main()</code> напрямую.</p>
-<p>Старый API (deprecated с 3.10, в будущем удалится; в 3.12 при отсутствии запущенного loop выдаёт <code>DeprecationWarning: There is no current event loop</code>):
+<p>Старый API (deprecated с 3.12, в 3.14 при отсутствии текущего loop уже RuntimeError; при отсутствии запущенного loop выдаёт <code>DeprecationWarning: There is no current event loop</code>):
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>       <span class="c1"># ⚠️ deprecated</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -2147,13 +2147,13 @@
 <tr>
 <td>Запуск с подтверждением готовности</td>
 <td><code>nursery.start()</code></td>
-<td>в TaskGroup на 3.12 прямого аналога нет (<code>create_task</code> + <code>await</code> — не то же самое); в 3.13 добавлен <code>TaskGroup.start(coro)</code></td>
+<td>в TaskGroup прямого аналога нет (<code>create_task</code> + <code>await</code> — не то же самое); <code>start()</code> с <code>task_status.started()</code> есть в trio и anyio, но в stdlib asyncio его по-прежнему нет</td>
 </tr>
 </tbody>
 </table>
 <p><strong>anyio</strong> стоит упомянуть отдельно: до выхода 3.11 он был единственным способом писать структурированный код, работающий и на asyncio, и на trio. На anyio построены Starlette и FastAPI — их <code>anyio.create_task_group()</code> выглядит как TaskGroup, но живёт в обоих мирах. Если код должен портировать между рантаймами — писать на anyio с самого начала.</p>
 <p>Что изменилось в мышлении с 3.11: раньше <code>create_task</code> — это «пускай крутится в фоне, соберём потом», и «потом» означало ручной <code>gather</code> с ручной отменой при ошибке (см. сравнение выше). Теперь вложенность задач в рантайме повторяет вложенность блоков кода — профилировщик, трейс и стек задач читаются как исходник. Одиночные <code>asyncio.create_task()</code> без владельца остаются легальным способом запустить фоновую работу (4.5) — но теперь это осознанное исключение, а не дефолт.</p>
-<p>→ <strong>см. также:</strong> 5.16 — <code>ExceptionGroup</code> и <code>except*</code>; 4.15 — механика отмены, которую TaskGroup запускает автоматически; 4.5 — когда одиночный <code>create_task</code> уместен. Ссылки на curio/trio/anyio и статью-первоисточник — в Приложении D.</p>
+<p>→ <strong>см. также:</strong> 5.16 — <code>ExceptionGroup</code> и <code>except*</code>; 4.15 — механика отмены, которую TaskGroup запускает автоматически; 4.5 — когда одиночный <code>create_task</code> уместен. Ссылки на curio/trio/anyio и статью-первоисточник — в Приложении A.</p>
 <h2 id="4.14">4.14. <code>asyncio.timeout</code> (Python 3.11+) и <code>asyncio.shield</code><a class="headerlink" href="#4.14" title="Permanent link">#</a></h2>
 <h3 id="4.14-asynciotimeout"><code>asyncio.timeout</code> — современный способ задать таймаут<a class="headerlink" href="#4.14-asynciotimeout" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -2447,7 +2447,7 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-47-7"><a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">concurrent</span><span class="p">():</span>
 </span><span id="__span-47-8"><a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span>
 </span><span id="__span-47-9"><a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="c1"># Замер на CPython 3.12.14, 50 прогонов:</span>
-</span><span id="__span-47-10"><a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a><span class="c1"># sequential: ≈ 5.42 с (100 × ~10 мс каждый await)</span>
+</span><span id="__span-47-10"><a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a><span class="c1"># sequential: ≈ 5.42 с (100 × ~1 мс каждый await + накладные расходы loop)</span>
 </span><span id="__span-47-11"><a id="__codelineno-47-11" name="__codelineno-47-11" href="#__codelineno-47-11"></a><span class="c1"># concurrent: ≈ 0.10 с — **~54× ускорение** (event loop держит все 100 параллельно)</span>
 </span></code></pre></div>
 Если все задачи I/O-связаны — <code>gather</code> даёт <strong>почти линейное</strong> ускорение по числу задач
@@ -2461,10 +2461,9 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">]</span>
 </span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Замер на CPython 3.12.14, 1000 прогонов:</span>
 </span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="c1"># via_gather:     ≈ 2.02 с</span>
-</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="c1"># via_taskgroup:  ≈ 2.26 с — на ~12% медленнее (create_task overhead)</span>
+</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="c1"># via_taskgroup:  ≈ 1.9–2.3 с — сопоставимо с gather (в наших прогонах от −5% до +12% в зависимости от машины)</span>
 </span></code></pre></div>
-<code>TaskGroup</code> добавляет ~10–15% накладных расходов из-за <code>create_task</code> + учёт задач в группе,
-но даёт автоматическую отмену при ошибке и <code>ExceptionGroup</code>. На новом коде —
+<code>TaskGroup</code> добавляет накладные расходы (<code>create_task</code> + учёт задач в группе), но на практике они сопоставимы с <code>gather</code> — разница в пределах погрешности машины и не является аргументом против него: автоматическая отмена при ошибке и <code>ExceptionGroup</code> перевешивают. На новом коде —
 предпочтителен (см. 4.13).</p>
 <p><strong>3. <code>as_completed</code> vs <code>gather</code> — когда важен порядок прихода.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">via_as_completed</span><span class="p">():</span>
@@ -2472,8 +2471,8 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>    <span class="k">for</span> <span class="n">coro</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">as_completed</span><span class="p">([</span><span class="n">fetch</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]):</span>
 </span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">await</span> <span class="n">coro</span><span class="p">)</span>
 </span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>    <span class="k">return</span> <span class="n">results</span>
-</span><span id="__span-49-6"><a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="c1"># Если задачи разной длительности — as_completed начинает отдавать результаты</span>
-</span><span id="__span-49-7"><a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="c1"># раньше (первый — через 0.1 с), gather — только все вместе через 0.1 с.</span>
+</span><span id="__span-49-6"><a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="c1"># Если задачи разной длительности (0.1/0.5/1.0 с) — as_completed отдаёт первый</span>
+</span><span id="__span-49-7"><a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="c1"># результат через 0.1 с, gather — все вместе только через 1.0 с.</span>
 </span></code></pre></div>
 Скорость обработки «последней задачи» одинакова, но <strong>latency до первого
 результата</strong> у <code>as_completed</code> в N раз ниже. Полезно для UI/стриминга.</p>
@@ -2482,13 +2481,13 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">N</span> <span class="o">=</span> <span class="mi">10_000_000</span>
 </span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="c1"># Синхронно</span>
 </span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="k">def</span> <span class="nf">cpu_sync</span><span class="p">():</span>
-</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>                              <span class="c1"># ≈ 1.5 с</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>                              <span class="c1"># ≈ 0.7–1.5 с (сильно зависит от машины)</span>
 </span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="c1"># Thread (4 потока)</span>
 </span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 </span><span id="__span-50-8"><a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a><span class="k">def</span> <span class="nf">cpu_threads</span><span class="p">():</span>
 </span><span id="__span-50-9"><a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a>    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
 </span><span id="__span-50-10"><a id="__codelineno-50-10" name="__codelineno-50-10" href="#__codelineno-50-10"></a>        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">chunk</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">),</span>
-</span><span id="__span-50-11"><a id="__codelineno-50-11" name="__codelineno-50-11" href="#__codelineno-50-11"></a>                          <span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">//</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">//</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]))</span>  <span class="c1"># ≈ 1.6 с</span>
+</span><span id="__span-50-11"><a id="__codelineno-50-11" name="__codelineno-50-11" href="#__codelineno-50-11"></a>                          <span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">//</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">//</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]))</span>  <span class="c1"># ≈ столько же или чуть медленнее (GIL)</span>
 </span><span id="__span-50-12"><a id="__codelineno-50-12" name="__codelineno-50-12" href="#__codelineno-50-12"></a><span class="c1"># ProcessPool (4 процесса)</span>
 </span><span id="__span-50-13"><a id="__codelineno-50-13" name="__codelineno-50-13" href="#__codelineno-50-13"></a><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
 </span><span id="__span-50-14"><a id="__codelineno-50-14" name="__codelineno-50-14" href="#__codelineno-50-14"></a>
@@ -2522,7 +2521,7 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-52-5"><a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="c1"># asyncio + httpx:  ≈ 0.08 с  (60× ускорение, минимум накладных расходов)</span>
 </span></code></pre></div>
 Для I/O asyncio <strong>масштабируется лучше</strong> потоков: корутины дешевле
-(~2 КБ на корутину против ~8 МБ стека на поток), нет переключения контекста ядром.</p>
+(менее килобайта на простую корутину против ~8 МБ стека на поток), нет переключения контекста ядром.</p>
 
 
 

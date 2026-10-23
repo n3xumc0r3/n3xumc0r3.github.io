@@ -368,7 +368,7 @@
           <li class="md-nav__item">
   <a href="#1.1-limit" class="md-nav__link">
     <span class="md-ellipsis">
-      Лимит на преобразование int ↔ str (PEP 686 / CVE-2020-10735, Python 3.11+)
+      Лимит на преобразование int ↔ str (CVE-2020-10735, Python 3.11+ и секьюрити-бэкпорты 3.8–3.10)
     </span>
   </a>
   
@@ -2215,7 +2215,7 @@
           <li class="md-nav__item">
   <a href="#1.1-limit" class="md-nav__link">
     <span class="md-ellipsis">
-      Лимит на преобразование int ↔ str (PEP 686 / CVE-2020-10735, Python 3.11+)
+      Лимит на преобразование int ↔ str (CVE-2020-10735, Python 3.11+ и секьюрити-бэкпорты 3.8–3.10)
     </span>
   </a>
   
@@ -3596,7 +3596,7 @@
 <li>В <strong>complex</strong>-литералах экспонента работает и в действительной, и в мнимой части — см. подраздел про комплексные литералы ниже.</li>
 </ul>
 <p><strong>Комплексные литералы с <code>j</code>/<code>J</code>:</strong></p>
-<p>Python поддерживает комплексные числа прямо в синтаксисе — без импорта <code>cmath</code> или <code>complex()</code>. Мнимая единица обозначается <code>j</code> (как в инженерной нотации), <strong>не</strong> <code>i</code> — выбор унаследован из Fortran/GAP, привычен инженерам-электрикам (<code>j</code> не занято переменной силы тока <code>i</code>).</p>
+<p>Python поддерживает комплексные числа прямо в синтаксисе — без импорта <code>cmath</code> или <code>complex()</code>. Мнимая единица обозначается <code>j</code> (как в инженерной нотации), <strong>не</strong> <code>i</code> — выбор унаследован из Fortran, привычен инженерам-электрикам (<code>j</code> не занято переменной силы тока <code>i</code>).</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="n">j</span>                      <span class="c1"># чисто мнимая единица</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="mi">1</span><span class="n">j</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>
@@ -3619,7 +3619,7 @@
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">1.5e-3</span><span class="n">j</span>    <span class="c1"># отрицательная exp    → 0.0015j</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">.5e2</span><span class="n">j</span>      <span class="c1"># без целой части      → 50j</span>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1_0</span><span class="n">j</span>       <span class="c1"># с underscore         → 10j</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">1_0.5e1_0</span><span class="n">j</span> <span class="c1"># всё сразу            → 1.05e11j</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="mf">1_0.5e1_0</span><span class="n">j</span> <span class="c1"># всё сразу            → 105000000000j</span>
 </span></code></pre></div>
 <p><strong>Литерал — только мнимое число.</strong> Грамматики «комплексного литерала с действительной частью» в Python <strong>нет</strong>: токен-литерал — только <code>imagnumber</code> (<code>int</code>/<code>float</code> + суффикс <code>j</code>). То есть <strong>отдельный</strong> <code>1j</code> — это уже полноценный литерал complex, а вот <code>3 + 4j</code> грамматически — <strong>бинарное сложение</strong> двух литералов (<code>3</code> и <code>4j</code>): токенайзер выдаёт <code>NUMBER '3'</code>, <code>'+'</code>, <code>NUMBER '4j'</code>, а AST строит <code>BinOp(Constant(3), Add, Constant(4j))</code>. Константу <code>complex(3, 4)</code> из этого дерева делает компилятор — constant folding ещё до исполнения:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">dis</span>
@@ -3744,7 +3744,7 @@
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">float</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s1">&#39;0x1.999999999999ap-4&#39;</span><span class="p">)</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="mf">0.1</span>   <span class="c1"># обратное преобразование — без потери точности</span>
 </span></code></pre></div>
-<p>Полезно для сериализации float без потерь (JSON не передаёт NaN/inf, а hex-форма — передаёт), для отладки битового представления и для обмена между языками, поддерживающими hex float (C, Java).</p>
+<p>Полезно для сериализации float без потерь (строгий JSON не допускает NaN/inf, а hex-форма — передаёт; Python-модуль json пишет их нестандартными литералами NaN/Infinity), для отладки битового представления и для обмена между языками, поддерживающими hex float (C, Java).</p>
 <p><strong><code>math.modf()</code> и <code>math.frexp()</code> — разложение float:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">import</span> <span class="nn">math</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">math</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="mf">3.75</span><span class="p">)</span>     <span class="c1"># (0.75, 3.0) — дробная и целая части (со знаком числа)</span>
@@ -3796,7 +3796,7 @@
 </span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>
 </span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="c1"># То, что @ «не работает» в чистом Python — не баг, а дизайн:</span>
 </span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># PEP 465 (3.5+) добавил @ по запросу научного сообщества;</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="c1"># numpy 1.10 (октябрь 2015) поддержал @ практически одновременно с релизом 3.5.</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="c1"># numpy 1.10 (осень 2015) поддержал @ практически одновременно с релизом 3.5.</span>
 </span></code></pre></div>
 <p><strong>Сравнение «зарезервированных, но неопределённых» механизмов в Python</strong>:</p>
 <table>
@@ -3929,7 +3929,7 @@
 </span><span id="__span-25-29"><a id="__codelineno-25-29" name="__codelineno-25-29" href="#__codelineno-25-29"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xff\xff</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-25-30"><a id="__codelineno-25-30" name="__codelineno-25-30" href="#__codelineno-25-30"></a><span class="o">-</span><span class="mi">1</span>
 </span></code></pre></div>
-<p><code>int.from_bytes</code>/<code>to_bytes</code> удобнее <code>struct.pack</code>/<code>unpack</code>, когда работаете с отдельными целыми числами (не массивами). Применения: парсинг бинарных протоколов, хеширование, обфускация (см. Приложение C — спрятать число как байты).</p>
+<p><code>int.from_bytes</code>/<code>to_bytes</code> удобнее <code>struct.pack</code>/<code>unpack</code>, когда работаете с отдельными целыми числами (не массивами). Применения: парсинг бинарных протоколов, хеширование, обфускация (приёмы — в Приложении C).</p>
 <p>⚠️ <code>to_bytes(length, ...)</code> требует <strong>явной длины</strong> и упадёт с <code>OverflowError</code>, если число не помещается: <code>(256).to_bytes(1, "big")</code> — <code>OverflowError</code>. Длину можно вычислить: <code>((n).bit_length() + 7) // 8 or 1</code>.</p>
 <p><strong>Python 3.11+:</strong> оба параметра стали опциональными — сигнатура <code>to_bytes(length=1, byteorder='big', *, signed=False)</code>. Но дефолтная длина — ровно <strong>1 байт</strong>: <code>(1024).to_bytes()</code> упадёт с <code>OverflowError: int too big to convert</code>. Автоподбора минимальной длины нет ни в одной версии — считайте сами: <code>(1024).to_bytes(((1024).bit_length() + 7) // 8 or 1)</code> → <code>b'\x04\x00'</code>.</p>
 <p><strong>Полный обзор числовых литералов:</strong></p>
@@ -4015,7 +4015,7 @@
 </span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;bool&#39;</span><span class="p">}</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Подводный камень</strong>: <code>{1: "x", True: "y"}</code> даёт <code>{1: 'y'}</code> — потому что <code>True == 1</code> и <code>hash(True) == hash(1)</code>. Это классический источник багов, если смешивать <code>bool</code> и <code>int</code> ключи в одном словаре.</p>
-<h3 id="1.1-limit">Лимит на преобразование <code>int</code> ↔ <code>str</code> (PEP 686 / CVE-2020-10735, Python 3.11+)<a class="headerlink" href="#1.1-limit" title="Permanent link">#</a></h3>
+<h3 id="1.1-limit">Лимит на преобразование <code>int</code> ↔ <code>str</code> (CVE-2020-10735, Python 3.11+ и секьюрити-бэкпорты 3.8–3.10)<a class="headerlink" href="#1.1-limit" title="Permanent link">#</a></h3>
 <p>В Python 3.11+ (и бэкпортах 3.8–3.10) введён глобальный лимит на преобразование между строками и большими целыми числами в системах счисления, не являющихся степенью двойки (10, 36 и т.д.). По умолчанию лимит — <strong>4300 цифр</strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;1&quot;</span> <span class="o">*</span> <span class="mi">5000</span><span class="p">)</span>
 </span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c1"># ValueError: Exceeds the limit (4300 digits) for integer string conversion</span>
@@ -4297,7 +4297,7 @@
 </span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a>
 </span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="c1"># Словарь кодов — для произвольных замен:</span>
 </span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="n">tr</span> <span class="o">=</span> <span class="p">{</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">):</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">):</span> <span class="s1">&#39;BB&#39;</span><span class="p">}</span>
-</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="s2">&quot;abc&quot;</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>            <span class="c1"># &#39;ABbc&#39; — a→A, b→BB, c без изменений</span>
+</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="s2">&quot;abc&quot;</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>            <span class="c1"># &#39;ABBc&#39; — a→A, b→&#39;BB&#39;, c без изменений</span>
 </span></code></pre></div>
 <p><strong>Когда <code>translate</code> лучше <code>.replace()</code></strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Цепочка replace — O(n × k) где k = число разных символов:</span>
@@ -4315,7 +4315,7 @@
 </span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>    <span class="c1"># &#39;___42&#39; — с явным заполнителем</span>
 </span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>         <span class="c1"># &#39;42   &#39; — левое выравнивание</span>
 </span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>    <span class="c1"># &#39;42***&#39;</span>
-</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>        <span class="c1"># &#39; 42  &#39; — по центру</span>
+</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>        <span class="c1"># &#39;  42 &#39; — по центру</span>
 </span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="s1">&#39;42&#39;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span>   <span class="c1"># &#39;==42=&#39; — дополнительный символ идёт слева (Python отдаёт «перевес» левой стороне при нечётном остатке)</span>
 </span><span id="__span-43-9"><a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>
 </span><span id="__span-43-10"><a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="c1"># Когда методы удобнее f-string:</span>
@@ -4358,7 +4358,7 @@
 <ul>
 <li><strong>Крипто</strong>: хеши (<code>hashlib.sha256(...).hexdigest()</code> ↔ <code>bytes.fromhex</code>), HMAC, подписи.</li>
 <li><strong>Бинарные протоколы</strong>: MAC-адреса (<code>b'\x00\x1a\x2b\x3c\x4d\x5e'.hex(':')</code> → <code>'00:1a:2b:3c:4d:5e'</code>), UUID.</li>
-<li><strong>Обфускация</strong> (см. Приложение C): спрятать ASCII-строку как hex, развернуть в рантайме — <code>bytes.fromhex("48656c6c6f").decode()</code> → <code>'Hello'</code>.</li>
+<li><strong>Обфускация</strong>: спрятать ASCII-строку как hex, развернуть в рантайме — <code>bytes.fromhex("48656c6c6f").decode()</code> → <code>'Hello'</code> (ещё приёмы обфускации — в Приложении C).</li>
 </ul>
 <p>⚠️ <strong><code>.hex()</code> vs <code>binascii.hexlify()</code></strong> — почти эквивалентны, но <code>.hex()</code> возвращает <code>str</code>, а <code>hexlify</code> — <code>bytes</code>. Современный код — <code>.hex()</code>, он короче.</p>
 <p>⚠️ <strong><code>.hex()</code> на <code>bytearray</code></strong> — тоже работает, возвращает <code>str</code>. Аналогично <code>bytes.hex()</code>.</p>
@@ -4596,7 +4596,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
 </span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="n">y</span> <span class="o">=</span> <span class="mi">20</span>
 </span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">y</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="c1"># x=10, y=20, x+y=30</span>
+</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="c1"># x=10, y=20, x + y=30</span>
 </span></code></pre></div>
 <p>Заменяет громоздкое <code>print("x =", x)</code>. Знак <code>=</code> сразу после выражения выводит и имя, и значение.</p>
 <p><strong>Экранирование <code>{}</code> — для литеральных фигурных скобок:</strong></p>
@@ -5300,7 +5300,7 @@
 </span><span id="__span-99-2"><a id="__codelineno-99-2" name="__codelineno-99-2" href="#__codelineno-99-2"></a><span class="n">x</span> <span class="o">=</span> <span class="n">user_input</span> <span class="ow">or</span> <span class="s2">&quot;default&quot;</span>
 </span><span id="__span-99-3"><a id="__codelineno-99-3" name="__codelineno-99-3" href="#__codelineno-99-3"></a><span class="c1"># Эквивалент: x = user_input if user_input else &quot;default&quot;</span>
 </span><span id="__span-99-4"><a id="__codelineno-99-4" name="__codelineno-99-4" href="#__codelineno-99-4"></a>
-</span><span id="__span-99-5"><a id="__codelineno-99-5" name="__codelineno-99-5" href="#__codelineno-99-5"></a><span class="c1"># Цепочка fallback (как `??` в C#/JS, но для falsy, не только None):</span>
+</span><span id="__span-99-5"><a id="__codelineno-99-5" name="__codelineno-99-5" href="#__codelineno-99-5"></a><span class="c1"># Цепочка запасных значений (как `??` в C#/JS, но для falsy, не только None):</span>
 </span><span id="__span-99-6"><a id="__codelineno-99-6" name="__codelineno-99-6" href="#__codelineno-99-6"></a><span class="n">config</span> <span class="o">=</span> <span class="n">env_config</span> <span class="ow">or</span> <span class="n">file_config</span> <span class="ow">or</span> <span class="n">default_config</span>
 </span><span id="__span-99-7"><a id="__codelineno-99-7" name="__codelineno-99-7" href="#__codelineno-99-7"></a>
 </span><span id="__span-99-8"><a id="__codelineno-99-8" name="__codelineno-99-8" href="#__codelineno-99-8"></a><span class="c1"># None-coalescing (None — falsy, поэтому or работает):</span>
@@ -6074,7 +6074,7 @@
 <li>Простые последовательности с индексацией — меньше кода.</li>
 <li>Классы-обёртки над list/tuple/str, где <code>__getitem__</code> уже есть для <code>obj[i]</code> — итерация через него бесплатно.</li>
 </ul>
-<p>⚠️ <strong><code>__iter__</code> предпочтительнее</strong> в новом коде: он явный, поддерживает <code>__next__</code>, может бросать <code>StopIteration</code> с value, работает с <code>reversed()</code> через <code>__reversed__</code>. <code>__getitem__</code> — fallback для случаев, когда не хочется писать генератор.</p>
+<p>⚠️ <strong><code>__iter__</code> предпочтительнее</strong> в новом коде: он явный, поддерживает <code>__next__</code>, может бросать <code>StopIteration</code> с value, работает с <code>reversed()</code> через <code>__reversed__</code>. <code>__getitem__</code> — резервный вариант для случаев, когда не хочется писать генератор.</p>
 <h2 id="1.15">1.15. <code>assert</code> и флаг <code>-O</code><a class="headerlink" href="#1.15" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-143-1"><a id="__codelineno-143-1" name="__codelineno-143-1" href="#__codelineno-143-1"></a><span class="k">assert</span> <span class="n">условие</span><span class="p">,</span> <span class="s2">&quot;Необязательное сообщение об ошибке&quot;</span>
 </span></code></pre></div>
@@ -6099,10 +6099,12 @@
 </span><span id="__span-145-3"><a id="__codelineno-145-3" name="__codelineno-145-3" href="#__codelineno-145-3"></a>
 </span><span id="__span-145-4"><a id="__codelineno-145-4" name="__codelineno-145-4" href="#__codelineno-145-4"></a><span class="c1"># Python видит: assert (кортеж из двух элементов)</span>
 </span><span id="__span-145-5"><a id="__codelineno-145-5" name="__codelineno-145-5" href="#__codelineno-145-5"></a><span class="c1"># Непустой кортеж → truthy → assert проходит всегда, даже если x = -5</span>
-</span><span id="__span-145-6"><a id="__codelineno-145-6" name="__codelineno-145-6" href="#__codelineno-145-6"></a>
-</span><span id="__span-145-7"><a id="__codelineno-145-7" name="__codelineno-145-7" href="#__codelineno-145-7"></a><span class="c1"># ✅ ПРАВИЛЬНО — без скобок вокруг всего выражения:</span>
-</span><span id="__span-145-8"><a id="__codelineno-145-8" name="__codelineno-145-8" href="#__codelineno-145-8"></a><span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;x must be positive&quot;</span>
-</span><span id="__span-145-9"><a id="__codelineno-145-9" name="__codelineno-145-9" href="#__codelineno-145-9"></a><span class="c1"># Здесь &quot;x must be positive&quot; — второй аргумент assert (сообщение)</span>
+</span><span id="__span-145-6"><a id="__codelineno-145-6" name="__codelineno-145-6" href="#__codelineno-145-6"></a><span class="c1"># Бонус с Python 3.10+: компилятор и так предупреждает —</span>
+</span><span id="__span-145-7"><a id="__codelineno-145-7" name="__codelineno-145-7" href="#__codelineno-145-7"></a><span class="c1"># SyntaxWarning: assertion is always true, perhaps remove parentheses?</span>
+</span><span id="__span-145-8"><a id="__codelineno-145-8" name="__codelineno-145-8" href="#__codelineno-145-8"></a>
+</span><span id="__span-145-9"><a id="__codelineno-145-9" name="__codelineno-145-9" href="#__codelineno-145-9"></a><span class="c1"># ✅ ПРАВИЛЬНО — без скобок вокруг всего выражения:</span>
+</span><span id="__span-145-10"><a id="__codelineno-145-10" name="__codelineno-145-10" href="#__codelineno-145-10"></a><span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;x must be positive&quot;</span>
+</span><span id="__span-145-11"><a id="__codelineno-145-11" name="__codelineno-145-11" href="#__codelineno-145-11"></a><span class="c1"># Здесь &quot;x must be positive&quot; — второй аргумент assert (сообщение)</span>
 </span></code></pre></div>
 <p>Это та же ловушка, что <code>if (cond,):</code> — <code>if</code> видит кортеж, а не условие. Bader в <em>Python Tricks</em> выделяет это как один из главных граблей с <code>assert</code>.</p>
 <p>⚠️ Если видите <code>assert (... , ...)</code> со скобками и запятой — <strong>почти всегда это баг</strong>. Единственное исключение: <code>assert (x := f()) &gt; 0, "msg"</code> — скобки нужны для walrus, но запятая после <code>0</code>, не после всего выражения.</p>
@@ -6132,7 +6134,7 @@
 </span><span id="__span-147-5"><a id="__codelineno-147-5" name="__codelineno-147-5" href="#__codelineno-147-5"></a><span class="nv">PYTHONBREAKPOINT</span><span class="o">=</span>pudb.set_trace<span class="w"> </span>python<span class="w"> </span>script.py
 </span><span id="__span-147-6"><a id="__codelineno-147-6" name="__codelineno-147-6" href="#__codelineno-147-6"></a>
 </span><span id="__span-147-7"><a id="__codelineno-147-7" name="__codelineno-147-7" href="#__codelineno-147-7"></a><span class="c1"># Использовать debugpy (для VS Code remote debug)</span>
-</span><span id="__span-147-8"><a id="__codelineno-147-8" name="__codelineno-147-8" href="#__codelineno-147-8"></a><span class="nv">PYTHONBREAKPOINT</span><span class="o">=</span>debugpy.client.debugpy_set_trace<span class="w"> </span>python<span class="w"> </span>script.py
+</span><span id="__span-147-8"><a id="__codelineno-147-8" name="__codelineno-147-8" href="#__codelineno-147-8"></a><span class="nv">PYTHONBREAKPOINT</span><span class="o">=</span>debugpy.breakpoint<span class="w"> </span>python<span class="w"> </span>script.py
 </span><span id="__span-147-9"><a id="__codelineno-147-9" name="__codelineno-147-9" href="#__codelineno-147-9"></a>
 </span><span id="__span-147-10"><a id="__codelineno-147-10" name="__codelineno-147-10" href="#__codelineno-147-10"></a><span class="c1"># Полностью отключить breakpoint (превращается в no-op)</span>
 </span><span id="__span-147-11"><a id="__codelineno-147-11" name="__codelineno-147-11" href="#__codelineno-147-11"></a><span class="nv">PYTHONBREAKPOINT</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>python<span class="w"> </span>script.py
@@ -6466,7 +6468,7 @@
 <p><strong>Где это уместно и даже полезно</strong>:</p>
 <ul>
 <li><strong>REPL/notebook'ы</strong> — короткая отладка без необходимости писать 2 строки.</li>
-<li><strong>Code golf</strong> — соревнования на кратчайший код (см. <strong>Приложение D</strong>). <code>[print(i)for i in range(10)]</code> — 28 символов против 32 у <code>for i in range(10):\n    print(i)</code>; listcomp-with-side-effects там — стандартная идиома. Главный приём сжатия — <strong>убирание пробелов</strong> (после запятых, вокруг операторов, перед <code>:</code> в срезах) — каждый пробел = +1 символ, на типичной программе это 5–15% экономии бесплатно. В code golf также есть трюк с «комментариями через <code>""</code>** — <code>print(1);"Тут текст";print(1+1)</code>, но <strong>на реальных соревнованиях это пустая трата символов</strong>: если пишете комментарии, вы не дожали решение. Подробнее — в Приложении C.</li>
+<li><strong>Code golf</strong> — соревнования на кратчайший код (см. <strong>Приложение D</strong>). <code>[print(i)for i in range(10)]</code> — 28 символов против 32 у <code>for i in range(10):\n    print(i)</code>; listcomp-with-side-effects там — стандартная идиома. Главный приём сжатия — <strong>убирание пробелов</strong> (после запятых, вокруг операторов, перед <code>:</code> в срезах) — каждый пробел = +1 символ, на типичной программе это 5–15% экономии бесплатно. В code golf также есть трюк с «комментарием»-строкой: голое строковое выражение <code>"Тут текст"</code> — валидный оператор (<code>print(1);"Тут текст";print(1+1)</code> работает), но <strong>на реальных соревнованиях это пустая трата символов</strong>: если пишете комментарии, вы не дожали решение. Подробнее — в Приложении D.</li>
 <li><strong>Когда результат действительно нужен</strong>:</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-171-1"><a id="__codelineno-171-1" name="__codelineno-171-1" href="#__codelineno-171-1"></a><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>           <span class="c1"># список нужен</span>
@@ -6848,7 +6850,7 @@
 </span><span id="__span-190-5"><a id="__codelineno-190-5" name="__codelineno-190-5" href="#__codelineno-190-5"></a><span class="k">class</span> <span class="nc">DatabaseError</span><span class="p">(</span><span class="n">AppError</span><span class="p">):</span>
 </span><span id="__span-190-6"><a id="__codelineno-190-6" name="__codelineno-190-6" href="#__codelineno-190-6"></a>    <span class="k">pass</span>
 </span><span id="__span-190-7"><a id="__codelineno-190-7" name="__codelineno-190-7" href="#__codelineno-190-7"></a>
-</span><span id="__span-190-8"><a id="__codelineno-190-8" name="__codelineno-190-8" href="#__codelineno-190-8"></a><span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">DatabaseError</span><span class="p">):</span>   <span class="c1"># более специфичное</span>
+</span><span id="__span-190-8"><a id="__codelineno-190-8" name="__codelineno-190-8" href="#__codelineno-190-8"></a><span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">DatabaseError</span><span class="p">):</span>   <span class="c1"># более специфичное (затеняет builtin — в реальном коде имя лучше другое)</span>
 </span><span id="__span-190-9"><a id="__codelineno-190-9" name="__codelineno-190-9" href="#__codelineno-190-9"></a>    <span class="k">pass</span>
 </span><span id="__span-190-10"><a id="__codelineno-190-10" name="__codelineno-190-10" href="#__codelineno-190-10"></a>
 </span><span id="__span-190-11"><a id="__codelineno-190-11" name="__codelineno-190-11" href="#__codelineno-190-11"></a><span class="k">class</span> <span class="nc">QueryError</span><span class="p">(</span><span class="n">DatabaseError</span><span class="p">):</span>
@@ -7310,7 +7312,7 @@
 <td><code>vars(module)</code></td>
 <td><code>__dict__</code> модуля</td>
 <td>—</td>
-<td><code>mappingproxy</code> (immutable)</td>
+<td><code>dict</code> (мутабельный)</td>
 </tr>
 <tr>
 <td><code>dir(obj)</code></td>
@@ -7541,7 +7543,7 @@
 </span><span id="__span-221-10"><a id="__codelineno-221-10" name="__codelineno-221-10" href="#__codelineno-221-10"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
 </span><span id="__span-221-11"><a id="__codelineno-221-11" name="__codelineno-221-11" href="#__codelineno-221-11"></a>
 </span><span id="__span-221-12"><a id="__codelineno-221-12" name="__codelineno-221-12" href="#__codelineno-221-12"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">square</span><span class="o">.</span><span class="vm">__doc__</span>
-</span><span id="__span-221-13"><a id="__codelineno-221-13" name="__codelineno-221-13" href="#__codelineno-221-13"></a><span class="s1">&#39;Возвращает квадрат x.</span><span class="se">\n\n</span><span class="s1">    Args:</span><span class="se">\n</span><span class="s1">        x: число (int или float)</span><span class="se">\n</span><span class="s1">    </span><span class="se">\n</span><span class="s1">    Returns:</span><span class="se">\n</span><span class="s1">        Квадрат x</span><span class="se">\n</span><span class="s1">    &#39;</span>
+</span><span id="__span-221-13"><a id="__codelineno-221-13" name="__codelineno-221-13" href="#__codelineno-221-13"></a><span class="s1">&#39;Возвращает квадрат x.</span><span class="se">\n\n</span><span class="s1">    Args:</span><span class="se">\n</span><span class="s1">        x: число (int или float)</span><span class="se">\n\n</span><span class="s1">    Returns:</span><span class="se">\n</span><span class="s1">        Квадрат x</span><span class="se">\n</span><span class="s1">    &#39;</span>
 </span><span id="__span-221-14"><a id="__codelineno-221-14" name="__codelineno-221-14" href="#__codelineno-221-14"></a>
 </span><span id="__span-221-15"><a id="__codelineno-221-15" name="__codelineno-221-15" href="#__codelineno-221-15"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">help</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
 </span><span id="__span-221-16"><a id="__codelineno-221-16" name="__codelineno-221-16" href="#__codelineno-221-16"></a><span class="n">Help</span> <span class="n">on</span> <span class="n">function</span> <span class="n">square</span> <span class="ow">in</span> <span class="n">module</span> <span class="n">__main__</span><span class="p">:</span>
@@ -7792,18 +7794,18 @@
 </table>
 <h3 id="1.24-barry"><code>from __future__ import barry_as_FLUFL</code> — пасхалка<a class="headerlink" href="#1.24-barry" title="Permanent link">#</a></h3>
 <p>PEP 401 — April Fools' Day PEP. Включает оператор <code>&lt;&gt;</code> как неравенство (вместо <code>!=</code>), в «честь» Barry Warsaw, который предпочитал <code>&lt;&gt;</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-232-1"><a id="__codelineno-232-1" name="__codelineno-232-1" href="#__codelineno-232-1"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">barry_as_FLUFL</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-232-1"><a id="__codelineno-232-1" name="__codelineno-232-1" href="#__codelineno-232-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">barry_as_FLUFL</span>
 </span><span id="__span-232-2"><a id="__codelineno-232-2" name="__codelineno-232-2" href="#__codelineno-232-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="o">&lt;&gt;</span> <span class="mi">2</span>     <span class="c1"># True — как !=, но «FLUFL» стиль</span>
 </span><span id="__span-232-3"><a id="__codelineno-232-3" name="__codelineno-232-3" href="#__codelineno-232-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>     <span class="c1"># SyntaxError: with Barry as BDFL, use &#39;&lt;&gt;&#39; instead of &#39;!=&#39;</span>
 </span></code></pre></div>
-<p>Это реальная фича (не шутка в коде — шутка в PEP), доступна во всех Python 3.x. Подробнее — в разделе про пасхалки (1.25).</p>
+<p>Это реальная фича (не шутка в коде — шутка в PEP), доступна с Python 3.1. Подробнее — в разделе про пасхалки (1.25).</p>
 <h3 id="1.24-spisok">Список всех доступных <code>__future__</code> импортов<a class="headerlink" href="#1.24-spisok" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-233-1"><a id="__codelineno-233-1" name="__codelineno-233-1" href="#__codelineno-233-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">__future__</span>
 </span><span id="__span-233-2"><a id="__codelineno-233-2" name="__codelineno-233-2" href="#__codelineno-233-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">__future__</span><span class="p">):</span>
 </span><span id="__span-233-3"><a id="__codelineno-233-3" name="__codelineno-233-3" href="#__codelineno-233-3"></a><span class="o">...</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
 </span><span id="__span-233-4"><a id="__codelineno-233-4" name="__codelineno-233-4" href="#__codelineno-233-4"></a><span class="o">...</span>         <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Все они — экземпляры <code>_Feature</code> с атрибутами <code>optionalRelease</code> (когда появилась) и <code>compilerFlag</code> (битовый флаг для компилятора).</p>
+<p>Все они — экземпляры <code>_Feature</code> с атрибутами <code>optional</code> / <code>mandatory</code> (версии появления и стандартизации) и <code>compiler_flag</code> (битовый флаг компилятора); с Python 3.9 есть методы совместимости <code>getOptionalRelease()</code> / <code>getMandatoryRelease()</code> с прежними именами.</p>
 <h2 id="1.25">1.25. Пасхалки — культурный слой Python<a class="headerlink" href="#1.25" title="Permanent link">#</a></h2>
 <p>Python не был бы Pythonом без пасхалок. Это не «детские шутки», а <strong>часть культуры языка</strong> — многие из них отражают принципы проектирования (Zen of Python), отсылки к комьюнити (Barry Warsaw, xkcd), или протест против спорных решений (braces). Знать их полезно: иногда встречаются в чужом коде, на собеседованиях, в conference talks.</p>
 <h3 id="1.25-import"><code>import this</code> — Дзен Python<a class="headerlink" href="#1.25-import" title="Permanent link">#</a></h3>
@@ -7850,7 +7852,7 @@
 </span></code></pre></div>
 <p>«Not a chance» — это <strong>единственная</strong> пасхалка в синтаксическом анализаторе CPython. Она намекает, что Python <strong>никогда</strong> не получит C-стиль <code>{}</code> для блоков (как в C/Java/JavaScript). Гвидо ван Россум (BDFL) был категорически против.</p>
 <h3 id="1.25-barry"><code>from __future__ import barry_as_FLUFL</code> — <code>&lt;&gt;</code> вместо <code>!=</code><a class="headerlink" href="#1.25-barry" title="Permanent link">#</a></h3>
-<p>PEP 401 — April Fools' Day PEP (1 апреля 2011). Barry Warsaw, release-менеджер Python 3.x, в шутку предлагал вернуть <code>&lt;&gt;</code> (из Python 2) как неравенство. Гвидо в шутку согласился — и это <strong>реально реализовано</strong>:</p>
+<p>PEP 401 — April Fools' Day PEP (1 апреля 2009). Barry Warsaw, release-менеджер Python 3.x, в шутку предлагал вернуть <code>&lt;&gt;</code> (из Python 2) как неравенство. Гвидо в шутку согласился — и это <strong>реально реализовано</strong>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-237-1"><a id="__codelineno-237-1" name="__codelineno-237-1" href="#__codelineno-237-1"></a><span class="c1"># В обычном Python:</span>
 </span><span id="__span-237-2"><a id="__codelineno-237-2" name="__codelineno-237-2" href="#__codelineno-237-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>
 </span><span id="__span-237-3"><a id="__codelineno-237-3" name="__codelineno-237-3" href="#__codelineno-237-3"></a><span class="kc">True</span>
@@ -7861,7 +7863,7 @@
 </span><span id="__span-237-8"><a id="__codelineno-237-8" name="__codelineno-237-8" href="#__codelineno-237-8"></a><span class="kc">True</span>
 </span><span id="__span-237-9"><a id="__codelineno-237-9" name="__codelineno-237-9" href="#__codelineno-237-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>     <span class="c1"># SyntaxError: with Barry as BDFL, use &#39;&lt;&gt;&#39; instead of &#39;!=&#39;</span>
 </span></code></pre></div>
-<p>FLUFL = «Friendly Language Uncle For Life» (PEP 401) — шуточный титул Барри Варшавы; «Python-диссиденты», предпочитающие <code>&lt;&gt;</code> и <code>{}</code>, — фанатский фольклор вокруг того же PEP. Импорт делает <code>&lt;&gt;</code> рабочим, а <code>!=</code> — <strong>запрещает</strong>. Работает во всех Python 3.x.</p>
+<p>FLUFL = «Friendly Language Uncle For Life» (PEP 401) — шуточный титул Барри Варшавы; «Python-диссиденты», предпочитающие <code>&lt;&gt;</code> и <code>{}</code>, — фанатский фольклор вокруг того же PEP. Импорт делает <code>&lt;&gt;</code> рабочим, а <code>!=</code> — <strong>запрещает</strong>. Работает с Python 3.1.</p>
 <p>⚠️ <strong>Работает и в <code>.py</code>-файле</strong>, не только в REPL. <code>from __future__ import</code> — обычный импорт, он активирует <code>&lt;&gt;</code> для всего модуля. Создайте <code>test.py</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-238-1"><a id="__codelineno-238-1" name="__codelineno-238-1" href="#__codelineno-238-1"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">barry_as_FLUFL</span>
 </span><span id="__span-238-2"><a id="__codelineno-238-2" name="__codelineno-238-2" href="#__codelineno-238-2"></a><span class="nb">print</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&gt;</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># True — выполняется как скрипт: python3 test.py</span>
@@ -8032,7 +8034,7 @@
 <p>Пасхалки Python — не просто шутки. <strong><code>import this</code></strong> — это <strong>документированная</strong> философия языка, на которую ссылаются в design-решениях (PEP 8, PEP 20). <strong><code>barry_as_FLUFL</code></strong> — реальная реализация April Fools PEP, которая не удалена спустя 14 лет — потому что Python серьёзно относится к своим шуточным PEP. <strong><code>from __future__ import braces</code></strong> — самое короткое и категоричное заявление о том, что Python <strong>никогда</strong> не будет иметь C-style синтаксис.</p>
 <p>Культура пасхалок — это <strong>часть identity Python</strong>. Разработчики, которые знают про <code>import this</code>, обычно лучше понимают <strong>дух</strong> языка, не только синтаксис.</p>
 <h3 id="1.25-benchmarki">Бенчмарки к Части I<a class="headerlink" href="#1.25-benchmarki" title="Permanent link">#</a></h3>
-<p>Все замеры — CPython <strong>3.12</strong> на x86_64 Linux. Конспект упоминает фичи вплоть до Python 3.14 (t-строки, PEP 750), но бенчмарки сняты на стабильной версии 3.12 — актуальный стабильный релиз на момент написания. В Python официально нет понятия LTS (релизы выходят ежегодно, поддержка — ~5 лет), но 3.12 является наиболее распространённой версией в production на момент написания. Цифры ориентировочные: зависят от CPU, версии Python, флагов сборки и нагрузки — у читателя на 3.13 или другом железе цифры будут другими. Важен <strong>порядок величин</strong>, а не конкретные наносекунды.</p>
+<p>Все замеры — CPython <strong>3.12</strong> на x86_64 Linux. Конспект упоминает фичи вплоть до Python 3.14 (t-строки, PEP 750), но бенчмарки сняты на 3.12.14 — версии, всё ещё самой распространённой в production. В Python официально нет понятия LTS (релизы выходят ежегодно, поддержка — ~5 лет), а ветка 3.12 будет получать обновления до 2028 года. Цифры ориентировочные: зависят от CPU, версии Python, флагов сборки и нагрузки — у читателя на 3.13 или другом железе цифры будут другими. Важен <strong>порядок величин</strong>, а не конкретные наносекунды.</p>
 <p>⚠️ На Python 3.13+ (PEP 703, free-threaded build) часть замеров изменится — GIL отпущен, threads получат реальное ускорение на CPU-bound задачах. На стандартной 3.13 (без <code>--disable-gil</code>) цифры близки к 3.12.</p>
 <p><strong>1. Числовые литералы с подчёркиваниями vs без.</strong>
 Парсер игнорирует <code>_</code> между цифрами ещё на лексической стадии, поэтому рантайм-разницы
@@ -8096,7 +8098,7 @@
 </span><span id="__span-253-5"><a id="__codelineno-253-5" name="__codelineno-253-5" href="#__codelineno-253-5"></a><span class="c1"># while (line := fake.readline()):</span>
 </span><span id="__span-253-6"><a id="__codelineno-253-6" name="__codelineno-253-6" href="#__codelineno-253-6"></a><span class="c1">#     ...</span>
 </span></code></pre></div>
-Замер на CPython 3.12.14, 50k повторов по 100 строк: <code>iter(callable, sentinel)</code> ≈ 0.64 с, <code>while True</code> ≈ 0.42 с — <code>while</code> быстрее на ~35–50%, потому что <code>iter(callable, sentinel)</code> заворачивает <code>readline</code> в <code>lambda</code> (лишний call на каждую итерацию). На длинных файлах и при отсутствии lambda-обёртки разница исчезает. Выбирайте по читаемости: <code>iter(callable, sentinel)</code> короче для простых циклов чтения, <code>while</code> гибче при нескольких условиях выхода.</p>
+Замер на CPython 3.12.14, 50k повторов по 100 строк: <code>iter(callable, sentinel)</code> ≈ 0.64 с, <code>while True</code> ≈ 0.42 с — <code>while</code> быстрее на ~34% (итератор — в ~1.5× медленнее), потому что <code>iter(callable, sentinel)</code> заворачивает <code>readline</code> в <code>lambda</code> (лишний call на каждую итерацию). На длинных файлах и при отсутствии lambda-обёртки разница исчезает. Выбирайте по читаемости: <code>iter(callable, sentinel)</code> короче для простых циклов чтения, <code>while</code> гибче при нескольких условиях выхода.</p>
 
 
 

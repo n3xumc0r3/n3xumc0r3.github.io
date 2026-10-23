@@ -441,11 +441,11 @@
         <li class="md-nav__item">
   <a href="#2.8" class="md-nav__link">
     <span class="md-ellipsis">
-      2.8. contextlib.closing и aclosing
+      2.8. Ещё обитатели contextlib: closing, aclosing, nullcontext, chdir
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.8. contextlib.closing и aclosing">
+    <nav class="md-nav" aria-label="2.8. Ещё обитатели contextlib: closing, aclosing, nullcontext, chdir">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1068,11 +1068,11 @@
         <li class="md-nav__item">
   <a href="#2.8" class="md-nav__link">
     <span class="md-ellipsis">
-      2.8. contextlib.closing и aclosing
+      2.8. Ещё обитатели contextlib: closing, aclosing, nullcontext, chdir
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.8. contextlib.closing и aclosing">
+    <nav class="md-nav" aria-label="2.8. Ещё обитатели contextlib: closing, aclosing, nullcontext, chdir">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1175,7 +1175,7 @@
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Ресурс закрыт</span>
 </span></code></pre></div>
 <h2 id="2.3">2.3. <code>@contextmanager</code> — без класса<a class="headerlink" href="#2.3" title="Permanent link">#</a></h2>
-<p>Писать целый класс ради простого менеджера — лень. <code>contextlib.contextmanager</code> превращает обычную функцию с одним <code>yield</code> в контекстный менеджер:</p>
+<p>Писать целый класс ради простого менеджера — громоздко. <code>contextlib.contextmanager</code> превращает обычную функцию с одним <code>yield</code> в контекстный менеджер:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">time</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -1215,7 +1215,7 @@
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;temp_file.txt&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Под капотом — менеджер с <code>__exit__</code>, возвращающим <code>True</code>, если тип исключения совпадает.</p>
+<p>Под капотом — менеджер с <code>__exit__</code>, возвращающим <code>True</code>, если исключение — экземпляр одного из указанных типов (проверка через <code>isinstance</code>, подклассы тоже подавляются).</p>
 <p><strong><code>contextlib.ExitStack</code></strong> — для динамического набора менеджеров, когда их число неизвестно заранее:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">ExitStack</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -1255,7 +1255,7 @@
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">):</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Данные во временном файле&quot;</span><span class="p">)</span>
 </span></code></pre></div></p>
-<p>⚠️ <strong>Статический <code>with A, B</code> vs динамический <code>ExitStack</code></strong>: распаковать список менеджеров прямо в <code>with</code> нельзя — интерпретатор не примет <code>with *managers:</code> или <code>with (*managers):</code> (это <code>SyntaxError</code>, распаковка в <code>with</code>-заголовке появилась только в 3.10 для <code>with a as x, b as y</code>-формы, но не для произвольных итерируемых). Для переменного числа ресурсов — <code>contextlib.ExitStack</code> (см. 2.4).</p>
+<p>⚠️ <strong>Статический <code>with A, B</code> vs динамический <code>ExitStack</code></strong>: распаковать список менеджеров прямо в <code>with</code> нельзя — интерпретатор не примет <code>with *managers:</code> или <code>with (*managers):</code> (оба — <code>SyntaxError</code>: звёздной распаковки в <code>with</code>-заголовке не существует; скобки, появившиеся в 3.10, лишь группируют заранее выписанные элементы). Для переменного числа ресурсов — <code>contextlib.ExitStack</code> (см. 2.4).</p>
 <h2 id="2.6">2.6. Подавление ошибок через <code>__exit__</code><a class="headerlink" href="#2.6" title="Permanent link">#</a></h2>
 <p>Если ваш контекстный менеджер вернёт <code>True</code> из <code>__exit__</code> — <strong>ошибка полностью поглощается</strong>, и программа не падает:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">class</span> <span class="nc">SwallowAll</span><span class="p">:</span>
@@ -1320,7 +1320,7 @@
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        <span class="n">greet_user</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="k">assert</span> <span class="s2">&quot;Hello, Alice&quot;</span> <span class="ow">in</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 </span></code></pre></div>
-<h2 id="2.8">2.8. <code>contextlib.closing</code> и <code>aclosing</code><a class="headerlink" href="#2.8" title="Permanent link">#</a></h2>
+<h2 id="2.8">2.8. Ещё обитатели contextlib: closing, aclosing, nullcontext, chdir<a class="headerlink" href="#2.8" title="Permanent link">#</a></h2>
 <p><code>closing</code> — для объектов, у которых есть метод <code>close()</code>, но нет <code>__enter__</code>/<code>__exit__</code>. Оборачивает их в контекстный менеджер, который вызывает <code>close()</code> при выходе.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
@@ -1368,7 +1368,7 @@
 </span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>   <span class="c1"># запускаем event loop; main() определена выше</span>
 </span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="c1"># Выведет: 1, 2, cleanup</span>
 </span></code></pre></div>
-<p><code>aclosing</code> вызывает <code>agen.aclose()</code> при выходе — корректно закрывает async-генератор, что гарантирует выполнение <code>finally</code> блока. Без него генератор может «зависнуть» неочищенным — GC работает синхронно и <strong>не может выполнить <code>await</code></strong> для кода внутри <code>finally</code> асинхронного генератора, что приводит к <code>ResourceWarning: unclosed asynchronous generator</code>.</p>
+<p><code>aclosing</code> вызывает <code>agen.aclose()</code> при выходе — корректно закрывает async-генератор, что гарантирует выполнение <code>finally</code> блока. Без него генератор может «зависнуть» неочищенным — GC работает синхронно и <strong>не может выполнить <code>await</code></strong> для кода внутри <code>finally</code> асинхронного генератора. Пока event loop жив, финализатор asyncio успевает запланировать <code>aclose()</code> — <code>finally</code> выполнится; если же loop уже остановлен, задача aclose уничтожается, <code>finally</code> молча не выполняется, а в stderr остаётся <code>Task was destroyed but it is pending!</code>. Отдельного ResourceWarning про незакрытые async-генераторы в CPython нет (в отличие от transport/loop/stream).</p>
 <h3 id="2.8-nullcontext"><code>nullcontext</code> (Python 3.7+) — менеджер-заглушка<a class="headerlink" href="#2.8-nullcontext" title="Permanent link">#</a></h3>
 <p>Незаменим для <strong>опциональных</strong> контекстных менеджеров — «ничего не делать», если ресурс не нужен:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">nullcontext</span>
@@ -1376,7 +1376,7 @@
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Если lock передан — захватываем, если None — nullcontext (no-op):</span>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">cm</span> <span class="o">=</span> <span class="n">lock</span> <span class="k">if</span> <span class="n">lock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">nullcontext</span><span class="p">()</span>
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">with</span> <span class="n">cm</span><span class="p">:</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">process_data</span><span class="p">()</span>   <span class="c1"># потокобезопасно, если lock есть; без накладных расходов, если нет</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">process_data</span><span class="p">()</span>   <span class="c1"># потокобезопасно, если lock есть; с минимальными накладными расходами, если нет</span>
 </span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
 </span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># Также для функций, принимающих путь ИЛИ файловый объект:</span>
 </span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">file_or_path</span><span class="p">):</span>
@@ -1422,7 +1422,7 @@
 </span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="c1"># Замер на CPython 3.12.14, 1M вызовов:</span>
 </span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="c1"># use_class:     ≈ 0.284 с  ← быстрее всего: прямые вызовы методов</span>
 </span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># use_dec:       ≈ 1.034 с  ← ~3.6× медленнее (генератор + _GeneratorContextManager)</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_exitstack: ≈ 1.326 с  ← самый медленный (поиск callback в стеке)</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># use_exitstack: ≈ 1.326 с  ← самый медленный (замыкание-обёртка и append в стек на каждый вход)</span>
 </span></code></pre></div>
 Декоратор <code>@contextmanager</code> <strong>в ~3.5–4 раза медленнее</strong> класса-менеджера, потому что
 строит генератор + прокси-обёртку <code>_GeneratorContextManager</code> на каждый вызов;
@@ -1437,7 +1437,7 @@
 </span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">as</span> <span class="n">fa</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">as</span> <span class="n">fb</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">as</span> <span class="n">fc</span><span class="p">:</span>
 </span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="k">pass</span>
 </span></code></pre></div>
-Байт-код <strong>идентичен</strong> (тезис верен — сравните инструкции без CACHE/RESUME). Реальных опкодов SETUP_WITH/WITH_CLEANUP в 3.11+ нет: вход — <code>BEFORE_WITH</code>, выход — вызов <code>__exit__</code> (<code>CALL 2</code>) + <code>WITH_EXCEPT_START</code> в обработчике; они повторяются трижды.
+Байт-код <strong>идентичен</strong> (сравните инструкции без CACHE/RESUME). Реальных опкодов SETUP_WITH/WITH_CLEANUP в 3.11+ нет: вход — <code>BEFORE_WITH</code>, выход — вызов <code>__exit__</code> (<code>CALL 2</code>) + <code>WITH_EXCEPT_START</code> в обработчике; они повторяются трижды.
 Разница только в читаемости: одна строка короче, но при длинных именах
 вложенность лучше переносится в IDE.</p>
 <p><strong>3. <code>ExitStack</code> для динамического числа ресурсов.</strong>
@@ -1468,10 +1468,10 @@
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">):</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
 </span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># Замер на CPython 3.12.14, 1M вызовов:</span>
 </span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># try_except:  ≈ 0.185 с</span>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># use_suppress:≈ 0.532 с — в ~2.9× медленнее</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># use_suppress: ≈ 0.532 с — в ~2.9× медленнее</span>
 </span></code></pre></div>
-<code>suppress</code> в ~2.9–3× медленнее из-за накладных расходов на контекстный менеджер.
-Берите его для <strong>читаемости</strong>, а не для скорости</p>
+<code>suppress</code> в ~2.5–3× медленнее из-за накладных расходов на контекстный менеджер.
+Берите его для <strong>читаемости</strong>, а не для скорости.</p>
 
 
 
