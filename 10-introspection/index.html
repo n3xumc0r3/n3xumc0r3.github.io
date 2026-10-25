@@ -1243,6 +1243,7 @@
 <li>3.14+: <code>-X thread_inherit_context=0/1</code>, <code>-X context_aware_warnings=0/1</code>, <code>-X tlbc=0/1</code> — наследование contextvars в потоках, предупреждения с учётом контекста, счётчики tier-2 байт-кода (экспериментальные)</li>
 <li>историческое: <code>-X showalloccount</code> удалена в 3.9, <code>-X oldparser</code> — в 3.10 (сейчас просто игнорируются)</li>
 <li>неизвестные <code>-X</code> не интерпретируются CPython, но сохраняются в <code>sys._xoptions</code> (как <code>True</code> или строка после <code>=</code>); <code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code></li>
+<li>⚠️ опции с пометкой <code>3.13+</code>/<code>3.14+</code> выше ведут себя на ранних версиях точно так же: молча сохраняются в <code>sys._xoptions</code>, но <strong>эффекта не дают</strong>. На 3.12 <code>-X cpu_count=8</code> покажет <code>sys._xoptions['cpu_count'] == '8'</code>, но <code>os.cpu_count()</code> не изменится — сработала ли опция, проверяйте по соответствующему полю <code>sys.flags</code>/<code>os.*</code>, а не по отсутствию ошибки</li>
 </ul>
 <h2 id="10.3">10.3. <code>os.environ</code> и <code>PYTHON*</code> переменные<a class="headerlink" href="#10.3" title="Permanent link">#</a></h2>
 <p>⚠️ <strong>Переменные <code>PYTHON*</code> читаются ТОЛЬКО при старте CPython.</strong> Изменение <code>os.environ['PYTHONUNBUFFERED'] = '1'</code> внутри работающего скрипта <strong>не повлияет на текущий процесс</strong> — только на дочерние процессы (запущенные через <code>subprocess</code>). Все <code>PYTHON*</code> должны быть выставлены <strong>до</strong> запуска <code>python</code>.</p>
@@ -1299,7 +1300,7 @@
 <li><code>PYTHON_FROZEN_MODULES</code> — эквивалент <code>-X frozen_modules=on/off</code>.</li>
 <li><code>PYTHONMALLOCSTATS</code> — печатать статистику pymalloc в stderr при выходе (работает в паре с <code>PYTHONMALLOC</code>).</li>
 <li><code>PYTHONWARNDEFAULTENCODING</code> — эквивалент <code>-X warn_default_encoding</code>: <code>EncodingWarning</code> на <code>open()</code> без явного <code>encoding</code> (PEP 597; см. 9.1).</li>
-<li><code>PYTHONUSERBASE</code> — база user-site вместо <code>~/.local</code> (см. 11.10).</li>
+<li><code>PYTHONUSERBASE</code> — база user-site вместо <code>~/.local</code> (см. 11.32).</li>
 <li><code>PYTHONPERFSUPPORT</code> / <code>PYTHON_PERF_JIT_SUPPORT</code> — эквиваленты <code>-X perf</code> / <code>-X perf_jit</code> (профилирование Linux perf).</li>
 <li><code>PYTHONCASEOK</code> — только Windows: импортировать модули без учёта регистра имени файла (на POSIX регистр всегда значим).</li>
 <li><code>PYTHONEXECUTABLE</code> — только macOS/framework-сборки: подменить значение <code>sys.executable</code> при старте.</li>
@@ -1350,7 +1351,7 @@
 </span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="nb">print</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>   <span class="c1"># имя хоста</span>
 </span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">getfqdn</span><span class="p">())</span>        <span class="c1"># полное доменное имя</span>
 </span></code></pre></div>
-<p>Если <code>os.getppid()</code> возвращает 1 — скорее всего, процесс запущен в Docker-контейнере (init PID=1). Если <code>os.getuid()</code> возвращает 0 — мы root (песочница слабая или её нет).</p>
+<p>Если <code>os.getppid()</code> возвращает 1 — наш родитель init-процесс системы: на bare-metal Linux с systemd это обычно <code>systemd</code> (не признак контейнера!), в Docker/K8s — entrypoint процесса. Более надёжные проверки на контейнер — в §10.6 (<code>/.dockerenv</code>, <code>/proc/1/cgroup</code>). Если <code>os.getuid()</code> возвращает 0 — мы root (песочница слабая или её нет).</p>
 <h2 id="10.5">10.5. <code>resource.getrlimit</code> — лимиты ресурсов<a class="headerlink" href="#10.5" title="Permanent link">#</a></h2>
 <p>⚠️ <strong>Модуль <code>resource</code> доступен только на POSIX/Unix (Linux, macOS).</strong> На Windows — <code>ModuleNotFoundError</code>. Кроссплатформенный код: <code>try: import resource except ModuleNotFoundError: ...</code>.</p>
 <p>⚠️ <strong><code>ru_maxrss</code> возвращает KB на Linux, но байты на macOS</strong> — при кроссплатформенном переводе в MB:

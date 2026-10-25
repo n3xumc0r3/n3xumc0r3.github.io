@@ -545,7 +545,7 @@
         <li class="md-nav__item">
   <a href="#9.4" class="md-nav__link">
     <span class="md-ellipsis">
-      9.4. Скрипт для проверки всех кодировок
+      9.4. Скрипт для проверки кодировок, доступных через алиасы
     </span>
   </a>
   
@@ -987,7 +987,7 @@
         <li class="md-nav__item">
   <a href="#9.4" class="md-nav__link">
     <span class="md-ellipsis">
-      9.4. Скрипт для проверки всех кодировок
+      9.4. Скрипт для проверки кодировок, доступных через алиасы
     </span>
   </a>
   
@@ -1054,6 +1054,7 @@
 </span></code></pre></div>
 <p>Три валидные формы — все распознаются. По умолчанию (если директивы нет) — UTF-8 (с Python 3.0).</p>
 <p>⚠️ Должна быть <strong>в первой или второй строке</strong> файла, иначе игнорируется. Вторая строка разрешена, потому что первая может быть занята shebang'ом: <code>#!/usr/bin/env python3</code>.</p>
+<p>⚠️ Директива <strong>обязана быть внутри комментария</strong> (<code># coding: ...</code>) — голое <code>coding: cp1251</code> (без <code>#</code>) парсер игнорирует, и не-UTF-8 файл падает с <code>SyntaxError: Non-UTF-8 code ... but no encoding declared</code> (требование в <code>Parser/tokenizer.c:179–180</code>: <em>«Coding spec must be in a comment, and that comment must be the only statement on the source code line»</em>).</p>
 <p>⚠️ <strong><code># coding</code> влияет ТОЛЬКО на парсер CPython</strong> (как декодировать байты <code>.py</code>-файла в токены). На рантайм-вызовы <code>open("data.txt")</code> эта директива <strong>не влияет</strong> — они используют системную локаль ОС (<code>cp1251</code> на Windows). Для глобального UTF-8 в I/O — флаг <code>-X utf8</code> / <code>PYTHONUTF8=1</code> (см. Часть X).</p>
 <p>⚠️ <strong>В Python 3 директива <code># -*- coding: utf-8 -*-</code> избыточна</strong> — UTF-8 и так дефолт с Python 3.0. Нужна только при сохранении файла в другой кодировке (cp1251, koi8-r).</p>
 <p>⚠️ <strong>UTF-8 BOM</strong>: если файл начинается с BOM (<code>\xef\xbb\xbf</code>), CPython автоматически определяет UTF-8 без директивы. Если BOM есть, но объявлена другая кодировка — <code>SyntaxError: encoding problem: cp1251 with BOM</code>.</p>
@@ -1106,8 +1107,8 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s1">&#39;А&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>            <span class="c1"># &#39;d090&#39;</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s1">&#39;А&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;cp437&#39;</span><span class="p">)</span>  <span class="c1"># &#39;╨É&#39;</span>
 </span></code></pre></div>
-<p><strong>Трюк с азиатскими кодировками (<code>hz</code>, <code>big5</code>)</strong>: если писать код на английском, но сохранить файл в <code>hz</code>, MOSS при чтении как UTF-8 увидит смесь латиницы и иероглифов.</p>
-<h2 id="9.4">9.4. Скрипт для проверки всех кодировок<a class="headerlink" href="#9.4" title="Permanent link">#</a></h2>
+<p><strong>Трюк с азиатскими кодировками (<code>hz</code>, <code>big5</code>, <code>shift_jis</code>)</strong>: ASCII-код переживает сохранение в <code>hz</code> или <code>big5</code> <strong>байт-в-байт</strong> — <code>hz</code> эскейпит только не-ASCII фрагментами <code>~{...~}</code> (внутри — многобайтная GB2312), а <code>big5</code> оставляет ASCII как есть. Поэтому «смесь латиницы и иероглифов» при чтении как UTF-8 возникает, <strong>только если исходный текст уже содержал не-ASCII</strong> (русские комментарии, китайские строки): при сохранении в сырую многобайтную кодировку (<code>gbk</code>/<code>big5</code>/<code>shift_jis</code>) эти байты превращаются в мусор для UTF-8-читателя. Чистый английский код таким трюком испортить нельзя.</p>
+<h2 id="9.4">9.4. Скрипт для проверки кодировок, доступных через алиасы<a class="headerlink" href="#9.4" title="Permanent link">#</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">codecs</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">import</span> <span class="nn">encodings.aliases</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -1127,18 +1128,19 @@
 </span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="k">except</span> <span class="ne">LookupError</span><span class="p">:</span>
 </span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">enc</span><span class="si">:</span><span class="s2">&lt;25</span><span class="si">}</span><span class="s2"> | ❌ Недоступна на этой ОС&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Тест «может ли <code>StreamReader</code> прожевать сырые байты»:</p>
+<p>Тест «может ли <code>StreamReader</code> прожевать сырые байты» (продолжение предыдущего блока — <code>info</code> текущая итерация цикла выше; для standalone-запуска добавьте <code>info = codecs.lookup('utf-8')</code>):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">io</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">fake_stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;print&quot;</span><span class="p">)</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">reader</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">streamreader</span><span class="p">(</span><span class="n">fake_stream</span><span class="p">)</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># если не падает — кодек подходит для исходного кода</span>
 </span></code></pre></div>
+<p>Примечание: <code>set(encodings.aliases.aliases.values())</code> даёт 98 канонических имён, а модулей в пакете <code>encodings/</code> — 121; 22 кодека (<code>cp1006</code>, <code>cp720</code>, <code>cp737</code>, <code>cp856</code>, <code>cp874</code>, <code>cp875</code>, <code>charmap</code>, ...) не имеют алиаса и в таблицу не попадут, хотя по каноническому имени остаются lookup-оспособными (search_function падает обратно на <code>norm_encoding</code>).</p>
 <h2 id="9.5">9.5. Свой кодек через <code>codecs.register()</code><a class="headerlink" href="#9.5" title="Permanent link">#</a></h2>
 <p><strong>Шаг 1. Регистратор <code>my_codec_setup.py</code>:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">codecs</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">def</span> <span class="nf">custom_decode</span><span class="p">(</span><span class="n">input_bytes</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">):</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">text</span> <span class="o">=</span> <span class="n">input_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_bytes</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>          <span class="c1"># bytes ИЛИ memoryview — парсер передаёт memoryview</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">decrypted_text</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;rot_13&#39;</span><span class="p">)</span>   <span class="c1"># встроенный текстовый rot_13</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">decrypted_text</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_bytes</span><span class="p">))</span>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
@@ -1180,9 +1182,9 @@
 <li><strong>Кэш-lookup</strong>: <code>_cache.get(encoding, _unknown)</code>.</li>
 <li><strong>Нормализация имени</strong>: <code>normalize_encoding(encoding)</code> — заменяет все не-alphanumeric символы на <code>_</code>.</li>
 <li><strong>Поиск алиаса</strong> в <code>_aliases</code> (<code>encodings.aliases</code>).</li>
-<li><strong>Импорт модуля</strong>: <code>__import__('encodings.' + modname, fromlist=['getregentry'], level=0)</code> — в <code>fromlist</code> указано имя функции, которую ищут в модуле (<code>getregentry()</code> возвращает <code>CodecInfo</code>).</li>
+<li><strong>Импорт модуля</strong>: <code>__import__('encodings.' + modname, fromlist=['*'], level=0)</code> — <code>fromlist</code> тут ни при чём (это константа <code>_import_tail = ['*']</code>, она лишь заставляет <code>__import__</code> вернуть сам модуль <code>encodings.&lt;modname&gt;</code>, а не пакет <code>encodings</code>); <code>getregentry()</code> — отдельный шаг (см. п. 5).</li>
 <li><strong>Получение CodecInfo</strong>: <code>mod.getregentry()</code> — должна вернуть <code>codecs.CodecInfo</code>.</li>
-<li><strong>Валидация</strong>: проверка, что у <code>CodecInfo</code> есть callable <code>encode</code>, <code>decode</code> (и опционально <code>streamreader</code>, <code>streamwriter</code>).</li>
+<li><strong>Валидация</strong>: если <code>getregentry()</code> вернул готовый <code>codecs.CodecInfo</code> — принимается как есть (это и есть случай 9.5). Блок callable-проверок <code>encode</code>/<code>decode</code>/опциональных <code>streamreader</code>/<code>streamwriter</code> существует, но только для <strong>легаси-кортежа</strong> из 4–7 элементов (<code>if not 4 &lt;= len(entry) &lt;= 7: raise CodecRegistryError(...)</code>); кортеж затем оборачивается в <code>CodecInfo(*entry)</code>.</li>
 <li><strong>Кэширование</strong> и возврат.</li>
 </ol>
 <p>Чтобы зарегистрировать свой кодек и попасть в этот реестр, можно:</p>
@@ -1196,12 +1198,13 @@
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># 3. search_function проверяет _cache, normalize_encoding, _aliases</span>
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># 4. Не находит → проверяет codecs.register-registered functions</span>
 </span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># 5. Наш find_my_codec(&quot;my_rot13&quot;) возвращает my_codec_info</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># 6. CPython вызывает streamreader(file_bytes) и читает декодированный текст</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># 6. CPython вызывает stateless decode (путь импорта, см. 9.5); на пути запуска файла (`python3 secret_lab.py`) используется incrementaldecoder через TextIOWrapper, а не зарегистрированный streamreader</span>
 </span></code></pre></div>
 <h3 id="9.6-benchmarki">Бенчмарки к Части IX<a class="headerlink" href="#9.6-benchmarki" title="Permanent link">#</a></h3>
+<p>Числа ниже сняты на одной конкретной машине (Intel Xeon Granite Rapids, 2 vCPU, KVM-VM; CPython 3.12.15). На другом CPU или другой версии Python абсолюты смещаются в разы, устойчивы только <strong>соотношения</strong> между вариантами — сверяйтесь с ними, а не с секундами.</p>
 <p><strong>1. Декодирование 1 MB текста в разных кодировках.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">data_utf8</span>    <span class="o">=</span> <span class="s2">&quot;Привет, мир! &quot;</span> <span class="o">*</span> <span class="mi">50_000</span>   <span class="c1"># ~0.9 MB UTF-8</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">data_utf8</span>    <span class="o">=</span> <span class="s2">&quot;Привет, мир! &quot;</span> <span class="o">*</span> <span class="mi">50_000</span>   <span class="c1"># ~1.1 MB UTF-8 (22 байта/повтор × 50 000)</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">data_utf16</span>   <span class="o">=</span> <span class="n">data_utf8</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-16-le&quot;</span><span class="p">)</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">data_utf8_b</span>  <span class="o">=</span> <span class="n">data_utf8</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">data_cp1251</span>  <span class="o">=</span> <span class="n">data_utf8</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;cp1251&quot;</span><span class="p">)</span>
@@ -1217,7 +1220,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span> <span class="nn">timeit</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Привет, мир! &quot;</span> <span class="o">*</span> <span class="mi">50_000</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># Добавим немного мусора</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">data_corrupted</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;ÿþý&quot;</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">data_corrupted</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xff\xfe\xfd</span><span class="s2">&quot;</span>
 </span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># decode(..., errors=&quot;strict&quot;) здесь УПАДЁТ с UnicodeDecodeError прямо внутри timeit — поэтому закомментировано:</span>
 </span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># print(timeit.timeit(lambda: data_corrupted.decode(&quot;utf-8&quot;, errors=&quot;strict&quot;),  number=100))</span>
 </span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">data_corrupted</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>   <span class="c1"># ≈ 0.13 с</span>
@@ -1262,10 +1265,11 @@
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Файл с coding: cp1251</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Файл с coding: rot_13 (упадёт на SyntaxError)</span>
 </span></code></pre></div>
-Чтение coding-директивы добавляет <strong>~5–10 мкс</strong> к парсингу файла
-(поиск regex по первым двум строкам). На импорте 1000 модулей — суммарно
-5–10 мс, пренебрежимо мало. Содержимое кодировки важнее: UTF-8-файл с ASCII-содержимым
-парсится с той же скоростью, что cp1251-файл с тем же содержимым.</p>
+Чтение coding-директивы добавляет <strong>~0.2–0.6 мкс</strong> к парсингу файла
+(поиск regex по первым двум строкам; замер <code>compile(bytes)</code> с cookie и без на 3.12.15:
+0.18 мкс для utf-8-cookie, 0.64 мкс для cp1251-cookie). На импорте 1000 модулей —
+суммарно &lt;1 мс, пренебрежимо мало. Содержимое кодировки важнее: UTF-8-файл с
+ASCII-содержимым парсится с той же скоростью, что cp1251-файл с тем же содержимым.</p>
 <p><strong>5. <code>safe_decode</code> с <code>errors="replace"</code> vs ручной decode-or-fallback.</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span> <span class="nf">safe_decode_fast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
@@ -1278,11 +1282,13 @@
 </span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># safe_decode_fast ≈ 0.12 с / 100 итераций по 1 MB</span>
 </span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># safe_decode_slow ≈ 0.12 с / 100 (try почти бесплатен, когда нет исключений)</span>
 </span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="c1"># На грязных данных (10% битых байтов):</span>
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># safe_decode_fast ≈ 0.13 с (всегда strategy replace)</span>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="c1"># safe_decode_slow ≈ 0.30 с (каждый блок с ошибкой — создание исключения, traceback)</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># safe_decode_fast ≈ 0.26 с (дорогой replace-декод 100 000 битых мест)</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="c1"># safe_decode_slow ≈ 0.27 с (тот же replace + двойная работа: упавший strict + полный replace; try/except добавляет лишь ~5%, потому что исключение создаётся один раз на вызов — strict падает на первом же битом байте)</span>
 </span></code></pre></div>
-Если ожидаете <strong>много ошибок</strong> — сразу <code>errors="replace"</code>. Если ошибки <strong>редки</strong> —
-try/except почти бесплатен и сохраняет качество декодирования в нормальном случае.</p>
+Если ожидаете <strong>много ошибок</strong> — сразу <code>errors="replace"</code>. Медленный вариант платит
+за <strong>двойную работу</strong> при падении (упавший strict-декод + полный replace-декод), а не
+за «цену исключений». Если ошибки <strong>редки</strong> — try/except почти бесплатен и сохраняет
+качество декодирования в нормальном случае.</p>
 
 
 
