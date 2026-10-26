@@ -2303,7 +2303,7 @@
 </blockquote>
 <h2 id="D.1">D.1. Базовые приёмы сжатия<a class="headerlink" href="#D.1" title="Permanent link">#</a></h2>
 <h3 id="ubrat">Убрать всё лишнее<a class="headerlink" href="#ubrat" title="Permanent link">#</a></h3>
-<p>Самый важный приём code golf — <strong>убрать пробелы везде, где их не требует синтаксис</strong>. CPython лексер падок до пробелов только в нескольких местах: между ключевым словом и идентификатором (<code>for i</code>, <code>in range</code>, <code>def f</code>, <code>return x</code>), после запятой в коллекциях (но не всегда — <code>[1,2,3]</code> валидно, как и <code>[1,2,3,]</code>), между оператором и операндом в редких случаях двусмысленности. Везде [в] остальном пробелы <strong>опциональны</strong>, и каждый пробел — это <strong>+1 символ в счётчике</strong>.</p>
+<p>Самый важный приём code golf — <strong>убрать пробелы везде, где их не требует синтаксис</strong>. CPython лексер падок до пробелов только в нескольких местах: между ключевым словом и идентификатором (<code>for i</code>, <code>in range</code>, <code>def f</code>, <code>return x</code>), после запятой в коллекциях (но не всегда — <code>[1,2,3]</code> валидно, как и <code>[1,2,3,]</code>), между оператором и операндом в редких случаях двусмысленности. Везде в остальном пробелы <strong>опциональны</strong>, и каждый пробел — это <strong>+1 символ в счётчике</strong>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Длинно — 32 символа (с учётом \n и отступа):</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -2356,7 +2356,7 @@
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>      <span class="err">→</span>  <span class="p">{</span><span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span>            <span class="c1"># -3</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Вокруг операторов (но осторожно с `is not`/`not in`):</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>         <span class="err">→</span>  <span class="n">x</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>                <span class="c1"># -3</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>         <span class="err">→</span>  <span class="n">x</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>                <span class="c1"># -4</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span>         <span class="err">→</span>  <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">0</span>              <span class="c1"># -2</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># После ] ) } в начале выражения:</span>
@@ -2389,7 +2389,7 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Code golf (1 пробел):</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a> <span class="k">if</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">x</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span><span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Когда переходить на 2 пробела</strong>: при очень вложенных функциях / классах (4+ уровня) 1 пробел сливается, и читать невозможно. Если глубины не избежать (вложенные классы, декораторы с генераторами) — 2 пробела компромисс между экономией и читаемостью, на глубине 6 это 12 символов на строку вместо 24. Старайтесь не уходить глубже 4 уровней в любом случае — рефакторить.</p>
 <h3 id="alternativy">Альтернативы через <code>print</code><a class="headerlink" href="#alternativy" title="Permanent link">#</a></h3>
@@ -2414,7 +2414,7 @@
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Через exec — 26 символов (но в одной физической строке):</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;a=1;b=2;print(a+b)&quot;</span><span class="p">)</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># С реальными переносами внутри строки — 32 символа:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># С реальными переносами внутри строки — 28 символов:</span>
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;a=1</span><span class="se">\n</span><span class="s2">b=2</span><span class="se">\n</span><span class="s2">print(a+b)&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p><code>exec</code> понимает <code>\n</code> в строке как перевод строки — можно писать «многострочный» код в одной физической строке. Минус — кавычки внутри <code>exec</code> требуют экранирования или других кавычек снаружи.</p>
@@ -2428,7 +2428,7 @@
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># &#39;Тут текст&#39; — вычислен, но результат потерян (как комментарий)</span>
 </span></code></pre></div>
 <p>Эквивалент <code>print(1)  # Тут текст</code> + <code>print(1+1)</code>, но в одну строку.</p>
-<p><strong>Реалистичная оценка</strong>: на <strong>серьёзных соревнованиях</strong> по code golf (code.golf, anarchy golf) этот приём — <strong>пустая трата символов</strong>. Каждый символ на счету, и тратить <code>2 + len("комментарий")</code> символов на «украшательство» — это проигрыш. Если в решении есть комментарии, значит, автор не дожал; настоящий golf-код — это <strong>плотный кусок символов без единого лишнего байта</strong>.</p>
+<p><strong>Реалистичная оценка</strong>: на <strong>серьёзных соревнованиях</strong> по code golf (code.golf, anarchy golf) этот приём — <strong>пустая трата символов</strong>. Каждый символ на счету, и тратить <code>3 + len("комментарий")</code> символов на «украшательство» — это проигрыш. Если в решении есть комментарии, значит, автор не дожал; настоящий golf-код — это <strong>плотный кусок символов без единого лишнего байта</strong>.</p>
 <table>
 <thead>
 <tr>
@@ -2451,7 +2451,7 @@
 <tr>
 <td><code>print(1);"Тут текст";print(1+1)</code></td>
 <td>31</td>
-<td>+10 символов — только если очень хочется подписаться</td>
+<td>+12 символов — только если очень хочется подписаться</td>
 </tr>
 </tbody>
 </table>
@@ -2573,9 +2573,9 @@
 <p><strong>Когда <code>print(file=f)</code> выгоднее <code>f.write()</code></strong>:</p>
 <ul>
 <li>✅ Записываете <strong>число</strong> (нужна <code>str()</code>) — <code>print</code> экономит <code>str(...)</code> = 5 символов.</li>
-<li>✅ Нужен <strong><code>\n</code> в конце</strong> — <code>print</code> добавляет автоматически = 4 символа экономии.</li>
+<li>✅ Нужен <strong><code>\n</code> в конце</strong> — <code>print</code> добавляет автоматически = 5 символов экономии.</li>
 <li>✅ <strong>Множественная запись</strong> с разделителями — <code>print(a,b,c, file=f, sep=...)</code> заменяет N вызовов <code>f.write</code>.</li>
-<li>❌ Записываете <strong>строку без <code>\n</code></strong> — <code>f.write(s)</code> короче (10 vs 19 с <code>end=''</code>).</li>
+<li>❌ Записываете <strong>строку без <code>\n</code></strong> — <code>f.write(s)</code> короче (10 vs 22 в golf-записи).</li>
 </ul>
 <p>⚠️ <strong><code>print</code> добавляет <code>\n</code> автоматически</strong> — если нужен точный контроль, передавайте <code>end=''</code> (но это +7 символов, часто убивает экономию).</p>
 <p>⚠️ <strong><code>file=f</code> требует файл, открытый в текстовом режиме</strong> (<code>'w'</code>/<code>'a'</code>), не бинаральном (<code>'wb'</code>). <code>print</code> пишет <code>str</code>, не <code>bytes</code>.</p>
@@ -2609,7 +2609,7 @@
 </span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Первый/последний элемент:</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                 <span class="c1"># первый</span>
 </span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                <span class="c1"># последний</span>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">lst</span>      <span class="c1"># если нужен только последний — короче `lst[-1]`</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">lst</span>      <span class="c1"># хвост и последний; если нужен только последний — короче `lst[-1]`</span>
 </span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
 </span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1"># Срез до n первых элементов:</span>
 </span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="n">lst</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>                <span class="c1"># 7 символов</span>
@@ -2742,7 +2742,7 @@
 </span><span id="__span-31-20"><a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a><span class="n">n</span> <span class="o">%</span> <span class="mi">256</span>      <span class="c1"># = n % 16**2 — последний байт (2 hex-цифры)</span>
 </span></code></pre></div>
 <p>В code golf <code>n % 10**k</code> часто короче, чем строковые манипуляции <code>str(n)[-k:]</code> (особенно если <code>k</code> небольшое). Сравните:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>    <span class="c1"># 12 символов — строковое представление + срез</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>    <span class="c1"># 11 символов — строковое представление + срез</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="n">n</span> <span class="o">%</span> <span class="mi">1000</span>       <span class="c1"># 8 символов — арифметика, для неотрицательных n даёт те же 3 цифры как int</span>
 </span></code></pre></div>
 <p>⚠️ <strong>Важные оговорки</strong>:</p>
@@ -2951,29 +2951,29 @@ XOR остаётся <code>!=</code>:</p>
 <tr>
 <td><code>e=enumerate;</code></td>
 <td>12 симв.</td>
-<td>7</td>
+<td>8</td>
 <td><strong>2 вызовов</strong></td>
 <td>несколько enumerate-циклов</td>
 </tr>
 <tr>
 <td><code>f=filter;</code></td>
 <td>9 симв.</td>
-<td>4</td>
-<td><strong>3 вызовов</strong></td>
+<td>5</td>
+<td><strong>2 вызовов</strong></td>
 <td>несколько фильтраций</td>
 </tr>
 <tr>
 <td><code>M=map;</code></td>
 <td>6 симв.</td>
-<td>1</td>
-<td><strong>7 вызовов</strong></td>
-<td>редко выгодно — 1 символ экономии</td>
+<td>2</td>
+<td><strong>4 вызовов</strong></td>
+<td>редко выгодно — 2 символа экономии</td>
 </tr>
 <tr>
 <td><code>l=len;</code></td>
 <td>6 симв.</td>
-<td>1</td>
-<td><strong>7 вызовов</strong></td>
+<td>2</td>
+<td><strong>4 вызовов</strong></td>
 <td>редко выгодно</td>
 </tr>
 </tbody>
@@ -2999,7 +2999,7 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="c1"># format (14):</span>
 </span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span></code></pre></div>
-<p>⚠️ <code>%</code> умирает медленно: в logging всё ещё стандарт (lazy eval), но в новом коде PEP 498 (f-strings) предпочтительнее. В golf: для одного значения <code>"%s"%x</code> и <code>f"{x}"</code> равны по длине (по 6 символов), но для двух и более f-строки короче (<code>f"{a}{b}"</code> = 8 против <code>"%s%s"%(a,b)</code> = 11).</p>
+<p>⚠️ <code>%</code> умирает медленно: в logging всё ещё стандарт (lazy eval), но в новом коде PEP 498 (f-strings) предпочтительнее. В golf: для одного значения <code>"%s"%x</code> и <code>f"{x}"</code> равны по длине (по 6 символов), но для двух и более f-строки короче (<code>f"{a}{b}"</code> = 9 против <code>"%s%s"%(a,b)</code> = 12).</p>
 <h3 id="vyravnivanie">Выравнивание без f-string<a class="headerlink" href="#vyravnivanie" title="Permanent link">#</a></h3>
 <p>Строковые методы <code>center</code>/<code>ljust</code>/<code>rjust</code>/<code>zfill</code> дублируют мини-язык форматирования f-строк — и обычно проигрывают ему по длине, но удобны, когда ширина — переменная:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="c1"># f-string (10):</span>
@@ -3120,8 +3120,8 @@ XOR остаётся <code>!=</code>:</p>
 </table>
 <h3 id="szhatie">Сжатие массивов чисел через байтовые строки <code>b'...'</code><a class="headerlink" href="#szhatie" title="Permanent link">#</a></h3>
 <p>Если нужен константный список чисел 0..255:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]</span>   <span class="c1"># 23 символа</span>
-</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="p">[</span><span class="o">*</span><span class="sa">b</span><span class="s1">&#39;ABCde&#39;</span><span class="p">]</span>               <span class="c1"># 10 символов — каждый символ = ASCII-код</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]</span>   <span class="c1"># 22 символа</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="p">[</span><span class="o">*</span><span class="sa">b</span><span class="s1">&#39;ABCde&#39;</span><span class="p">]</span>               <span class="c1"># 11 символов — каждый символ = ASCII-код</span>
 </span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>
 </span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="c1"># Индексация:</span>
 </span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="sa">b</span><span class="s1">&#39;ABC&#39;</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                 <span class="c1"># 65 (int, не str!)</span>
@@ -3138,7 +3138,7 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;10&#39;</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>        <span class="c1"># 682 — чередующиеся битовые маски</span>
 </span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;ffff&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>       <span class="c1"># 65535 — то же, что 0xffff, но иногда удобнее</span>
 </span></code></pre></div>
-<p>⚠️ Выгодно только если <strong>строка уже есть в коде</strong> или её можно сгенерить короче, чем десятичное число. <code>int('zzz',36)</code> (12 символов) длиннее, чем <code>46655</code> (5 символов) — экономит только на числах, где десятичная запись длиннее <code>(base-словарь) + 8 символов на int(...)</code>.</p>
+<p>⚠️ Выгодно только если <strong>строка уже есть в коде</strong> или её можно сгенерить короче, чем десятичное число. <code>int('zzz',36)</code> (13 символов) длиннее, чем <code>46655</code> (5 символов) — экономит только на числах, где десятичная запись длиннее <code>(base-словарь) + 8 символов на int(...)</code>.</p>
 <h2 id="D.15">D.15. Выход из программы: <code>exit()</code>, <code>sys.exit()</code>, <code>raise SystemExit</code> — и <code>1/0</code><a class="headerlink" href="#D.15" title="Permanent link">#</a></h2>
 <p>Задача «завершить программу» в golf распадается на две: выйти <strong>с кодом 0</strong> (успех) и выйти <strong>с
 ненулевым кодом</strong> (авария). Для второй есть приём, о котором часто забывают: <strong>любое
@@ -3249,7 +3249,7 @@ XOR остаётся <code>!=</code>:</p>
 <p><strong>Создание множеств и словарей через распаковку:</strong></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>        <span class="c1"># 6 символов → {*a}      # 4</span>
 </span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>       <span class="c1"># 7 символов → {**d}     # 5</span>
-</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="nb">dict</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>   <span class="c1"># 7 символов → dict(pairs) — для списка пар короче оставить dict()</span>
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="nb">dict</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>   <span class="c1"># 11 символов → dict(pairs) — для списка пар короче оставить dict()</span>
 </span></code></pre></div>
 <h3 id="skrytye">Скрытые суперсилы встроенных функций<a class="headerlink" href="#skrytye" title="Permanent link">#</a></h3>
 <p><strong>Очистка списка от falsy значений</strong> (<code>0</code>, <code>False</code>, <code>""</code>, <code>None</code>, <code>[]</code>):</p>

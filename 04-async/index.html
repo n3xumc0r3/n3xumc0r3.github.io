@@ -1589,19 +1589,19 @@
 </ol>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Синхронно: одна задача блокирует всё, пока ждёт ответа сервера</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">sync_fetch_all</span><span class="p">():</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">r1</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url1</span><span class="p">)</span>   <span class="c1"># ждём 0.5 сек</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">r2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url2</span><span class="p">)</span>   <span class="c1"># ждём 0.5 сек</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">r3</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url3</span><span class="p">)</span>   <span class="c1"># ждём 0.5 сек</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c1"># Итого: 1.5 сек</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">r1</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url1</span><span class="p">)</span>   <span class="c1"># ждём 0.5 с</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">r2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url2</span><span class="p">)</span>   <span class="c1"># ждём 0.5 с</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">r3</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url3</span><span class="p">)</span>   <span class="c1"># ждём 0.5 с</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c1"># Итого: 1.5 с</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Асинхронно: ждём все три «одновременно»</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">async_fetch_all</span><span class="p">():</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url1</span><span class="p">),</span>          <span class="c1"># ждём 0.5 сек</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url2</span><span class="p">),</span>          <span class="c1"># ждём 0.5 сек</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url3</span><span class="p">),</span>          <span class="c1"># ждём 0.5 сек</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url1</span><span class="p">),</span>          <span class="c1"># ждём 0.5 с</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url2</span><span class="p">),</span>          <span class="c1"># ждём 0.5 с</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">fetch</span><span class="p">(</span><span class="n">url3</span><span class="p">),</span>          <span class="c1"># ждём 0.5 с</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="p">)</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># Итого: 0.5 сек</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># Итого: 0.5 с</span>
 </span></code></pre></div>
 <p>Асинхронность = <strong>конкурентность в одном потоке</strong>. Не параллелизм (CPU не используется одновременно), а конкурентность по I/O (пока одна задача ждёт ответа — другая работает).</p>
 <p>⚠️ <strong>Кооперативная многозадачность</strong>: в <code>asyncio</code> задача выполняется до тех пор, пока сама добровольно не отдаст управление через <code>await</code>. Если внутри корутины вызвать синхронную операцию (<code>time.sleep(5)</code>, <code>requests.get()</code>, долгий CPU-расчёт), она <strong>блокирует поток event loop</strong>: ни одна другая готовая корутина не получит управления, пока синхронный вызов не завершится, — для остальных задач цикл «замер», хотя формально ничего не сломалось.</p>
@@ -1982,7 +1982,7 @@
 <tr>
 <td>WebSocket-сервер на 10000 подключений</td>
 <td><code>asyncio</code> (websockets/aiohttp)</td>
-<td>потоки не масштабируются до 10k (8 MB виртуального стека на поток × 10k = 80 GB <strong>виртуального</strong> адресного пространства + ~1–2 GB реальной RAM на kernel-структуры; asyncio уходит в десятки МБ)</td>
+<td>потоки не масштабируются до 10k (8 МБ виртуального стека на поток × 10k = 80 ГБ <strong>виртуального</strong> адресного пространства + ~1–2 ГБ реальной RAM на kernel-структуры; asyncio уходит в десятки МБ)</td>
 </tr>
 <tr>
 <td>Долгий background-task в sync-приложении</td>
@@ -2171,7 +2171,7 @@
 </span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Не уложились в 1 секунду&quot;</span><span class="p">)</span>
 </span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>
 </span><span id="__span-31-15"><a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-</span><span id="__span-31-16"><a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="c1"># &quot;Не уложились в 1 секунду&quot; через 1 сек</span>
+</span><span id="__span-31-16"><a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="c1"># &quot;Не уложились в 1 секунду&quot; через 1 с</span>
 </span></code></pre></div>
 <p>До Python 3.11 использовали <code>asyncio.wait_for</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">try</span><span class="p">:</span>
@@ -2510,7 +2510,7 @@ CPU-работа — через чистый Python-цикл.</p>
 </span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">noop</span><span class="p">():</span> <span class="k">return</span> <span class="mi">42</span>
 </span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="c1"># Замер на CPython 3.12.14, 1000 прогонов asyncio.run(noop()):</span>
 </span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1"># ≈ 0.069 с, per call ≈ 0.07 мс — пренебрежимо мало для долгоживущих программ,</span>
-</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="c1"># но в hot loop из 100k корутин `asyncio.run` на каждый вызов обойдётся в ~7 c</span>
+</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="c1"># но в hot loop из 100k корутин `asyncio.run` на каждый вызов обойдётся в ~7 с</span>
 </span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="c1"># overhead. Поэтому event loop держат один на процесс, а внутри используют gather.</span>
 </span></code></pre></div></p>
 <p><strong>6. I/O-bound задача: threads vs asyncio (теоретические замеры).</strong>

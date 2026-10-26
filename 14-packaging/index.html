@@ -1490,7 +1490,7 @@
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># pip умеет и сам: собрать wheel без установки</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>wheel<span class="w"> </span>.<span class="w"> </span>--no-deps<span class="w"> </span>--no-build-isolation<span class="w"> </span>-w<span class="w"> </span>dist/
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># → demo_pkg_hood-0.1.0-py3-none-any.whl (в нашем прогоне: 1.72 c, см. бенчмарки)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># → demo_pkg_hood-0.1.0-py3-none-any.whl (в нашем прогоне: 1.72 с, см. бенчмарки)</span>
 </span></code></pre></div>
 <p>⚠️ <code>--no-build-isolation</code> — не «ускоритель», а способ использовать <strong>уже установленный</strong> setuptools (без сети). Требование <code>requires = ["setuptools&gt;=77"]</code> при этом никем не проверяется: если в окружении старый setuptools — сборка сломается с невнятной ошибкой глубоко в бэкенде.</p>
 <p>✅ Разделение «install-tool vs build-backend» делает сборку воспроизводимой: что бы ни было в вашем рабочем venv, пакет соберётся против зафиксированных <code>requires</code>. Платите изоляцией окружения и секундами на её наполнение (см. бенчмарки B3).</p>

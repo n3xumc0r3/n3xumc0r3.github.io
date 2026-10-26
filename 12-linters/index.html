@@ -1311,7 +1311,7 @@
 </span></code></pre></div>
 <p>В больших системах — основной способ. <code># noqa</code> оставляют только для точечных исключений.</p>
 <h2 id="12.7">12.7. <code>ruff</code> — замена стека flake8 + isort + pyupgrade<a class="headerlink" href="#12.7" title="Permanent link">#</a></h2>
-<p><code>ruff</code> — линтер на Rust, который к 2025 фактически вытеснил классическую связку flake8 + isort + pyupgrade: одна утилита, один конфиг, один кеш, на 1–2 порядка быстрее (на репозитории в 100K строк — единицы секунд вместо минут у pylint). Бонусом <code>ruff format</code> — drop-in замена black с тем же стилем вывода.</p>
+<p><code>ruff</code> — линтер на Rust, который к 2025 фактически вытеснил классическую связку flake8 + isort + pyupgrade: одна утилита, один конфиг, один кеш, на 1–2 порядка быстрее (на репозитории в 100k строк — единицы секунд вместо минут у pylint). Бонусом <code>ruff format</code> — drop-in замена black с тем же стилем вывода.</p>
 <p>Принцип ruff: <strong>проверки сторонних плагинов переизобретены внутри</strong>, как правила с собственными префиксами. Старый стек из 4–5 инструментов сворачивается в одну таблицу:</p>
 <table>
 <thead>
@@ -1622,9 +1622,9 @@
 <p>→ <strong>см. также:</strong> 12.7 — конфиг ruff; 12.9 — коды mypy; 12.6 — общий <code>pyproject.toml</code>.</p>
 <hr />
 <h3 id="12.10-benchmarki">Бенчмарки к Части XII<a class="headerlink" href="#12.10-benchmarki" title="Permanent link">#</a></h3>
-<p>Числа ниже сняты на одной конкретной машине (Intel Xeon Granite Rapids, 2 vCPU, KVM-VM; CPython 3.12.15) на синтетическом репозитории в ~100K строк. На другом CPU абсолюты смещаются в разы; для линтеров время зависит ещё и от «грязности» кода (сколько срабатываний находит инструмент). Устойчивы только <strong>соотношения</strong> между вариантами — сверяйтесь с ними, а не с секундами.</p>
+<p>Числа ниже сняты на одной конкретной машине (Intel Xeon Granite Rapids, 2 vCPU, KVM-VM; CPython 3.12.15) на синтетическом репозитории в ~100k строк. На другом CPU абсолюты смещаются в разы; для линтеров время зависит ещё и от «грязности» кода (сколько срабатываний находит инструмент). Устойчивы только <strong>соотношения</strong> между вариантами — сверяйтесь с ними, а не с секундами.</p>
 <p><strong>1. <code>ruff</code> vs <code>flake8</code> vs <code>pylint</code> — скорость проверки.</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># На репозитории ~500 .py файлов, ~100K строк:</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># На репозитории ~500 .py файлов, ~100k строк:</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># flake8:    ≈ 8.5 с</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># pylint:    ≈ 45.0 с</span>
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># ruff:      ≈ 0.06 с  (140× быстрее flake8, 750× быстрее pylint)</span>
