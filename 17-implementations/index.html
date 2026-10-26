@@ -1020,13 +1020,13 @@
 </ul>
 <p>Узнать, кто исполняет код, можно из <code>sys.implementation</code> — у CPython это namespace с <code>name='cpython'</code> и <code>cache_tag='cpython-312'</code> (тем самым тегом из имён pyc-файлов, 15.2).</p>
 <p>Практическое следствие раздельной природы языка и реализации: бинарные C-расширения собираются под конкретный ABI, и тег платформы в имени wheel'а (PEP 425) прямо называет целевую реализацию:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>numpy-2.1.0-cp312-cp312-manylinux_2_17_x86_64.whl   # CPython 3.12
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>numpy-2.1.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.whl   # PyPy 3.10
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>numpy-2.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl   # CPython 3.12
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>numpy-2.1.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl   # PyPy 3.10
 </span></code></pre></div>
 <p>Wheel с тегом <code>cp312</code> на PyPy не встанет — у PyPy свои сборки (<code>pp…</code>) или установка из исходников. Отсюда правило большого пальца: «чистый Python» на альтернативных реализациях живёт заметно комфортнее, чем код с расширениями — расширения привязаны к ABI CPython.</p>
 <h2 id="17.2">17.2. Альтернативные реализации: кто, на чём, зачем<a class="headerlink" href="#17.2" title="Permanent link">#</a></h2>
 <p>Идея «сделать Python не на C» исполнена много раз — от академических проектов до промышленных платформ. Обзор живых и исторических, с причиной существования каждого.</p>
-<p><strong>PyPy</strong> — самая известная альтернатива, интерпретатор на RPython (строгое подмножество Python, компилируемое в C) с <strong>мета-tracing JIT</strong>: JIT не трассирует ваш код напрямую — он трассирует цикл самого интерпретатора и удаляет слои абстракции между уровнями, специализируя исполнение под конкретную программу. На чистом Python-коде (длинные циклы, словари, списки) PyPy в разы быстрее CPython. Слабое место — C-расширения: мост <code>cpyext</code> эмулирует CPython C API, и через границу «C-расширение ↔ JIT-код» выигрыш часто сгорает. Статус: жив и развивается, поддерживает версии CPython с лагом в один-два года — проверяйте актуальный на сайте проекта.</p>
+<p><strong>PyPy</strong> — самая известная альтернатива, интерпретатор на RPython (строгое подмножество Python, компилируемое в C) с <strong>мета-tracing JIT</strong>: JIT не трассирует ваш код напрямую — он трассирует цикл самого интерпретатора и удаляет слои абстракции между уровнями, специализируя исполнение под конкретную программу. На чистом Python-коде (длинные циклы, словари, списки) PyPy в разы быстрее CPython. Слабое место — C-расширения: мост <code>cpyext</code> эмулирует CPython C API, и через границу «C-расширение ↔ JIT-код» выигрыш часто сгорает. Статус: жив и развивается, поддерживает версии CPython с лагом в два-три года — проверяйте актуальный на сайте проекта.</p>
 <p><strong>GraalPy</strong> — реализация Oracle Labs поверх Truffle (фреймворк для интерпретаторов с частичной компиляцией из мира JVM). Фишка — на удивление хорошая совместимость с C-расширениями; мотивация — дать Python жить в JVM-экосистеме рядом с Java, JavaScript и другими Truffle-языками.</p>
 <p><strong>MicroPython</strong> (и образовательный форк CircuitPython) — Python для микроконтроллеров. Написан на C, но это <strong>не</strong> CPython: самостоятельная реализация, укладывающаяся примерно в 256 КБ flash и 16 КБ RAM (порядок величин для минимальной конфигурации, не спецификация), с усечённым языком и собственными модулями стандартной библиотеки. Компилирует исходник прямо на устройстве; для горячего кода есть декораторы <code>@micropython.native</code> и <code>@micropython.viper</code>. Живёт на ESP32, Raspberry Pi Pico и сотнях плат, где стандартный CPython не влезает физически:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># на CPython и MicroPython работает одинаково:</span>
@@ -1042,10 +1042,10 @@
 <p><strong>RustPython</strong> — реализация на Rust. Зрелость ниже, чем у PyPy, ниша — встраивание и WASM (запуск Python-кода в браузере/среде без установленного интерпретатора). Отдельно стоит <strong>Pyodide</strong> — это не новая реализация, а полноценный CPython, скомпилированный в WebAssembly, со стандартной библиотекой и numpy в комплекте.</p>
 <p>Историческая линия — пять уроков:</p>
 <ul>
-<li><strong>Jython</strong> (JVM): давал бесшовный мост в Java и настоящие потоки без GIL — но застрял на 2.7 и заморожен. Урок: совместимость с актуальным языком важнее архитектурных красот.</li>
+<li><strong>Jython</strong> (JVM): давал бесшовный мост в Java и настоящие потоки без GIL — но застрял на 2.7: релиз 2.7.4 (2024) — всё ещё Python 2, ветка 3.x так и не доехала. Урок: совместимость с актуальным языком важнее архитектурных красот.</li>
 <li><strong>IronPython</strong> (.NET): та же идея для CLR; после долгой паузы вышла ветка 3.4, живёт в нише.</li>
-<li><strong>Stackless Python</strong> — модификация CPython с микропотоками (tasklets) и стеками вне стека C; годами двигал MMO Eve Online. Нишу съел <code>asyncio</code> (4.13): сопрограммы дешевле tasklets и не требуют отдельного интерпретатора.</li>
-<li><strong>Pyston</strong>: попытка Dropbox ускорить CPython «снаружи» (2014–2017) закрылась; возрождённая как дистрибутив Pyston 2 (2020) на базе CPython 3.8 дала ~20–30% — и снова заснула. Урок: догонять выпуски CPython извне — беговая дорожка; поэтому собственно ускорением с 2021 занимается команда Faster CPython <strong>внутри</strong> проекта (15.5).</li>
+<li><strong>Stackless Python</strong> — модификация CPython с микропотоками (tasklets) и стеками вне стека C; годами двигал MMO Eve Online. Нишу съел <code>asyncio</code> (4.2): сопрограммы дешевле tasklets и не требуют отдельного интерпретатора.</li>
+<li><strong>Pyston</strong>: попытка Dropbox ускорить CPython «снаружи» (2014–2017) закрылась; возрождённая как дистрибутив Pyston 2 (2020) на базе CPython 3.8 дала ~20–30% — и снова заснула. Урок: догонять выпуски CPython извне — беговая дорожка; поэтому собственно ускорением с 2021 занимается команда Faster CPython <strong>внутри</strong> проекта — её работа это специализация байт-кода и JIT (15.5).</li>
 <li><strong>CPython без GIL</strong>: PEP 703 — не новая реализация, а отдельная сборка того же CPython; в матрицу реализаций её добавлять честно, но полезно помнить, что «CPython» уже не значит ровно одно.</li>
 </ul>
 <p>Сводная таблица:</p>
@@ -1099,7 +1099,7 @@
 <td>Jython</td>
 <td>Java</td>
 <td>байт-код JVM</td>
-<td>заморожен (2.7)</td>
+<td>тлеет (2.7)</td>
 <td>историческая: мост в Java</td>
 </tr>
 <tr>
@@ -1137,7 +1137,7 @@
 <ul>
 <li><strong>магии</strong>: <code>%timeit</code> (бенчмарк с автоподбором числа прогонов), <code>%run -d</code>, <code>%debug</code>, <code>%prun</code> (профайлер), <code>%autoreload</code> (после <code>%load_ext autoreload</code> — подхват изменений модулей без перезапуска);</li>
 <li>интроспекция: <code>obj?</code> — docstring, <code>obj??</code> — исходник (всё то, что <code>help()</code> и <code>inspect</code>, но на один символ);</li>
-<li>история выводов: <code>_</code>, <code>__</code>, <code>_8</code> — результат восьмой ячейки; история сессий — в sqlite в профиле;</li>
+<li>история выводов: <code>_</code>, <code>__</code>, <code>_8</code> — выводы Out[8] и старше (если ячейка что-то вернула); история сессий — в sqlite в профиле;</li>
 <li><strong>встраивание</strong>: <code>from IPython import embed; embed()</code> превращает любую точку программы в полноценную интерактивную сессию с локальным контекстом — тяжёлая артиллерия вместо <code>print</code>-дебага.</li>
 </ul>
 <p>Как это выглядит вживую (транскрипт типичной сессии):</p>
@@ -1149,10 +1149,13 @@
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Length:      5
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Docstring:   Built-in mutable sequence. …
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>In [3]: _[2]            # _ — вывод последней ячейки
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Out[3]: 4
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>In [3]: squares
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Out[3]: [0, 1, 4, 9, 16]
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>In [4]: %timeit sum(range(1000))   # магия-бенчмарк: циклы и число прогонов подберутся сами
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>In [4]: _[2]            # _ — вывод последней ячейки
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Out[4]: 4
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>In [5]: %timeit sum(range(1000))   # магия-бенчмарк: циклы и число прогонов подберутся сами
 </span></code></pre></div>
 <p>Тот же код в стандартном REPL исполняется тем же интерпретатором — разница только в оболочке: автодополнение, магии и история — это слой IPython над CPython, а не другой язык.</p>
 <p>Архитектурная деталь, которая многое объясняет: IPython — библиотека. Терминальный процесс и «ядро» (kernel) — разные сущности: терминальный IPython запускает ядро в себе, а Jupyter — по сети.</p>
@@ -1201,15 +1204,15 @@
 <h3 id="17.4-benchmarki">Бенчмарки к Части XVII<a class="headerlink" href="#17.4-benchmarki" title="Permanent link">#</a></h3>
 <p>Замеры на CPython 3.12 (Linux, x86_64); абсолютные числа зависят от машины и диска, отношения — устойчивы.</p>
 <p><strong>1. Старт интерпретатора — цена <code>site</code> и импортов.</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">         </span><span class="c1"># ≈ 0.015 с</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>python<span class="w"> </span>-S<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">      </span><span class="c1"># ≈ 0.008 с — без site почти вдвое быстрее</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json&quot;</span><span class="w">  </span><span class="c1"># ≈ 0.019 с</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">         </span><span class="c1"># ≈ 9.3 мс</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>python<span class="w"> </span>-S<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">      </span><span class="c1"># ≈ 7.7 мс — site стоит ~1.6 мс</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import json&quot;</span><span class="w">  </span><span class="c1"># ≈ 16.7 мс</span>
 </span></code></pre></div>
-Половина старта CPython — это <code>site</code> (11.32): сканирование каталогов, <code>.pth</code>-файлы, импорт <code>sitecustomize</code>. Отсюда ответ на «почему CLI-утилиты на Python медленно стартуют»: сам интерпретатор готов за ~15 мс, остальное — импорты библиотек (уже <code>json</code> добавляет ~5 мс, а тяжёлые пакеты — сотни).</p>
+Около пятой части старта CPython — это <code>site</code> (11.32): сканирование каталогов, <code>.pth</code>-файлы, импорт <code>sitecustomize</code> (те же замеры — в бенчмарке B2 части XVI). Отсюда ответ на «почему CLI-утилиты на Python медленно стартуют»: сам интерпретатор готов за ~9 мс, остальное — импорты библиотек (уже <code>json</code> добавляет ~7 мс, а тяжёлые пакеты — сотни).</p>
 <p><strong>2. IPython — цена оболочки.</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>ipython<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="w">   </span><span class="c1"># ≈ 1.05 с — ~70× старта python -c pass</span>
 </span></code></pre></div>
-Оболочка (prompt_toolkit, история, магии, ~200 импортированных модулей) дороже самого интерпретатора на два порядка. Для одноразовых скриптов и CI — стандартный REPL или <code>python -c</code>; IPython — интерактивный инструмент, и его стартовая цена того не отменяет (17.4).</p>
+Оболочка (prompt_toolkit, история, магии, ~470 импортированных модулей) дороже самого интерпретатора на два порядка. Для одноразовых скриптов и CI — стандартный REPL или <code>python -c</code>; IPython — интерактивный инструмент, и его стартовая цена того не отменяет (17.4).</p>
 <p><strong>3. Старт: интерпретатор vs реализации.</strong>
 PyPy стартует на порядки дольше CPython (JIT-инфраструктура и импорт большого рантайма), MicroPython на микроконтроллере — на порядки быстрее (нечего импортировать). Замерить в одной таблице честно не выйдет — платформы несравнимы; смотрите бенчмарки самих проектов: speed.pypy.org для PyPy, docs.micropython.org для микро-плат. Урок тот же, что в 17.2: «быстрее» без уточнения нагрузки — не ответ.</p>
 

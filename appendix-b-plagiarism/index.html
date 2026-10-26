@@ -851,7 +851,7 @@
         <li class="md-nav__item">
   <a href="#B.8" class="md-nav__link">
     <span class="md-ellipsis">
-      B.8. Constant folding, propagation, dead code elimination
+      B.8. Препроцессинг: что происходит с кодом до сравнения
     </span>
   </a>
   
@@ -1028,7 +1028,7 @@
         <li class="md-nav__item">
   <a href="#B.8" class="md-nav__link">
     <span class="md-ellipsis">
-      B.8. Constant folding, propagation, dead code elimination
+      B.8. Препроцессинг: что происходит с кодом до сравнения
     </span>
   </a>
   
@@ -1062,7 +1062,7 @@
 <li><strong>Хеширование</strong> — каждый k-грамм превращается в число. Текст становится цепочкой чисел.</li>
 <li><strong>Провеивание (winnowing)</strong> — берётся «скользящее окно» (например, ширины 4), внутри каждого окна сохраняется только минимальный хеш.</li>
 </ol>
-<p>Итог: 80–90% хешей отбрасывается, но оставшиеся «отпечатки» гарантированно покрывают весь документ. Защита от мелких правок (замена союза не разрушает околостоящие k-граммы). Миллисекундная проверка по миллионам документов.</p>
+<p>Итог: большая часть хешей отбрасывается — при окне w сохраняется в среднем ~2/(w+1) хешей (при w=4 это ~60% отброшенных, при окнах 9–19 — уже 80–90%). Оставшиеся «отпечатки» гарантированно покрывают весь документ. Защита от мелких правок (замена союза не разрушает околостоящие k-граммы). Миллисекундная проверка по миллионам документов.</p>
 <p>Реализация всех четырёх шагов на чистом Python (~30 строк):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">hashlib</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -1076,7 +1076,7 @@
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">def</span> <span class="nf">winnow</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Шаг 4: окно ширины w, из каждого — минимальный хеш.</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">    Соотношение w = k - 1 (как здесь) гарантирует по теореме Schleimer et al. 2003,</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    что любая общая подстрока длины ≥ 2k-1 породит хотя бы один общий отпечаток.&quot;&quot;&quot;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    что любая общая подстрока длины ≥ 2k-2 (порог t = k + w - 1) породит хотя бы один общий отпечаток.&quot;&quot;&quot;</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">fingerprints</span><span class="p">,</span> <span class="n">prev_pos</span><span class="p">,</span> <span class="n">window</span> <span class="o">=</span> <span class="p">[],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[]</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">_kgram_hashes</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="n">window</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">pos</span><span class="p">))</span>
@@ -1094,7 +1094,7 @@
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">fb</span> <span class="o">=</span> <span class="p">{</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">winnow</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">)}</span>
 </span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">fa</span> <span class="o">&amp;</span> <span class="n">fb</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">fa</span> <span class="o">|</span> <span class="n">fb</span><span class="p">)</span> <span class="k">if</span> <span class="n">fa</span> <span class="o">|</span> <span class="n">fb</span> <span class="k">else</span> <span class="mf">1.0</span>
 </span></code></pre></div>
-<p>Проверка на трёх парах показывает и силу, и границу буквенного уровня (<code>renamed_everywhere</code> ниже — гипотетическая функция, переименовывающая все переменные; её механика — токенизация, см. B.2):</p>
+<p>Проверка на трёх парах показывает и силу, и границу буквенного уровня (<code>src</code> — фрагмент кода из B.3 ниже; <code>renamed_everywhere</code> — гипотетическая функция, переименовывающая все переменные; её механика — токенизация, см. B.2):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">similarity</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>                      <span class="c1"># 1.0   — идентичный текст</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">similarity</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;total += item&#39;</span><span class="p">,</span> <span class="s1">&#39;total = total + item&#39;</span><span class="p">))</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                                          <span class="c1"># 0.92  — локальная правка почти не видна</span>
@@ -1167,7 +1167,7 @@
 <p>Оригинальная книга: <strong>Maurice H. Halstead.</strong> <em>Elements of Software Science.</em> North-Holland, 1977.</p>
 <h2 id="B.4">B.4. Цикломатическая сложность (McCabe)<a class="headerlink" href="#B.4" title="Permanent link">#</a></h2>
 <p>Считается количество независимых путей выполнения через граф потока управления. Базовая формула McCabe: <code>M = E − N + 2P</code>, где <code>E</code> — рёбра, <code>N</code> — узлы, <code>P</code> — компоненты связности. Часто упрощают до <code>M = количество if + количество for/while + количество case в match/case + 1</code>.</p>
-<p>Совпадение до третьего знака после запятой у двух работ — маркер искусственного изменения.</p>
+<p>Полное совпадение метрик у двух работ — одинаковое число ветвлений, одинаковые V/D/E у Хальстеда — маркер, требующий ручной проверки.</p>
 <p>Подсчёт через <code>ast</code> (~15 строк) — каждый узел-ветвление добавляет независимый путь:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">ast</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -1192,7 +1192,7 @@
 <h2 id="B.5">B.5. AST-нормализация (canonicalization)<a class="headerlink" href="#B.5" title="Permanent link">#</a></h2>
 <p>Продвинутые аналоги MOSS (Dolos, JPlag) строят дерево синтаксиса и <strong>нормализуют</strong> его перед сравнением:</p>
 <ol>
-<li><strong>Переименование идентификаторов</strong> — все <code>Name</code>-узлы заменяются на каноническую форму (<code>var_1</code>, <code>var_2</code>, <code>var_3</code> в порядке первого появления). Поэтому <code>x = 10</code> и <code>my_super_variable = 10</code> после нормализации <strong>идентичны</strong>.</li>
+<li><strong>Переименование идентификаторов</strong> — все <code>Name</code>-узлы заменяются на каноническую форму (<code>v1</code>, <code>v2</code>, <code>v3</code> в порядке первого появления). Поэтому <code>x = 10</code> и <code>my_super_variable = 10</code> после нормализации <strong>идентичны</strong>.</li>
 <li><strong>Линеаризация дерева</strong> — AST превращается в строку токенов (через pre-order обход), дальше применяется Winnowing или Greedy String Tiling.</li>
 <li><strong>Удаление комментариев и пробелов</strong> — всегда на этапе предобработки.</li>
 </ol>
@@ -1240,8 +1240,8 @@
 </span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
 </span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="n">normalize</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">==</span> <span class="n">normalize</span><span class="p">(</span><span class="n">renamed</span><span class="p">)</span>   <span class="c1"># True — только структура имеет значение</span>
 </span></code></pre></div>
-<p>Упрощения против промышленных реализаций: переименование глобальное (не по областям видимости — два локальных <code>x</code> в разных функциях получат один канонический номер), имена функций здесь канонизируются наравне с переменными, а аннотации типов отбрасываются. Настоящие системы делают переименование по областям видимости и линейизуют дерево в строку токенов для Winnowing/GST.</p>
-<p>Подтверждено в статье про Dolos (Maertens et al., 2022): «Token renaming and syntax tree linearisation increase effectiveness at a cost of efficiency». И JPlag: «JPlag's tokenization step, as for most token-based detectors, is a form of lexical normalization» (Sağlam et al., 2024).</p>
+<p>Упрощения против промышленных реализаций: переименование глобальное (не по областям видимости — два локальных <code>x</code> в разных функциях получат один канонический номер), имена функций здесь канонизируются наравне с переменными, а аннотации аргументов отбрасываются — аннотации возврата и аннотированные присваивания в этой упрощённой версии остаются: их имена канонизируются как обычные <code>Name</code>, но узлы в дампе сохраняются. Настоящие системы делают переименование по областям видимости и линейизуют дерево в строку токенов для Winnowing/GST.</p>
+<p>Подтверждено: Dolos через tree-sitter «маскирует именование переменных и функций» (официальная документация dolos.ugent.be/about/algorithm.html); в таксономии препроцессинга (Karnalim, Simon, Chivers, 2020): «Token renaming and syntax tree linearisation increase effectiveness at a cost of efficiency». И JPlag: «JPlag's tokenization step, as for most token-based detectors, is a form of lexical normalization» (Sağlam et al., 2024).</p>
 <p><strong>Что это значит для атак:</strong></p>
 <ul>
 <li>Просто переименовать переменные — <strong>не работает</strong>.</li>
@@ -1250,13 +1250,14 @@
 </ul>
 <h2 id="B.6">B.6. Стилометрия и детекторы AI-кода<a class="headerlink" href="#B.6" title="Permanent link">#</a></h2>
 <p>Классическая стилометрия (отдельная от плагиата задача «кто автор этого кода») в чистом виде применяется редко. Вместо этого «стиль» — маркер <strong>«этот код сгенерирован AI»</strong>.</p>
-<p><strong>Codequiry</strong> анализирует:</p>
+<p><strong>Codequiry</strong> заявляет:</p>
 <ul>
-<li><strong>Code entropy</strong> — насколько «однообразно» написано.</li>
-<li><strong>Comment patterns</strong> — шаблоны комментариев.</li>
-<li><strong>Error handling consistency</strong> — единообразие обработки ошибок.</li>
-<li><strong>Stylistic uniformity</strong> — стилистическая однородность.</li>
-<li><strong>Style Incongruence Detection</strong> — флаги, когда стиль кусков кода внутри одной работы не совпадает.</li>
+<li><strong>AI Detector / AI Code Detection</strong> — флаги AI-кода: «паттерны ChatGPT, Claude, Copilot, обновляется еженедельно по мере эволюции моделей».</li>
+<li><strong>GitHub &amp; GitLab scanning</strong> — каждая работа проверяется против GitHub, Stack Overflow и открытого веба.</li>
+<li><strong>Line-by-line detection</strong> и <strong>Side-by-Side Comparison</strong> — построчный разбор и визуальное сравнение работ.</li>
+<li><strong>Cross-Language Detection</strong> — ловит переписывание с одного языка на другой.</li>
+<li><strong>Obfuscation-Proof</strong> и <strong>Logic-Aware</strong> — устойчивость к обфускации, сравнение по логике, а не по тексту.</li>
+<li><strong>Base Code Detection</strong>, <strong>Peer Comparison</strong>, <strong>Source URL Tracking</strong>, <strong>Visual Clustering</strong>, <strong>Confidence Score</strong> — отделение выданного преподавателем базового кода, сравнение с одногруппниками, ссылки на источники, кластеризация, доверительный скор.</li>
 </ul>
 <p>Эти маркеры нацелены на AI-код (который часто «ровнее», чем человек) и на копипасту с разных источников (где стилистика скачет от блока к блоку).</p>
 <p>Часть сигналов воспроизводится вручную (~30 строк): код превращается в вектор признаков, близость текстов — косинус между векторами:</p>
@@ -1281,7 +1282,7 @@
 </span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="k">def</span> <span class="nf">cosine</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">b</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 </span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </span></code></pre></div>
-<p>Проверка на трёх парах:</p>
+<p>Проверка на двух парах (<code>compact</code> / <code>same_style</code> / <code>verbose_loops</code> — гипотетические сниппеты: компактный однострочник, его копия и развёрнутая версия того же кода с циклами и комментариями; значения иллюстративные):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cosine</span><span class="p">(</span><span class="n">style_vector</span><span class="p">(</span><span class="n">compact</span><span class="p">),</span> <span class="n">style_vector</span><span class="p">(</span><span class="n">same_style</span><span class="p">))</span>       <span class="c1"># 1.0  — стиль совпадает</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">cosine</span><span class="p">(</span><span class="n">style_vector</span><span class="p">(</span><span class="n">compact</span><span class="p">),</span> <span class="n">style_vector</span><span class="p">(</span><span class="n">verbose_loops</span><span class="p">))</span>    <span class="c1"># 0.81 — стили разъехались</span>
 </span></code></pre></div>
@@ -1297,14 +1298,14 @@
 </ol>
 <p>На практике динамические системы <strong>крайне редки</strong> в академическом антиплагиате. Причина — для корректного сравнения двух программ по их runtime-следу нужно <strong>идентичное окружение</strong>: та же ОС, та же версия интерпретатора, тот же набор библиотек, тот же CPU. В реальном учебном процессе это обеспечить трудно. Поэтому динамический анализ в основном встречается в специализированных ИБ-соревнованиях (где окружение контролируется) и в коммерческих enterprise-продуктах.</p>
 <p>В <strong>MOSS</strong>, <strong>JPlag</strong>, <strong>Dolos</strong>, <strong>Codequiry</strong> динамический анализ <strong>не применяется</strong> — это чисто статические системы. Столкнуться с динамическим анализом в учебном курсе можно только в специализированных ИБ-программах или при проверке capture-the-flag-решений.</p>
-<h2 id="B.8">B.8. Constant folding, propagation, dead code elimination<a class="headerlink" href="#B.8" title="Permanent link">#</a></h2>
-<p>Современные аналоги MOSS перед проверкой запускают оптимизации:</p>
+<h2 id="B.8">B.8. Препроцессинг: что происходит с кодом до сравнения<a class="headerlink" href="#B.8" title="Permanent link">#</a></h2>
+<p>Массовые системы (MOSS, JPlag, Dolos) прогоняют перед сравнением <strong>нормализацию</strong>, а не компиляторные оптимизации:</p>
 <ul>
-<li><strong>Constant folding</strong> — <code>1+1+1</code> и <code>0x3</code> превращаются в <code>3</code> ещё до анализа. Чистый классический MOSS этого не делает.</li>
-<li><strong>Constant propagation</strong> — если <code>PI = 3.14</code> и ниже идёт <code>x = PI * 2</code>, то <code>x</code> заменяется на <code>6.28</code>.</li>
-<li><strong>Dead code elimination</strong> — недостижимые ветки и неиспользуемые переменные вырезаются до сравнения.</li>
+<li><strong>Комментарии и пробелы выкидываются</strong> у всех — это первый шаг токенизации.</li>
+<li><strong>Имена маскируются</strong>: Dolos через tree-sitter «маскирует именование переменных и функций» (официальная документация), JPlag опционально нормализует идентификаторы и литералы.</li>
+<li><strong>Литералы схлопываются</strong>: <code>0x3</code> и <code>3</code> дают один и тот же токен <code>NUMBER</code>.</li>
 </ul>
-<hr />
+<p>А вот <strong>constant folding, constant propagation и dead code elimination</strong> в производственных детекторах не делаются — это территория исследовательских прототипов и таксономий препроцессинга (Karnalim et al., 2020 перечисляют 19 шагов). Тратить усилия на «сложение <code>1+1+1</code> в <code>3</code>» бессмысленно — но и обратно: <code>0x3</code> от <code>3</code> система и так не отличит после литеральной нормализации.</p>
 
 
 

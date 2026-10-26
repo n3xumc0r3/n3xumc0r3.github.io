@@ -1102,7 +1102,7 @@
 </ol>
 <h2 id="A.2">A.2. По Python internals (CPython, байт-код, фреймы, интернация)<a class="headerlink" href="#A.2" title="Permanent link">#</a></h2>
 <ol>
-<li><strong>Anthony Shaw.</strong> <em>CPython Internals: Your Guide to the Python 3 Interpreter.</em> (2021) — лучшая современная книга по CPython (база 3.8/3.9; по темам PEP 683 immortal, PEP 684 per-interp GIL и PEP 703 — обновляться по PEP-ам).</li>
+<li><strong>Anthony Shaw.</strong> <em>CPython Internals: Your Guide to the Python 3 Interpreter.</em> (2021) — лучшая современная книга по CPython (база 3.9; по темам PEP 683 immortal, PEP 684 per-interp GIL и PEP 703 — обновляться по PEP-ам).</li>
 <li><strong>Philip Guo.</strong> <em>Python Tutor</em> — визуализатор выполнения Python. <a href="https://pythontutor.com/">https://pythontutor.com/</a></li>
 <li><strong>PEP 263</strong> — <em>Defining Python Source Code Encodings</em>. <a href="https://peps.python.org/pep-0263/">https://peps.python.org/pep-0263/</a></li>
 <li><strong>PEP 484</strong> — <em>Type Hints</em>. <a href="https://peps.python.org/pep-0484/">https://peps.python.org/pep-0484/</a></li>
@@ -1122,10 +1122,10 @@
 <li><code>Objects/unicodeobject.c</code> — интернация строк</li>
 <li><code>Objects/longobject.c</code> — кэш малых чисел</li>
 <li><code>Objects/object.c</code> + <code>Objects/typeobject.c</code> — реализация <code>__eq__</code>/<code>__hash__</code>/<code>__repr__</code> для <code>object</code> (сами слоты dunder'ов — в <code>typeobject.c</code>) — база для понимания дескрипторов и <code>__class__</code> lookup (Часть VI)</li>
-<li><code>Objects/descrobject.c</code> — реализация дескрипторов (<code>property</code>, <code>classmethod</code>, <code>staticmethod</code>)</li>
+<li><code>Objects/descrobject.c</code> — реализация дескрипторов (<code>property</code>, getset/member-дескрипторы); <code>classmethod</code>/<code>staticmethod</code> — в <code>Objects/funcobject.c</code>, рядом с <code>function.__get__</code></li>
 <li><code>Objects/funcobject.c</code> — <code>function.__get__</code>: почему методы привязываются (6.9)</li>
 <li><code>Python/bltinmodule.c</code> — <code>globals</code>, <code>locals</code>, <code>__import__</code></li>
-<li><code>Python/frame.c</code> — реализация <code>PyFrame_LocalsToFast</code></li>
+<li><code>Objects/frameobject.c</code> — реализация <code>PyFrame_LocalsToFast</code></li>
 </ul>
 </li>
 <li><strong>PEP 448</strong> — <em>Additional Unpacking Generalizations</em> (<code>[*a, *b]</code>, <code>{**d1, **d2}</code>). <a href="https://peps.python.org/pep-0448/">https://peps.python.org/pep-0448/</a></li>
@@ -1139,7 +1139,7 @@
 <li><strong>Patrick Viafore.</strong> <em>Robust Python: Type Checking with Mypy.</em> 2021.</li>
 <li><strong>PEP 257</strong> — <em>Docstring Conventions</em>. <a href="https://peps.python.org/pep-0257/">https://peps.python.org/pep-0257/</a></li>
 <li><strong>PEP 20</strong> — <em>The Zen of Python</em>. <a href="https://peps.python.org/pep-0020/">https://peps.python.org/pep-0020/</a></li>
-<li><strong>PEP 401</strong> — <em>Barry's FLUFL</em> (April Fools). <a href="https://peps.python.org/pep-0401/">https://peps.python.org/pep-0401/</a></li>
+<li><strong>PEP 401</strong> — <em>Barry as FLUFL</em> (April Fools). <a href="https://peps.python.org/pep-0401/">https://peps.python.org/pep-0401/</a></li>
 </ol>
 <h2 id="A.3">A.3. По метапрограммированию и обфускации Python<a class="headerlink" href="#A.3" title="Permanent link">#</a></h2>
 <ol>
@@ -1198,8 +1198,8 @@
 </ol>
 <h2 id="A.7">A.7. Pyjails и демо песочниц<a class="headerlink" href="#A.7" title="Permanent link">#</a></h2>
 <ol>
-<li><strong>Ned Batchelder.</strong> <em>Tarpit</em> (PyCon 2012) — каноническая демонстрация того, что «идеальной песочницы» на CPython не существует в принципе. Оригинальный пост на nedbatchelder.com сейчас недоступен; видео доклада и слайды ищутся по запросу «Ned Batchelder tarpit PyCon 2012» на pyvideo.org и YouTube.</li>
-<li><strong>Pyjail-ресурсы</strong> — коллекции приёмов побега из python-песочниц (активное CTF-направление): <a href="https://github.com/jailctf/pyjailbreaker">https://github.com/jailctf/pyjailbreaker</a> (wiki + payload generator, ★148), <a href="https://github.com/Macr0phag3/parselmouth">https://github.com/Macr0phag3/parselmouth</a> (автоматизированный bypass-фреймворк, ★103), <a href="https://github.com/salvatore-abello/python-ctf-cheatsheet">https://github.com/salvatore-abello/python-ctf-cheatsheet</a> (cheatsheet, ★97)</li>
+<li><strong>Ned Batchelder.</strong> <em>Eval really is dangerous</em> (2012) — канонический разбор того, почему «идеальной песочницы» вокруг <code>eval</code> не существует: даже с пустым <code>__builtins__</code> обход через <code>().__class__.__base__.__subclasses__()</code>. <a href="https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html">https://nedbatchelder.com/blog/201206/eval_really_is_dangerous.html</a></li>
+<li><strong>Pyjail-ресурсы</strong> — коллекции приёмов побега из python-песочниц (активное CTF-направление): <a href="https://github.com/jailctf/pyjailbreaker">https://github.com/jailctf/pyjailbreaker</a> (wiki + payload generator, ★148), <a href="https://github.com/Macr0phag3/parselmouth">https://github.com/Macr0phag3/parselmouth</a> (автоматизированный bypass-фреймворк, ★103), <a href="https://github.com/salvatore-abello/python-ctf-cheatsheet">https://github.com/salvatore-abello/python-ctf-cheatsheet</a> (cheatsheet, ★98)</li>
 </ol>
 <h2 id="A.8">A.8. Блоги для регулярного чтения<a class="headerlink" href="#A.8" title="Permanent link">#</a></h2>
 <ol>
@@ -1268,7 +1268,7 @@
 </tr>
 <tr>
 <td><code>ctypes.pythonapi.PyFrame_LocalsToFast</code></td>
-<td>docs <code>ctypes</code>, CPython source <code>Python/frame.c</code> (№24)</td>
+<td>docs <code>ctypes</code>, CPython source <code>Objects/frameobject.c</code> (№24)</td>
 </tr>
 <tr>
 <td>Интернация строк, кэш чисел</td>

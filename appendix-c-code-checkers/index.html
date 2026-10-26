@@ -1666,7 +1666,7 @@
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">n</span> <span class="o">=</span> <span class="n">_to_int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">if</span> <span class="n">_check_range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">_double</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Эффективность</strong>: средняя. Меняет AST-структуру (количество <code>FunctionDef</code> узлов), но нормализаторы MOSS/JPlag сливают inline-функции обратно.</p>
+<p><strong>Эффективность</strong>: высокая против статических систем. Меняет AST-структуру (количество <code>FunctionDef</code> узлов) и последовательность токенов — нормализаторы этого не разворачивают: JPlag нормализует имена и литералы (Sağlam et al., 2024), переименовывающая AST-нормализация (B.5) тип узла не меняет. Против динамического анализа бесполезно.</p>
 <h3 id="izmenenie">Изменение управляющих конструкций<a class="headerlink" href="#izmenenie" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Оригинал — for + if:</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1693,7 +1693,7 @@
 </span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Эффективность</strong>: средняя. Меняет тип AST-узла (<code>For</code> → <code>While</code>, <code>For</code> → <code>ListComp</code>), но семантика та же. AST-нормализаторы (B.5) сводят все варианты к канонической форме.</p>
+<p><strong>Эффективность</strong>: средняя. Меняет тип AST-узла (<code>For</code> → <code>While</code>, <code>For</code> → <code>ListComp</code>), но семантика та же. Против переименующей нормализации (B.5) это работает — см. её же список атак; живая проверка B.5: <code>for</code>-версия и comprehension-версия дают разные дампы.</p>
 <h3 id="zamena">Замена типов данных<a class="headerlink" href="#zamena" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Оригинал — list:</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
@@ -1719,7 +1719,7 @@
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">_unused</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>  <span class="c1"># неиспользуемый результат</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
 </span></code></pre></div>
-<p><strong>Эффективность</strong>: низкая против современных систем. Dead code elimination (B.8) убирает неиспользуемые вычисления перед сравнением. Но против простых систем (Winnowing без нормализации) — работает.</p>
+<p><strong>Эффективность</strong>: ограниченная. DCE в производственных системах нет (B.8) — мёртвый код остаётся в анализе, но скопированное ядро после нормализации всё равно совпадает: совпадения не спрятать, падает лишь процент сходства. Эффект — разбавление, не маскировка.</p>
 <h3 id="zamena-2">Замена библиотек<a class="headerlink" href="#zamena-2" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># requests → httpx:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># import requests → import httpx</span>
@@ -1734,13 +1734,13 @@
 </span></code></pre></div>
 <p><strong>Эффективность</strong>: средняя. Меняет имена модулей и функций, но если API эквивалентен — семантика та же.</p>
 <h3 id="arifmeticheskie">Арифметические эквиваленты<a class="headerlink" href="#arifmeticheskie" title="Permanent link">#</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># `3` → `1 + 1 + 1`     — ломает k-граммы, но constant folding убирает</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># `3` → `1 + 1 + 1`     — ломает k-граммы, folding&#39;ом не убирается (B.8)</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># `x * 2` → `x + x`     — другой AST-узел (Mult → Add)</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># `x * 2` → `x &lt;&lt; 1`    — Mult → LShift</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># `a and b` → `not (not a or not b)`  — De Morgan</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># `x &gt; 5` → `not (x &lt;= 5)`           — инверсия</span>
 </span></code></pre></div>
-<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code> в байт-коде. Но антиплагиат-системы работают с <strong>исходником</strong>, не с байт-кодом — для классического Winnowing без normalisation-слоя (B.1) <code>1+1+1</code> и <code>3</code> — разные токены. Современные системы (B.8) перед сравнением запускают собственные оптимизации и могут различать их только если folding отключён — это вопрос конфигурации конкретного инструмента.</p>
+<p>⚠️ Constant folding (свёртка констант) на этапе компиляции сворачивает <code>1 + 1 + 1</code> обратно в <code>3</code> в байт-коде. Но антиплагиат-системы работают с <strong>исходником</strong>: для классического Winnowing без normalisation-слоя (B.1) <code>1+1+1</code> и <code>3</code> — разные токены, а production-системы folding не запускают (B.8) — <code>1+1+1</code> остаётся цепочкой токенов и после литеральной нормализации JPlag.</p>
 <h2 id="C.2">C.2. Архитектурные приёмы — перенос логики в рантайм<a class="headerlink" href="#C.2" title="Permanent link">#</a></h2>
 <p>Архитектурные приёмы переносят логику <strong>из статического кода в динамическую память</strong> — в аннотации, в <code>__dict__</code>, в <code>exec</code>-строки. Это намного сложнее детектировать, потому что AST-анализатор видит «пустышку», а реальный код появляется только при выполнении.</p>
 <h3 id="annotatsii">Аннотации как данные<a class="headerlink" href="#annotatsii" title="Permanent link">#</a></h3>
@@ -1845,7 +1845,7 @@
 </span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="n">modify_caller</span><span class="p">()</span>  <span class="c1"># ← меняет result на 42</span>
 </span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>    <span class="k">return</span> <span class="n">result</span>    <span class="c1"># 42, хотя вычислений не было</span>
 </span></code></pre></div>
-<p>⚠️ <code>PyFrame_LocalsToFast</code> — внутренняя C-API функция (упомянута в C-API документации, но без гарантий стабильности). Работает на CPython, не работает на PyPy/Jython. Может быть удалена в будущих версиях.</p>
+<p>⚠️ <code>PyFrame_LocalsToFast</code> — экспортируемая, но <strong>недокументированная</strong> функция: в C-API документации 3.8–3.12 её нет вовсе. Работает на CPython до 3.12 включительно (проверено на 3.12.15). С 3.13 она soft-deprecated и <strong>ничего не делает</strong> («As of Python 3.13, they do nothing» — официальная документация): там <code>frame.f_locals</code> — write-through прокси (PEP 667), и запись в него меняет локали фрейма напрямую — тот же трюк без ctypes. На PyPy/Jython не рассчитывайте.</p>
 <h3 id="podmena">Подмена <code>co_name</code> / <code>co_filename</code><a class="headerlink" href="#podmena" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span> <span class="nn">types</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
@@ -1877,7 +1877,7 @@
 </span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="k">else</span><span class="p">:</span>
 </span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wrong&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>⚠️ Современные тестирующие системы изолируют student code через <code>exec(code, restricted_globals)</code> — <code>sys._getframe</code> возвращает фрейм <code>exec</code>, не тестирующего скрипта. Но если изоляция неполная — фрейм доступен.</p>
+<p>⚠️ Изоляция через <code>exec(code, restricted_globals)</code> фреймы <strong>не</strong> изолирует: <code>sys._getframe(1)</code> из exec-кода по-прежнему видит локали вызывающего (проверено на 3.12.15: <code>expected_output</code> и <code>test_number</code> читаются и с урезанными globals). Кадр exec-кода — ребёнок кадра, вызвавшего <code>exec</code>; реальную изоляцию даёт только отдельный процесс или поток.</p>
 <h2 id="C.4">C.4. Интроспекция окружения тестирующих систем<a class="headerlink" href="#C.4" title="Permanent link">#</a></h2>
 <p>Интроспекция окружения — запустить код в тестирующей системе и собрать <strong>всю</strong> информацию об окружении через один <code>raise</code>. Результат попадает в stderr, который система обычно показывает при ошибке.</p>
 <h3 id="universalnyy">Универсальный «комбайн» — собрать всё в JSON<a class="headerlink" href="#universalnyy" title="Permanent link">#</a></h3>
@@ -1930,21 +1930,22 @@
 </span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c1"># Позволяет давать разные ответы на разные тесты</span>
 </span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
 </span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c1"># Какие библиотеки доступны?</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="s2">&quot;requests&quot;</span><span class="p">,</span> <span class="s2">&quot;sympy&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">]:</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="k">try</span><span class="p">:</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>        <span class="nb">__import__</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="c1"># Чтение исходника проверяющего скрипта:</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="kn">import</span> <span class="nn">inspect</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="n">caller</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="n">caller_file</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">caller_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>    <span class="n">source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">source</span><span class="p">[:</span><span class="mi">5000</span><span class="p">])</span>  <span class="c1"># первые 5 KB исходника проверяющего</span>
-</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># выйти до выполнения теста</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="n">available</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="s2">&quot;requests&quot;</span><span class="p">,</span> <span class="s2">&quot;sympy&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">]:</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>        <span class="nb">__import__</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>        <span class="n">available</span><span class="p">[</span><span class="n">mod</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="c1"># Чтение исходника проверяющего скрипта:</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="kn">import</span> <span class="nn">inspect</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="n">caller</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="n">caller_file</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">caller_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>    <span class="n">source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="nb">print</span><span class="p">(</span><span class="n">source</span><span class="p">[:</span><span class="mi">5000</span><span class="p">])</span>  <span class="c1"># первые 5 KB исходника проверяющего</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># выйти до выполнения теста</span>
 </span></code></pre></div>
 <h3 id="zaschita">Защита тестирующих систем<a class="headerlink" href="#zaschita" title="Permanent link">#</a></h3>
 <p>Современные системы противодействуют разведке:</p>
@@ -1983,7 +1984,7 @@
 <li><strong>Хуки не наследуются</strong> дочерними процессами — subprocess-песочница настраивает свои.</li>
 <li><strong>Событие не означает блокировку по умолчанию</strong> — хук только наблюдение, пока не поднято исключение.</li>
 </ul>
-<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — выступление Ned Batchelder «Tarpit» (PyCon 2012), разборы побегов из pyjails — в A.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
+<p>Поэтому в продакшн audit hooks комбинируют с seccomp и контейнерами (пункты выше) — они закрывают то, что hooks принципиально не могут. Более того, «идеальной песочницы» на CPython не существует в принципе: каноническая демонстрация — разбор Ned Batchelder'а <em>Eval really is dangerous</em> (2012, nedbatchelder.com/blog/201206/eval_really_is_dangerous.html), разборы побегов из pyjails — в A.7. Audit hooks дают слой, который <strong>дёшев, точен и не портит жизнь честному коду</strong> — но это один слой из нескольких.</p>
 <h3 id="kod-vozvrata">Код возврата как канал данных: 8 бит да/нет<a class="headerlink" href="#kod-vozvrata" title="Permanent link">#</a></h3>
 <p>Когда stdout занят выводом, stderr — диагностикой, а файлы и переменные окружения проверяющий не читает, у программы остаётся один свободный канал — код возврата. На POSIX это ровно 8 бит, целое 0–255: всё за пределами усекается по модулю 256 (<code>sys.exit(300)</code> вернёт <code>44</code>, <code>sys.exit(256)</code> — <code>0</code>, <code>sys.exit(-1)</code> — <code>255</code>). Восемь бит — это восемь независимых ответов да/нет, и никто не мешает упаковать в них результаты проверок:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># checker.py: сообщает, какие из восьми проверок провалил решение</span>
@@ -2031,7 +2032,7 @@
 <li><strong>Это POSIX-конвенция.</strong> На Windows коды возврата 32-битные — переносимый код не должен полагаться на усечение до 8 бит.</li>
 </ul>
 <h2 id="C.5">C.5. Песочницы и обход через <code>__subclasses__()</code><a class="headerlink" href="#C.5" title="Permanent link">#</a></h2>
-<p>Классический приём обхода песочниц, которые вычищают <code>__builtins__</code> и запрещают <code>import</code>. Идея: <strong>из любого объекта</strong> можно добраться до <code>object</code> (базового класса всех классов), а оттуда — до <strong>любого класса в интепретаторе</strong>, включая <code>os._wrap_close</code>, <code>warnings.catch_warnings</code> и другие, у которых есть доступ к <code>os</code>/<code>sys</code>.</p>
+<p>Классический приём обхода песочниц, которые вычищают <code>__builtins__</code> и запрещают <code>import</code>. Идея: <strong>из любого объекта</strong> можно добраться до <code>object</code> (базового класса всех классов), а оттуда — до <strong>любого класса в интерпретаторе</strong>, включая <code>os._wrap_close</code>, <code>warnings.catch_warnings</code> и другие, у которых есть доступ к <code>os</code>/<code>sys</code>.</p>
 <h3 id="tsepochka">Цепочка: <code>().__class__.__base__.__subclasses__()</code><a class="headerlink" href="#tsepochka" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Шаг 1: () — пустой кортеж. Его тип — tuple.</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span>            <span class="c1"># &lt;class &#39;tuple&#39;&gt;</span>
@@ -2041,10 +2042,11 @@
 </span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
 </span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># Шаг 3: __subclasses__() — все классы, прямо унаследованные от object.</span>
 </span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="c1"># [&lt;class &#39;type&#39;&gt;, &lt;class &#39;weakref&#39;&gt;, &lt;class &#39;weakcallableproxy&#39;&gt;, ...,</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1">#  &lt;class &#39;os._wrap_close&#39;&gt;, &lt;class &#39;_sitebuiltins.Quitter&#39;&gt;, ...]</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="c1"># [&lt;class &#39;type&#39;&gt;, &lt;class &#39;async_generator&#39;&gt;, &lt;class &#39;bytearray_iterator&#39;&gt;, ...,</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1">#  &lt;class &#39;weakref.ReferenceType&#39;&gt;, ..., &lt;class &#39;os._wrap_close&#39;&gt;,</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="c1">#  &lt;class &#39;_sitebuiltins.Quitter&#39;&gt;, ...]</span>
 </span></code></pre></div>
-<p>Тот же трюк работает из <strong>любого</strong> объекта: <code>[].__class__.__base__.__subclasses__()</code>, <code>"".__class__.__base__.__subclasses__()</code>, <code>{}.__class__.__base__.__subclasses__()</code>, <code>(0).__class__.__base__.__subclasses__()</code> — все дадут один и тот же список, потому что <code>__base__</code> любого типа рано или поздно ведёт к <code>object</code>.</p>
+<p>Тот же трюк работает из <strong>любого</strong> объекта: <code>[].__class__.__base__.__subclasses__()</code>, <code>"".__class__.__base__.__subclasses__()</code>, <code>{}.__class__.__base__.__subclasses__()</code>, <code>(0).__class__.__base__.__subclasses__()</code> — все дадут один и тот же список, потому что <code>__base__</code> любого типа рано или поздно ведёт к <code>object</code>. Состав и порядок классов в списке зависят от того, что успело импортироваться к моменту вызова.</p>
 <h3 id="poisk">Поиск класса с доступом к <code>os</code><a class="headerlink" href="#poisk" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Найти os._wrap_close — это класс в модуле os; его инстансы возвращаются из os.popen(),</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># а в __init__ есть self.__init__.__globals__ — словарь модуля os!</span>
@@ -2176,22 +2178,22 @@
 </tr>
 <tr>
 <td>Inlining/outlining</td>
-<td>⚠️ частично</td>
-<td>❌</td>
+<td>✅</td>
+<td>✅</td>
 <td>❌</td>
 <td>✅ работает</td>
 </tr>
 <tr>
 <td>Замена <code>for</code>→<code>while</code></td>
 <td>⚠️</td>
-<td>❌</td>
+<td>✅</td>
 <td>❌</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>Мёртвый код</td>
-<td>✅</td>
-<td>❌ (DCE)</td>
+<td>⚠️</td>
+<td>❌ *</td>
 <td>❌</td>
 <td>✅</td>
 </tr>
@@ -2232,7 +2234,7 @@
 </tr>
 </tbody>
 </table>
-<p>✅ = приём работает (обходит детекцию), ❌ = не работает (система видит сквозь), ⚠️ = частично.</p>
+<p>✅ = приём работает (обходит детекцию), ❌ = не работает (система видит сквозь), ⚠️ = частично. * мёртвый код против AST-нормализации: не из-за DCE (его в production нет, B.8), а потому что ядро совпадает после переименования.</p>
 <p><strong>Вывод</strong>: против современных систем (MOSS, JPlag, Dolos) с AST-нормализацией косметика <strong>не работает</strong>. Архитектурные приёмы (<code>exec</code>, <code>types.FunctionType</code>) обходят статический анализ, но <strong>привлекают внимание</strong> — <code>exec</code> в студенческом коде — красный флаг. Динамический анализ (если система его применяет) видит всё.</p>
 <h3 id="chto">Что точно НЕ стоит делать<a class="headerlink" href="#chto" title="Permanent link">#</a></h3>
 <ul>
