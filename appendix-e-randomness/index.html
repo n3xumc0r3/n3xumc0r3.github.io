@@ -2975,8 +2975,8 @@
 <p>Каждая — обратима. Чтобы восстановить исходный <code>MT[i]</code> из выхода, надо обратить операции в обратном порядке. Это называется <strong>untemper</strong>.</p>
 <h3 id="_8">Обратимость каждой операции<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
 <p><strong>Операция (4)</strong>: <code>y ^= (y &gt;&gt; 18)</code>. Старшие 18 бит <code>y</code> не меняются (сдвиг вправо обнуляет их у <code>y &gt;&gt; 18</code>). Значит, мы знаем верхние 18 бит результата, и можем применить тот же сдвиг ещё раз: <code>y ^= (y &gt;&gt; 18)</code> вернёт исходное значение. Это <strong>идемпотент</strong> — обратное преобразование совпадает с прямым.</p>
-<p><strong>Операция (3)</strong>: <code>y ^= (y &lt;&lt; 15) &amp; mask</code>. Нижние 15 бит <code>y</code> не меняются (сдвиг влево их обнуляет). Значит, мы знаем нижние 15 бит результата. Сдвигаем их влево на 15, маскируем, XOR'им — получаем биты 15-29. Сдвигаем их влево — получаем биты 30-31. И всё — обратилось за один шаг.</p>
-<p><strong>Операция (2)</strong>: <code>y ^= (y &lt;&lt; 7) &amp; 0x9D2C5680</code>. Аналогично, но сдвиг меньше (7), а размер слова 32 — значит, нужно несколько шагов. На первом шаге восстанавливаем биты 0-6, на втором — 7-13, на третьем — 14-20, на четвёртом — 21-27, на пятом — 28-31. Пять итераций достаточно. <strong>Тонкость</strong>: каждая итерация может вносить ошибку в следующих битах, поэтому её делают несколько раз (или аккуратно побитово).</p>
+<p><strong>Операция (3)</strong>: <code>y ^= (y &lt;&lt; 15) &amp; mask</code>. Нижние 15 бит <code>y</code> не меняются (сдвиг влево их обнуляет). Значит, мы знаем нижние 15 бит результата. Сдвигаем их влево на 15, маскируем, XOR'им — получаем биты 15–29. Сдвигаем их влево — получаем биты 30–31. И всё — обратилось за один шаг.</p>
+<p><strong>Операция (2)</strong>: <code>y ^= (y &lt;&lt; 7) &amp; 0x9D2C5680</code>. Аналогично, но сдвиг меньше (7), а размер слова 32 — значит, нужно несколько шагов. На первом шаге восстанавливаем биты 0–6, на втором — 7–13, на третьем — 14–20, на четвёртом — 21–27, на пятом — 28–31. Пять итераций достаточно. <strong>Тонкость</strong>: каждая итерация может вносить ошибку в следующих битах, поэтому её делают несколько раз (или аккуратно побитово).</p>
 <p><strong>Операция (1)</strong>: <code>y ^= (y &gt;&gt; 11)</code>. Аналогично операции (4), но сдвиг 11, поэтому один шаг не покрывает всё слово — нужно 3 итерации (11+11+11 = 33 &gt; 32).</p>
 <h3 id="untemper">Полная реализация untemper<a class="headerlink" href="#untemper" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span> <span class="nf">untemper</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -3512,7 +3512,7 @@
 <p><code>SystemRandom</code> подменяет все методы <code>Random</code> на <code>os.urandom</code>-based. Поддерживает тот же API (<code>random()</code>, <code>getrandbits()</code>, <code>randint()</code>, <code>choice()</code>), но:</p>
 <ul>
 <li><code>seed()</code> — пустой (stub), состояние не фиксируется.</li>
-<li><code>getstate()</code> — бросает <code>NotImplementedError</code> ("System entropy source does not have state."), состояние нельзя сохранить.</li>
+<li><code>getstate()</code> — бросает <code>NotImplementedError</code> («System entropy source does not have state.»), состояние нельзя сохранить.</li>
 <li><code>setstate()</code> — бросает то же <code>NotImplementedError</code>.</li>
 </ul>
 <p>Это даёт <strong>drop-in замену</strong> <code>random.Random</code> в любом коде, где нужен CSPRNG. Но обычно лучше использовать <code>secrets</code> — он безопаснее по API.</p>
@@ -3782,7 +3782,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Вывод</strong>: для одного 32-битного числа MT19937 в ~5-7× быстрее, чем CSPRNG. NumPy PCG64 в скалярном режиме неожиданно медленный — его сила в <strong>векторизованных</strong> вызовах (см. бенчмарк 3). На практике это редко важно — но если у вас плотный цикл с миллионами случайных чисел, разница будет заметна.</p>
+<p><strong>Вывод</strong>: для одного 32-битного числа MT19937 в ~5–7× быстрее, чем CSPRNG. NumPy PCG64 в скалярном режиме неожиданно медленный — его сила в <strong>векторизованных</strong> вызовах (см. бенчмарк 3). На практике это редко важно — но если у вас плотный цикл с миллионами случайных чисел, разница будет заметна.</p>
 <h3 id="2_1">2. Скорость генерации большого буфера<a class="headerlink" href="#2_1" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># Замер 1 МБ random bytes, 100 прогонов:</span>
 </span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="n">t_mt</span>   <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span><span class="p">(</span><span class="s1">&#39;r.getrandbits(8 * 1024 * 1024)&#39;</span><span class="p">,</span>
@@ -3823,7 +3823,7 @@
 </tbody>
 </table>
 <p>В пакетном режиме все три генератора примерно равны (сам MT19937 в C выдаёт ~7 нс на 32-битное слово — 1 МБ ≈ 262 тыс. слов ≈ 2 мс, а <code>os.urandom</code> читает kernel CRNG напрямую). NumPy PCG64 здесь не показывает своего преимущества — он был бы заметно быстрее при генерации <strong>массива</strong> через <code>rng.integers(0, 2**32, size=10_000_000)</code> (векторизованный путь), а не в скалярном <code>bytes()</code>.</p>
-<p><strong>Правило</strong>: для больших объёмов данных любой из трёх подходит. Если нужен numpy-array — <code>rng.integers()</code> в векторизованном режиме в 10-50× быстрее любого скалярного генератора.</p>
+<p><strong>Правило</strong>: для больших объёмов данных любой из трёх подходит. Если нужен numpy-array — <code>rng.integers()</code> в векторизованном режиме в 10–50× быстрее любого скалярного генератора.</p>
 <h3 id="3-prng">3. Сравнение алгоритмов PRNG<a class="headerlink" href="#3-prng" title="Permanent link">#</a></h3>
 <table>
 <thead>
@@ -3912,7 +3912,7 @@
 <p>Если у вас горячий путь с миллионами random-вызовов в секунду:</p>
 <ul>
 <li><strong>Crypto-контекст</strong>: только <code>secrets</code> / <code>os.urandom</code>. Никаких компромиссов.</li>
-<li><strong>Не-crypto контекст</strong> (симуляция, ML, тесты): <code>numpy.random</code> (PCG64) — в 4-5× быстрее MT19937 на пакетных операциях.</li>
+<li><strong>Не-crypto контекст</strong> (симуляция, ML, тесты): <code>numpy.random</code> (PCG64) — в 4–5× быстрее MT19937 на пакетных операциях.</li>
 <li><strong>Если нужно воспроизводство через seed</strong>: <code>numpy.random.default_rng(seed)</code> — PCG64 с фиксируемым state.</li>
 <li><strong>Если seed в нескольких потоках</strong>: создайте отдельный Generator для каждого потока, с разными seed. Вызовы <code>random.Random</code> в CPython атомарны под GIL, но общий поток выходов виден всем потокам — отдельный генератор даёт независимые последовательности.</li>
 </ul>

@@ -1723,7 +1723,7 @@
 <p><code>return_when</code> варианты:</p>
 <ul>
 <li><code>ALL_COMPLETED</code> (по умолчанию) — ждать всех.</li>
-<li><code>FIRST_COMPLETED</code> — ждать <strong>первого</strong> завершившегося (не "хотя бы N", для N&gt;1 нужно писать свою логику или использовать <code>wait</code> в цикле).</li>
+<li><code>FIRST_COMPLETED</code> — ждать <strong>первого</strong> завершившегося (не «хотя бы N», для N&gt;1 нужно писать свою логику или использовать <code>wait</code> в цикле).</li>
 <li><code>FIRST_EXCEPTION</code> — ждать первого исключения (или всех, если исключений не было).</li>
 </ul>
 <p>⚠️ В отличие от <code>gather</code>, <code>wait</code> <strong>не возвращает результаты</strong> — нужно доставать через <code>task.result()</code>:</p>

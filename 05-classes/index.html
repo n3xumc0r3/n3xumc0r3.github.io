@@ -752,7 +752,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal" class="md-nav__link">
+  <a href="#5.12-literal-values" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -1949,7 +1949,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5.12-literal" class="md-nav__link">
+  <a href="#5.12-literal-values" class="md-nav__link">
     <span class="md-ellipsis">
       Literal — конкретные значения
     </span>
@@ -2793,7 +2793,7 @@
 </span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="n">p</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">3</span>                       <span class="c1"># AttributeError — &#39;Point&#39; object has no attribute &#39;z&#39;</span>
 </span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>             <span class="c1"># AttributeError — у Point нет __dict__!</span>
 </span></code></pre></div>
-<p><strong>Экономия</strong>: ~40-50% на экземпляр при миллионах объектов. Дополнительно: на Python ≤3.11 доступ к слотовым атрибутам быстрее, чем к <code>__dict__</code> (на 3.12+ специализированные <code>LOAD_ATTR</code> сравняли их скорость — главный выигрыш slots теперь в памяти, не в скорости, см. бенчмарки в §5.17).</p>
+<p><strong>Экономия</strong>: ~40–50% на экземпляр при миллионах объектов. Дополнительно: на Python ≤3.11 доступ к слотовым атрибутам быстрее, чем к <code>__dict__</code> (на 3.12+ специализированные <code>LOAD_ATTR</code> сравняли их скорость — главный выигрыш slots теперь в памяти, не в скорости, см. бенчмарки в §5.17).</p>
 <p><strong>Нюансы:</strong></p>
 <ul>
 <li>Наследники не наследуют <code>__slots__</code> автоматически — каждый подкласс должен объявить свой <code>__slots__ = ()</code> (пустой, если новых атрибутов нет).</li>
@@ -3442,7 +3442,7 @@ tолько через <code>TypedDict</code> + <code>Literal</code>-поле-д
 </span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># mypy ошибётся, в runtime — спокойно</span>
 </span></code></pre></div>
 <p>Также как <code>@final</code> декоратор (см. §5.12 выше).</p>
-<h3 id="5.12-literal"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal" title="Permanent link">#</a></h3>
+<h3 id="5.12-literal-values"><code>Literal</code> — конкретные значения<a class="headerlink" href="#5.12-literal-values" title="Permanent link">#</a></h3>
 <p>Полный разбор <code>Literal</code> — выше, в разделе «<code>Literal</code> — конкретное значение как тип». <code>Literal["fast", "slow"]</code> ограничивает значение набором констант и служит дискриминатором в <code>TypedDict</code>-union (см. пример выше).</p>
 <h3 id="5.12-never"><code>Never</code> и <code>NoReturn</code> — недостижимый код<a class="headerlink" href="#5.12-never" title="Permanent link">#</a></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Never</span><span class="p">,</span> <span class="n">NoReturn</span>

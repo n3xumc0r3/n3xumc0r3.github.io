@@ -1239,7 +1239,7 @@
 <li><code>-X gil=0/1</code> — принудительно включить/выключить GIL в free-threaded сборках (3.13+; env <code>PYTHON_GIL</code>)</li>
 <li><code>-X presite=package.module</code> — импортировать модуль до <code>site</code> и до появления <code>__main__</code> (3.13+, env <code>PYTHON_PRESITE</code>)</li>
 <li><code>-X showrefcount</code> — печатать суммарный refcount и число блоков памяти при выходе; только debug-сборки (<code>--with-pydebug</code>)</li>
-<li><code>-X disable_remote_debug</code> — выключить remote-отладку PEP 768 (подключение кода к работающему процессу) (3.14+, env <code>PYTHON_DISABLE_REMOTE_DEBUG</code>)</li>
+<li><code>-X disable-remote-debug</code> — выключить remote-отладку PEP 768 (подключение кода к работающему процессу) (3.14+, env <code>PYTHON_DISABLE_REMOTE_DEBUG</code>)</li>
 <li>3.14+: <code>-X thread_inherit_context=0/1</code>, <code>-X context_aware_warnings=0/1</code>, <code>-X tlbc=0/1</code> — наследование contextvars в потоках, предупреждения с учётом контекста, счётчики tier-2 байт-кода (экспериментальные)</li>
 <li>историческое: <code>-X showalloccount</code> удалена в 3.9, <code>-X oldparser</code> — в 3.10 (сейчас просто игнорируются)</li>
 <li>неизвестные <code>-X</code> не интерпретируются CPython, но сохраняются в <code>sys._xoptions</code> (как <code>True</code> или строка после <code>=</code>); <code>-X path</code> не существует — просто попадёт в <code>sys._xoptions</code></li>
@@ -1318,7 +1318,7 @@
 <li><code>PYTHON_TLBC</code> — счётчики tier-2 байт-кода (микро-телеметрия специализированных инструкций, 3.14+).</li>
 <li><code>PYTHON_THREAD_INHERIT_CONTEXT</code> — наследование <code>contextvars</code> в потоках (3.14+).</li>
 <li><code>PYTHON_CONTEXT_AWARE_WARNINGS</code> — предупреждения с учётом contextvar-контекста (3.14+).</li>
-<li><code>PYTHON_DISABLE_REMOTE_DEBUG</code> — эквивалент <code>-X disable_remote_debug</code> (PEP 768, 3.14+).</li>
+<li><code>PYTHON_DISABLE_REMOTE_DEBUG</code> — эквивалент <code>-X disable-remote-debug</code> (PEP 768, 3.14+).</li>
 </ul>
 <p>⚠️ <strong>Все <code>PYTHON*</code> переменные игнорируются</strong> при флаге <code>-E</code> или <code>-I</code>.</p>
 <h2 id="10.4">10.4. <code>sys.implementation</code>, <code>platform.*</code><a class="headerlink" href="#10.4" title="Permanent link">#</a></h2>

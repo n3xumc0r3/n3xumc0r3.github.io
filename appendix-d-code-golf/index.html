@@ -907,7 +907,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#chto" class="md-nav__link">
+  <a href="#chto-eshe-koroche" class="md-nav__link">
     <span class="md-ellipsis">
       Что ещё короче, если значение — строка
     </span>
@@ -958,7 +958,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#chtenie" class="md-nav__link">
+  <a href="#chtenie-fayla" class="md-nav__link">
     <span class="md-ellipsis">
       Чтение файла в список — 4 варианта
     </span>
@@ -1666,7 +1666,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#chto" class="md-nav__link">
+  <a href="#chto-eshe-koroche" class="md-nav__link">
     <span class="md-ellipsis">
       Что ещё короче, если значение — строка
     </span>
@@ -1717,7 +1717,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#chtenie" class="md-nav__link">
+  <a href="#chtenie-fayla" class="md-nav__link">
     <span class="md-ellipsis">
       Чтение файла в список — 4 варианта
     </span>
@@ -2487,7 +2487,7 @@
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Словари тоже работают:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">op</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="o">.</span><span class="fm">__add__</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">}[</span><span class="n">op_str</span><span class="p">]</span>
 </span></code></pre></div>
-<h3 id="chto">Что ещё короче, если значение — строка<a class="headerlink" href="#chto" title="Permanent link">#</a></h3>
+<h3 id="chto-eshe-koroche">Что ещё короче, если значение — строка<a class="headerlink" href="#chto-eshe-koroche" title="Permanent link">#</a></h3>
 <p>Если обе ветки — короткие строки (1 символ), индексация через tuple выигрывает. Если строки длиннее — иногда помогает <code>(cond,cond)</code> с умножением, но читаемость резко падает. На практике в code golf доминируют два варианта: <code>(a,b)[cond]</code> и <code>cond and a or b</code> — второй на 1–2 символа короче, но ломается, если <code>a</code> может быть falsy:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># cond and a or b   — возвращает a если cond truthy и a truthy, иначе b</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># Если a — falsy (0, &quot;&quot;, [], None) — сломается. Счёт с пробелами:</span>
@@ -2537,7 +2537,7 @@
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="p">{</span><span class="o">*</span><span class="n">a</span><span class="p">,</span><span class="o">*</span><span class="n">b</span><span class="p">}</span>    <span class="c1"># вместо a|b или set(a)|set(b) — для множеств</span>
 </span></code></pre></div>
 <p>Для словарей то же правило: <code>{**d}</code> вместо <code>dict(d)</code> (5 символов против 7), а слияние двух — <code>{**d1,**d2}</code>.</p>
-<h3 id="chtenie">Чтение файла в список — 4 варианта<a class="headerlink" href="#chtenie" title="Permanent link">#</a></h3>
+<h3 id="chtenie-fayla">Чтение файла в список — 4 варианта<a class="headerlink" href="#chtenie-fayla" title="Permanent link">#</a></h3>
 <p>Часто пишут <code>[i for i in open(f)]</code> — но это <strong>избыточно</strong>. <code>open()</code> уже возвращает итератор строк, и его можно распаковать напрямую:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>      <span class="c1"># 20 символов — listcomp, избыточен</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nb">list</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>             <span class="c1"># 13 символов — list() от итератора</span>
@@ -3312,7 +3312,7 @@ XOR остаётся <code>!=</code>:</p>
 </span><span id="__span-62-7"><a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a><span class="c1"># Массовая генерация похожих строк:</span>
 </span><span id="__span-62-8"><a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;p(s((</span><span class="si">%s</span><span class="s2">)//</span><span class="si">%d</span><span class="s2">**k</span><span class="si">%%%d</span><span class="s2">&gt;9for k in r(</span><span class="si">%d</span><span class="s2">)));&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="o">...</span><span class="p">))</span>
 </span></code></pre></div>
-<p>⚠️ <code>exec</code> добавляет 8 символов накладных (<code>exec('')</code>), плюс кавычки. Выгоден, когда повторяемый код длиннее 7-10 символов или когда нужно сгенерить N строк с переменными подстановками.</p>
+<p>⚠️ <code>exec</code> добавляет 8 символов накладных (<code>exec('')</code>), плюс кавычки. Выгоден, когда повторяемый код длиннее 7–10 символов или когда нужно сгенерить N строк с переменными подстановками.</p>
 <h2 id="D.17">D.17. Продвинутые трюки из реального code golf<a class="headerlink" href="#D.17" title="Permanent link">#</a></h2>
 <p>Четыре приёма, выкристаллизованные из реальных соревновательных решений. Не привязаны к конкретной задаче — каждая идиома самостоятельна.</p>
 <h3 id="tryuk">Трюк 1: <code>*T</code> в lambda — переменное число positional args<a class="headerlink" href="#tryuk" title="Permanent link">#</a></h3>
@@ -3361,7 +3361,7 @@ keyword-only (<code>lambda b, *T, d:</code> — валидно, проверен
 только keyword: <code>max(gen, default=0)</code>, а <code>max(gen, 0)</code> — TypeError.</p>
 <h3 id="obschie">Общие уроки<a class="headerlink" href="#obschie" title="Permanent link">#</a></h3>
 <ol>
-<li><strong>Алиасы</strong> (<code>p=print; r=range; m=next; s=sum; i=int</code>) — стандартный набор. Окупаются на 3-4 вызовах.</li>
+<li><strong>Алиасы</strong> (<code>p=print; r=range; m=next; s=sum; i=int</code>) — стандартный набор. Окупаются на 3–4 вызовах.</li>
 <li><strong><code>*T</code> в lambda</strong> — для переменного числа однотипных аргументов.</li>
 <li><strong><code>chr(x+48+7*(x&gt;9))</code></strong> — генерация цифр в системе счисления 2..36.</li>
 <li><strong>Инлайнинг</strong> переменной 1 раз — всегда короче. 2+ раз — алиас.</li>
